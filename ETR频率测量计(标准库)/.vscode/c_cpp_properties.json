@@ -1,0 +1,62 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/**",
+                    "${workspaceFolder}/CORE",
+                    "${workspaceFolder}/FWLIB/inc",
+                    "${workspaceFolder}/FWLIB/src",
+                    "${workspaceFolder}/HARDWARE/24CXX",
+                    "${workspaceFolder}/HARDWARE/AD9959",
+                    "${workspaceFolder}/HARDWARE/ADF4351",
+                    "${workspaceFolder}/HARDWARE/EXTI",
+                    "${workspaceFolder}/HARDWARE/IIC",
+                    "${workspaceFolder}/HARDWARE/key",
+                    "${workspaceFolder}/HARDWARE/LCD",
+                    "${workspaceFolder}/HARDWARE/TIM",
+                    "${workspaceFolder}/HARDWARE/ZLG7290",
+                    "${workspaceFolder}/SYSTEM/delay",
+                    "${workspaceFolder}/SYSTEM/sys",
+                    "${workspaceFolder}/SYSTEM/usart",
+                    "${workspaceFolder}/USER",
+                    "/usr/lib/arm-none-eabi/include"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/CORE",
+                "${workspaceFolder}/FWLIB/inc",
+                "${workspaceFolder}/FWLIB/src",
+                "${workspaceFolder}/HARDWARE/24CXX",
+                "${workspaceFolder}/HARDWARE/AD9959",
+                "${workspaceFolder}/HARDWARE/ADF4351",
+                "${workspaceFolder}/HARDWARE/EXTI",
+                "${workspaceFolder}/HARDWARE/IIC",
+                "${workspaceFolder}/HARDWARE/key",
+                "${workspaceFolder}/HARDWARE/LCD",
+                "${workspaceFolder}/HARDWARE/TIM",
+                "${workspaceFolder}/HARDWARE/ZLG7290",
+                "${workspaceFolder}/SYSTEM/delay",
+                "${workspaceFolder}/SYSTEM/sys",
+                "${workspaceFolder}/SYSTEM/usart",
+                "${workspaceFolder}/USER",
+                "/usr/lib/arm-none-eabi/include"
+            ],
+            "defines": [
+                "UNICODE",
+                "DEBUG",
+                "USE_STDPERIPH_DRIVER",
+                "STM32F40_41xxx"
+            ],
+            "compilerPath": "/usr/bin/arm-none-eabi-gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64",
+            "compilerArgs": []
+        }
+    ],
+    "version": 4
+}

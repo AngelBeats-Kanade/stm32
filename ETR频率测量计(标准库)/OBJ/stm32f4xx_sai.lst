@@ -1,0 +1,2103 @@
+ARM GAS  /tmp/cc34Vqy2.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"stm32f4xx_sai.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.SAI_DeInit,"ax",%progbits
+  16              		.align	1
+  17              		.global	SAI_DeInit
+  18              		.syntax unified
+  19              		.thumb
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	SAI_DeInit:
+  24              	.LFB112:
+  25              		.file 1 "FWLIB/src/stm32f4xx_sai.c"
+   1:FWLIB/src/stm32f4xx_sai.c **** /**
+   2:FWLIB/src/stm32f4xx_sai.c ****   ******************************************************************************
+   3:FWLIB/src/stm32f4xx_sai.c ****   * @file    stm32f4xx_sai.c
+   4:FWLIB/src/stm32f4xx_sai.c ****   * @author  MCD Application Team
+   5:FWLIB/src/stm32f4xx_sai.c ****   * @version V1.4.0
+   6:FWLIB/src/stm32f4xx_sai.c ****   * @date    04-August-2014  
+   7:FWLIB/src/stm32f4xx_sai.c ****   * @brief   This file provides firmware functions to manage the following 
+   8:FWLIB/src/stm32f4xx_sai.c ****   *          functionalities of the Serial Audio Interface (SAI):
+   9:FWLIB/src/stm32f4xx_sai.c ****   *           + Initialization and Configuration
+  10:FWLIB/src/stm32f4xx_sai.c ****   *           + Data transfers functions
+  11:FWLIB/src/stm32f4xx_sai.c ****   *           + DMA transfers management
+  12:FWLIB/src/stm32f4xx_sai.c ****   *           + Interrupts and flags management 
+  13:FWLIB/src/stm32f4xx_sai.c ****   *           
+  14:FWLIB/src/stm32f4xx_sai.c ****   @verbatim
+  15:FWLIB/src/stm32f4xx_sai.c ****  ===============================================================================
+  16:FWLIB/src/stm32f4xx_sai.c ****                      ##### How to use this driver #####
+  17:FWLIB/src/stm32f4xx_sai.c ****  ===============================================================================
+  18:FWLIB/src/stm32f4xx_sai.c ****     [..] 
+  19:FWLIB/src/stm32f4xx_sai.c ****     
+  20:FWLIB/src/stm32f4xx_sai.c ****        (#) Enable peripheral clock using the following functions 
+  21:FWLIB/src/stm32f4xx_sai.c ****            RCC_APB2PeriphClockCmd(RCC_APB2Periph_SAI1, ENABLE) for SAI1
+  22:FWLIB/src/stm32f4xx_sai.c ****   
+  23:FWLIB/src/stm32f4xx_sai.c ****        (#) For each SAI Block A/B enable SCK, SD, FS and MCLK GPIO clocks 
+  24:FWLIB/src/stm32f4xx_sai.c ****            using RCC_AHB1PeriphClockCmd() function.
+  25:FWLIB/src/stm32f4xx_sai.c ****   
+  26:FWLIB/src/stm32f4xx_sai.c ****        (#) Peripherals alternate function: 
+  27:FWLIB/src/stm32f4xx_sai.c ****            (++) Connect the pin to the desired peripherals' Alternate 
+  28:FWLIB/src/stm32f4xx_sai.c ****                 Function (AF) using GPIO_PinAFConfig() function.
+  29:FWLIB/src/stm32f4xx_sai.c ****            (++) Configure the desired pin in alternate function by:
+  30:FWLIB/src/stm32f4xx_sai.c ****                 GPIO_InitStruct->GPIO_Mode = GPIO_Mode_AF
+  31:FWLIB/src/stm32f4xx_sai.c ****            (++) Select the type, pull-up/pull-down and output speed via 
+  32:FWLIB/src/stm32f4xx_sai.c ****                 GPIO_PuPd, GPIO_OType and GPIO_Speed members
+  33:FWLIB/src/stm32f4xx_sai.c ****            (++) Call GPIO_Init() function
+ARM GAS  /tmp/cc34Vqy2.s 			page 2
+
+
+  34:FWLIB/src/stm32f4xx_sai.c ****            -@@- If an external clock source is used then the I2S CKIN pin should be 
+  35:FWLIB/src/stm32f4xx_sai.c ****                also configured in Alternate function Push-pull pull-up mode.
+  36:FWLIB/src/stm32f4xx_sai.c ****                 
+  37:FWLIB/src/stm32f4xx_sai.c ****       (#) The SAI clock can be generated from different clock source :
+  38:FWLIB/src/stm32f4xx_sai.c ****           PLL I2S, PLL SAI or external clock source.
+  39:FWLIB/src/stm32f4xx_sai.c ****           (++) The PLL I2S is configured using the following functions RCC_PLLI2SConfig(), 
+  40:FWLIB/src/stm32f4xx_sai.c ****                RCC_PLLI2SCmd(ENABLE), RCC_GetFlagStatus(RCC_FLAG_PLLI2SRDY) and 
+  41:FWLIB/src/stm32f4xx_sai.c ****                RCC_SAIPLLI2SClkDivConfig() or;
+  42:FWLIB/src/stm32f4xx_sai.c ****               
+  43:FWLIB/src/stm32f4xx_sai.c ****           (++) The PLL SAI is configured using the following functions RCC_PLLSAIConfig(), 
+  44:FWLIB/src/stm32f4xx_sai.c ****                RCC_PLLSAICmd(ENABLE), RCC_GetFlagStatus(RCC_FLAG_PLLSAIRDY) and 
+  45:FWLIB/src/stm32f4xx_sai.c ****                RCC_SAIPLLSAIClkDivConfig()or;          
+  46:FWLIB/src/stm32f4xx_sai.c ****               
+  47:FWLIB/src/stm32f4xx_sai.c ****           (++) External clock source is configured using the function 
+  48:FWLIB/src/stm32f4xx_sai.c ****                RCC_I2SCLKConfig(RCC_I2S2CLKSource_Ext) and after setting correctly the 
+  49:FWLIB/src/stm32f4xx_sai.c ****                define constant I2S_EXTERNAL_CLOCK_VAL in the stm32f4xx_conf.h file.      
+  50:FWLIB/src/stm32f4xx_sai.c ****                 
+  51:FWLIB/src/stm32f4xx_sai.c ****       (#) Each SAI Block A or B has its own clock generator to make these two blocks 
+  52:FWLIB/src/stm32f4xx_sai.c ****           completely independent. The Clock generator is configured using RCC_SAIBlockACLKConfig() 
+  53:FWLIB/src/stm32f4xx_sai.c ****           RCC_SAIBlockBCLKConfig() functions.
+  54:FWLIB/src/stm32f4xx_sai.c ****                   
+  55:FWLIB/src/stm32f4xx_sai.c ****       (#) Each SAI Block A or B can be configured separetely : 
+  56:FWLIB/src/stm32f4xx_sai.c ****           (++) Program the Master clock divider, Audio mode, Protocol, Data Length, Clock Strobing 
+  57:FWLIB/src/stm32f4xx_sai.c ****                Synchronous mode, Output drive and FIFO Thresold using SAI_Init() function.   
+  58:FWLIB/src/stm32f4xx_sai.c ****                In case of master mode, program the Master clock divider (MCKDIV) using 
+  59:FWLIB/src/stm32f4xx_sai.c ****                the following formula :  
+  60:FWLIB/src/stm32f4xx_sai.c ****                (+++) MCLK_x = SAI_CK_x / (MCKDIV * 2) with MCLK_x = 256 * FS
+  61:FWLIB/src/stm32f4xx_sai.c ****                (+++) FS = SAI_CK_x / (MCKDIV * 2) * 256
+  62:FWLIB/src/stm32f4xx_sai.c ****                (+++) MCKDIV = SAI_CK_x / FS * 512
+  63:FWLIB/src/stm32f4xx_sai.c ****          (++) Program the Frame Length, Frame active Length, FS Definition, FS Polarity, 
+  64:FWLIB/src/stm32f4xx_sai.c ****               FS Offset using SAI_FrameInit() function.    
+  65:FWLIB/src/stm32f4xx_sai.c ****          (++) Program the Slot First Bit Offset, Slot Size, Slot Number, Slot Active 
+  66:FWLIB/src/stm32f4xx_sai.c ****               using SAI_SlotInit() function. 
+  67:FWLIB/src/stm32f4xx_sai.c ****                    
+  68:FWLIB/src/stm32f4xx_sai.c ****       (#) Enable the NVIC and the corresponding interrupt using the function 
+  69:FWLIB/src/stm32f4xx_sai.c ****           SAI_ITConfig() if you need to use interrupt mode. 
+  70:FWLIB/src/stm32f4xx_sai.c ****   
+  71:FWLIB/src/stm32f4xx_sai.c ****       (#) When using the DMA mode 
+  72:FWLIB/src/stm32f4xx_sai.c ****           (++) Configure the DMA using DMA_Init() function
+  73:FWLIB/src/stm32f4xx_sai.c ****           (++) Active the needed channel Request using SAI_DMACmd() function
+  74:FWLIB/src/stm32f4xx_sai.c ****    
+  75:FWLIB/src/stm32f4xx_sai.c ****       (#) Enable the SAI using the SAI_Cmd() function.
+  76:FWLIB/src/stm32f4xx_sai.c ****    
+  77:FWLIB/src/stm32f4xx_sai.c ****       (#) Enable the DMA using the DMA_Cmd() function when using DMA mode. 
+  78:FWLIB/src/stm32f4xx_sai.c ****   
+  79:FWLIB/src/stm32f4xx_sai.c ****       (#) The SAI has some specific functions which can be useful depending 
+  80:FWLIB/src/stm32f4xx_sai.c ****           on the audio protocol selected.  
+  81:FWLIB/src/stm32f4xx_sai.c ****           (++) Enable Mute mode when the audio block is a transmitter using SAI_MuteModeCmd()
+  82:FWLIB/src/stm32f4xx_sai.c ****                function and configure the value transmitted during mute using SAI_MuteValueConfig()
+  83:FWLIB/src/stm32f4xx_sai.c ****           (++) Detect the Mute mode when audio block is a receiver using SAI_MuteFrameCounterConfig
+  84:FWLIB/src/stm32f4xx_sai.c ****           (++) Enable the MONO mode without any data preprocessing in memory when the number
+  85:FWLIB/src/stm32f4xx_sai.c ****                of slot is equal to 2 using SAI_MonoModeConfig() function.
+  86:FWLIB/src/stm32f4xx_sai.c ****           (++) Enable data companding algorithm (U law and A law) using SAI_CompandingModeConfig().
+  87:FWLIB/src/stm32f4xx_sai.c ****           (++) Choose the behavior of the SD line in output when an inactive slot is sent 
+  88:FWLIB/src/stm32f4xx_sai.c ****                on the data line using SAI_TRIStateConfig() function.   
+  89:FWLIB/src/stm32f4xx_sai.c ****   [..]               
+  90:FWLIB/src/stm32f4xx_sai.c ****    (@)    In master TX mode: enabling the audio block immediately generates the bit clock 
+ARM GAS  /tmp/cc34Vqy2.s 			page 3
+
+
+  91:FWLIB/src/stm32f4xx_sai.c ****           for the external slaves even if there is no data in the FIFO, However FS signal 
+  92:FWLIB/src/stm32f4xx_sai.c ****           generation is conditioned by the presence of data in the FIFO.
+  93:FWLIB/src/stm32f4xx_sai.c ****                  
+  94:FWLIB/src/stm32f4xx_sai.c ****    (@)    In master RX mode: enabling the audio block immediately generates the bit clock 
+  95:FWLIB/src/stm32f4xx_sai.c ****           and FS signal for the external slaves. 
+  96:FWLIB/src/stm32f4xx_sai.c ****                 
+  97:FWLIB/src/stm32f4xx_sai.c ****    (@)    It is mandatory to respect the following conditions in order to avoid bad SAI behavior: 
+  98:FWLIB/src/stm32f4xx_sai.c ****             (+@)  First bit Offset <= (SLOT size - Data size)
+  99:FWLIB/src/stm32f4xx_sai.c ****             (+@)  Data size <= SLOT size
+ 100:FWLIB/src/stm32f4xx_sai.c ****             (+@)  Number of SLOT x SLOT size = Frame length
+ 101:FWLIB/src/stm32f4xx_sai.c ****             (+@)  The number of slots should be even when bit FSDEF in the SAI_xFRCR is set.    
+ 102:FWLIB/src/stm32f4xx_sai.c ****   
+ 103:FWLIB/src/stm32f4xx_sai.c ****     @endverbatim  
+ 104:FWLIB/src/stm32f4xx_sai.c **** 
+ 105:FWLIB/src/stm32f4xx_sai.c ****   ******************************************************************************
+ 106:FWLIB/src/stm32f4xx_sai.c ****   * @attention
+ 107:FWLIB/src/stm32f4xx_sai.c ****   *
+ 108:FWLIB/src/stm32f4xx_sai.c ****   * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
+ 109:FWLIB/src/stm32f4xx_sai.c ****   *
+ 110:FWLIB/src/stm32f4xx_sai.c ****   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+ 111:FWLIB/src/stm32f4xx_sai.c ****   * You may not use this file except in compliance with the License.
+ 112:FWLIB/src/stm32f4xx_sai.c ****   * You may obtain a copy of the License at:
+ 113:FWLIB/src/stm32f4xx_sai.c ****   *
+ 114:FWLIB/src/stm32f4xx_sai.c ****   *        http://www.st.com/software_license_agreement_liberty_v2
+ 115:FWLIB/src/stm32f4xx_sai.c ****   *
+ 116:FWLIB/src/stm32f4xx_sai.c ****   * Unless required by applicable law or agreed to in writing, software 
+ 117:FWLIB/src/stm32f4xx_sai.c ****   * distributed under the License is distributed on an "AS IS" BASIS, 
+ 118:FWLIB/src/stm32f4xx_sai.c ****   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ 119:FWLIB/src/stm32f4xx_sai.c ****   * See the License for the specific language governing permissions and
+ 120:FWLIB/src/stm32f4xx_sai.c ****   * limitations under the License.
+ 121:FWLIB/src/stm32f4xx_sai.c ****   *
+ 122:FWLIB/src/stm32f4xx_sai.c ****   ******************************************************************************
+ 123:FWLIB/src/stm32f4xx_sai.c ****   */ 
+ 124:FWLIB/src/stm32f4xx_sai.c **** 
+ 125:FWLIB/src/stm32f4xx_sai.c **** /* Includes ------------------------------------------------------------------*/
+ 126:FWLIB/src/stm32f4xx_sai.c **** #include "stm32f4xx_sai.h"
+ 127:FWLIB/src/stm32f4xx_sai.c **** #include "stm32f4xx_rcc.h"
+ 128:FWLIB/src/stm32f4xx_sai.c **** 
+ 129:FWLIB/src/stm32f4xx_sai.c **** /** @addtogroup STM32F4xx_StdPeriph_Driver
+ 130:FWLIB/src/stm32f4xx_sai.c ****   * @{
+ 131:FWLIB/src/stm32f4xx_sai.c ****   */
+ 132:FWLIB/src/stm32f4xx_sai.c **** 
+ 133:FWLIB/src/stm32f4xx_sai.c **** /** @defgroup SAI 
+ 134:FWLIB/src/stm32f4xx_sai.c ****   * @brief SAI driver modules
+ 135:FWLIB/src/stm32f4xx_sai.c ****   * @{
+ 136:FWLIB/src/stm32f4xx_sai.c ****   */ 
+ 137:FWLIB/src/stm32f4xx_sai.c **** 
+ 138:FWLIB/src/stm32f4xx_sai.c **** /* Private typedef -----------------------------------------------------------*/
+ 139:FWLIB/src/stm32f4xx_sai.c **** /* Private define ------------------------------------------------------------*/
+ 140:FWLIB/src/stm32f4xx_sai.c **** 
+ 141:FWLIB/src/stm32f4xx_sai.c **** /* *SAI registers Masks */
+ 142:FWLIB/src/stm32f4xx_sai.c **** #define CR1_CLEAR_MASK            ((uint32_t)0xFF07C010)
+ 143:FWLIB/src/stm32f4xx_sai.c **** #define FRCR_CLEAR_MASK           ((uint32_t)0xFFF88000)
+ 144:FWLIB/src/stm32f4xx_sai.c **** #define SLOTR_CLEAR_MASK          ((uint32_t)0x0000F020)
+ 145:FWLIB/src/stm32f4xx_sai.c **** 
+ 146:FWLIB/src/stm32f4xx_sai.c **** /* Private macro -------------------------------------------------------------*/
+ 147:FWLIB/src/stm32f4xx_sai.c **** /* Private variables ---------------------------------------------------------*/
+ARM GAS  /tmp/cc34Vqy2.s 			page 4
+
+
+ 148:FWLIB/src/stm32f4xx_sai.c **** /* Private function prototypes -----------------------------------------------*/
+ 149:FWLIB/src/stm32f4xx_sai.c **** /* Private functions ---------------------------------------------------------*/
+ 150:FWLIB/src/stm32f4xx_sai.c **** 
+ 151:FWLIB/src/stm32f4xx_sai.c **** /** @defgroup SAI_Private_Functions
+ 152:FWLIB/src/stm32f4xx_sai.c ****   * @{
+ 153:FWLIB/src/stm32f4xx_sai.c ****   */
+ 154:FWLIB/src/stm32f4xx_sai.c **** 
+ 155:FWLIB/src/stm32f4xx_sai.c **** /** @defgroup SAI_Group1 Initialization and Configuration functions
+ 156:FWLIB/src/stm32f4xx_sai.c ****  *  @brief   Initialization and Configuration functions 
+ 157:FWLIB/src/stm32f4xx_sai.c ****  *
+ 158:FWLIB/src/stm32f4xx_sai.c **** @verbatim   
+ 159:FWLIB/src/stm32f4xx_sai.c ****  ===============================================================================
+ 160:FWLIB/src/stm32f4xx_sai.c ****             ##### Initialization and Configuration functions #####
+ 161:FWLIB/src/stm32f4xx_sai.c ****  ===============================================================================  
+ 162:FWLIB/src/stm32f4xx_sai.c ****   [..]
+ 163:FWLIB/src/stm32f4xx_sai.c ****   This section provides a set of functions allowing to initialize the SAI Audio 
+ 164:FWLIB/src/stm32f4xx_sai.c ****   Block Mode, Audio Protocol, Data size, Synchronization between audio block, 
+ 165:FWLIB/src/stm32f4xx_sai.c ****   Master clock Divider, Fifo threshold, Frame configuration, slot configuration,
+ 166:FWLIB/src/stm32f4xx_sai.c ****   Tristate mode, Companding mode and Mute mode.  
+ 167:FWLIB/src/stm32f4xx_sai.c ****   [..] 
+ 168:FWLIB/src/stm32f4xx_sai.c ****   The SAI_Init(), SAI_FrameInit() and SAI_SlotInit() functions follows the SAI Block
+ 169:FWLIB/src/stm32f4xx_sai.c ****   configuration procedures for Master mode and Slave mode (details for these procedures 
+ 170:FWLIB/src/stm32f4xx_sai.c ****   are available in reference manual(RM0090).
+ 171:FWLIB/src/stm32f4xx_sai.c ****   
+ 172:FWLIB/src/stm32f4xx_sai.c **** @endverbatim
+ 173:FWLIB/src/stm32f4xx_sai.c ****   * @{
+ 174:FWLIB/src/stm32f4xx_sai.c ****   */
+ 175:FWLIB/src/stm32f4xx_sai.c **** 
+ 176:FWLIB/src/stm32f4xx_sai.c **** /**
+ 177:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Deinitialize the SAIx peripheral registers to their default reset values.
+ 178:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAIx: To select the SAIx peripheral, where x can be the different instances 
+ 179:FWLIB/src/stm32f4xx_sai.c ****   *                     
+ 180:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 181:FWLIB/src/stm32f4xx_sai.c ****   */
+ 182:FWLIB/src/stm32f4xx_sai.c **** void SAI_DeInit(SAI_TypeDef* SAIx)
+ 183:FWLIB/src/stm32f4xx_sai.c **** {
+  26              		.loc 1 183 0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30              	.LVL0:
+  31 0000 08B5     		push	{r3, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 3, -8
+  35              		.cfi_offset 14, -4
+ 184:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 185:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_PERIPH(SAIx));
+ 186:FWLIB/src/stm32f4xx_sai.c **** 
+ 187:FWLIB/src/stm32f4xx_sai.c ****   /* Enable SAI1 reset state */
+ 188:FWLIB/src/stm32f4xx_sai.c ****   RCC_APB2PeriphResetCmd(RCC_APB2Periph_SAI1, ENABLE);
+  36              		.loc 1 188 0
+  37 0002 0121     		movs	r1, #1
+  38 0004 4FF48000 		mov	r0, #4194304
+  39              	.LVL1:
+  40 0008 FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+  41              	.LVL2:
+ARM GAS  /tmp/cc34Vqy2.s 			page 5
+
+
+ 189:FWLIB/src/stm32f4xx_sai.c ****   /* Release SAI1 from reset state */
+ 190:FWLIB/src/stm32f4xx_sai.c ****   RCC_APB2PeriphResetCmd(RCC_APB2Periph_SAI1, DISABLE);  
+  42              		.loc 1 190 0
+  43 000c 0021     		movs	r1, #0
+  44 000e 4FF48000 		mov	r0, #4194304
+  45 0012 FFF7FEFF 		bl	RCC_APB2PeriphResetCmd
+  46              	.LVL3:
+  47 0016 08BD     		pop	{r3, pc}
+  48              		.cfi_endproc
+  49              	.LFE112:
+  51              		.section	.text.SAI_Init,"ax",%progbits
+  52              		.align	1
+  53              		.global	SAI_Init
+  54              		.syntax unified
+  55              		.thumb
+  56              		.thumb_func
+  57              		.fpu softvfp
+  59              	SAI_Init:
+  60              	.LFB113:
+ 191:FWLIB/src/stm32f4xx_sai.c **** }
+ 192:FWLIB/src/stm32f4xx_sai.c **** 
+ 193:FWLIB/src/stm32f4xx_sai.c **** /**
+ 194:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Initializes the SAI Block x peripheral according to the specified 
+ 195:FWLIB/src/stm32f4xx_sai.c ****   *         parameters in the SAI_InitStruct.
+ 196:FWLIB/src/stm32f4xx_sai.c ****   *         
+ 197:FWLIB/src/stm32f4xx_sai.c ****   * @note   SAI clock is generated from a specific output of the PLLSAI or a specific  
+ 198:FWLIB/src/stm32f4xx_sai.c ****   *         output of the PLLI2S or from an alternate function bypassing the PLL I2S.
+ 199:FWLIB/src/stm32f4xx_sai.c ****   *        
+ 200:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral.
+ 201:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_InitStruct: pointer to a SAI_InitTypeDef structure that
+ 202:FWLIB/src/stm32f4xx_sai.c ****   *         contains the configuration information for the specified SAI Block peripheral.         
+ 203:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 204:FWLIB/src/stm32f4xx_sai.c ****   */
+ 205:FWLIB/src/stm32f4xx_sai.c **** void SAI_Init(SAI_Block_TypeDef* SAI_Block_x, SAI_InitTypeDef* SAI_InitStruct)
+ 206:FWLIB/src/stm32f4xx_sai.c **** {
+  61              		.loc 1 206 0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+  66              	.LVL4:
+  67 0000 10B4     		push	{r4}
+  68              	.LCFI1:
+  69              		.cfi_def_cfa_offset 4
+  70              		.cfi_offset 4, -4
+  71              	.LVL5:
+ 207:FWLIB/src/stm32f4xx_sai.c ****   uint32_t tmpreg = 0;
+ 208:FWLIB/src/stm32f4xx_sai.c ****   
+ 209:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 210:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 211:FWLIB/src/stm32f4xx_sai.c ****   
+ 212:FWLIB/src/stm32f4xx_sai.c ****   /* Check the SAI Block parameters */
+ 213:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_MODE(SAI_InitStruct->SAI_AudioMode));
+ 214:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PROTOCOL(SAI_InitStruct->SAI_Protocol));
+ 215:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_DATASIZE(SAI_InitStruct->SAI_DataSize));
+ 216:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_FIRST_BIT(SAI_InitStruct->SAI_FirstBit));
+ 217:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_CLOCK_STROBING(SAI_InitStruct->SAI_ClockStrobing));
+ARM GAS  /tmp/cc34Vqy2.s 			page 6
+
+
+ 218:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_SYNCHRO(SAI_InitStruct->SAI_Synchro));
+ 219:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_OUTPUT_DRIVE(SAI_InitStruct->SAI_OUTDRIV));
+ 220:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_NODIVIDER(SAI_InitStruct->SAI_NoDivider));
+ 221:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_MASTER_DIVIDER(SAI_InitStruct->SAI_MasterDivider));
+ 222:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_FIFO_THRESHOLD(SAI_InitStruct->SAI_FIFOThreshold));
+ 223:FWLIB/src/stm32f4xx_sai.c **** 
+ 224:FWLIB/src/stm32f4xx_sai.c ****   /* SAI Block_x CR1 Configuration */
+ 225:FWLIB/src/stm32f4xx_sai.c ****   /* Get the SAI Block_x CR1 value */
+ 226:FWLIB/src/stm32f4xx_sai.c ****   tmpreg = SAI_Block_x->CR1;
+  72              		.loc 1 226 0
+  73 0002 0368     		ldr	r3, [r0]
+  74              	.LVL6:
+ 227:FWLIB/src/stm32f4xx_sai.c ****   /* Clear MODE, PRTCFG, DS, LSBFIRST, CKSTR, SYNCEN, OUTDRIV, NODIV, and MCKDIV bits */
+ 228:FWLIB/src/stm32f4xx_sai.c ****   tmpreg &= CR1_CLEAR_MASK;
+  75              		.loc 1 228 0
+  76 0004 0E4A     		ldr	r2, .L5
+  77 0006 1A40     		ands	r2, r2, r3
+  78              	.LVL7:
+ 229:FWLIB/src/stm32f4xx_sai.c ****   /* Configure SAI_Block_x: Audio mode, Protocol, Data Size, first transmitted bit, Clock strobing 
+ 230:FWLIB/src/stm32f4xx_sai.c ****      edge, Synchronization mode, Output drive, Master Divider and FIFO level */  
+ 231:FWLIB/src/stm32f4xx_sai.c ****   /* Set MODE bits according to SAI_AudioMode value       */
+ 232:FWLIB/src/stm32f4xx_sai.c ****   /* Set PRTCFG bits according to SAI_Protocol value      */
+ 233:FWLIB/src/stm32f4xx_sai.c ****   /* Set DS bits according to SAI_DataSize value          */
+ 234:FWLIB/src/stm32f4xx_sai.c ****   /* Set LSBFIRST bit according to SAI_FirstBit value     */
+ 235:FWLIB/src/stm32f4xx_sai.c ****   /* Set CKSTR bit according to SAI_ClockStrobing value   */
+ 236:FWLIB/src/stm32f4xx_sai.c ****   /* Set SYNCEN bit according to SAI_Synchro value        */
+ 237:FWLIB/src/stm32f4xx_sai.c ****   /* Set OUTDRIV bit according to SAI_OUTDRIV value       */
+ 238:FWLIB/src/stm32f4xx_sai.c ****   /* Set NODIV bit according to SAI_NoDivider value       */
+ 239:FWLIB/src/stm32f4xx_sai.c ****   /* Set MCKDIV bits according to SAI_MasterDivider value */
+ 240:FWLIB/src/stm32f4xx_sai.c ****   tmpreg |= (uint32_t)(SAI_InitStruct->SAI_AudioMode     | SAI_InitStruct->SAI_Protocol  |
+  79              		.loc 1 240 0
+  80 0008 0B68     		ldr	r3, [r1]
+  81 000a 4C68     		ldr	r4, [r1, #4]
+  82 000c 2343     		orrs	r3, r3, r4
+ 241:FWLIB/src/stm32f4xx_sai.c ****                        SAI_InitStruct->SAI_DataSize      | SAI_InitStruct->SAI_FirstBit  |  
+  83              		.loc 1 241 0
+  84 000e 8C68     		ldr	r4, [r1, #8]
+ 240:FWLIB/src/stm32f4xx_sai.c ****                        SAI_InitStruct->SAI_DataSize      | SAI_InitStruct->SAI_FirstBit  |  
+  85              		.loc 1 240 0
+  86 0010 2343     		orrs	r3, r3, r4
+  87              		.loc 1 241 0
+  88 0012 CC68     		ldr	r4, [r1, #12]
+  89 0014 2343     		orrs	r3, r3, r4
+ 242:FWLIB/src/stm32f4xx_sai.c ****                        SAI_InitStruct->SAI_ClockStrobing | SAI_InitStruct->SAI_Synchro   |  
+  90              		.loc 1 242 0
+  91 0016 0C69     		ldr	r4, [r1, #16]
+ 241:FWLIB/src/stm32f4xx_sai.c ****                        SAI_InitStruct->SAI_DataSize      | SAI_InitStruct->SAI_FirstBit  |  
+  92              		.loc 1 241 0
+  93 0018 2343     		orrs	r3, r3, r4
+  94              		.loc 1 242 0
+  95 001a 4C69     		ldr	r4, [r1, #20]
+  96 001c 2343     		orrs	r3, r3, r4
+ 243:FWLIB/src/stm32f4xx_sai.c ****                        SAI_InitStruct->SAI_OUTDRIV       | SAI_InitStruct->SAI_NoDivider | 
+  97              		.loc 1 243 0
+  98 001e 8C69     		ldr	r4, [r1, #24]
+ 242:FWLIB/src/stm32f4xx_sai.c ****                        SAI_InitStruct->SAI_ClockStrobing | SAI_InitStruct->SAI_Synchro   |  
+  99              		.loc 1 242 0
+ARM GAS  /tmp/cc34Vqy2.s 			page 7
+
+
+ 100 0020 2343     		orrs	r3, r3, r4
+ 101              		.loc 1 243 0
+ 102 0022 CC69     		ldr	r4, [r1, #28]
+ 103 0024 2343     		orrs	r3, r3, r4
+ 244:FWLIB/src/stm32f4xx_sai.c ****                        (uint32_t)((SAI_InitStruct->SAI_MasterDivider) << 20));
+ 104              		.loc 1 244 0
+ 105 0026 0C6A     		ldr	r4, [r1, #32]
+ 240:FWLIB/src/stm32f4xx_sai.c ****                        SAI_InitStruct->SAI_DataSize      | SAI_InitStruct->SAI_FirstBit  |  
+ 106              		.loc 1 240 0
+ 107 0028 43EA0453 		orr	r3, r3, r4, lsl #20
+ 108 002c 1343     		orrs	r3, r3, r2
+ 109              	.LVL8:
+ 245:FWLIB/src/stm32f4xx_sai.c ****   /* Write to SAI_Block_x CR1 */
+ 246:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->CR1 = tmpreg;
+ 110              		.loc 1 246 0
+ 111 002e 0360     		str	r3, [r0]
+ 247:FWLIB/src/stm32f4xx_sai.c ****   
+ 248:FWLIB/src/stm32f4xx_sai.c ****   /* SAI Block_x CR2 Configuration */
+ 249:FWLIB/src/stm32f4xx_sai.c ****   /* Get the SAIBlock_x CR2 value */
+ 250:FWLIB/src/stm32f4xx_sai.c ****   tmpreg = SAI_Block_x->CR2;
+ 112              		.loc 1 250 0
+ 113 0030 4368     		ldr	r3, [r0, #4]
+ 114              	.LVL9:
+ 251:FWLIB/src/stm32f4xx_sai.c ****   /* Clear FTH bits */
+ 252:FWLIB/src/stm32f4xx_sai.c ****   tmpreg &= ~(SAI_xCR2_FTH);
+ 115              		.loc 1 252 0
+ 116 0032 23F00303 		bic	r3, r3, #3
+ 117              	.LVL10:
+ 253:FWLIB/src/stm32f4xx_sai.c ****   /* Configure the FIFO Level */
+ 254:FWLIB/src/stm32f4xx_sai.c ****   /* Set FTH bits according to SAI_FIFOThreshold value */ 
+ 255:FWLIB/src/stm32f4xx_sai.c ****   tmpreg |= (uint32_t)(SAI_InitStruct->SAI_FIFOThreshold);
+ 118              		.loc 1 255 0
+ 119 0036 4A6A     		ldr	r2, [r1, #36]
+ 120 0038 1343     		orrs	r3, r3, r2
+ 121              	.LVL11:
+ 256:FWLIB/src/stm32f4xx_sai.c ****   /* Write to SAI_Block_x CR2 */
+ 257:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->CR2 = tmpreg;
+ 122              		.loc 1 257 0
+ 123 003a 4360     		str	r3, [r0, #4]
+ 258:FWLIB/src/stm32f4xx_sai.c **** }
+ 124              		.loc 1 258 0
+ 125 003c 10BC     		pop	{r4}
+ 126              	.LCFI2:
+ 127              		.cfi_restore 4
+ 128              		.cfi_def_cfa_offset 0
+ 129 003e 7047     		bx	lr
+ 130              	.L6:
+ 131              		.align	2
+ 132              	.L5:
+ 133 0040 10C007FF 		.word	-16269296
+ 134              		.cfi_endproc
+ 135              	.LFE113:
+ 137              		.section	.text.SAI_FrameInit,"ax",%progbits
+ 138              		.align	1
+ 139              		.global	SAI_FrameInit
+ 140              		.syntax unified
+ 141              		.thumb
+ARM GAS  /tmp/cc34Vqy2.s 			page 8
+
+
+ 142              		.thumb_func
+ 143              		.fpu softvfp
+ 145              	SAI_FrameInit:
+ 146              	.LFB114:
+ 259:FWLIB/src/stm32f4xx_sai.c **** 
+ 260:FWLIB/src/stm32f4xx_sai.c **** /**
+ 261:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Initializes the SAI Block Audio frame according to the specified 
+ 262:FWLIB/src/stm32f4xx_sai.c ****   *         parameters in the SAI_FrameInitStruct.
+ 263:FWLIB/src/stm32f4xx_sai.c ****   *         
+ 264:FWLIB/src/stm32f4xx_sai.c ****   * @note   this function has no meaning if the AC'97 or SPDIF audio protocol 
+ 265:FWLIB/src/stm32f4xx_sai.c ****   *         are selected. 
+ 266:FWLIB/src/stm32f4xx_sai.c ****   *               
+ 267:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral.
+ 268:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_FrameInitStruct: pointer to an SAI_FrameInitTypeDef structure that
+ 269:FWLIB/src/stm32f4xx_sai.c ****   *         contains the configuration of audio frame for a specified SAI Block                    
+ 270:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 271:FWLIB/src/stm32f4xx_sai.c ****   */
+ 272:FWLIB/src/stm32f4xx_sai.c **** void SAI_FrameInit(SAI_Block_TypeDef* SAI_Block_x, SAI_FrameInitTypeDef* SAI_FrameInitStruct)
+ 273:FWLIB/src/stm32f4xx_sai.c **** {
+ 147              		.loc 1 273 0
+ 148              		.cfi_startproc
+ 149              		@ args = 0, pretend = 0, frame = 0
+ 150              		@ frame_needed = 0, uses_anonymous_args = 0
+ 151              		@ link register save eliminated.
+ 152              	.LVL12:
+ 153 0000 10B4     		push	{r4}
+ 154              	.LCFI3:
+ 155              		.cfi_def_cfa_offset 4
+ 156              		.cfi_offset 4, -4
+ 157              	.LVL13:
+ 274:FWLIB/src/stm32f4xx_sai.c ****   uint32_t tmpreg = 0;
+ 275:FWLIB/src/stm32f4xx_sai.c ****   
+ 276:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 277:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 278:FWLIB/src/stm32f4xx_sai.c ****   
+ 279:FWLIB/src/stm32f4xx_sai.c ****   /* Check the SAI Block frame parameters */
+ 280:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_FRAME_LENGTH(SAI_FrameInitStruct->SAI_FrameLength));
+ 281:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_ACTIVE_FRAME(SAI_FrameInitStruct->SAI_ActiveFrameLength));
+ 282:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_FS_DEFINITION(SAI_FrameInitStruct->SAI_FSDefinition));
+ 283:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_FS_POLARITY(SAI_FrameInitStruct->SAI_FSPolarity));
+ 284:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_FS_OFFSET(SAI_FrameInitStruct->SAI_FSOffset));
+ 285:FWLIB/src/stm32f4xx_sai.c **** 
+ 286:FWLIB/src/stm32f4xx_sai.c ****   /* SAI Block_x FRCR Configuration */
+ 287:FWLIB/src/stm32f4xx_sai.c ****   /* Get the SAI Block_x FRCR value */
+ 288:FWLIB/src/stm32f4xx_sai.c ****   tmpreg = SAI_Block_x->FRCR;
+ 158              		.loc 1 288 0
+ 159 0002 8368     		ldr	r3, [r0, #8]
+ 160              	.LVL14:
+ 289:FWLIB/src/stm32f4xx_sai.c ****   /* Clear FRL, FSALL, FSDEF, FSPOL, FSOFF bits */
+ 290:FWLIB/src/stm32f4xx_sai.c ****   tmpreg &= FRCR_CLEAR_MASK;
+ 161              		.loc 1 290 0
+ 162 0004 084A     		ldr	r2, .L9
+ 163 0006 1A40     		ands	r2, r2, r3
+ 164              	.LVL15:
+ 291:FWLIB/src/stm32f4xx_sai.c ****   /* Configure SAI_Block_x Frame: Frame Length, Active Frame Length, Frame Synchronization
+ 292:FWLIB/src/stm32f4xx_sai.c ****      Definition, Frame Synchronization Polarity and Frame Synchronization Polarity */
+ 293:FWLIB/src/stm32f4xx_sai.c ****   /* Set FRL bits according to SAI_FrameLength value         */
+ARM GAS  /tmp/cc34Vqy2.s 			page 9
+
+
+ 294:FWLIB/src/stm32f4xx_sai.c ****   /* Set FSALL bits according to SAI_ActiveFrameLength value */
+ 295:FWLIB/src/stm32f4xx_sai.c ****   /* Set FSDEF bit according to SAI_FSDefinition value       */
+ 296:FWLIB/src/stm32f4xx_sai.c ****   /* Set FSPOL bit according to SAI_FSPolarity value         */
+ 297:FWLIB/src/stm32f4xx_sai.c ****   /* Set FSOFF bit according to SAI_FSOffset value           */
+ 298:FWLIB/src/stm32f4xx_sai.c ****   tmpreg |= (uint32_t)((uint32_t)(SAI_FrameInitStruct->SAI_FrameLength - 1)  | 
+ 165              		.loc 1 298 0
+ 166 0008 0B68     		ldr	r3, [r1]
+ 167 000a 013B     		subs	r3, r3, #1
+ 299:FWLIB/src/stm32f4xx_sai.c ****                        SAI_FrameInitStruct->SAI_FSOffset     | 
+ 168              		.loc 1 299 0
+ 169 000c 0C69     		ldr	r4, [r1, #16]
+ 298:FWLIB/src/stm32f4xx_sai.c ****                        SAI_FrameInitStruct->SAI_FSOffset     | 
+ 170              		.loc 1 298 0
+ 171 000e 2343     		orrs	r3, r3, r4
+ 300:FWLIB/src/stm32f4xx_sai.c ****                        SAI_FrameInitStruct->SAI_FSDefinition |    
+ 172              		.loc 1 300 0
+ 173 0010 8C68     		ldr	r4, [r1, #8]
+ 299:FWLIB/src/stm32f4xx_sai.c ****                        SAI_FrameInitStruct->SAI_FSOffset     | 
+ 174              		.loc 1 299 0
+ 175 0012 2343     		orrs	r3, r3, r4
+ 301:FWLIB/src/stm32f4xx_sai.c ****                        SAI_FrameInitStruct->SAI_FSPolarity   |                        
+ 176              		.loc 1 301 0
+ 177 0014 CC68     		ldr	r4, [r1, #12]
+ 300:FWLIB/src/stm32f4xx_sai.c ****                        SAI_FrameInitStruct->SAI_FSDefinition |    
+ 178              		.loc 1 300 0
+ 179 0016 2343     		orrs	r3, r3, r4
+ 302:FWLIB/src/stm32f4xx_sai.c ****                        (uint32_t)((SAI_FrameInitStruct->SAI_ActiveFrameLength - 1) << 8));
+ 180              		.loc 1 302 0
+ 181 0018 4968     		ldr	r1, [r1, #4]
+ 182              	.LVL16:
+ 183 001a 0139     		subs	r1, r1, #1
+ 298:FWLIB/src/stm32f4xx_sai.c ****                        SAI_FrameInitStruct->SAI_FSOffset     | 
+ 184              		.loc 1 298 0
+ 185 001c 43EA0123 		orr	r3, r3, r1, lsl #8
+ 186 0020 1343     		orrs	r3, r3, r2
+ 187              	.LVL17:
+ 303:FWLIB/src/stm32f4xx_sai.c ****                        
+ 304:FWLIB/src/stm32f4xx_sai.c ****   /* Write to SAI_Block_x FRCR */
+ 305:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->FRCR = tmpreg;
+ 188              		.loc 1 305 0
+ 189 0022 8360     		str	r3, [r0, #8]
+ 306:FWLIB/src/stm32f4xx_sai.c **** }
+ 190              		.loc 1 306 0
+ 191 0024 10BC     		pop	{r4}
+ 192              	.LCFI4:
+ 193              		.cfi_restore 4
+ 194              		.cfi_def_cfa_offset 0
+ 195 0026 7047     		bx	lr
+ 196              	.L10:
+ 197              		.align	2
+ 198              	.L9:
+ 199 0028 0080F8FF 		.word	-491520
+ 200              		.cfi_endproc
+ 201              	.LFE114:
+ 203              		.section	.text.SAI_SlotInit,"ax",%progbits
+ 204              		.align	1
+ 205              		.global	SAI_SlotInit
+ARM GAS  /tmp/cc34Vqy2.s 			page 10
+
+
+ 206              		.syntax unified
+ 207              		.thumb
+ 208              		.thumb_func
+ 209              		.fpu softvfp
+ 211              	SAI_SlotInit:
+ 212              	.LFB115:
+ 307:FWLIB/src/stm32f4xx_sai.c **** 
+ 308:FWLIB/src/stm32f4xx_sai.c **** /**
+ 309:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Initializes the SAI Block audio Slot according to the specified 
+ 310:FWLIB/src/stm32f4xx_sai.c ****   *         parameters in the SAI_SlotInitStruct.
+ 311:FWLIB/src/stm32f4xx_sai.c ****   *         
+ 312:FWLIB/src/stm32f4xx_sai.c ****   * @note   this function has no meaning if the AC'97 or SPDIF audio protocol 
+ 313:FWLIB/src/stm32f4xx_sai.c ****   *         are selected.
+ 314:FWLIB/src/stm32f4xx_sai.c ****   *               
+ 315:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral.
+ 316:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_SlotInitStruct: pointer to an SAI_SlotInitTypeDef structure that
+ 317:FWLIB/src/stm32f4xx_sai.c ****   *         contains the configuration of audio slot for a specified SAI Block                     
+ 318:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 319:FWLIB/src/stm32f4xx_sai.c ****   */
+ 320:FWLIB/src/stm32f4xx_sai.c **** void SAI_SlotInit(SAI_Block_TypeDef* SAI_Block_x, SAI_SlotInitTypeDef* SAI_SlotInitStruct)
+ 321:FWLIB/src/stm32f4xx_sai.c **** {
+ 213              		.loc 1 321 0
+ 214              		.cfi_startproc
+ 215              		@ args = 0, pretend = 0, frame = 0
+ 216              		@ frame_needed = 0, uses_anonymous_args = 0
+ 217              		@ link register save eliminated.
+ 218              	.LVL18:
+ 219 0000 10B4     		push	{r4}
+ 220              	.LCFI5:
+ 221              		.cfi_def_cfa_offset 4
+ 222              		.cfi_offset 4, -4
+ 223              	.LVL19:
+ 322:FWLIB/src/stm32f4xx_sai.c ****   uint32_t tmpreg = 0;
+ 323:FWLIB/src/stm32f4xx_sai.c ****   
+ 324:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 325:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 326:FWLIB/src/stm32f4xx_sai.c ****   
+ 327:FWLIB/src/stm32f4xx_sai.c ****   /* Check the SAI Block Slot parameters */
+ 328:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_FIRSTBIT_OFFSET(SAI_SlotInitStruct->SAI_FirstBitOffset));
+ 329:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_SLOT_SIZE(SAI_SlotInitStruct->SAI_SlotSize));
+ 330:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_SLOT_NUMBER(SAI_SlotInitStruct->SAI_SlotNumber));
+ 331:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_SLOT_ACTIVE(SAI_SlotInitStruct->SAI_SlotActive));
+ 332:FWLIB/src/stm32f4xx_sai.c **** 
+ 333:FWLIB/src/stm32f4xx_sai.c ****   /* SAI Block_x SLOTR Configuration */
+ 334:FWLIB/src/stm32f4xx_sai.c ****   /* Get the SAI Block_x SLOTR value */
+ 335:FWLIB/src/stm32f4xx_sai.c ****   tmpreg = SAI_Block_x->SLOTR;
+ 224              		.loc 1 335 0
+ 225 0002 C268     		ldr	r2, [r0, #12]
+ 226              	.LVL20:
+ 336:FWLIB/src/stm32f4xx_sai.c ****   /* Clear FBOFF, SLOTSZ, NBSLOT, SLOTEN bits */
+ 337:FWLIB/src/stm32f4xx_sai.c ****   tmpreg &= SLOTR_CLEAR_MASK;
+ 227              		.loc 1 337 0
+ 228 0004 22F47D62 		bic	r2, r2, #4048
+ 229              	.LVL21:
+ 230 0008 22F00F02 		bic	r2, r2, #15
+ 231 000c 1204     		lsls	r2, r2, #16
+ 232 000e 120C     		lsrs	r2, r2, #16
+ARM GAS  /tmp/cc34Vqy2.s 			page 11
+
+
+ 233              	.LVL22:
+ 338:FWLIB/src/stm32f4xx_sai.c ****   /* Configure SAI_Block_x Slot: First bit offset, Slot size, Number of Slot in  
+ 339:FWLIB/src/stm32f4xx_sai.c ****      audio frame and slots activated in audio frame */
+ 340:FWLIB/src/stm32f4xx_sai.c ****   /* Set FBOFF bits according to SAI_FirstBitOffset value  */
+ 341:FWLIB/src/stm32f4xx_sai.c ****   /* Set SLOTSZ bits according to SAI_SlotSize value       */
+ 342:FWLIB/src/stm32f4xx_sai.c ****   /* Set NBSLOT bits according to SAI_SlotNumber value     */
+ 343:FWLIB/src/stm32f4xx_sai.c ****   /* Set SLOTEN bits according to SAI_SlotActive value     */
+ 344:FWLIB/src/stm32f4xx_sai.c ****   tmpreg |= (uint32_t)(SAI_SlotInitStruct->SAI_FirstBitOffset | 
+ 234              		.loc 1 344 0
+ 235 0010 0B68     		ldr	r3, [r1]
+ 345:FWLIB/src/stm32f4xx_sai.c ****                        SAI_SlotInitStruct->SAI_SlotSize       | 
+ 236              		.loc 1 345 0
+ 237 0012 4C68     		ldr	r4, [r1, #4]
+ 344:FWLIB/src/stm32f4xx_sai.c ****                        SAI_SlotInitStruct->SAI_SlotSize       | 
+ 238              		.loc 1 344 0
+ 239 0014 2343     		orrs	r3, r3, r4
+ 346:FWLIB/src/stm32f4xx_sai.c ****                        SAI_SlotInitStruct->SAI_SlotActive     |    
+ 240              		.loc 1 346 0
+ 241 0016 CC68     		ldr	r4, [r1, #12]
+ 345:FWLIB/src/stm32f4xx_sai.c ****                        SAI_SlotInitStruct->SAI_SlotSize       | 
+ 242              		.loc 1 345 0
+ 243 0018 2343     		orrs	r3, r3, r4
+ 347:FWLIB/src/stm32f4xx_sai.c ****                        (uint32_t)((SAI_SlotInitStruct->SAI_SlotNumber - 1) <<  8));
+ 244              		.loc 1 347 0
+ 245 001a 8968     		ldr	r1, [r1, #8]
+ 246              	.LVL23:
+ 247 001c 0139     		subs	r1, r1, #1
+ 344:FWLIB/src/stm32f4xx_sai.c ****                        SAI_SlotInitStruct->SAI_SlotSize       | 
+ 248              		.loc 1 344 0
+ 249 001e 43EA0123 		orr	r3, r3, r1, lsl #8
+ 250 0022 1343     		orrs	r3, r3, r2
+ 251              	.LVL24:
+ 348:FWLIB/src/stm32f4xx_sai.c ****                        
+ 349:FWLIB/src/stm32f4xx_sai.c ****   /* Write to SAI_Block_x SLOTR */
+ 350:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->SLOTR = tmpreg;
+ 252              		.loc 1 350 0
+ 253 0024 C360     		str	r3, [r0, #12]
+ 351:FWLIB/src/stm32f4xx_sai.c **** }
+ 254              		.loc 1 351 0
+ 255 0026 10BC     		pop	{r4}
+ 256              	.LCFI6:
+ 257              		.cfi_restore 4
+ 258              		.cfi_def_cfa_offset 0
+ 259 0028 7047     		bx	lr
+ 260              		.cfi_endproc
+ 261              	.LFE115:
+ 263              		.section	.text.SAI_StructInit,"ax",%progbits
+ 264              		.align	1
+ 265              		.global	SAI_StructInit
+ 266              		.syntax unified
+ 267              		.thumb
+ 268              		.thumb_func
+ 269              		.fpu softvfp
+ 271              	SAI_StructInit:
+ 272              	.LFB116:
+ 352:FWLIB/src/stm32f4xx_sai.c **** 
+ 353:FWLIB/src/stm32f4xx_sai.c **** /**
+ARM GAS  /tmp/cc34Vqy2.s 			page 12
+
+
+ 354:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Fills each SAI_InitStruct member with its default value.
+ 355:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_InitStruct: pointer to a SAI_InitTypeDef structure which will 
+ 356:FWLIB/src/stm32f4xx_sai.c ****   *         be initialized.  
+ 357:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 358:FWLIB/src/stm32f4xx_sai.c ****   */
+ 359:FWLIB/src/stm32f4xx_sai.c **** void SAI_StructInit(SAI_InitTypeDef* SAI_InitStruct)
+ 360:FWLIB/src/stm32f4xx_sai.c **** {
+ 273              		.loc 1 360 0
+ 274              		.cfi_startproc
+ 275              		@ args = 0, pretend = 0, frame = 0
+ 276              		@ frame_needed = 0, uses_anonymous_args = 0
+ 277              		@ link register save eliminated.
+ 278              	.LVL25:
+ 361:FWLIB/src/stm32f4xx_sai.c ****   /* Reset SAI init structure parameters values */
+ 362:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_AudioMode member */
+ 363:FWLIB/src/stm32f4xx_sai.c ****   SAI_InitStruct->SAI_AudioMode = SAI_Mode_MasterTx;
+ 279              		.loc 1 363 0
+ 280 0000 0023     		movs	r3, #0
+ 281 0002 0360     		str	r3, [r0]
+ 364:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_Protocol member */
+ 365:FWLIB/src/stm32f4xx_sai.c ****   SAI_InitStruct->SAI_Protocol = SAI_Free_Protocol;
+ 282              		.loc 1 365 0
+ 283 0004 4360     		str	r3, [r0, #4]
+ 366:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_DataSize member */
+ 367:FWLIB/src/stm32f4xx_sai.c ****   SAI_InitStruct->SAI_DataSize = SAI_DataSize_8b;
+ 284              		.loc 1 367 0
+ 285 0006 4022     		movs	r2, #64
+ 286 0008 8260     		str	r2, [r0, #8]
+ 368:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_FirstBit member */
+ 369:FWLIB/src/stm32f4xx_sai.c ****   SAI_InitStruct->SAI_FirstBit = SAI_FirstBit_MSB;
+ 287              		.loc 1 369 0
+ 288 000a C360     		str	r3, [r0, #12]
+ 370:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_ClockStrobing member */
+ 371:FWLIB/src/stm32f4xx_sai.c ****   SAI_InitStruct->SAI_ClockStrobing = SAI_ClockStrobing_FallingEdge;
+ 289              		.loc 1 371 0
+ 290 000c 0361     		str	r3, [r0, #16]
+ 372:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_Synchro member */
+ 373:FWLIB/src/stm32f4xx_sai.c ****   SAI_InitStruct->SAI_Synchro = SAI_Asynchronous;
+ 291              		.loc 1 373 0
+ 292 000e 4361     		str	r3, [r0, #20]
+ 374:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_OUTDRIV member */
+ 375:FWLIB/src/stm32f4xx_sai.c ****   SAI_InitStruct->SAI_OUTDRIV = SAI_OutputDrive_Disabled;
+ 293              		.loc 1 375 0
+ 294 0010 8361     		str	r3, [r0, #24]
+ 376:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_NoDivider member */
+ 377:FWLIB/src/stm32f4xx_sai.c ****   SAI_InitStruct->SAI_NoDivider = SAI_MasterDivider_Enabled;
+ 295              		.loc 1 377 0
+ 296 0012 C361     		str	r3, [r0, #28]
+ 378:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_MasterDivider member */
+ 379:FWLIB/src/stm32f4xx_sai.c ****   SAI_InitStruct->SAI_MasterDivider = 0;
+ 297              		.loc 1 379 0
+ 298 0014 0362     		str	r3, [r0, #32]
+ 380:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_FIFOThreshold member */
+ 381:FWLIB/src/stm32f4xx_sai.c ****   SAI_InitStruct->SAI_FIFOThreshold = SAI_Threshold_FIFOEmpty;
+ 299              		.loc 1 381 0
+ 300 0016 4362     		str	r3, [r0, #36]
+ 301 0018 7047     		bx	lr
+ARM GAS  /tmp/cc34Vqy2.s 			page 13
+
+
+ 302              		.cfi_endproc
+ 303              	.LFE116:
+ 305              		.section	.text.SAI_FrameStructInit,"ax",%progbits
+ 306              		.align	1
+ 307              		.global	SAI_FrameStructInit
+ 308              		.syntax unified
+ 309              		.thumb
+ 310              		.thumb_func
+ 311              		.fpu softvfp
+ 313              	SAI_FrameStructInit:
+ 314              	.LFB117:
+ 382:FWLIB/src/stm32f4xx_sai.c **** }
+ 383:FWLIB/src/stm32f4xx_sai.c **** 
+ 384:FWLIB/src/stm32f4xx_sai.c **** /**
+ 385:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Fills each SAI_FrameInitStruct member with its default value.
+ 386:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_FrameInitStruct: pointer to a SAI_FrameInitTypeDef structure 
+ 387:FWLIB/src/stm32f4xx_sai.c ****   *         which will be initialized.                     
+ 388:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 389:FWLIB/src/stm32f4xx_sai.c ****   */
+ 390:FWLIB/src/stm32f4xx_sai.c **** void SAI_FrameStructInit(SAI_FrameInitTypeDef* SAI_FrameInitStruct)
+ 391:FWLIB/src/stm32f4xx_sai.c **** {
+ 315              		.loc 1 391 0
+ 316              		.cfi_startproc
+ 317              		@ args = 0, pretend = 0, frame = 0
+ 318              		@ frame_needed = 0, uses_anonymous_args = 0
+ 319              		@ link register save eliminated.
+ 320              	.LVL26:
+ 392:FWLIB/src/stm32f4xx_sai.c ****   /* Reset SAI Frame init structure parameters values */
+ 393:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_FrameLength member */
+ 394:FWLIB/src/stm32f4xx_sai.c ****   SAI_FrameInitStruct->SAI_FrameLength = 8;
+ 321              		.loc 1 394 0
+ 322 0000 0823     		movs	r3, #8
+ 323 0002 0360     		str	r3, [r0]
+ 395:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_ActiveFrameLength member */
+ 396:FWLIB/src/stm32f4xx_sai.c ****   SAI_FrameInitStruct->SAI_ActiveFrameLength = 1;
+ 324              		.loc 1 396 0
+ 325 0004 0123     		movs	r3, #1
+ 326 0006 4360     		str	r3, [r0, #4]
+ 397:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_FSDefinition member */
+ 398:FWLIB/src/stm32f4xx_sai.c ****   SAI_FrameInitStruct->SAI_FSDefinition = SAI_FS_StartFrame;
+ 327              		.loc 1 398 0
+ 328 0008 0023     		movs	r3, #0
+ 329 000a 8360     		str	r3, [r0, #8]
+ 399:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_FSPolarity member */
+ 400:FWLIB/src/stm32f4xx_sai.c ****   SAI_FrameInitStruct->SAI_FSPolarity = SAI_FS_ActiveLow;
+ 330              		.loc 1 400 0
+ 331 000c C360     		str	r3, [r0, #12]
+ 401:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_FSOffset member */
+ 402:FWLIB/src/stm32f4xx_sai.c ****   SAI_FrameInitStruct->SAI_FSOffset = SAI_FS_FirstBit;
+ 332              		.loc 1 402 0
+ 333 000e 0361     		str	r3, [r0, #16]
+ 334 0010 7047     		bx	lr
+ 335              		.cfi_endproc
+ 336              	.LFE117:
+ 338              		.section	.text.SAI_SlotStructInit,"ax",%progbits
+ 339              		.align	1
+ 340              		.global	SAI_SlotStructInit
+ARM GAS  /tmp/cc34Vqy2.s 			page 14
+
+
+ 341              		.syntax unified
+ 342              		.thumb
+ 343              		.thumb_func
+ 344              		.fpu softvfp
+ 346              	SAI_SlotStructInit:
+ 347              	.LFB118:
+ 403:FWLIB/src/stm32f4xx_sai.c **** }
+ 404:FWLIB/src/stm32f4xx_sai.c **** 
+ 405:FWLIB/src/stm32f4xx_sai.c **** /**
+ 406:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Fills each SAI_SlotInitStruct member with its default value.
+ 407:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_SlotInitStruct: pointer to a SAI_SlotInitTypeDef structure 
+ 408:FWLIB/src/stm32f4xx_sai.c ****   *         which will be initialized.                     
+ 409:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 410:FWLIB/src/stm32f4xx_sai.c ****   */
+ 411:FWLIB/src/stm32f4xx_sai.c **** void SAI_SlotStructInit(SAI_SlotInitTypeDef* SAI_SlotInitStruct)
+ 412:FWLIB/src/stm32f4xx_sai.c **** {
+ 348              		.loc 1 412 0
+ 349              		.cfi_startproc
+ 350              		@ args = 0, pretend = 0, frame = 0
+ 351              		@ frame_needed = 0, uses_anonymous_args = 0
+ 352              		@ link register save eliminated.
+ 353              	.LVL27:
+ 413:FWLIB/src/stm32f4xx_sai.c ****   /* Reset SAI Slot init structure parameters values */
+ 414:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_FirstBitOffset member */
+ 415:FWLIB/src/stm32f4xx_sai.c ****   SAI_SlotInitStruct->SAI_FirstBitOffset = 0;
+ 354              		.loc 1 415 0
+ 355 0000 0023     		movs	r3, #0
+ 356 0002 0360     		str	r3, [r0]
+ 416:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_SlotSize member */
+ 417:FWLIB/src/stm32f4xx_sai.c ****   SAI_SlotInitStruct->SAI_SlotSize = SAI_SlotSize_DataSize;
+ 357              		.loc 1 417 0
+ 358 0004 4360     		str	r3, [r0, #4]
+ 418:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_SlotNumber member */
+ 419:FWLIB/src/stm32f4xx_sai.c ****   SAI_SlotInitStruct->SAI_SlotNumber = 1;
+ 359              		.loc 1 419 0
+ 360 0006 0122     		movs	r2, #1
+ 361 0008 8260     		str	r2, [r0, #8]
+ 420:FWLIB/src/stm32f4xx_sai.c ****   /* Initialize the SAI_SlotActive member */
+ 421:FWLIB/src/stm32f4xx_sai.c ****   SAI_SlotInitStruct->SAI_SlotActive = SAI_Slot_NotActive;
+ 362              		.loc 1 421 0
+ 363 000a C360     		str	r3, [r0, #12]
+ 364 000c 7047     		bx	lr
+ 365              		.cfi_endproc
+ 366              	.LFE118:
+ 368              		.section	.text.SAI_Cmd,"ax",%progbits
+ 369              		.align	1
+ 370              		.global	SAI_Cmd
+ 371              		.syntax unified
+ 372              		.thumb
+ 373              		.thumb_func
+ 374              		.fpu softvfp
+ 376              	SAI_Cmd:
+ 377              	.LFB119:
+ 422:FWLIB/src/stm32f4xx_sai.c **** 
+ 423:FWLIB/src/stm32f4xx_sai.c **** }
+ 424:FWLIB/src/stm32f4xx_sai.c **** 
+ 425:FWLIB/src/stm32f4xx_sai.c **** /**
+ARM GAS  /tmp/cc34Vqy2.s 			page 15
+
+
+ 426:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Enables or disables the specified SAI Block peripheral.
+ 427:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral.
+ 428:FWLIB/src/stm32f4xx_sai.c ****   * @param  NewState: new state of the SAI_Block_x peripheral. 
+ 429:FWLIB/src/stm32f4xx_sai.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 430:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 431:FWLIB/src/stm32f4xx_sai.c ****   */
+ 432:FWLIB/src/stm32f4xx_sai.c **** void SAI_Cmd(SAI_Block_TypeDef* SAI_Block_x, FunctionalState NewState)
+ 433:FWLIB/src/stm32f4xx_sai.c **** {
+ 378              		.loc 1 433 0
+ 379              		.cfi_startproc
+ 380              		@ args = 0, pretend = 0, frame = 0
+ 381              		@ frame_needed = 0, uses_anonymous_args = 0
+ 382              		@ link register save eliminated.
+ 383              	.LVL28:
+ 434:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 435:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 436:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 437:FWLIB/src/stm32f4xx_sai.c ****   if (NewState != DISABLE)
+ 384              		.loc 1 437 0
+ 385 0000 21B9     		cbnz	r1, .L19
+ 438:FWLIB/src/stm32f4xx_sai.c ****   {
+ 439:FWLIB/src/stm32f4xx_sai.c ****     /* Enable the selected SAI peripheral */
+ 440:FWLIB/src/stm32f4xx_sai.c ****     SAI_Block_x->CR1 |= SAI_xCR1_SAIEN;
+ 441:FWLIB/src/stm32f4xx_sai.c ****   }
+ 442:FWLIB/src/stm32f4xx_sai.c ****   else
+ 443:FWLIB/src/stm32f4xx_sai.c ****   {
+ 444:FWLIB/src/stm32f4xx_sai.c ****     /* Disable the selected SAI peripheral */
+ 445:FWLIB/src/stm32f4xx_sai.c ****     SAI_Block_x->CR1 &= ~(SAI_xCR1_SAIEN);
+ 386              		.loc 1 445 0
+ 387 0002 0368     		ldr	r3, [r0]
+ 388 0004 23F48033 		bic	r3, r3, #65536
+ 389 0008 0360     		str	r3, [r0]
+ 390 000a 7047     		bx	lr
+ 391              	.L19:
+ 440:FWLIB/src/stm32f4xx_sai.c ****   }
+ 392              		.loc 1 440 0
+ 393 000c 0368     		ldr	r3, [r0]
+ 394 000e 43F48033 		orr	r3, r3, #65536
+ 395 0012 0360     		str	r3, [r0]
+ 396 0014 7047     		bx	lr
+ 397              		.cfi_endproc
+ 398              	.LFE119:
+ 400              		.section	.text.SAI_MonoModeConfig,"ax",%progbits
+ 401              		.align	1
+ 402              		.global	SAI_MonoModeConfig
+ 403              		.syntax unified
+ 404              		.thumb
+ 405              		.thumb_func
+ 406              		.fpu softvfp
+ 408              	SAI_MonoModeConfig:
+ 409              	.LFB120:
+ 446:FWLIB/src/stm32f4xx_sai.c ****   }
+ 447:FWLIB/src/stm32f4xx_sai.c **** }
+ 448:FWLIB/src/stm32f4xx_sai.c **** 
+ 449:FWLIB/src/stm32f4xx_sai.c **** /**
+ 450:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Configures the mono mode for the selected SAI block.
+ 451:FWLIB/src/stm32f4xx_sai.c ****   * 
+ARM GAS  /tmp/cc34Vqy2.s 			page 16
+
+
+ 452:FWLIB/src/stm32f4xx_sai.c ****   * @note  This function has a meaning only when the number of slot is equal to 2. 
+ 453:FWLIB/src/stm32f4xx_sai.c ****   *      
+ 454:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral.
+ 455:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_MonoMode: specifies the SAI block mono mode.
+ 456:FWLIB/src/stm32f4xx_sai.c ****   *          This parameter can be one of the following values:
+ 457:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_MonoMode : Set mono audio mode
+ 458:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_StreoMode : Set streo audio mode                       
+ 459:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 460:FWLIB/src/stm32f4xx_sai.c ****   */
+ 461:FWLIB/src/stm32f4xx_sai.c **** void SAI_MonoModeConfig(SAI_Block_TypeDef* SAI_Block_x, uint32_t SAI_Mono_StreoMode)
+ 462:FWLIB/src/stm32f4xx_sai.c **** {
+ 410              		.loc 1 462 0
+ 411              		.cfi_startproc
+ 412              		@ args = 0, pretend = 0, frame = 0
+ 413              		@ frame_needed = 0, uses_anonymous_args = 0
+ 414              		@ link register save eliminated.
+ 415              	.LVL29:
+ 463:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 464:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 465:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_MONO_STREO_MODE(SAI_MonoMode));
+ 466:FWLIB/src/stm32f4xx_sai.c ****   /* Clear MONO bit */
+ 467:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->CR1 &= ~(SAI_xCR1_MONO);
+ 416              		.loc 1 467 0
+ 417 0000 0368     		ldr	r3, [r0]
+ 418 0002 23F48053 		bic	r3, r3, #4096
+ 419 0006 0360     		str	r3, [r0]
+ 468:FWLIB/src/stm32f4xx_sai.c ****   /* Set new Mono Mode value */
+ 469:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->CR1 |= SAI_MonoMode;
+ 420              		.loc 1 469 0
+ 421 0008 0368     		ldr	r3, [r0]
+ 422 000a 43F48053 		orr	r3, r3, #4096
+ 423 000e 0360     		str	r3, [r0]
+ 424 0010 7047     		bx	lr
+ 425              		.cfi_endproc
+ 426              	.LFE120:
+ 428              		.section	.text.SAI_TRIStateConfig,"ax",%progbits
+ 429              		.align	1
+ 430              		.global	SAI_TRIStateConfig
+ 431              		.syntax unified
+ 432              		.thumb
+ 433              		.thumb_func
+ 434              		.fpu softvfp
+ 436              	SAI_TRIStateConfig:
+ 437              	.LFB121:
+ 470:FWLIB/src/stm32f4xx_sai.c **** }
+ 471:FWLIB/src/stm32f4xx_sai.c **** 
+ 472:FWLIB/src/stm32f4xx_sai.c **** /**
+ 473:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Configures the TRIState managment on data line for the selected SAI block.
+ 474:FWLIB/src/stm32f4xx_sai.c ****   * 
+ 475:FWLIB/src/stm32f4xx_sai.c ****   * @note  This function has a meaning only when the SAI block is configured in transmitter 
+ 476:FWLIB/src/stm32f4xx_sai.c ****   *      
+ 477:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral.
+ 478:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_TRIState: specifies the SAI block TRIState management.
+ 479:FWLIB/src/stm32f4xx_sai.c ****   *          This parameter can be one of the following values:
+ 480:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_Output_NotReleased : SD output line is still drived by the SAI.
+ 481:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_Output_Released : SD output line is released (HI-Z)                       
+ 482:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ARM GAS  /tmp/cc34Vqy2.s 			page 17
+
+
+ 483:FWLIB/src/stm32f4xx_sai.c ****   */
+ 484:FWLIB/src/stm32f4xx_sai.c **** void SAI_TRIStateConfig(SAI_Block_TypeDef* SAI_Block_x, uint32_t SAI_TRIState)
+ 485:FWLIB/src/stm32f4xx_sai.c **** {
+ 438              		.loc 1 485 0
+ 439              		.cfi_startproc
+ 440              		@ args = 0, pretend = 0, frame = 0
+ 441              		@ frame_needed = 0, uses_anonymous_args = 0
+ 442              		@ link register save eliminated.
+ 443              	.LVL30:
+ 486:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 487:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 488:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_TRISTATE_MANAGEMENT(SAI_TRIState));
+ 489:FWLIB/src/stm32f4xx_sai.c ****   /* Clear MONO bit */
+ 490:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->CR1 &= ~(SAI_xCR1_MONO);
+ 444              		.loc 1 490 0
+ 445 0000 0368     		ldr	r3, [r0]
+ 446 0002 23F48053 		bic	r3, r3, #4096
+ 447 0006 0360     		str	r3, [r0]
+ 491:FWLIB/src/stm32f4xx_sai.c ****   /* Set new Mono Mode value */
+ 492:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->CR1 |= SAI_MonoMode;  
+ 448              		.loc 1 492 0
+ 449 0008 0368     		ldr	r3, [r0]
+ 450 000a 43F48053 		orr	r3, r3, #4096
+ 451 000e 0360     		str	r3, [r0]
+ 452 0010 7047     		bx	lr
+ 453              		.cfi_endproc
+ 454              	.LFE121:
+ 456              		.section	.text.SAI_CompandingModeConfig,"ax",%progbits
+ 457              		.align	1
+ 458              		.global	SAI_CompandingModeConfig
+ 459              		.syntax unified
+ 460              		.thumb
+ 461              		.thumb_func
+ 462              		.fpu softvfp
+ 464              	SAI_CompandingModeConfig:
+ 465              	.LFB122:
+ 493:FWLIB/src/stm32f4xx_sai.c ****   
+ 494:FWLIB/src/stm32f4xx_sai.c **** }
+ 495:FWLIB/src/stm32f4xx_sai.c **** 
+ 496:FWLIB/src/stm32f4xx_sai.c **** /**
+ 497:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Configures the companding mode for the selected SAI block.
+ 498:FWLIB/src/stm32f4xx_sai.c ****   * 
+ 499:FWLIB/src/stm32f4xx_sai.c ****   * @note  The data expansion or data compression are determined by the state of
+ 500:FWLIB/src/stm32f4xx_sai.c ****   *        SAI block selected (transmitter or receiver). 
+ 501:FWLIB/src/stm32f4xx_sai.c **** 
+ 502:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral.              
+ 503:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_CompandingMode: specifies the SAI block companding mode.
+ 504:FWLIB/src/stm32f4xx_sai.c ****   *          This parameter can be one of the following values:
+ 505:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_NoCompanding : no companding algorithm set
+ 506:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_ULaw_1CPL_Companding : Set U law (algorithm 1's complement representation)
+ 507:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_ALaw_1CPL_Companding : Set A law (algorithm 1's complement repesentation)  
+ 508:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_ULaw_2CPL_Companding : Set U law (algorithm 2's complement representation)
+ 509:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_ALaw_2CPL_Companding : Set A law (algorithm 2's complement repesentation)  
+ 510:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 511:FWLIB/src/stm32f4xx_sai.c ****   */
+ 512:FWLIB/src/stm32f4xx_sai.c **** void SAI_CompandingModeConfig(SAI_Block_TypeDef* SAI_Block_x, uint32_t SAI_CompandingMode)
+ 513:FWLIB/src/stm32f4xx_sai.c **** {
+ARM GAS  /tmp/cc34Vqy2.s 			page 18
+
+
+ 466              		.loc 1 513 0
+ 467              		.cfi_startproc
+ 468              		@ args = 0, pretend = 0, frame = 0
+ 469              		@ frame_needed = 0, uses_anonymous_args = 0
+ 470              		@ link register save eliminated.
+ 471              	.LVL31:
+ 514:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 515:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 516:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_COMPANDING_MODE(SAI_CompandingMode));
+ 517:FWLIB/src/stm32f4xx_sai.c ****   /* Clear Companding Mode bits */
+ 518:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->CR2 &= ~(SAI_xCR2_COMP);
+ 472              		.loc 1 518 0
+ 473 0000 4368     		ldr	r3, [r0, #4]
+ 474 0002 23F44043 		bic	r3, r3, #49152
+ 475 0006 4360     		str	r3, [r0, #4]
+ 519:FWLIB/src/stm32f4xx_sai.c ****   /* Set new Companding Mode value */
+ 520:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->CR2 |= SAI_CompandingMode;
+ 476              		.loc 1 520 0
+ 477 0008 4368     		ldr	r3, [r0, #4]
+ 478 000a 1943     		orrs	r1, r1, r3
+ 479              	.LVL32:
+ 480 000c 4160     		str	r1, [r0, #4]
+ 481 000e 7047     		bx	lr
+ 482              		.cfi_endproc
+ 483              	.LFE122:
+ 485              		.section	.text.SAI_MuteModeCmd,"ax",%progbits
+ 486              		.align	1
+ 487              		.global	SAI_MuteModeCmd
+ 488              		.syntax unified
+ 489              		.thumb
+ 490              		.thumb_func
+ 491              		.fpu softvfp
+ 493              	SAI_MuteModeCmd:
+ 494              	.LFB123:
+ 521:FWLIB/src/stm32f4xx_sai.c **** }
+ 522:FWLIB/src/stm32f4xx_sai.c **** 
+ 523:FWLIB/src/stm32f4xx_sai.c **** /**
+ 524:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Enables or disables the Mute mode for the selected SAI block.
+ 525:FWLIB/src/stm32f4xx_sai.c ****   *    
+ 526:FWLIB/src/stm32f4xx_sai.c ****   * @note   This function has a meaning only when the audio block is transmitter
+ 527:FWLIB/src/stm32f4xx_sai.c ****   * @note   Mute mode is applied for an entire frame for all the valid slot
+ 528:FWLIB/src/stm32f4xx_sai.c ****   *         It becomes active at the end of an audio frame when set somewhere in a frame. 
+ 529:FWLIB/src/stm32f4xx_sai.c ****   *         Mute mode exit occurs at the end of the frame in which the bit MUTE has been set.
+ 530:FWLIB/src/stm32f4xx_sai.c ****   *
+ 531:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral.
+ 532:FWLIB/src/stm32f4xx_sai.c ****   * @param  NewState: new state of the SAIx block. 
+ 533:FWLIB/src/stm32f4xx_sai.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 534:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 535:FWLIB/src/stm32f4xx_sai.c ****   */
+ 536:FWLIB/src/stm32f4xx_sai.c **** void SAI_MuteModeCmd(SAI_Block_TypeDef* SAI_Block_x, FunctionalState NewState)
+ 537:FWLIB/src/stm32f4xx_sai.c **** {
+ 495              		.loc 1 537 0
+ 496              		.cfi_startproc
+ 497              		@ args = 0, pretend = 0, frame = 0
+ 498              		@ frame_needed = 0, uses_anonymous_args = 0
+ 499              		@ link register save eliminated.
+ 500              	.LVL33:
+ARM GAS  /tmp/cc34Vqy2.s 			page 19
+
+
+ 538:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 539:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 540:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 541:FWLIB/src/stm32f4xx_sai.c ****   if (NewState != DISABLE)
+ 501              		.loc 1 541 0
+ 502 0000 21B9     		cbnz	r1, .L26
+ 542:FWLIB/src/stm32f4xx_sai.c ****   {
+ 543:FWLIB/src/stm32f4xx_sai.c ****     /* Enable the selected SAI block mute mode */
+ 544:FWLIB/src/stm32f4xx_sai.c ****     SAI_Block_x->CR2 |= SAI_xCR2_MUTE;
+ 545:FWLIB/src/stm32f4xx_sai.c ****   }
+ 546:FWLIB/src/stm32f4xx_sai.c ****   else
+ 547:FWLIB/src/stm32f4xx_sai.c ****   {
+ 548:FWLIB/src/stm32f4xx_sai.c ****     /* Disable the selected SAI SS output */
+ 549:FWLIB/src/stm32f4xx_sai.c ****     SAI_Block_x->CR2 &= ~(SAI_xCR2_MUTE);
+ 503              		.loc 1 549 0
+ 504 0002 4368     		ldr	r3, [r0, #4]
+ 505 0004 23F02003 		bic	r3, r3, #32
+ 506 0008 4360     		str	r3, [r0, #4]
+ 507 000a 7047     		bx	lr
+ 508              	.L26:
+ 544:FWLIB/src/stm32f4xx_sai.c ****   }
+ 509              		.loc 1 544 0
+ 510 000c 4368     		ldr	r3, [r0, #4]
+ 511 000e 43F02003 		orr	r3, r3, #32
+ 512 0012 4360     		str	r3, [r0, #4]
+ 513 0014 7047     		bx	lr
+ 514              		.cfi_endproc
+ 515              	.LFE123:
+ 517              		.section	.text.SAI_MuteValueConfig,"ax",%progbits
+ 518              		.align	1
+ 519              		.global	SAI_MuteValueConfig
+ 520              		.syntax unified
+ 521              		.thumb
+ 522              		.thumb_func
+ 523              		.fpu softvfp
+ 525              	SAI_MuteValueConfig:
+ 526              	.LFB124:
+ 550:FWLIB/src/stm32f4xx_sai.c ****   }
+ 551:FWLIB/src/stm32f4xx_sai.c **** }
+ 552:FWLIB/src/stm32f4xx_sai.c **** 
+ 553:FWLIB/src/stm32f4xx_sai.c **** /**
+ 554:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Configure the mute value for the selected SAI block.
+ 555:FWLIB/src/stm32f4xx_sai.c ****   *    
+ 556:FWLIB/src/stm32f4xx_sai.c ****   * @note   This function has a meaning only when the audio block is transmitter
+ 557:FWLIB/src/stm32f4xx_sai.c ****   * @note   the configuration last value sent during mute mode has only a meaning 
+ 558:FWLIB/src/stm32f4xx_sai.c ****   *          when the number of slot is lower or equal to 2 and if the MUTE bit is set.
+ 559:FWLIB/src/stm32f4xx_sai.c ****   *           
+ 560:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral.
+ 561:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_MuteValue: specifies the SAI block mute value.
+ 562:FWLIB/src/stm32f4xx_sai.c ****   *          This parameter can be one of the following values:
+ 563:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_ZeroValue : bit value 0 is sent during Mute Mode
+ 564:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_LastSentValue : Last value is sent during Mute Mode  
+ 565:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 566:FWLIB/src/stm32f4xx_sai.c ****   */
+ 567:FWLIB/src/stm32f4xx_sai.c **** void SAI_MuteValueConfig(SAI_Block_TypeDef* SAI_Block_x, uint32_t SAI_MuteValue)
+ 568:FWLIB/src/stm32f4xx_sai.c **** {
+ 527              		.loc 1 568 0
+ARM GAS  /tmp/cc34Vqy2.s 			page 20
+
+
+ 528              		.cfi_startproc
+ 529              		@ args = 0, pretend = 0, frame = 0
+ 530              		@ frame_needed = 0, uses_anonymous_args = 0
+ 531              		@ link register save eliminated.
+ 532              	.LVL34:
+ 569:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 570:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 571:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_MUTE_VALUE(SAI_MuteValue));
+ 572:FWLIB/src/stm32f4xx_sai.c ****   
+ 573:FWLIB/src/stm32f4xx_sai.c ****   /* Clear Mute value bits */
+ 574:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->CR2 &= ~(SAI_xCR2_MUTEVAL);
+ 533              		.loc 1 574 0
+ 534 0000 4368     		ldr	r3, [r0, #4]
+ 535 0002 23F04003 		bic	r3, r3, #64
+ 536 0006 4360     		str	r3, [r0, #4]
+ 575:FWLIB/src/stm32f4xx_sai.c ****   /* Set new Mute value */
+ 576:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->CR2 |= SAI_MuteValue;
+ 537              		.loc 1 576 0
+ 538 0008 4368     		ldr	r3, [r0, #4]
+ 539 000a 1943     		orrs	r1, r1, r3
+ 540              	.LVL35:
+ 541 000c 4160     		str	r1, [r0, #4]
+ 542 000e 7047     		bx	lr
+ 543              		.cfi_endproc
+ 544              	.LFE124:
+ 546              		.section	.text.SAI_MuteFrameCounterConfig,"ax",%progbits
+ 547              		.align	1
+ 548              		.global	SAI_MuteFrameCounterConfig
+ 549              		.syntax unified
+ 550              		.thumb
+ 551              		.thumb_func
+ 552              		.fpu softvfp
+ 554              	SAI_MuteFrameCounterConfig:
+ 555              	.LFB125:
+ 577:FWLIB/src/stm32f4xx_sai.c **** }
+ 578:FWLIB/src/stm32f4xx_sai.c **** 
+ 579:FWLIB/src/stm32f4xx_sai.c **** /**
+ 580:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Enables or disables the Mute mode for the selected SAI block. 
+ 581:FWLIB/src/stm32f4xx_sai.c ****   *
+ 582:FWLIB/src/stm32f4xx_sai.c ****   * @note   This function has a meaning only when the audio block is Receiver
+ 583:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral.
+ 584:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_MuteCounter: specifies the SAI block mute value.
+ 585:FWLIB/src/stm32f4xx_sai.c ****   *         This parameter can be a number between 0 and 63.  
+ 586:FWLIB/src/stm32f4xx_sai.c ****  
+ 587:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 588:FWLIB/src/stm32f4xx_sai.c ****   */
+ 589:FWLIB/src/stm32f4xx_sai.c **** void SAI_MuteFrameCounterConfig(SAI_Block_TypeDef* SAI_Block_x, uint32_t SAI_MuteCounter)
+ 590:FWLIB/src/stm32f4xx_sai.c **** {
+ 556              		.loc 1 590 0
+ 557              		.cfi_startproc
+ 558              		@ args = 0, pretend = 0, frame = 0
+ 559              		@ frame_needed = 0, uses_anonymous_args = 0
+ 560              		@ link register save eliminated.
+ 561              	.LVL36:
+ 591:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 592:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 593:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_MUTE_COUNTER(SAI_MuteCounter));
+ARM GAS  /tmp/cc34Vqy2.s 			page 21
+
+
+ 594:FWLIB/src/stm32f4xx_sai.c ****   
+ 595:FWLIB/src/stm32f4xx_sai.c ****   /* Clear Mute value bits */
+ 596:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->CR2 &= ~(SAI_xCR2_MUTECNT);
+ 562              		.loc 1 596 0
+ 563 0000 4368     		ldr	r3, [r0, #4]
+ 564 0002 23F4FC53 		bic	r3, r3, #8064
+ 565 0006 4360     		str	r3, [r0, #4]
+ 597:FWLIB/src/stm32f4xx_sai.c ****   /* Set new Mute value */
+ 598:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->CR2 |= (SAI_MuteCounter << 7);
+ 566              		.loc 1 598 0
+ 567 0008 4368     		ldr	r3, [r0, #4]
+ 568 000a 43EAC111 		orr	r1, r3, r1, lsl #7
+ 569              	.LVL37:
+ 570 000e 4160     		str	r1, [r0, #4]
+ 571 0010 7047     		bx	lr
+ 572              		.cfi_endproc
+ 573              	.LFE125:
+ 575              		.section	.text.SAI_FlushFIFO,"ax",%progbits
+ 576              		.align	1
+ 577              		.global	SAI_FlushFIFO
+ 578              		.syntax unified
+ 579              		.thumb
+ 580              		.thumb_func
+ 581              		.fpu softvfp
+ 583              	SAI_FlushFIFO:
+ 584              	.LFB126:
+ 599:FWLIB/src/stm32f4xx_sai.c **** }
+ 600:FWLIB/src/stm32f4xx_sai.c **** 
+ 601:FWLIB/src/stm32f4xx_sai.c **** /**
+ 602:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Reinitialize the FIFO pointer
+ 603:FWLIB/src/stm32f4xx_sai.c ****   *   
+ 604:FWLIB/src/stm32f4xx_sai.c ****   * @note   The FIFO pointers can be reinitialized at anytime The data present 
+ 605:FWLIB/src/stm32f4xx_sai.c ****   *         into the FIFO, if it is not empty, will be lost. 
+ 606:FWLIB/src/stm32f4xx_sai.c ****   * 
+ 607:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral.
+ 608:FWLIB/src/stm32f4xx_sai.c ****   * @param  NewState: new state of the selected SAI TI communication mode.
+ 609:FWLIB/src/stm32f4xx_sai.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 610:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 611:FWLIB/src/stm32f4xx_sai.c ****   */
+ 612:FWLIB/src/stm32f4xx_sai.c **** void SAI_FlushFIFO(SAI_Block_TypeDef* SAI_Block_x)
+ 613:FWLIB/src/stm32f4xx_sai.c **** {
+ 585              		.loc 1 613 0
+ 586              		.cfi_startproc
+ 587              		@ args = 0, pretend = 0, frame = 0
+ 588              		@ frame_needed = 0, uses_anonymous_args = 0
+ 589              		@ link register save eliminated.
+ 590              	.LVL38:
+ 614:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 615:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 616:FWLIB/src/stm32f4xx_sai.c **** 
+ 617:FWLIB/src/stm32f4xx_sai.c ****   /* FIFO flush */
+ 618:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->CR2 |= SAI_xCR2_FFLUSH;
+ 591              		.loc 1 618 0
+ 592 0000 4368     		ldr	r3, [r0, #4]
+ 593 0002 43F00803 		orr	r3, r3, #8
+ 594 0006 4360     		str	r3, [r0, #4]
+ 595 0008 7047     		bx	lr
+ARM GAS  /tmp/cc34Vqy2.s 			page 22
+
+
+ 596              		.cfi_endproc
+ 597              	.LFE126:
+ 599              		.section	.text.SAI_ReceiveData,"ax",%progbits
+ 600              		.align	1
+ 601              		.global	SAI_ReceiveData
+ 602              		.syntax unified
+ 603              		.thumb
+ 604              		.thumb_func
+ 605              		.fpu softvfp
+ 607              	SAI_ReceiveData:
+ 608              	.LFB127:
+ 619:FWLIB/src/stm32f4xx_sai.c **** }
+ 620:FWLIB/src/stm32f4xx_sai.c **** 
+ 621:FWLIB/src/stm32f4xx_sai.c **** /**
+ 622:FWLIB/src/stm32f4xx_sai.c ****   * @}
+ 623:FWLIB/src/stm32f4xx_sai.c ****   */
+ 624:FWLIB/src/stm32f4xx_sai.c **** 
+ 625:FWLIB/src/stm32f4xx_sai.c **** /** @defgroup SAI_Group2 Data transfers functions
+ 626:FWLIB/src/stm32f4xx_sai.c ****  *  @brief   Data transfers functions
+ 627:FWLIB/src/stm32f4xx_sai.c ****  *
+ 628:FWLIB/src/stm32f4xx_sai.c **** @verbatim   
+ 629:FWLIB/src/stm32f4xx_sai.c ****  ===============================================================================
+ 630:FWLIB/src/stm32f4xx_sai.c ****                        ##### Data transfers functions #####
+ 631:FWLIB/src/stm32f4xx_sai.c ****  ===============================================================================  
+ 632:FWLIB/src/stm32f4xx_sai.c ****   [..]
+ 633:FWLIB/src/stm32f4xx_sai.c ****   This section provides a set of functions allowing to manage the SAI data transfers.
+ 634:FWLIB/src/stm32f4xx_sai.c ****   [..]
+ 635:FWLIB/src/stm32f4xx_sai.c ****   In reception, data are received and then stored into an internal FIFO while 
+ 636:FWLIB/src/stm32f4xx_sai.c ****   In transmission, data are first stored into an internal FIFO before being 
+ 637:FWLIB/src/stm32f4xx_sai.c ****   transmitted.
+ 638:FWLIB/src/stm32f4xx_sai.c ****   [..]
+ 639:FWLIB/src/stm32f4xx_sai.c ****   The read access of the SAI_xDR register can be done using the SAI_ReceiveData()
+ 640:FWLIB/src/stm32f4xx_sai.c ****   function and returns the Rx buffered value. Whereas a write access to the SAI_DR 
+ 641:FWLIB/src/stm32f4xx_sai.c ****   can be done using SAI_SendData() function and stores the written data into 
+ 642:FWLIB/src/stm32f4xx_sai.c ****   Tx buffer.
+ 643:FWLIB/src/stm32f4xx_sai.c **** 
+ 644:FWLIB/src/stm32f4xx_sai.c **** @endverbatim
+ 645:FWLIB/src/stm32f4xx_sai.c ****   * @{
+ 646:FWLIB/src/stm32f4xx_sai.c ****   */
+ 647:FWLIB/src/stm32f4xx_sai.c **** 
+ 648:FWLIB/src/stm32f4xx_sai.c **** /**
+ 649:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Returns the most recent received data by the SAI block x peripheral. 
+ 650:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral. 
+ 651:FWLIB/src/stm32f4xx_sai.c ****   *         
+ 652:FWLIB/src/stm32f4xx_sai.c ****   * @retval The value of the received data.
+ 653:FWLIB/src/stm32f4xx_sai.c ****   */
+ 654:FWLIB/src/stm32f4xx_sai.c **** uint32_t SAI_ReceiveData(SAI_Block_TypeDef* SAI_Block_x)
+ 655:FWLIB/src/stm32f4xx_sai.c **** {
+ 609              		.loc 1 655 0
+ 610              		.cfi_startproc
+ 611              		@ args = 0, pretend = 0, frame = 0
+ 612              		@ frame_needed = 0, uses_anonymous_args = 0
+ 613              		@ link register save eliminated.
+ 614              	.LVL39:
+ 656:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 657:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 658:FWLIB/src/stm32f4xx_sai.c ****   
+ARM GAS  /tmp/cc34Vqy2.s 			page 23
+
+
+ 659:FWLIB/src/stm32f4xx_sai.c ****   /* Return the data in the DR register */
+ 660:FWLIB/src/stm32f4xx_sai.c ****   return SAI_Block_x->DR;
+ 615              		.loc 1 660 0
+ 616 0000 C069     		ldr	r0, [r0, #28]
+ 617              	.LVL40:
+ 661:FWLIB/src/stm32f4xx_sai.c **** }
+ 618              		.loc 1 661 0
+ 619 0002 7047     		bx	lr
+ 620              		.cfi_endproc
+ 621              	.LFE127:
+ 623              		.section	.text.SAI_SendData,"ax",%progbits
+ 624              		.align	1
+ 625              		.global	SAI_SendData
+ 626              		.syntax unified
+ 627              		.thumb
+ 628              		.thumb_func
+ 629              		.fpu softvfp
+ 631              	SAI_SendData:
+ 632              	.LFB128:
+ 662:FWLIB/src/stm32f4xx_sai.c **** 
+ 663:FWLIB/src/stm32f4xx_sai.c **** /**
+ 664:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Transmits a Data through the SAI block x peripheral.
+ 665:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral.
+ 666:FWLIB/src/stm32f4xx_sai.c ****   *        
+ 667:FWLIB/src/stm32f4xx_sai.c ****   * @param  Data: Data to be transmitted.
+ 668:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 669:FWLIB/src/stm32f4xx_sai.c ****   */
+ 670:FWLIB/src/stm32f4xx_sai.c **** void SAI_SendData(SAI_Block_TypeDef* SAI_Block_x, uint32_t Data)
+ 671:FWLIB/src/stm32f4xx_sai.c **** {
+ 633              		.loc 1 671 0
+ 634              		.cfi_startproc
+ 635              		@ args = 0, pretend = 0, frame = 0
+ 636              		@ frame_needed = 0, uses_anonymous_args = 0
+ 637              		@ link register save eliminated.
+ 638              	.LVL41:
+ 672:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 673:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 674:FWLIB/src/stm32f4xx_sai.c ****   
+ 675:FWLIB/src/stm32f4xx_sai.c ****   /* Write in the DR register the data to be sent */
+ 676:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->DR = Data;
+ 639              		.loc 1 676 0
+ 640 0000 C161     		str	r1, [r0, #28]
+ 641 0002 7047     		bx	lr
+ 642              		.cfi_endproc
+ 643              	.LFE128:
+ 645              		.section	.text.SAI_DMACmd,"ax",%progbits
+ 646              		.align	1
+ 647              		.global	SAI_DMACmd
+ 648              		.syntax unified
+ 649              		.thumb
+ 650              		.thumb_func
+ 651              		.fpu softvfp
+ 653              	SAI_DMACmd:
+ 654              	.LFB129:
+ 677:FWLIB/src/stm32f4xx_sai.c **** }
+ 678:FWLIB/src/stm32f4xx_sai.c **** 
+ 679:FWLIB/src/stm32f4xx_sai.c **** /**
+ARM GAS  /tmp/cc34Vqy2.s 			page 24
+
+
+ 680:FWLIB/src/stm32f4xx_sai.c ****   * @}
+ 681:FWLIB/src/stm32f4xx_sai.c ****   */
+ 682:FWLIB/src/stm32f4xx_sai.c **** 
+ 683:FWLIB/src/stm32f4xx_sai.c **** /** @defgroup SAI_Group3 DMA transfers management functions
+ 684:FWLIB/src/stm32f4xx_sai.c ****  *  @brief   DMA transfers management functions
+ 685:FWLIB/src/stm32f4xx_sai.c ****   *
+ 686:FWLIB/src/stm32f4xx_sai.c **** @verbatim   
+ 687:FWLIB/src/stm32f4xx_sai.c ****  ===============================================================================
+ 688:FWLIB/src/stm32f4xx_sai.c ****                   ##### DMA transfers management functions #####
+ 689:FWLIB/src/stm32f4xx_sai.c ****  ===============================================================================  
+ 690:FWLIB/src/stm32f4xx_sai.c **** 
+ 691:FWLIB/src/stm32f4xx_sai.c **** @endverbatim
+ 692:FWLIB/src/stm32f4xx_sai.c ****   * @{
+ 693:FWLIB/src/stm32f4xx_sai.c ****   */
+ 694:FWLIB/src/stm32f4xx_sai.c **** 
+ 695:FWLIB/src/stm32f4xx_sai.c **** /**
+ 696:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Enables or disables the SAI Block x DMA interface.
+ 697:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral. 
+ 698:FWLIB/src/stm32f4xx_sai.c ****   * @param  NewState: new state of the selected SAI block DMA transfer request.
+ 699:FWLIB/src/stm32f4xx_sai.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 700:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 701:FWLIB/src/stm32f4xx_sai.c ****   */
+ 702:FWLIB/src/stm32f4xx_sai.c **** void SAI_DMACmd(SAI_Block_TypeDef* SAI_Block_x, FunctionalState NewState)
+ 703:FWLIB/src/stm32f4xx_sai.c **** {
+ 655              		.loc 1 703 0
+ 656              		.cfi_startproc
+ 657              		@ args = 0, pretend = 0, frame = 0
+ 658              		@ frame_needed = 0, uses_anonymous_args = 0
+ 659              		@ link register save eliminated.
+ 660              	.LVL42:
+ 704:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 705:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 706:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 707:FWLIB/src/stm32f4xx_sai.c ****   
+ 708:FWLIB/src/stm32f4xx_sai.c ****   if (NewState != DISABLE)
+ 661              		.loc 1 708 0
+ 662 0000 21B9     		cbnz	r1, .L35
+ 709:FWLIB/src/stm32f4xx_sai.c ****   {
+ 710:FWLIB/src/stm32f4xx_sai.c ****     /* Enable the selected SAI block mute mode */
+ 711:FWLIB/src/stm32f4xx_sai.c ****     SAI_Block_x->CR1 |= SAI_xCR1_DMAEN;
+ 712:FWLIB/src/stm32f4xx_sai.c ****   }
+ 713:FWLIB/src/stm32f4xx_sai.c ****   else
+ 714:FWLIB/src/stm32f4xx_sai.c ****   {
+ 715:FWLIB/src/stm32f4xx_sai.c ****     /* Disable the selected SAI SS output */
+ 716:FWLIB/src/stm32f4xx_sai.c ****     SAI_Block_x->CR1 &= ~(SAI_xCR1_DMAEN);
+ 663              		.loc 1 716 0
+ 664 0002 0368     		ldr	r3, [r0]
+ 665 0004 23F40033 		bic	r3, r3, #131072
+ 666 0008 0360     		str	r3, [r0]
+ 667 000a 7047     		bx	lr
+ 668              	.L35:
+ 711:FWLIB/src/stm32f4xx_sai.c ****   }
+ 669              		.loc 1 711 0
+ 670 000c 0368     		ldr	r3, [r0]
+ 671 000e 43F40033 		orr	r3, r3, #131072
+ 672 0012 0360     		str	r3, [r0]
+ 673 0014 7047     		bx	lr
+ARM GAS  /tmp/cc34Vqy2.s 			page 25
+
+
+ 674              		.cfi_endproc
+ 675              	.LFE129:
+ 677              		.section	.text.SAI_ITConfig,"ax",%progbits
+ 678              		.align	1
+ 679              		.global	SAI_ITConfig
+ 680              		.syntax unified
+ 681              		.thumb
+ 682              		.thumb_func
+ 683              		.fpu softvfp
+ 685              	SAI_ITConfig:
+ 686              	.LFB130:
+ 717:FWLIB/src/stm32f4xx_sai.c ****   }
+ 718:FWLIB/src/stm32f4xx_sai.c **** }
+ 719:FWLIB/src/stm32f4xx_sai.c **** 
+ 720:FWLIB/src/stm32f4xx_sai.c **** /**
+ 721:FWLIB/src/stm32f4xx_sai.c ****   * @}
+ 722:FWLIB/src/stm32f4xx_sai.c ****   */
+ 723:FWLIB/src/stm32f4xx_sai.c **** 
+ 724:FWLIB/src/stm32f4xx_sai.c **** /** @defgroup SAI_Group4 Interrupts and flags management functions
+ 725:FWLIB/src/stm32f4xx_sai.c ****  *  @brief   Interrupts and flags management functions
+ 726:FWLIB/src/stm32f4xx_sai.c ****   *
+ 727:FWLIB/src/stm32f4xx_sai.c **** @verbatim   
+ 728:FWLIB/src/stm32f4xx_sai.c ****  ===============================================================================
+ 729:FWLIB/src/stm32f4xx_sai.c ****             ##### Interrupts and flags management functions #####
+ 730:FWLIB/src/stm32f4xx_sai.c ****  ===============================================================================  
+ 731:FWLIB/src/stm32f4xx_sai.c ****   [..]
+ 732:FWLIB/src/stm32f4xx_sai.c ****   This section provides a set of functions allowing to configure the SAI Interrupts 
+ 733:FWLIB/src/stm32f4xx_sai.c ****   sources and check or clear the flags or pending bits status.
+ 734:FWLIB/src/stm32f4xx_sai.c ****   The user should identify which mode will be used in his application to manage 
+ 735:FWLIB/src/stm32f4xx_sai.c ****   the communication: Polling mode, Interrupt mode or DMA mode. 
+ 736:FWLIB/src/stm32f4xx_sai.c ****     
+ 737:FWLIB/src/stm32f4xx_sai.c ****   *** Polling Mode ***
+ 738:FWLIB/src/stm32f4xx_sai.c ****   ====================
+ 739:FWLIB/src/stm32f4xx_sai.c ****   [..]
+ 740:FWLIB/src/stm32f4xx_sai.c ****   In Polling Mode, the SAI communication can be managed by 7 flags:
+ 741:FWLIB/src/stm32f4xx_sai.c ****      (#) SAI_FLAG_FREQ : to indicate if there is a FIFO Request to write or to read.
+ 742:FWLIB/src/stm32f4xx_sai.c ****      (#) SAI_FLAG_MUTEDET : to indicate if a MUTE frame detected
+ 743:FWLIB/src/stm32f4xx_sai.c ****      (#) SAI_FLAG_OVRUDR : to indicate if an Overrun or Underrun error occur
+ 744:FWLIB/src/stm32f4xx_sai.c ****      (#) SAI_FLAG_AFSDET : to indicate if there is the detection of a audio frame 
+ 745:FWLIB/src/stm32f4xx_sai.c ****                           synchronisation (FS) earlier than expected
+ 746:FWLIB/src/stm32f4xx_sai.c ****      (#) SAI_FLAG_LFSDET : to indicate if there is the detection of a audio frame 
+ 747:FWLIB/src/stm32f4xx_sai.c ****                           synchronisation (FS) later than expected              
+ 748:FWLIB/src/stm32f4xx_sai.c ****      (#) SAI_FLAG_CNRDY : to indicate if  the codec is not ready to communicate during 
+ 749:FWLIB/src/stm32f4xx_sai.c ****                          the reception of the TAG 0 (slot0) of the AC97 audio frame 
+ 750:FWLIB/src/stm32f4xx_sai.c ****      (#) SAI_FLAG_WCKCFG: to indicate if wrong clock configuration in master mode 
+ 751:FWLIB/src/stm32f4xx_sai.c ****                          error occurs.
+ 752:FWLIB/src/stm32f4xx_sai.c ****   [..]
+ 753:FWLIB/src/stm32f4xx_sai.c ****   In this Mode it is advised to use the following functions:
+ 754:FWLIB/src/stm32f4xx_sai.c ****      (+) FlagStatus SAI_GetFlagStatus(SAI_Block_TypeDef* SAI_Block_x, uint32_t SAI_FLAG);
+ 755:FWLIB/src/stm32f4xx_sai.c ****      (+) void SAI_ClearFlag(SAI_Block_TypeDef* SAI_Block_x, uint32_t SAI_FLAG);
+ 756:FWLIB/src/stm32f4xx_sai.c **** 
+ 757:FWLIB/src/stm32f4xx_sai.c ****   *** Interrupt Mode ***
+ 758:FWLIB/src/stm32f4xx_sai.c ****   ======================
+ 759:FWLIB/src/stm32f4xx_sai.c ****   [..]
+ 760:FWLIB/src/stm32f4xx_sai.c ****   In Interrupt Mode, the SAI communication can be managed by 7 interrupt sources
+ 761:FWLIB/src/stm32f4xx_sai.c ****   and 7 pending bits: 
+ 762:FWLIB/src/stm32f4xx_sai.c ****   (+) Pending Bits:
+ARM GAS  /tmp/cc34Vqy2.s 			page 26
+
+
+ 763:FWLIB/src/stm32f4xx_sai.c ****      (##) SAI_IT_FREQ : to indicate if there is a FIFO Request to write or to read.
+ 764:FWLIB/src/stm32f4xx_sai.c ****      (##) SAI_IT_MUTEDET : to indicate if a MUTE frame detected.
+ 765:FWLIB/src/stm32f4xx_sai.c ****      (##) SAI_IT_OVRUDR : to indicate if an Overrun or Underrun error occur.
+ 766:FWLIB/src/stm32f4xx_sai.c ****      (##) SAI_IT_AFSDET : to indicate if there is the detection of a audio frame 
+ 767:FWLIB/src/stm32f4xx_sai.c ****                           synchronisation (FS) earlier than expected.
+ 768:FWLIB/src/stm32f4xx_sai.c ****      (##) SAI_IT_LFSDET : to indicate if there is the detection of a audio frame 
+ 769:FWLIB/src/stm32f4xx_sai.c ****                           synchronisation (FS) later than expected.              
+ 770:FWLIB/src/stm32f4xx_sai.c ****      (##) SAI_IT_CNRDY : to indicate if  the codec is not ready to communicate during 
+ 771:FWLIB/src/stm32f4xx_sai.c ****                          the reception of the TAG 0 (slot0) of the AC97 audio frame. 
+ 772:FWLIB/src/stm32f4xx_sai.c ****      (##) SAI_IT_WCKCFG: to indicate if wrong clock configuration in master mode 
+ 773:FWLIB/src/stm32f4xx_sai.c ****                          error occurs.
+ 774:FWLIB/src/stm32f4xx_sai.c **** 
+ 775:FWLIB/src/stm32f4xx_sai.c ****   (+) Interrupt Source:
+ 776:FWLIB/src/stm32f4xx_sai.c ****      (##) SAI_IT_FREQ : specifies the interrupt source for FIFO Request.
+ 777:FWLIB/src/stm32f4xx_sai.c ****      (##) SAI_IT_MUTEDET : specifies the interrupt source for MUTE frame detected.
+ 778:FWLIB/src/stm32f4xx_sai.c ****      (##) SAI_IT_OVRUDR : specifies the interrupt source for overrun or underrun error.
+ 779:FWLIB/src/stm32f4xx_sai.c ****      (##) SAI_IT_AFSDET : specifies the interrupt source for anticipated frame synchronization
+ 780:FWLIB/src/stm32f4xx_sai.c ****                           detection interrupt.
+ 781:FWLIB/src/stm32f4xx_sai.c ****      (##) SAI_IT_LFSDET : specifies the interrupt source for late frame synchronization
+ 782:FWLIB/src/stm32f4xx_sai.c ****                           detection interrupt.             
+ 783:FWLIB/src/stm32f4xx_sai.c ****      (##) SAI_IT_CNRDY : specifies the interrupt source for codec not ready interrupt
+ 784:FWLIB/src/stm32f4xx_sai.c ****      (##) SAI_IT_WCKCFG: specifies the interrupt source for wrong clock configuration
+ 785:FWLIB/src/stm32f4xx_sai.c ****                          interrupt.
+ 786:FWLIB/src/stm32f4xx_sai.c ****   [..]                     
+ 787:FWLIB/src/stm32f4xx_sai.c ****   In this Mode it is advised to use the following functions:
+ 788:FWLIB/src/stm32f4xx_sai.c ****      (+) void SAI_ITConfig(SAI_Block_TypeDef* SAI_Block_x, uint32_t SAI_IT, FunctionalState NewStat
+ 789:FWLIB/src/stm32f4xx_sai.c ****      (+) ITStatus SAI_GetITStatus(SAI_Block_TypeDef* SAI_Block_x, uint32_t SAI_IT);
+ 790:FWLIB/src/stm32f4xx_sai.c ****      (+) void SAI_ClearITPendingBit(SAI_Block_TypeDef* SAI_Block_x, uint32_t SAI_IT);
+ 791:FWLIB/src/stm32f4xx_sai.c **** 
+ 792:FWLIB/src/stm32f4xx_sai.c ****   *** DMA Mode ***
+ 793:FWLIB/src/stm32f4xx_sai.c ****   ================
+ 794:FWLIB/src/stm32f4xx_sai.c ****   [..]
+ 795:FWLIB/src/stm32f4xx_sai.c ****   In DMA Mode, each SAI audio block has an independent DMA interface in order to 
+ 796:FWLIB/src/stm32f4xx_sai.c ****   read or to write into the SAI_xDR register (to hit the internal FIFO). 
+ 797:FWLIB/src/stm32f4xx_sai.c ****   There is one DMA channel by audio block following basic DMA request/acknowledge 
+ 798:FWLIB/src/stm32f4xx_sai.c ****   protocol.
+ 799:FWLIB/src/stm32f4xx_sai.c ****   [..]
+ 800:FWLIB/src/stm32f4xx_sai.c ****   In this Mode it is advised to use the following function:
+ 801:FWLIB/src/stm32f4xx_sai.c ****     (+) void SAI_DMACmd(SAI_Block_TypeDef* SAI_Block_x, FunctionalState NewState);
+ 802:FWLIB/src/stm32f4xx_sai.c ****   [..]
+ 803:FWLIB/src/stm32f4xx_sai.c ****   This section provides also functions allowing to
+ 804:FWLIB/src/stm32f4xx_sai.c ****    (+) Check the SAI Block enable status
+ 805:FWLIB/src/stm32f4xx_sai.c ****    (+)Check the FIFO status 
+ 806:FWLIB/src/stm32f4xx_sai.c ****    
+ 807:FWLIB/src/stm32f4xx_sai.c ****   *** SAI Block Enable status ***
+ 808:FWLIB/src/stm32f4xx_sai.c ****   ===============================
+ 809:FWLIB/src/stm32f4xx_sai.c ****   [..]
+ 810:FWLIB/src/stm32f4xx_sai.c ****   After disabling a SAI Block, it is recommended to check (or wait until) the SAI Block 
+ 811:FWLIB/src/stm32f4xx_sai.c ****   is effectively disabled. If a Block is disabled while an audio frame transfer is ongoing
+ 812:FWLIB/src/stm32f4xx_sai.c ****   the current frame will be transferred and the block will be effectively disabled only at 
+ 813:FWLIB/src/stm32f4xx_sai.c ****   the end of audio frame. 
+ 814:FWLIB/src/stm32f4xx_sai.c ****   To monitor this state it is possible to use the following function:
+ 815:FWLIB/src/stm32f4xx_sai.c ****     (+) FunctionalState SAI_GetCmdStatus(SAI_Block_TypeDef* SAI_Block_x); 
+ 816:FWLIB/src/stm32f4xx_sai.c ****  
+ 817:FWLIB/src/stm32f4xx_sai.c ****   *** SAI Block FIFO status ***
+ 818:FWLIB/src/stm32f4xx_sai.c ****   =============================
+ 819:FWLIB/src/stm32f4xx_sai.c ****   [..]
+ARM GAS  /tmp/cc34Vqy2.s 			page 27
+
+
+ 820:FWLIB/src/stm32f4xx_sai.c ****   It is possible to monitor the FIFO status when a transfer is ongoing using the following 
+ 821:FWLIB/src/stm32f4xx_sai.c ****   function:
+ 822:FWLIB/src/stm32f4xx_sai.c ****     (+) uint32_t SAI_GetFIFOStatus(SAI_Block_TypeDef* SAI_Block_x);
+ 823:FWLIB/src/stm32f4xx_sai.c ****     
+ 824:FWLIB/src/stm32f4xx_sai.c **** @endverbatim
+ 825:FWLIB/src/stm32f4xx_sai.c ****   * @{
+ 826:FWLIB/src/stm32f4xx_sai.c ****   */
+ 827:FWLIB/src/stm32f4xx_sai.c **** 
+ 828:FWLIB/src/stm32f4xx_sai.c **** /**
+ 829:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Enables or disables the specified SAI Block interrupts.
+ 830:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral. 
+ 831:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_IT: specifies the SAI interrupt source to be enabled or disabled. 
+ 832:FWLIB/src/stm32f4xx_sai.c ****   *          This parameter can be one of the following values:
+ 833:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_FREQ: FIFO Request interrupt mask
+ 834:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_MUTEDET: MUTE detection interrupt mask
+ 835:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_OVRUDR: overrun/underrun interrupt mask
+ 836:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_AFSDET: anticipated frame synchronization detection 
+ 837:FWLIB/src/stm32f4xx_sai.c ****   *                                interrupt mask  
+ 838:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_LFSDET: late frame synchronization detection interrupt 
+ 839:FWLIB/src/stm32f4xx_sai.c ****   *                                mask
+ 840:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_CNRDY: codec not ready interrupt mask
+ 841:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_WCKCFG: wrong clock configuration interrupt mask      
+ 842:FWLIB/src/stm32f4xx_sai.c ****   * @param  NewState: new state of the specified SAI interrupt.
+ 843:FWLIB/src/stm32f4xx_sai.c ****   *          This parameter can be: ENABLE or DISABLE.
+ 844:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 845:FWLIB/src/stm32f4xx_sai.c ****   */
+ 846:FWLIB/src/stm32f4xx_sai.c **** void SAI_ITConfig(SAI_Block_TypeDef* SAI_Block_x, uint32_t SAI_IT, FunctionalState NewState)
+ 847:FWLIB/src/stm32f4xx_sai.c **** { 
+ 687              		.loc 1 847 0
+ 688              		.cfi_startproc
+ 689              		@ args = 0, pretend = 0, frame = 0
+ 690              		@ frame_needed = 0, uses_anonymous_args = 0
+ 691              		@ link register save eliminated.
+ 692              	.LVL43:
+ 848:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 849:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 850:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 851:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_CONFIG_IT(SAI_IT));
+ 852:FWLIB/src/stm32f4xx_sai.c **** 
+ 853:FWLIB/src/stm32f4xx_sai.c ****   if (NewState != DISABLE)
+ 693              		.loc 1 853 0
+ 694 0000 22B9     		cbnz	r2, .L39
+ 854:FWLIB/src/stm32f4xx_sai.c ****   {
+ 855:FWLIB/src/stm32f4xx_sai.c ****     /* Enable the selected SAI Block interrupt */
+ 856:FWLIB/src/stm32f4xx_sai.c ****     SAI_Block_x->IMR |= SAI_IT;
+ 857:FWLIB/src/stm32f4xx_sai.c ****   }
+ 858:FWLIB/src/stm32f4xx_sai.c ****   else
+ 859:FWLIB/src/stm32f4xx_sai.c ****   {
+ 860:FWLIB/src/stm32f4xx_sai.c ****     /* Disable the selected SAI Block interrupt */
+ 861:FWLIB/src/stm32f4xx_sai.c ****     SAI_Block_x->IMR &= ~(SAI_IT);
+ 695              		.loc 1 861 0
+ 696 0002 0369     		ldr	r3, [r0, #16]
+ 697 0004 23EA0101 		bic	r1, r3, r1
+ 698              	.LVL44:
+ 699 0008 0161     		str	r1, [r0, #16]
+ 700 000a 7047     		bx	lr
+ 701              	.LVL45:
+ARM GAS  /tmp/cc34Vqy2.s 			page 28
+
+
+ 702              	.L39:
+ 856:FWLIB/src/stm32f4xx_sai.c ****   }
+ 703              		.loc 1 856 0
+ 704 000c 0369     		ldr	r3, [r0, #16]
+ 705 000e 1943     		orrs	r1, r1, r3
+ 706              	.LVL46:
+ 707 0010 0161     		str	r1, [r0, #16]
+ 708 0012 7047     		bx	lr
+ 709              		.cfi_endproc
+ 710              	.LFE130:
+ 712              		.section	.text.SAI_GetFlagStatus,"ax",%progbits
+ 713              		.align	1
+ 714              		.global	SAI_GetFlagStatus
+ 715              		.syntax unified
+ 716              		.thumb
+ 717              		.thumb_func
+ 718              		.fpu softvfp
+ 720              	SAI_GetFlagStatus:
+ 721              	.LFB131:
+ 862:FWLIB/src/stm32f4xx_sai.c ****   }
+ 863:FWLIB/src/stm32f4xx_sai.c **** }
+ 864:FWLIB/src/stm32f4xx_sai.c **** 
+ 865:FWLIB/src/stm32f4xx_sai.c **** /**
+ 866:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Checks whether the specified SAI block x flag is set or not.
+ 867:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral. 
+ 868:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_FLAG: specifies the SAI block flag to check. 
+ 869:FWLIB/src/stm32f4xx_sai.c ****   *          This parameter can be one of the following values:
+ 870:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_FLAG_FREQ: FIFO Request flag.  
+ 871:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_FLAG_MUTEDET: MUTE detection flag.  
+ 872:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_FLAG_OVRUDR: overrun/underrun flag.
+ 873:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_FLAG_WCKCFG: wrong clock configuration flag.            
+ 874:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_FLAG_CNRDY: codec not ready flag. 
+ 875:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_FLAG_AFSDET: anticipated frame synchronization detection flag.
+ 876:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_FLAG_LFSDET: late frame synchronization detection flag.
+ 877:FWLIB/src/stm32f4xx_sai.c ****   * @retval The new state of SAI_FLAG (SET or RESET).
+ 878:FWLIB/src/stm32f4xx_sai.c ****   */
+ 879:FWLIB/src/stm32f4xx_sai.c **** FlagStatus SAI_GetFlagStatus(SAI_Block_TypeDef* SAI_Block_x, uint32_t SAI_FLAG)
+ 880:FWLIB/src/stm32f4xx_sai.c **** {
+ 722              		.loc 1 880 0
+ 723              		.cfi_startproc
+ 724              		@ args = 0, pretend = 0, frame = 0
+ 725              		@ frame_needed = 0, uses_anonymous_args = 0
+ 726              		@ link register save eliminated.
+ 727              	.LVL47:
+ 881:FWLIB/src/stm32f4xx_sai.c ****   FlagStatus bitstatus = RESET;
+ 882:FWLIB/src/stm32f4xx_sai.c ****   
+ 883:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 884:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 885:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_GET_FLAG(SAI_FLAG));
+ 886:FWLIB/src/stm32f4xx_sai.c ****   
+ 887:FWLIB/src/stm32f4xx_sai.c ****   /* Check the status of the specified SAI flag */
+ 888:FWLIB/src/stm32f4xx_sai.c ****   if ((SAI_Block_x->SR & SAI_FLAG) != (uint32_t)RESET)
+ 728              		.loc 1 888 0
+ 729 0000 4369     		ldr	r3, [r0, #20]
+ 730 0002 0B42     		tst	r3, r1
+ 731 0004 01D1     		bne	.L43
+ 889:FWLIB/src/stm32f4xx_sai.c ****   {
+ARM GAS  /tmp/cc34Vqy2.s 			page 29
+
+
+ 890:FWLIB/src/stm32f4xx_sai.c ****     /* SAI_FLAG is set */
+ 891:FWLIB/src/stm32f4xx_sai.c ****     bitstatus = SET;
+ 892:FWLIB/src/stm32f4xx_sai.c ****   }
+ 893:FWLIB/src/stm32f4xx_sai.c ****   else
+ 894:FWLIB/src/stm32f4xx_sai.c ****   {
+ 895:FWLIB/src/stm32f4xx_sai.c ****     /* SAI_FLAG is reset */
+ 896:FWLIB/src/stm32f4xx_sai.c ****     bitstatus = RESET;
+ 732              		.loc 1 896 0
+ 733 0006 0020     		movs	r0, #0
+ 734              	.LVL48:
+ 897:FWLIB/src/stm32f4xx_sai.c ****   }
+ 898:FWLIB/src/stm32f4xx_sai.c ****   /* Return the SAI_FLAG status */
+ 899:FWLIB/src/stm32f4xx_sai.c ****   return  bitstatus;
+ 900:FWLIB/src/stm32f4xx_sai.c **** }
+ 735              		.loc 1 900 0
+ 736 0008 7047     		bx	lr
+ 737              	.LVL49:
+ 738              	.L43:
+ 891:FWLIB/src/stm32f4xx_sai.c ****   }
+ 739              		.loc 1 891 0
+ 740 000a 0120     		movs	r0, #1
+ 741              	.LVL50:
+ 742 000c 7047     		bx	lr
+ 743              		.cfi_endproc
+ 744              	.LFE131:
+ 746              		.section	.text.SAI_ClearFlag,"ax",%progbits
+ 747              		.align	1
+ 748              		.global	SAI_ClearFlag
+ 749              		.syntax unified
+ 750              		.thumb
+ 751              		.thumb_func
+ 752              		.fpu softvfp
+ 754              	SAI_ClearFlag:
+ 755              	.LFB132:
+ 901:FWLIB/src/stm32f4xx_sai.c **** 
+ 902:FWLIB/src/stm32f4xx_sai.c **** /**
+ 903:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Clears the specified SAI Block x flag.
+ 904:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral. 
+ 905:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_FLAG: specifies the SAI block flag to check. 
+ 906:FWLIB/src/stm32f4xx_sai.c ****   *          This parameter can be one of the following values: 
+ 907:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_FLAG_MUTEDET: MUTE detection flag.  
+ 908:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_FLAG_OVRUDR: overrun/underrun flag.
+ 909:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_FLAG_WCKCFG: wrong clock configuration flag.            
+ 910:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_FLAG_CNRDY: codec not ready flag. 
+ 911:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_FLAG_AFSDET: anticipated frame synchronization detection flag.
+ 912:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_FLAG_LFSDET: late frame synchronization detection flag. 
+ 913:FWLIB/src/stm32f4xx_sai.c ****   *  
+ 914:FWLIB/src/stm32f4xx_sai.c ****   * @note    FREQ (FIFO Request) flag is cleared : 
+ 915:FWLIB/src/stm32f4xx_sai.c ****   *          - When the audio block is transmitter and the FIFO is full or the FIFO   
+ 916:FWLIB/src/stm32f4xx_sai.c ****   *            has one data (one buffer mode) depending the bit FTH in the
+ 917:FWLIB/src/stm32f4xx_sai.c ****   *            SAI_xCR2 register.
+ 918:FWLIB/src/stm32f4xx_sai.c ****   *          - When the audio block is receiver and the FIFO is not empty           
+ 919:FWLIB/src/stm32f4xx_sai.c ****   *  
+ 920:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 921:FWLIB/src/stm32f4xx_sai.c ****   */
+ 922:FWLIB/src/stm32f4xx_sai.c **** void SAI_ClearFlag(SAI_Block_TypeDef* SAI_Block_x, uint32_t SAI_FLAG)
+ 923:FWLIB/src/stm32f4xx_sai.c **** {
+ARM GAS  /tmp/cc34Vqy2.s 			page 30
+
+
+ 756              		.loc 1 923 0
+ 757              		.cfi_startproc
+ 758              		@ args = 0, pretend = 0, frame = 0
+ 759              		@ frame_needed = 0, uses_anonymous_args = 0
+ 760              		@ link register save eliminated.
+ 761              	.LVL51:
+ 924:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 925:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 926:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_CLEAR_FLAG(SAI_FLAG));
+ 927:FWLIB/src/stm32f4xx_sai.c ****     
+ 928:FWLIB/src/stm32f4xx_sai.c ****   /* Clear the selected SAI Block flag */
+ 929:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->CLRFR |= SAI_FLAG;
+ 762              		.loc 1 929 0
+ 763 0000 8369     		ldr	r3, [r0, #24]
+ 764 0002 1943     		orrs	r1, r1, r3
+ 765              	.LVL52:
+ 766 0004 8161     		str	r1, [r0, #24]
+ 767 0006 7047     		bx	lr
+ 768              		.cfi_endproc
+ 769              	.LFE132:
+ 771              		.section	.text.SAI_GetITStatus,"ax",%progbits
+ 772              		.align	1
+ 773              		.global	SAI_GetITStatus
+ 774              		.syntax unified
+ 775              		.thumb
+ 776              		.thumb_func
+ 777              		.fpu softvfp
+ 779              	SAI_GetITStatus:
+ 780              	.LFB133:
+ 930:FWLIB/src/stm32f4xx_sai.c **** }
+ 931:FWLIB/src/stm32f4xx_sai.c **** 
+ 932:FWLIB/src/stm32f4xx_sai.c **** /**
+ 933:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Checks whether the specified SAI Block x interrupt has occurred or not.
+ 934:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral. 
+ 935:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_IT: specifies the SAI interrupt source to be enabled or disabled. 
+ 936:FWLIB/src/stm32f4xx_sai.c ****   *          This parameter can be one of the following values:
+ 937:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_FREQ: FIFO Request interrupt 
+ 938:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_MUTEDET: MUTE detection interrupt 
+ 939:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_OVRUDR: overrun/underrun interrupt 
+ 940:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_AFSDET: anticipated frame synchronization detection interrupt           
+ 941:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_LFSDET: late frame synchronization detection interrupt                  
+ 942:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_CNRDY: codec not ready interrupt 
+ 943:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_WCKCFG: wrong clock configuration interrupt 
+ 944:FWLIB/src/stm32f4xx_sai.c ****   *                
+ 945:FWLIB/src/stm32f4xx_sai.c ****   * @retval The new state of SAI_IT (SET or RESET).
+ 946:FWLIB/src/stm32f4xx_sai.c ****   */
+ 947:FWLIB/src/stm32f4xx_sai.c **** ITStatus SAI_GetITStatus(SAI_Block_TypeDef* SAI_Block_x, uint32_t SAI_IT)
+ 948:FWLIB/src/stm32f4xx_sai.c **** {
+ 781              		.loc 1 948 0
+ 782              		.cfi_startproc
+ 783              		@ args = 0, pretend = 0, frame = 0
+ 784              		@ frame_needed = 0, uses_anonymous_args = 0
+ 785              		@ link register save eliminated.
+ 786              	.LVL53:
+ 949:FWLIB/src/stm32f4xx_sai.c ****   ITStatus bitstatus = RESET;
+ 950:FWLIB/src/stm32f4xx_sai.c ****   uint32_t  enablestatus = 0;
+ 951:FWLIB/src/stm32f4xx_sai.c **** 
+ARM GAS  /tmp/cc34Vqy2.s 			page 31
+
+
+ 952:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 953:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 954:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_CONFIG_IT(SAI_IT));
+ 955:FWLIB/src/stm32f4xx_sai.c ****   
+ 956:FWLIB/src/stm32f4xx_sai.c ****   /* Get the SAI_IT enable bit status */
+ 957:FWLIB/src/stm32f4xx_sai.c ****   enablestatus = (SAI_Block_x->IMR & SAI_IT) ;
+ 787              		.loc 1 957 0
+ 788 0000 0369     		ldr	r3, [r0, #16]
+ 789 0002 0B40     		ands	r3, r3, r1
+ 790              	.LVL54:
+ 958:FWLIB/src/stm32f4xx_sai.c **** 
+ 959:FWLIB/src/stm32f4xx_sai.c ****   /* Check the status of the specified SAI interrupt */
+ 960:FWLIB/src/stm32f4xx_sai.c ****   if (((SAI_Block_x->SR & SAI_IT) != (uint32_t)RESET) && (enablestatus != (uint32_t)RESET))
+ 791              		.loc 1 960 0
+ 792 0004 4269     		ldr	r2, [r0, #20]
+ 793 0006 1142     		tst	r1, r2
+ 794 0008 02D0     		beq	.L47
+ 795              		.loc 1 960 0 is_stmt 0 discriminator 1
+ 796 000a 1BB9     		cbnz	r3, .L48
+ 961:FWLIB/src/stm32f4xx_sai.c ****   {
+ 962:FWLIB/src/stm32f4xx_sai.c ****     /* SAI_IT is set */
+ 963:FWLIB/src/stm32f4xx_sai.c ****     bitstatus = SET;
+ 964:FWLIB/src/stm32f4xx_sai.c ****   }
+ 965:FWLIB/src/stm32f4xx_sai.c ****   else
+ 966:FWLIB/src/stm32f4xx_sai.c ****   {
+ 967:FWLIB/src/stm32f4xx_sai.c ****     /* SAI_IT is reset */
+ 968:FWLIB/src/stm32f4xx_sai.c ****     bitstatus = RESET;
+ 797              		.loc 1 968 0 is_stmt 1
+ 798 000c 0020     		movs	r0, #0
+ 799              	.LVL55:
+ 800 000e 7047     		bx	lr
+ 801              	.LVL56:
+ 802              	.L47:
+ 803 0010 0020     		movs	r0, #0
+ 804              	.LVL57:
+ 805 0012 7047     		bx	lr
+ 806              	.LVL58:
+ 807              	.L48:
+ 963:FWLIB/src/stm32f4xx_sai.c ****   }
+ 808              		.loc 1 963 0
+ 809 0014 0120     		movs	r0, #1
+ 810              	.LVL59:
+ 969:FWLIB/src/stm32f4xx_sai.c ****   }
+ 970:FWLIB/src/stm32f4xx_sai.c ****   /* Return the SAI_IT status */
+ 971:FWLIB/src/stm32f4xx_sai.c ****   return bitstatus;
+ 972:FWLIB/src/stm32f4xx_sai.c **** }
+ 811              		.loc 1 972 0
+ 812 0016 7047     		bx	lr
+ 813              		.cfi_endproc
+ 814              	.LFE133:
+ 816              		.section	.text.SAI_ClearITPendingBit,"ax",%progbits
+ 817              		.align	1
+ 818              		.global	SAI_ClearITPendingBit
+ 819              		.syntax unified
+ 820              		.thumb
+ 821              		.thumb_func
+ 822              		.fpu softvfp
+ARM GAS  /tmp/cc34Vqy2.s 			page 32
+
+
+ 824              	SAI_ClearITPendingBit:
+ 825              	.LFB134:
+ 973:FWLIB/src/stm32f4xx_sai.c **** 
+ 974:FWLIB/src/stm32f4xx_sai.c **** /**
+ 975:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Clears the SAI Block x interrupt pending bit.
+ 976:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral. 
+ 977:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_IT: specifies the SAI Block interrupt pending bit to clear. 
+ 978:FWLIB/src/stm32f4xx_sai.c ****   *          This parameter can be one of the following values:  
+ 979:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_MUTEDET: MUTE detection interrupt.  
+ 980:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_OVRUDR: overrun/underrun interrupt.
+ 981:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_WCKCFG: wrong clock configuration interrupt.            
+ 982:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_CNRDY: codec not ready interrupt. 
+ 983:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_AFSDET: anticipated frame synchronization detection interrupt.
+ 984:FWLIB/src/stm32f4xx_sai.c ****   *            @arg SAI_IT_LFSDET: late frame synchronization detection interrupt. 
+ 985:FWLIB/src/stm32f4xx_sai.c ****   *  
+ 986:FWLIB/src/stm32f4xx_sai.c ****   * @note    FREQ (FIFO Request) flag is cleared : 
+ 987:FWLIB/src/stm32f4xx_sai.c ****   *          - When the audio block is transmitter and the FIFO is full or the FIFO   
+ 988:FWLIB/src/stm32f4xx_sai.c ****   *            has one data (one buffer mode) depending the bit FTH in the
+ 989:FWLIB/src/stm32f4xx_sai.c ****   *            SAI_xCR2 register.
+ 990:FWLIB/src/stm32f4xx_sai.c ****   *          - When the audio block is receiver and the FIFO is not empty  
+ 991:FWLIB/src/stm32f4xx_sai.c ****   *            
+ 992:FWLIB/src/stm32f4xx_sai.c ****   * @retval None
+ 993:FWLIB/src/stm32f4xx_sai.c ****   */
+ 994:FWLIB/src/stm32f4xx_sai.c **** void SAI_ClearITPendingBit(SAI_Block_TypeDef* SAI_Block_x, uint32_t SAI_IT)
+ 995:FWLIB/src/stm32f4xx_sai.c **** {
+ 826              		.loc 1 995 0
+ 827              		.cfi_startproc
+ 828              		@ args = 0, pretend = 0, frame = 0
+ 829              		@ frame_needed = 0, uses_anonymous_args = 0
+ 830              		@ link register save eliminated.
+ 831              	.LVL60:
+ 996:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+ 997:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+ 998:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_CONFIG_IT(SAI_IT));
+ 999:FWLIB/src/stm32f4xx_sai.c **** 
+1000:FWLIB/src/stm32f4xx_sai.c ****   /* Clear the selected SAI Block x interrupt pending bit */
+1001:FWLIB/src/stm32f4xx_sai.c ****   SAI_Block_x->CLRFR |= SAI_IT; 
+ 832              		.loc 1 1001 0
+ 833 0000 8369     		ldr	r3, [r0, #24]
+ 834 0002 1943     		orrs	r1, r1, r3
+ 835              	.LVL61:
+ 836 0004 8161     		str	r1, [r0, #24]
+ 837 0006 7047     		bx	lr
+ 838              		.cfi_endproc
+ 839              	.LFE134:
+ 841              		.section	.text.SAI_GetCmdStatus,"ax",%progbits
+ 842              		.align	1
+ 843              		.global	SAI_GetCmdStatus
+ 844              		.syntax unified
+ 845              		.thumb
+ 846              		.thumb_func
+ 847              		.fpu softvfp
+ 849              	SAI_GetCmdStatus:
+ 850              	.LFB135:
+1002:FWLIB/src/stm32f4xx_sai.c **** }
+1003:FWLIB/src/stm32f4xx_sai.c **** 
+1004:FWLIB/src/stm32f4xx_sai.c **** /**
+ARM GAS  /tmp/cc34Vqy2.s 			page 33
+
+
+1005:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Returns the status of EN bit for the specified SAI Block x.
+1006:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral.
+1007:FWLIB/src/stm32f4xx_sai.c ****   *   
+1008:FWLIB/src/stm32f4xx_sai.c ****   * @note    After disabling a SAI Block, it is recommended to check (or wait until) 
+1009:FWLIB/src/stm32f4xx_sai.c ****   *          the SAI Block is effectively disabled. If a Block is disabled while
+1010:FWLIB/src/stm32f4xx_sai.c ****   *          an audio frame transfer is ongoing, the current frame will be 
+1011:FWLIB/src/stm32f4xx_sai.c ****   *          transferred and the block will be effectively disabled only at 
+1012:FWLIB/src/stm32f4xx_sai.c ****   *          the end of audio frame.  
+1013:FWLIB/src/stm32f4xx_sai.c ****   *      
+1014:FWLIB/src/stm32f4xx_sai.c ****   * @retval Current state of the DMAy Streamx (ENABLE or DISABLE).
+1015:FWLIB/src/stm32f4xx_sai.c ****   */
+1016:FWLIB/src/stm32f4xx_sai.c **** FunctionalState SAI_GetCmdStatus(SAI_Block_TypeDef* SAI_Block_x)
+1017:FWLIB/src/stm32f4xx_sai.c **** {
+ 851              		.loc 1 1017 0
+ 852              		.cfi_startproc
+ 853              		@ args = 0, pretend = 0, frame = 0
+ 854              		@ frame_needed = 0, uses_anonymous_args = 0
+ 855              		@ link register save eliminated.
+ 856              	.LVL62:
+1018:FWLIB/src/stm32f4xx_sai.c ****   FunctionalState state = DISABLE;
+1019:FWLIB/src/stm32f4xx_sai.c **** 
+1020:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+1021:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+1022:FWLIB/src/stm32f4xx_sai.c ****   if ((SAI_Block_x->CR1 & (uint32_t)SAI_xCR1_SAIEN) != 0)
+ 857              		.loc 1 1022 0
+ 858 0000 0368     		ldr	r3, [r0]
+ 859 0002 13F4803F 		tst	r3, #65536
+ 860 0006 01D1     		bne	.L53
+1023:FWLIB/src/stm32f4xx_sai.c ****   {
+1024:FWLIB/src/stm32f4xx_sai.c ****     /* The selected SAI Block x EN bit is set (audio frame transfer is ongoing) */
+1025:FWLIB/src/stm32f4xx_sai.c ****     state = ENABLE;
+1026:FWLIB/src/stm32f4xx_sai.c ****   }
+1027:FWLIB/src/stm32f4xx_sai.c ****   else
+1028:FWLIB/src/stm32f4xx_sai.c ****   {
+1029:FWLIB/src/stm32f4xx_sai.c ****     /* The selected SAI Block x EN bit is cleared (SAI Block is disabled and 
+1030:FWLIB/src/stm32f4xx_sai.c ****         all transfers are complete) */
+1031:FWLIB/src/stm32f4xx_sai.c ****     state = DISABLE;
+ 861              		.loc 1 1031 0
+ 862 0008 0020     		movs	r0, #0
+ 863              	.LVL63:
+1032:FWLIB/src/stm32f4xx_sai.c ****   }
+1033:FWLIB/src/stm32f4xx_sai.c ****   return state;
+1034:FWLIB/src/stm32f4xx_sai.c **** }
+ 864              		.loc 1 1034 0
+ 865 000a 7047     		bx	lr
+ 866              	.LVL64:
+ 867              	.L53:
+1025:FWLIB/src/stm32f4xx_sai.c ****   }
+ 868              		.loc 1 1025 0
+ 869 000c 0120     		movs	r0, #1
+ 870              	.LVL65:
+ 871 000e 7047     		bx	lr
+ 872              		.cfi_endproc
+ 873              	.LFE135:
+ 875              		.section	.text.SAI_GetFIFOStatus,"ax",%progbits
+ 876              		.align	1
+ 877              		.global	SAI_GetFIFOStatus
+ARM GAS  /tmp/cc34Vqy2.s 			page 34
+
+
+ 878              		.syntax unified
+ 879              		.thumb
+ 880              		.thumb_func
+ 881              		.fpu softvfp
+ 883              	SAI_GetFIFOStatus:
+ 884              	.LFB136:
+1035:FWLIB/src/stm32f4xx_sai.c **** 
+1036:FWLIB/src/stm32f4xx_sai.c **** /**
+1037:FWLIB/src/stm32f4xx_sai.c ****   * @brief  Returns the current SAI Block x FIFO filled level.
+1038:FWLIB/src/stm32f4xx_sai.c ****   * @param  SAI_Block_x: where x can be A or B to select the SAI Block peripheral.
+1039:FWLIB/src/stm32f4xx_sai.c ****   *   
+1040:FWLIB/src/stm32f4xx_sai.c ****   * @retval The FIFO filling state.
+1041:FWLIB/src/stm32f4xx_sai.c ****   *           - SAI_FIFOStatus_Empty: when FIFO is empty  
+1042:FWLIB/src/stm32f4xx_sai.c ****   *           - SAI_FIFOStatus_Less1QuarterFull: when FIFO is less than 1 quarter-full 
+1043:FWLIB/src/stm32f4xx_sai.c ****   *                                               and not empty.
+1044:FWLIB/src/stm32f4xx_sai.c ****   *           - SAI_FIFOStatus_1QuarterFull: if more than 1 quarter-full.
+1045:FWLIB/src/stm32f4xx_sai.c ****   *           - SAI_FIFOStatus_HalfFull: if more than 1 half-full.
+1046:FWLIB/src/stm32f4xx_sai.c ****   *           - SAI_FIFOStatus_3QuartersFull: if more than 3 quarters-full.
+1047:FWLIB/src/stm32f4xx_sai.c ****   *           - SAI_FIFOStatus_Full: when FIFO is full
+1048:FWLIB/src/stm32f4xx_sai.c ****   */
+1049:FWLIB/src/stm32f4xx_sai.c **** uint32_t SAI_GetFIFOStatus(SAI_Block_TypeDef* SAI_Block_x)
+1050:FWLIB/src/stm32f4xx_sai.c **** {
+ 885              		.loc 1 1050 0
+ 886              		.cfi_startproc
+ 887              		@ args = 0, pretend = 0, frame = 0
+ 888              		@ frame_needed = 0, uses_anonymous_args = 0
+ 889              		@ link register save eliminated.
+ 890              	.LVL66:
+1051:FWLIB/src/stm32f4xx_sai.c ****   uint32_t tmpreg = 0;
+1052:FWLIB/src/stm32f4xx_sai.c ****  
+1053:FWLIB/src/stm32f4xx_sai.c ****   /* Check the parameters */
+1054:FWLIB/src/stm32f4xx_sai.c ****   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
+1055:FWLIB/src/stm32f4xx_sai.c ****   
+1056:FWLIB/src/stm32f4xx_sai.c ****   /* Get the FIFO level bits */
+1057:FWLIB/src/stm32f4xx_sai.c ****   tmpreg = (uint32_t)((SAI_Block_x->SR & SAI_xSR_FLVL));
+ 891              		.loc 1 1057 0
+ 892 0000 4069     		ldr	r0, [r0, #20]
+ 893              	.LVL67:
+1058:FWLIB/src/stm32f4xx_sai.c ****   
+1059:FWLIB/src/stm32f4xx_sai.c ****   return tmpreg;
+1060:FWLIB/src/stm32f4xx_sai.c **** }
+ 894              		.loc 1 1060 0
+ 895 0002 00F4E020 		and	r0, r0, #458752
+ 896              	.LVL68:
+ 897 0006 7047     		bx	lr
+ 898              		.cfi_endproc
+ 899              	.LFE136:
+ 901              		.text
+ 902              	.Letext0:
+ 903              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 904              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 905              		.file 4 "CORE/core_cm4.h"
+ 906              		.file 5 "USER/system_stm32f4xx.h"
+ 907              		.file 6 "USER/stm32f4xx.h"
+ 908              		.file 7 "FWLIB/inc/stm32f4xx_sai.h"
+ 909              		.file 8 "FWLIB/inc/stm32f4xx_rcc.h"
+ARM GAS  /tmp/cc34Vqy2.s 			page 35
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f4xx_sai.c
+     /tmp/cc34Vqy2.s:16     .text.SAI_DeInit:0000000000000000 $t
+     /tmp/cc34Vqy2.s:23     .text.SAI_DeInit:0000000000000000 SAI_DeInit
+     /tmp/cc34Vqy2.s:52     .text.SAI_Init:0000000000000000 $t
+     /tmp/cc34Vqy2.s:59     .text.SAI_Init:0000000000000000 SAI_Init
+     /tmp/cc34Vqy2.s:133    .text.SAI_Init:0000000000000040 $d
+     /tmp/cc34Vqy2.s:138    .text.SAI_FrameInit:0000000000000000 $t
+     /tmp/cc34Vqy2.s:145    .text.SAI_FrameInit:0000000000000000 SAI_FrameInit
+     /tmp/cc34Vqy2.s:199    .text.SAI_FrameInit:0000000000000028 $d
+     /tmp/cc34Vqy2.s:204    .text.SAI_SlotInit:0000000000000000 $t
+     /tmp/cc34Vqy2.s:211    .text.SAI_SlotInit:0000000000000000 SAI_SlotInit
+     /tmp/cc34Vqy2.s:264    .text.SAI_StructInit:0000000000000000 $t
+     /tmp/cc34Vqy2.s:271    .text.SAI_StructInit:0000000000000000 SAI_StructInit
+     /tmp/cc34Vqy2.s:306    .text.SAI_FrameStructInit:0000000000000000 $t
+     /tmp/cc34Vqy2.s:313    .text.SAI_FrameStructInit:0000000000000000 SAI_FrameStructInit
+     /tmp/cc34Vqy2.s:339    .text.SAI_SlotStructInit:0000000000000000 $t
+     /tmp/cc34Vqy2.s:346    .text.SAI_SlotStructInit:0000000000000000 SAI_SlotStructInit
+     /tmp/cc34Vqy2.s:369    .text.SAI_Cmd:0000000000000000 $t
+     /tmp/cc34Vqy2.s:376    .text.SAI_Cmd:0000000000000000 SAI_Cmd
+     /tmp/cc34Vqy2.s:401    .text.SAI_MonoModeConfig:0000000000000000 $t
+     /tmp/cc34Vqy2.s:408    .text.SAI_MonoModeConfig:0000000000000000 SAI_MonoModeConfig
+     /tmp/cc34Vqy2.s:429    .text.SAI_TRIStateConfig:0000000000000000 $t
+     /tmp/cc34Vqy2.s:436    .text.SAI_TRIStateConfig:0000000000000000 SAI_TRIStateConfig
+     /tmp/cc34Vqy2.s:457    .text.SAI_CompandingModeConfig:0000000000000000 $t
+     /tmp/cc34Vqy2.s:464    .text.SAI_CompandingModeConfig:0000000000000000 SAI_CompandingModeConfig
+     /tmp/cc34Vqy2.s:486    .text.SAI_MuteModeCmd:0000000000000000 $t
+     /tmp/cc34Vqy2.s:493    .text.SAI_MuteModeCmd:0000000000000000 SAI_MuteModeCmd
+     /tmp/cc34Vqy2.s:518    .text.SAI_MuteValueConfig:0000000000000000 $t
+     /tmp/cc34Vqy2.s:525    .text.SAI_MuteValueConfig:0000000000000000 SAI_MuteValueConfig
+     /tmp/cc34Vqy2.s:547    .text.SAI_MuteFrameCounterConfig:0000000000000000 $t
+     /tmp/cc34Vqy2.s:554    .text.SAI_MuteFrameCounterConfig:0000000000000000 SAI_MuteFrameCounterConfig
+     /tmp/cc34Vqy2.s:576    .text.SAI_FlushFIFO:0000000000000000 $t
+     /tmp/cc34Vqy2.s:583    .text.SAI_FlushFIFO:0000000000000000 SAI_FlushFIFO
+     /tmp/cc34Vqy2.s:600    .text.SAI_ReceiveData:0000000000000000 $t
+     /tmp/cc34Vqy2.s:607    .text.SAI_ReceiveData:0000000000000000 SAI_ReceiveData
+     /tmp/cc34Vqy2.s:624    .text.SAI_SendData:0000000000000000 $t
+     /tmp/cc34Vqy2.s:631    .text.SAI_SendData:0000000000000000 SAI_SendData
+     /tmp/cc34Vqy2.s:646    .text.SAI_DMACmd:0000000000000000 $t
+     /tmp/cc34Vqy2.s:653    .text.SAI_DMACmd:0000000000000000 SAI_DMACmd
+     /tmp/cc34Vqy2.s:678    .text.SAI_ITConfig:0000000000000000 $t
+     /tmp/cc34Vqy2.s:685    .text.SAI_ITConfig:0000000000000000 SAI_ITConfig
+     /tmp/cc34Vqy2.s:713    .text.SAI_GetFlagStatus:0000000000000000 $t
+     /tmp/cc34Vqy2.s:720    .text.SAI_GetFlagStatus:0000000000000000 SAI_GetFlagStatus
+     /tmp/cc34Vqy2.s:747    .text.SAI_ClearFlag:0000000000000000 $t
+     /tmp/cc34Vqy2.s:754    .text.SAI_ClearFlag:0000000000000000 SAI_ClearFlag
+     /tmp/cc34Vqy2.s:772    .text.SAI_GetITStatus:0000000000000000 $t
+     /tmp/cc34Vqy2.s:779    .text.SAI_GetITStatus:0000000000000000 SAI_GetITStatus
+     /tmp/cc34Vqy2.s:817    .text.SAI_ClearITPendingBit:0000000000000000 $t
+     /tmp/cc34Vqy2.s:824    .text.SAI_ClearITPendingBit:0000000000000000 SAI_ClearITPendingBit
+     /tmp/cc34Vqy2.s:842    .text.SAI_GetCmdStatus:0000000000000000 $t
+     /tmp/cc34Vqy2.s:849    .text.SAI_GetCmdStatus:0000000000000000 SAI_GetCmdStatus
+     /tmp/cc34Vqy2.s:876    .text.SAI_GetFIFOStatus:0000000000000000 $t
+     /tmp/cc34Vqy2.s:883    .text.SAI_GetFIFOStatus:0000000000000000 SAI_GetFIFOStatus
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+ARM GAS  /tmp/cc34Vqy2.s 			page 36
+
+
+RCC_APB2PeriphResetCmd

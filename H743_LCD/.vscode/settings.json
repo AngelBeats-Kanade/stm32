@@ -1,0 +1,10 @@
+{
+    "cortex-debug.openocdPath": "/usr/local/bin/openocd",
+    "files.associations": {
+        "stm32h7xx.h": "c",
+        "bsp_led.h": "c",
+        "bsp_lcd.h": "c",
+        "fonts.h": "c",
+        "bsp_mpu.h": "c"
+    },
+}

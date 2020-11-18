@@ -1,0 +1,3214 @@
+ARM GAS  /tmp/ccMkjQ8H.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"stm32f1xx_hal_nor.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.HAL_NOR_MspInit,"ax",%progbits
+  16              		.align	1
+  17              		.weak	HAL_NOR_MspInit
+  18              		.syntax unified
+  19              		.thumb
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	HAL_NOR_MspInit:
+  24              	.LFB66:
+  25              		.file 1 "Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c"
+   1:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+   2:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   ******************************************************************************
+   3:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @file    stm32f1xx_hal_nor.c
+   4:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @author  MCD Application Team
+   5:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @version V1.1.1
+   6:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @date    12-May-2017
+   7:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief   NOR HAL module driver.
+   8:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *          This file provides a generic firmware to drive NOR memories mounted 
+   9:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *          as external device.
+  10:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *         
+  11:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   @verbatim
+  12:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   ==============================================================================
+  13:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****                      ##### How to use this driver #####
+  14:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   ==============================================================================       
+  15:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     [..]
+  16:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       This driver is a generic layered driver which contains a set of APIs used to 
+  17:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       control NOR flash memories. It uses the FSMC layer functions to interface 
+  18:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       with NOR devices. This driver is used as follows:
+  19:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+  20:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       (+) NOR flash memory configuration sequence using the function HAL_NOR_Init() 
+  21:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****           with control and timing parameters for both normal and extended mode.
+  22:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****             
+  23:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       (+) Read NOR flash memory manufacturer code and device IDs using the function
+  24:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****           HAL_NOR_Read_ID(). The read information is stored in the NOR_ID_TypeDef 
+  25:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****           structure declared by the function caller. 
+  26:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****         
+  27:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       (+) Access NOR flash memory by read/write data unit operations using the functions
+  28:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****           HAL_NOR_Read(), HAL_NOR_Program().
+  29:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****         
+  30:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       (+) Perform NOR flash erase block/chip operations using the functions 
+  31:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****           HAL_NOR_Erase_Block() and HAL_NOR_Erase_Chip().
+  32:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****         
+  33:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       (+) Read the NOR flash CFI (common flash interface) IDs using the function
+ARM GAS  /tmp/ccMkjQ8H.s 			page 2
+
+
+  34:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****           HAL_NOR_Read_CFI(). The read information is stored in the NOR_CFI_TypeDef
+  35:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****           structure declared by the function caller.
+  36:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****         
+  37:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       (+) You can also control the NOR device by calling the control APIs HAL_NOR_WriteOperation_En
+  38:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****           HAL_NOR_WriteOperation_Disable() to respectively enable/disable the NOR write operation  
+  39:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****        
+  40:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       (+) You can monitor the NOR device HAL state by calling the function
+  41:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****           HAL_NOR_GetState() 
+  42:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     [..]
+  43:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****      (@) This driver is a set of generic APIs which handle standard NOR flash operations.
+  44:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****          If a NOR flash device contains different operations and/or implementations, 
+  45:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****          it should be implemented separately.
+  46:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+  47:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****      *** NOR HAL driver macros list ***
+  48:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****      ============================================= 
+  49:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****      [..]
+  50:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****        Below the list of most used macros in NOR HAL driver.
+  51:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****        
+  52:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       (+) NOR_WRITE : NOR memory write data to specified address
+  53:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+  54:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   @endverbatim
+  55:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   ******************************************************************************
+  56:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @attention
+  57:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *
+  58:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
+  59:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *
+  60:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * Redistribution and use in source and binary forms, with or without modification,
+  61:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * are permitted provided that the following conditions are met:
+  62:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *   1. Redistributions of source code must retain the above copyright notice,
+  63:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *      this list of conditions and the following disclaimer.
+  64:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *   2. Redistributions in binary form must reproduce the above copyright notice,
+  65:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *      this list of conditions and the following disclaimer in the documentation
+  66:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *      and/or other materials provided with the distribution.
+  67:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *   3. Neither the name of STMicroelectronics nor the names of its contributors
+  68:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *      may be used to endorse or promote products derived from this software
+  69:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *      without specific prior written permission.
+  70:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *
+  71:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  72:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  73:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  74:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  75:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  76:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  77:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  78:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+  79:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  80:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  81:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *
+  82:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   ******************************************************************************
+  83:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */ 
+  84:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+  85:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /* Includes ------------------------------------------------------------------*/
+  86:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #include "stm32f1xx_hal.h"
+  87:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+  88:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /** @addtogroup STM32F1xx_HAL_Driver
+  89:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @{
+  90:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ARM GAS  /tmp/ccMkjQ8H.s 			page 3
+
+
+  91:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+  92:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #ifdef HAL_NOR_MODULE_ENABLED
+  93:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #if defined (STM32F101xE) || defined(STM32F103xE) || defined(STM32F101xG) || defined(STM32F103xG) |
+  94:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+  95:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /** @defgroup NOR NOR
+  96:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief NOR driver modules
+  97:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @{
+  98:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+  99:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /* Private typedef -----------------------------------------------------------*/
+ 100:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /* Private define ------------------------------------------------------------*/
+ 101:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /** @defgroup NOR_Private_Constants NOR Private Constants
+ 102:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @{
+ 103:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 104:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 105:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /* Constants to define address to set to write a command */
+ 106:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_ADDRESS_FIRST                 (uint16_t)0x0555
+ 107:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_ADDRESS_FIRST_CFI             (uint16_t)0x0055
+ 108:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_ADDRESS_SECOND                (uint16_t)0x02AA
+ 109:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_ADDRESS_THIRD                 (uint16_t)0x0555
+ 110:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_ADDRESS_FOURTH                (uint16_t)0x0555
+ 111:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_ADDRESS_FIFTH                 (uint16_t)0x02AA
+ 112:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_ADDRESS_SIXTH                 (uint16_t)0x0555
+ 113:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 114:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /* Constants to define data to program a command */
+ 115:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_DATA_READ_RESET               (uint16_t)0x00F0
+ 116:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_DATA_FIRST                    (uint16_t)0x00AA
+ 117:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_DATA_SECOND                   (uint16_t)0x0055
+ 118:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_DATA_AUTO_SELECT              (uint16_t)0x0090
+ 119:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_DATA_PROGRAM                  (uint16_t)0x00A0
+ 120:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_DATA_CHIP_BLOCK_ERASE_THIRD   (uint16_t)0x0080
+ 121:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_DATA_CHIP_BLOCK_ERASE_FOURTH  (uint16_t)0x00AA
+ 122:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_DATA_CHIP_BLOCK_ERASE_FIFTH   (uint16_t)0x0055
+ 123:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_DATA_CHIP_ERASE               (uint16_t)0x0010
+ 124:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_DATA_CFI                      (uint16_t)0x0098
+ 125:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 126:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_DATA_BUFFER_AND_PROG          (uint8_t)0x25
+ 127:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_DATA_BUFFER_AND_PROG_CONFIRM  (uint8_t)0x29
+ 128:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_CMD_DATA_BLOCK_ERASE              (uint8_t)0x30
+ 129:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 130:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /* Mask on NOR STATUS REGISTER */
+ 131:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_MASK_STATUS_DQ5                   (uint16_t)0x0020
+ 132:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** #define NOR_MASK_STATUS_DQ6                   (uint16_t)0x0040
+ 133:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 134:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 135:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @}
+ 136:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 137:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 138:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /* Private macro -------------------------------------------------------------*/
+ 139:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /** @defgroup NOR_Private_Macros NOR Private Macros
+ 140:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @{
+ 141:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 142:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 143:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 144:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @}
+ 145:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 146:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 147:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /* Private variables ---------------------------------------------------------*/
+ARM GAS  /tmp/ccMkjQ8H.s 			page 4
+
+
+ 148:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 149:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /** @defgroup NOR_Private_Variables NOR Private Variables
+ 150:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @{
+ 151:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 152:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 153:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** static uint32_t uwNORMemoryDataWidth  = NOR_MEMORY_8B;
+ 154:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 155:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 156:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @}
+ 157:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 158:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 159:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /* Private function prototypes -----------------------------------------------*/
+ 160:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /* Private functions ---------------------------------------------------------*/
+ 161:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 162:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /** @defgroup NOR_Exported_Functions NOR Exported Functions
+ 163:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @{
+ 164:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 165:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 166:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /** @defgroup NOR_Exported_Functions_Group1 Initialization and de-initialization functions 
+ 167:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief    Initialization and Configuration functions 
+ 168:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *
+ 169:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   @verbatim    
+ 170:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   ==============================================================================
+ 171:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****            ##### NOR Initialization and de_initialization functions #####
+ 172:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   ==============================================================================
+ 173:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   [..]  
+ 174:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     This section provides functions allowing to initialize/de-initialize
+ 175:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     the NOR memory
+ 176:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 177:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** @endverbatim
+ 178:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @{
+ 179:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 180:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+ 181:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 182:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  Perform the NOR memory Initialization sequence
+ 183:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ 184:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.
+ 185:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  Timing: pointer to NOR control timing structure 
+ 186:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  ExtTiming: pointer to NOR extended mode timing structure    
+ 187:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval HAL status
+ 188:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 189:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** HAL_StatusTypeDef HAL_NOR_Init(NOR_HandleTypeDef *hnor, FSMC_NORSRAM_TimingTypeDef *Timing, FSMC_NO
+ 190:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** {
+ 191:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR handle parameter */
+ 192:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if(hnor == NULL)
+ 193:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 194:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****      return HAL_ERROR;
+ 195:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 196:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 197:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if(hnor->State == HAL_NOR_STATE_RESET)
+ 198:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 199:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     /* Allocate lock resource and initialize it */
+ 200:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     hnor->Lock = HAL_UNLOCKED;
+ 201:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+ 202:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     /* Initialize the low level hardware (MSP) */
+ 203:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     HAL_NOR_MspInit(hnor);
+ 204:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ARM GAS  /tmp/ccMkjQ8H.s 			page 5
+
+
+ 205:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 206:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Initialize NOR control Interface */
+ 207:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   FSMC_NORSRAM_Init(hnor->Instance, &(hnor->Init));
+ 208:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 209:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Initialize NOR timing Interface */
+ 210:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   FSMC_NORSRAM_Timing_Init(hnor->Instance, Timing, hnor->Init.NSBank); 
+ 211:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 212:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Initialize NOR extended mode timing Interface */
+ 213:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   FSMC_NORSRAM_Extended_Timing_Init(hnor->Extended, ExtTiming, hnor->Init.NSBank, hnor->Init.Extend
+ 214:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 215:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Enable the NORSRAM device */
+ 216:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __FSMC_NORSRAM_ENABLE(hnor->Instance, hnor->Init.NSBank);  
+ 217:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 218:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Initialize NOR Memory Data Width*/
+ 219:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if (hnor->Init.MemoryDataWidth == FSMC_NORSRAM_MEM_BUS_WIDTH_8)
+ 220:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 221:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     uwNORMemoryDataWidth = NOR_MEMORY_8B;
+ 222:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 223:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else
+ 224:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 225:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     uwNORMemoryDataWidth = NOR_MEMORY_16B;
+ 226:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 227:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 228:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR controller state */
+ 229:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_READY; 
+ 230:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 231:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   return HAL_OK;
+ 232:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 233:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 234:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 235:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  Perform NOR memory De-Initialization sequence
+ 236:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ 237:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.
+ 238:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval HAL status
+ 239:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 240:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** HAL_StatusTypeDef HAL_NOR_DeInit(NOR_HandleTypeDef *hnor)  
+ 241:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** {
+ 242:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* De-Initialize the low level hardware (MSP) */
+ 243:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   HAL_NOR_MspDeInit(hnor);
+ 244:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****  
+ 245:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Configure the NOR registers with their reset values */
+ 246:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   FSMC_NORSRAM_DeInit(hnor->Instance, hnor->Extended, hnor->Init.NSBank);
+ 247:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 248:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Update the NOR controller state */
+ 249:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_RESET;
+ 250:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 251:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Release Lock */
+ 252:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_UNLOCK(hnor);
+ 253:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 254:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   return HAL_OK;
+ 255:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 256:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 257:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 258:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  NOR MSP Init
+ 259:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ 260:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.
+ 261:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval None
+ARM GAS  /tmp/ccMkjQ8H.s 			page 6
+
+
+ 262:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 263:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** __weak void HAL_NOR_MspInit(NOR_HandleTypeDef *hnor)
+ 264:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** {
+  26              		.loc 1 264 0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30              		@ link register save eliminated.
+  31              	.LVL0:
+  32 0000 7047     		bx	lr
+  33              		.cfi_endproc
+  34              	.LFE66:
+  36              		.section	.text.HAL_NOR_Init,"ax",%progbits
+  37              		.align	1
+  38              		.global	HAL_NOR_Init
+  39              		.syntax unified
+  40              		.thumb
+  41              		.thumb_func
+  42              		.fpu softvfp
+  44              	HAL_NOR_Init:
+  45              	.LFB64:
+ 190:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR handle parameter */
+  46              		.loc 1 190 0
+  47              		.cfi_startproc
+  48              		@ args = 0, pretend = 0, frame = 0
+  49              		@ frame_needed = 0, uses_anonymous_args = 0
+  50              	.LVL1:
+ 192:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+  51              		.loc 1 192 0
+  52 0000 88B3     		cbz	r0, .L7
+ 190:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR handle parameter */
+  53              		.loc 1 190 0
+  54 0002 70B5     		push	{r4, r5, r6, lr}
+  55              	.LCFI0:
+  56              		.cfi_def_cfa_offset 16
+  57              		.cfi_offset 4, -16
+  58              		.cfi_offset 5, -12
+  59              		.cfi_offset 6, -8
+  60              		.cfi_offset 14, -4
+  61 0004 0446     		mov	r4, r0
+  62 0006 1546     		mov	r5, r2
+  63 0008 0E46     		mov	r6, r1
+ 197:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+  64              		.loc 1 197 0
+  65 000a 90F83D30 		ldrb	r3, [r0, #61]	@ zero_extendqisi2
+  66 000e 0BB3     		cbz	r3, .L12
+  67              	.LVL2:
+  68              	.L4:
+ 207:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+  69              		.loc 1 207 0
+  70 0010 04F10801 		add	r1, r4, #8
+  71 0014 2068     		ldr	r0, [r4]
+  72 0016 FFF7FEFF 		bl	FSMC_NORSRAM_Init
+  73              	.LVL3:
+ 210:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+  74              		.loc 1 210 0
+  75 001a A268     		ldr	r2, [r4, #8]
+ARM GAS  /tmp/ccMkjQ8H.s 			page 7
+
+
+  76 001c 3146     		mov	r1, r6
+  77 001e 2068     		ldr	r0, [r4]
+  78 0020 FFF7FEFF 		bl	FSMC_NORSRAM_Timing_Init
+  79              	.LVL4:
+ 213:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+  80              		.loc 1 213 0
+  81 0024 236B     		ldr	r3, [r4, #48]
+  82 0026 A268     		ldr	r2, [r4, #8]
+  83 0028 2946     		mov	r1, r5
+  84 002a 6068     		ldr	r0, [r4, #4]
+  85 002c FFF7FEFF 		bl	FSMC_NORSRAM_Extended_Timing_Init
+  86              	.LVL5:
+ 216:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+  87              		.loc 1 216 0
+  88 0030 2268     		ldr	r2, [r4]
+  89 0032 A168     		ldr	r1, [r4, #8]
+  90 0034 52F82130 		ldr	r3, [r2, r1, lsl #2]
+  91 0038 43F00103 		orr	r3, r3, #1
+  92 003c 42F82130 		str	r3, [r2, r1, lsl #2]
+ 219:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+  93              		.loc 1 219 0
+  94 0040 6369     		ldr	r3, [r4, #20]
+  95 0042 63B9     		cbnz	r3, .L5
+ 221:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+  96              		.loc 1 221 0
+  97 0044 0022     		movs	r2, #0
+  98 0046 094B     		ldr	r3, .L13
+  99 0048 1A60     		str	r2, [r3]
+ 100              	.L6:
+ 229:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 101              		.loc 1 229 0
+ 102 004a 0123     		movs	r3, #1
+ 103 004c 84F83D30 		strb	r3, [r4, #61]
+ 231:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 104              		.loc 1 231 0
+ 105 0050 0020     		movs	r0, #0
+ 106 0052 70BD     		pop	{r4, r5, r6, pc}
+ 107              	.LVL6:
+ 108              	.L12:
+ 200:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+ 109              		.loc 1 200 0
+ 110 0054 80F83C30 		strb	r3, [r0, #60]
+ 203:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 111              		.loc 1 203 0
+ 112 0058 FFF7FEFF 		bl	HAL_NOR_MspInit
+ 113              	.LVL7:
+ 114 005c D8E7     		b	.L4
+ 115              	.L5:
+ 225:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 116              		.loc 1 225 0
+ 117 005e 0122     		movs	r2, #1
+ 118 0060 024B     		ldr	r3, .L13
+ 119 0062 1A60     		str	r2, [r3]
+ 120 0064 F1E7     		b	.L6
+ 121              	.LVL8:
+ 122              	.L7:
+ 123              	.LCFI1:
+ARM GAS  /tmp/ccMkjQ8H.s 			page 8
+
+
+ 124              		.cfi_def_cfa_offset 0
+ 125              		.cfi_restore 4
+ 126              		.cfi_restore 5
+ 127              		.cfi_restore 6
+ 128              		.cfi_restore 14
+ 194:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 129              		.loc 1 194 0
+ 130 0066 0120     		movs	r0, #1
+ 131              	.LVL9:
+ 132 0068 7047     		bx	lr
+ 133              	.L14:
+ 134 006a 00BF     		.align	2
+ 135              	.L13:
+ 136 006c 00000000 		.word	.LANCHOR0
+ 137              		.cfi_endproc
+ 138              	.LFE64:
+ 140              		.section	.text.HAL_NOR_MspDeInit,"ax",%progbits
+ 141              		.align	1
+ 142              		.weak	HAL_NOR_MspDeInit
+ 143              		.syntax unified
+ 144              		.thumb
+ 145              		.thumb_func
+ 146              		.fpu softvfp
+ 148              	HAL_NOR_MspDeInit:
+ 149              	.LFB67:
+ 265:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Prevent unused argument(s) compilation warning */
+ 266:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   UNUSED(hnor);
+ 267:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* NOTE : This function Should not be modified, when the callback is needed,
+ 268:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****             the HAL_NOR_MspInit could be implemented in the user file
+ 269:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****    */ 
+ 270:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 271:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 272:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 273:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  NOR MSP DeInit
+ 274:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ 275:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.
+ 276:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval None
+ 277:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 278:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** __weak void HAL_NOR_MspDeInit(NOR_HandleTypeDef *hnor)
+ 279:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** {
+ 150              		.loc 1 279 0
+ 151              		.cfi_startproc
+ 152              		@ args = 0, pretend = 0, frame = 0
+ 153              		@ frame_needed = 0, uses_anonymous_args = 0
+ 154              		@ link register save eliminated.
+ 155              	.LVL10:
+ 156 0000 7047     		bx	lr
+ 157              		.cfi_endproc
+ 158              	.LFE67:
+ 160              		.section	.text.HAL_NOR_DeInit,"ax",%progbits
+ 161              		.align	1
+ 162              		.global	HAL_NOR_DeInit
+ 163              		.syntax unified
+ 164              		.thumb
+ 165              		.thumb_func
+ 166              		.fpu softvfp
+ 168              	HAL_NOR_DeInit:
+ARM GAS  /tmp/ccMkjQ8H.s 			page 9
+
+
+ 169              	.LFB65:
+ 241:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* De-Initialize the low level hardware (MSP) */
+ 170              		.loc 1 241 0
+ 171              		.cfi_startproc
+ 172              		@ args = 0, pretend = 0, frame = 0
+ 173              		@ frame_needed = 0, uses_anonymous_args = 0
+ 174              	.LVL11:
+ 241:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* De-Initialize the low level hardware (MSP) */
+ 175              		.loc 1 241 0
+ 176 0000 10B5     		push	{r4, lr}
+ 177              	.LCFI2:
+ 178              		.cfi_def_cfa_offset 8
+ 179              		.cfi_offset 4, -8
+ 180              		.cfi_offset 14, -4
+ 181 0002 0446     		mov	r4, r0
+ 243:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****  
+ 182              		.loc 1 243 0
+ 183 0004 FFF7FEFF 		bl	HAL_NOR_MspDeInit
+ 184              	.LVL12:
+ 246:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 185              		.loc 1 246 0
+ 186 0008 A268     		ldr	r2, [r4, #8]
+ 187 000a 6168     		ldr	r1, [r4, #4]
+ 188 000c 2068     		ldr	r0, [r4]
+ 189 000e FFF7FEFF 		bl	FSMC_NORSRAM_DeInit
+ 190              	.LVL13:
+ 249:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 191              		.loc 1 249 0
+ 192 0012 0020     		movs	r0, #0
+ 193 0014 84F83D00 		strb	r0, [r4, #61]
+ 252:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 194              		.loc 1 252 0
+ 195 0018 84F83C00 		strb	r0, [r4, #60]
+ 255:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 196              		.loc 1 255 0
+ 197 001c 10BD     		pop	{r4, pc}
+ 198              		.cfi_endproc
+ 199              	.LFE65:
+ 201              		.section	.text.HAL_NOR_MspWait,"ax",%progbits
+ 202              		.align	1
+ 203              		.weak	HAL_NOR_MspWait
+ 204              		.syntax unified
+ 205              		.thumb
+ 206              		.thumb_func
+ 207              		.fpu softvfp
+ 209              	HAL_NOR_MspWait:
+ 210              	.LFB68:
+ 280:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Prevent unused argument(s) compilation warning */
+ 281:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   UNUSED(hnor);
+ 282:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* NOTE : This function Should not be modified, when the callback is needed,
+ 283:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****             the HAL_NOR_MspDeInit could be implemented in the user file
+ 284:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****    */ 
+ 285:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 286:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 287:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 288:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  NOR MSP Wait fro Ready/Busy signal
+ 289:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ARM GAS  /tmp/ccMkjQ8H.s 			page 10
+
+
+ 290:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.
+ 291:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  Timeout: Maximum timeout value
+ 292:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval None
+ 293:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 294:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** __weak void HAL_NOR_MspWait(NOR_HandleTypeDef *hnor, uint32_t Timeout)
+ 295:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** {
+ 211              		.loc 1 295 0
+ 212              		.cfi_startproc
+ 213              		@ args = 0, pretend = 0, frame = 0
+ 214              		@ frame_needed = 0, uses_anonymous_args = 0
+ 215              		@ link register save eliminated.
+ 216              	.LVL14:
+ 217 0000 7047     		bx	lr
+ 218              		.cfi_endproc
+ 219              	.LFE68:
+ 221              		.section	.text.HAL_NOR_Read_ID,"ax",%progbits
+ 222              		.align	1
+ 223              		.global	HAL_NOR_Read_ID
+ 224              		.syntax unified
+ 225              		.thumb
+ 226              		.thumb_func
+ 227              		.fpu softvfp
+ 229              	HAL_NOR_Read_ID:
+ 230              	.LFB69:
+ 296:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Prevent unused argument(s) compilation warning */
+ 297:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   UNUSED(hnor);
+ 298:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   UNUSED(Timeout);
+ 299:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* NOTE : This function Should not be modified, when the callback is needed,
+ 300:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****             the HAL_NOR_MspWait could be implemented in the user file
+ 301:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****    */ 
+ 302:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 303:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 304:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 305:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @}
+ 306:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 307:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 308:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /** @defgroup NOR_Exported_Functions_Group2 Input and Output functions 
+ 309:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief    Input Output and memory control functions 
+ 310:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *
+ 311:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   @verbatim    
+ 312:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   ==============================================================================
+ 313:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****                 ##### NOR Input and Output functions #####
+ 314:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   ==============================================================================
+ 315:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   [..]  
+ 316:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     This section provides functions allowing to use and control the NOR memory
+ 317:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 318:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** @endverbatim
+ 319:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @{
+ 320:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 321:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 322:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 323:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  Read NOR flash IDs
+ 324:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ 325:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.
+ 326:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  pNOR_ID : pointer to NOR ID structure
+ 327:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval HAL status
+ 328:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ARM GAS  /tmp/ccMkjQ8H.s 			page 11
+
+
+ 329:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** HAL_StatusTypeDef HAL_NOR_Read_ID(NOR_HandleTypeDef *hnor, NOR_IDTypeDef *pNOR_ID)
+ 330:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** {
+ 231              		.loc 1 330 0
+ 232              		.cfi_startproc
+ 233              		@ args = 0, pretend = 0, frame = 0
+ 234              		@ frame_needed = 0, uses_anonymous_args = 0
+ 235              		@ link register save eliminated.
+ 236              	.LVL15:
+ 331:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint32_t deviceaddress = 0U;
+ 332:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 333:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process Locked */
+ 334:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_LOCK(hnor);
+ 237              		.loc 1 334 0
+ 238 0000 90F83C30 		ldrb	r3, [r0, #60]	@ zero_extendqisi2
+ 239 0004 012B     		cmp	r3, #1
+ 240 0006 55D0     		beq	.L32
+ 241              		.loc 1 334 0 is_stmt 0 discriminator 2
+ 242 0008 0123     		movs	r3, #1
+ 243 000a 80F83C30 		strb	r3, [r0, #60]
+ 335:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 336:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR controller state */
+ 337:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if(hnor->State == HAL_NOR_STATE_BUSY)
+ 244              		.loc 1 337 0 is_stmt 1 discriminator 2
+ 245 000e 90F83D30 		ldrb	r3, [r0, #61]	@ zero_extendqisi2
+ 246 0012 DBB2     		uxtb	r3, r3
+ 247 0014 022B     		cmp	r3, #2
+ 248 0016 4FD0     		beq	.L33
+ 330:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint32_t deviceaddress = 0U;
+ 249              		.loc 1 330 0
+ 250 0018 70B4     		push	{r4, r5, r6}
+ 251              	.LCFI3:
+ 252              		.cfi_def_cfa_offset 12
+ 253              		.cfi_offset 4, -12
+ 254              		.cfi_offset 5, -8
+ 255              		.cfi_offset 6, -4
+ 338:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 339:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****      return HAL_BUSY;
+ 340:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 341:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 342:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Select the NOR device address */
+ 343:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if (hnor->Init.NSBank == FSMC_NORSRAM_BANK1)
+ 256              		.loc 1 343 0
+ 257 001a 8368     		ldr	r3, [r0, #8]
+ 258 001c 4BB1     		cbz	r3, .L34
+ 344:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 345:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS1;
+ 346:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 347:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK2)
+ 259              		.loc 1 347 0
+ 260 001e 022B     		cmp	r3, #2
+ 261 0020 38D0     		beq	.L35
+ 348:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 349:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS2;
+ 350:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 351:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK3)
+ 262              		.loc 1 351 0
+ 263 0022 042B     		cmp	r3, #4
+ARM GAS  /tmp/ccMkjQ8H.s 			page 12
+
+
+ 264 0024 02D0     		beq	.L41
+ 352:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 353:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS3;
+ 354:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 355:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else /* FSMC_NORSRAM_BANK4 */
+ 356:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 357:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS4;
+ 265              		.loc 1 357 0
+ 266 0026 4FF0D843 		mov	r3, #1811939328
+ 267 002a 04E0     		b	.L21
+ 268              	.L41:
+ 353:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 269              		.loc 1 353 0
+ 270 002c 4FF0D043 		mov	r3, #1744830464
+ 271 0030 01E0     		b	.L21
+ 272              	.L34:
+ 345:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 273              		.loc 1 345 0
+ 274 0032 4FF0C043 		mov	r3, #1610612736
+ 275              	.L21:
+ 276              	.LVL16:
+ 358:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }  
+ 359:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+ 360:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Update the NOR controller state */
+ 361:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_BUSY;
+ 277              		.loc 1 361 0
+ 278 0036 0222     		movs	r2, #2
+ 279 0038 80F83D20 		strb	r2, [r0, #61]
+ 362:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 363:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Send read ID command */
+ 364:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_FIRST), NOR_CMD_DAT
+ 280              		.loc 1 364 0
+ 281 003c 1F4A     		ldr	r2, .L47
+ 282 003e 1268     		ldr	r2, [r2]
+ 283 0040 012A     		cmp	r2, #1
+ 284 0042 2AD0     		beq	.L42
+ 285              		.loc 1 364 0 is_stmt 0 discriminator 2
+ 286 0044 03F25554 		addw	r4, r3, #1365
+ 287              	.L23:
+ 288              		.loc 1 364 0 discriminator 4
+ 289 0048 2546     		mov	r5, r4
+ 290 004a AA26     		movs	r6, #170
+ 291 004c 2680     		strh	r6, [r4]	@ movhi
+ 365:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_SECOND), NOR_CMD_DA
+ 292              		.loc 1 365 0 is_stmt 1 discriminator 4
+ 293 004e 012A     		cmp	r2, #1
+ 294 0050 26D0     		beq	.L43
+ 295              		.loc 1 365 0 is_stmt 0 discriminator 2
+ 296 0052 03F2AA26 		addw	r6, r3, #682
+ 297              	.L25:
+ 298              		.loc 1 365 0 discriminator 4
+ 299 0056 5524     		movs	r4, #85
+ 300 0058 3480     		strh	r4, [r6]	@ movhi
+ 366:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_THIRD), NOR_CMD_DAT
+ 301              		.loc 1 366 0 is_stmt 1 discriminator 4
+ 302 005a 9024     		movs	r4, #144
+ 303 005c 2C80     		strh	r4, [r5]	@ movhi
+ARM GAS  /tmp/ccMkjQ8H.s 			page 13
+
+
+ 367:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 368:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Read the NOR IDs */
+ 369:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   pNOR_ID->Manufacturer_Code = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidt
+ 304              		.loc 1 369 0 discriminator 4
+ 305 005e 1C88     		ldrh	r4, [r3]
+ 306 0060 0C80     		strh	r4, [r1]	@ movhi
+ 370:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   pNOR_ID->Device_Code1      = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidt
+ 307              		.loc 1 370 0 discriminator 4
+ 308 0062 012A     		cmp	r2, #1
+ 309 0064 1FD0     		beq	.L44
+ 310              		.loc 1 370 0 is_stmt 0 discriminator 2
+ 311 0066 5C1C     		adds	r4, r3, #1
+ 312              	.L27:
+ 313              		.loc 1 370 0 discriminator 4
+ 314 0068 2488     		ldrh	r4, [r4]
+ 315 006a 4C80     		strh	r4, [r1, #2]	@ movhi
+ 371:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   pNOR_ID->Device_Code2      = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidt
+ 316              		.loc 1 371 0 is_stmt 1 discriminator 4
+ 317 006c 012A     		cmp	r2, #1
+ 318 006e 1CD0     		beq	.L45
+ 319              		.loc 1 371 0 is_stmt 0 discriminator 2
+ 320 0070 03F10E04 		add	r4, r3, #14
+ 321              	.L29:
+ 322              		.loc 1 371 0 discriminator 4
+ 323 0074 2488     		ldrh	r4, [r4]
+ 324 0076 8C80     		strh	r4, [r1, #4]	@ movhi
+ 372:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   pNOR_ID->Device_Code3      = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidt
+ 325              		.loc 1 372 0 is_stmt 1 discriminator 4
+ 326 0078 012A     		cmp	r2, #1
+ 327 007a 19D0     		beq	.L46
+ 328              		.loc 1 372 0 is_stmt 0 discriminator 2
+ 329 007c 0F33     		adds	r3, r3, #15
+ 330              	.LVL17:
+ 331              	.L31:
+ 332              		.loc 1 372 0 discriminator 4
+ 333 007e 1B88     		ldrh	r3, [r3]
+ 334 0080 CB80     		strh	r3, [r1, #6]	@ movhi
+ 373:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 374:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR controller state */
+ 375:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_READY;
+ 335              		.loc 1 375 0 is_stmt 1 discriminator 4
+ 336 0082 0123     		movs	r3, #1
+ 337 0084 80F83D30 		strb	r3, [r0, #61]
+ 376:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 377:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process unlocked */
+ 378:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_UNLOCK(hnor);   
+ 338              		.loc 1 378 0 discriminator 4
+ 339 0088 0023     		movs	r3, #0
+ 340 008a 80F83C30 		strb	r3, [r0, #60]
+ 379:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 380:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   return HAL_OK;
+ 341              		.loc 1 380 0 discriminator 4
+ 342 008e 1846     		mov	r0, r3
+ 343              	.LVL18:
+ 381:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 344              		.loc 1 381 0 discriminator 4
+ 345 0090 70BC     		pop	{r4, r5, r6}
+ARM GAS  /tmp/ccMkjQ8H.s 			page 14
+
+
+ 346              	.LCFI4:
+ 347              		.cfi_remember_state
+ 348              		.cfi_restore 6
+ 349              		.cfi_restore 5
+ 350              		.cfi_restore 4
+ 351              		.cfi_def_cfa_offset 0
+ 352 0092 7047     		bx	lr
+ 353              	.LVL19:
+ 354              	.L35:
+ 355              	.LCFI5:
+ 356              		.cfi_restore_state
+ 349:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 357              		.loc 1 349 0
+ 358 0094 4FF0C843 		mov	r3, #1677721600
+ 359 0098 CDE7     		b	.L21
+ 360              	.LVL20:
+ 361              	.L42:
+ 364:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_SECOND), NOR_CMD_DA
+ 362              		.loc 1 364 0 discriminator 1
+ 363 009a 03F6AA24 		addw	r4, r3, #2730
+ 364 009e D3E7     		b	.L23
+ 365              	.L43:
+ 365:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_THIRD), NOR_CMD_DAT
+ 366              		.loc 1 365 0 discriminator 1
+ 367 00a0 03F25456 		addw	r6, r3, #1364
+ 368 00a4 D7E7     		b	.L25
+ 369              	.L44:
+ 370:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   pNOR_ID->Device_Code2      = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidt
+ 370              		.loc 1 370 0 discriminator 1
+ 371 00a6 9C1C     		adds	r4, r3, #2
+ 372 00a8 DEE7     		b	.L27
+ 373              	.L45:
+ 371:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   pNOR_ID->Device_Code3      = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidt
+ 374              		.loc 1 371 0 discriminator 1
+ 375 00aa 03F11C04 		add	r4, r3, #28
+ 376 00ae E1E7     		b	.L29
+ 377              	.L46:
+ 372:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 378              		.loc 1 372 0 discriminator 1
+ 379 00b0 1E33     		adds	r3, r3, #30
+ 380              	.LVL21:
+ 381 00b2 E4E7     		b	.L31
+ 382              	.LVL22:
+ 383              	.L32:
+ 384              	.LCFI6:
+ 385              		.cfi_def_cfa_offset 0
+ 386              		.cfi_restore 4
+ 387              		.cfi_restore 5
+ 388              		.cfi_restore 6
+ 334:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 389              		.loc 1 334 0
+ 390 00b4 0220     		movs	r0, #2
+ 391              	.LVL23:
+ 392 00b6 7047     		bx	lr
+ 393              	.LVL24:
+ 394              	.L33:
+ 339:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ARM GAS  /tmp/ccMkjQ8H.s 			page 15
+
+
+ 395              		.loc 1 339 0
+ 396 00b8 0220     		movs	r0, #2
+ 397              	.LVL25:
+ 398 00ba 7047     		bx	lr
+ 399              	.L48:
+ 400              		.align	2
+ 401              	.L47:
+ 402 00bc 00000000 		.word	.LANCHOR0
+ 403              		.cfi_endproc
+ 404              	.LFE69:
+ 406              		.section	.text.HAL_NOR_ReturnToReadMode,"ax",%progbits
+ 407              		.align	1
+ 408              		.global	HAL_NOR_ReturnToReadMode
+ 409              		.syntax unified
+ 410              		.thumb
+ 411              		.thumb_func
+ 412              		.fpu softvfp
+ 414              	HAL_NOR_ReturnToReadMode:
+ 415              	.LFB70:
+ 382:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 383:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 384:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  Returns the NOR memory to Read mode.
+ 385:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ 386:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.
+ 387:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval HAL status
+ 388:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 389:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** HAL_StatusTypeDef HAL_NOR_ReturnToReadMode(NOR_HandleTypeDef *hnor)
+ 390:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** {
+ 416              		.loc 1 390 0
+ 417              		.cfi_startproc
+ 418              		@ args = 0, pretend = 0, frame = 0
+ 419              		@ frame_needed = 0, uses_anonymous_args = 0
+ 420              		@ link register save eliminated.
+ 421              	.LVL26:
+ 391:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint32_t deviceaddress = 0U;  
+ 392:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 393:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process Locked */
+ 394:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_LOCK(hnor);
+ 422              		.loc 1 394 0
+ 423 0000 90F83C30 		ldrb	r3, [r0, #60]	@ zero_extendqisi2
+ 424 0004 012B     		cmp	r3, #1
+ 425 0006 22D0     		beq	.L52
+ 426              		.loc 1 394 0 is_stmt 0 discriminator 2
+ 427 0008 0123     		movs	r3, #1
+ 428 000a 80F83C30 		strb	r3, [r0, #60]
+ 395:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 396:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR controller state */
+ 397:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if(hnor->State == HAL_NOR_STATE_BUSY)
+ 429              		.loc 1 397 0 is_stmt 1 discriminator 2
+ 430 000e 90F83D30 		ldrb	r3, [r0, #61]	@ zero_extendqisi2
+ 431 0012 DBB2     		uxtb	r3, r3
+ 432 0014 022B     		cmp	r3, #2
+ 433 0016 1CD0     		beq	.L53
+ 398:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 399:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****      return HAL_BUSY;
+ 400:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 401:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ARM GAS  /tmp/ccMkjQ8H.s 			page 16
+
+
+ 402:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Select the NOR device address */
+ 403:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if (hnor->Init.NSBank == FSMC_NORSRAM_BANK1)
+ 434              		.loc 1 403 0
+ 435 0018 8368     		ldr	r3, [r0, #8]
+ 436 001a 4BB1     		cbz	r3, .L54
+ 404:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 405:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS1;
+ 406:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 407:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK2)
+ 437              		.loc 1 407 0
+ 438 001c 022B     		cmp	r3, #2
+ 439 001e 13D0     		beq	.L55
+ 408:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 409:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS2;
+ 410:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 411:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK3)
+ 440              		.loc 1 411 0
+ 441 0020 042B     		cmp	r3, #4
+ 442 0022 02D0     		beq	.L57
+ 412:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 413:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS3;
+ 414:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 415:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else /* FSMC_NORSRAM_BANK4 */
+ 416:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 417:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS4;
+ 443              		.loc 1 417 0
+ 444 0024 4FF0D842 		mov	r2, #1811939328
+ 445 0028 04E0     		b	.L51
+ 446              	.L57:
+ 413:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 447              		.loc 1 413 0
+ 448 002a 4FF0D042 		mov	r2, #1744830464
+ 449 002e 01E0     		b	.L51
+ 450              	.L54:
+ 405:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 451              		.loc 1 405 0
+ 452 0030 4FF0C042 		mov	r2, #1610612736
+ 453              	.L51:
+ 454              	.LVL27:
+ 418:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }  
+ 419:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 420:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(deviceaddress, NOR_CMD_DATA_READ_RESET);
+ 455              		.loc 1 420 0
+ 456 0034 F023     		movs	r3, #240
+ 457 0036 1380     		strh	r3, [r2]	@ movhi
+ 421:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 422:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR controller state */
+ 423:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_READY;
+ 458              		.loc 1 423 0
+ 459 0038 0123     		movs	r3, #1
+ 460 003a 80F83D30 		strb	r3, [r0, #61]
+ 424:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 425:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process unlocked */
+ 426:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_UNLOCK(hnor);   
+ 461              		.loc 1 426 0
+ 462 003e 0023     		movs	r3, #0
+ 463 0040 80F83C30 		strb	r3, [r0, #60]
+ARM GAS  /tmp/ccMkjQ8H.s 			page 17
+
+
+ 427:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 428:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   return HAL_OK;
+ 464              		.loc 1 428 0
+ 465 0044 1846     		mov	r0, r3
+ 466              	.LVL28:
+ 467 0046 7047     		bx	lr
+ 468              	.LVL29:
+ 469              	.L55:
+ 409:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 470              		.loc 1 409 0
+ 471 0048 4FF0C842 		mov	r2, #1677721600
+ 472 004c F2E7     		b	.L51
+ 473              	.L52:
+ 394:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 474              		.loc 1 394 0
+ 475 004e 0220     		movs	r0, #2
+ 476              	.LVL30:
+ 477 0050 7047     		bx	lr
+ 478              	.LVL31:
+ 479              	.L53:
+ 399:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 480              		.loc 1 399 0
+ 481 0052 0220     		movs	r0, #2
+ 482              	.LVL32:
+ 429:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 483              		.loc 1 429 0
+ 484 0054 7047     		bx	lr
+ 485              		.cfi_endproc
+ 486              	.LFE70:
+ 488              		.section	.text.HAL_NOR_Read,"ax",%progbits
+ 489              		.align	1
+ 490              		.global	HAL_NOR_Read
+ 491              		.syntax unified
+ 492              		.thumb
+ 493              		.thumb_func
+ 494              		.fpu softvfp
+ 496              	HAL_NOR_Read:
+ 497              	.LFB71:
+ 430:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 431:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 432:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  Read data from NOR memory 
+ 433:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ 434:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.
+ 435:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  pAddress: pointer to Device address
+ 436:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  pData : pointer to read data  
+ 437:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval HAL status
+ 438:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 439:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** HAL_StatusTypeDef HAL_NOR_Read(NOR_HandleTypeDef *hnor, uint32_t *pAddress, uint16_t *pData)
+ 440:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** {
+ 498              		.loc 1 440 0
+ 499              		.cfi_startproc
+ 500              		@ args = 0, pretend = 0, frame = 0
+ 501              		@ frame_needed = 0, uses_anonymous_args = 0
+ 502              		@ link register save eliminated.
+ 503              	.LVL33:
+ 441:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint32_t deviceaddress = 0U;
+ 442:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ARM GAS  /tmp/ccMkjQ8H.s 			page 18
+
+
+ 443:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process Locked */
+ 444:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_LOCK(hnor);
+ 504              		.loc 1 444 0
+ 505 0000 90F83C30 		ldrb	r3, [r0, #60]	@ zero_extendqisi2
+ 506 0004 012B     		cmp	r3, #1
+ 507 0006 3DD0     		beq	.L65
+ 508              		.loc 1 444 0 is_stmt 0 discriminator 2
+ 509 0008 0123     		movs	r3, #1
+ 510 000a 80F83C30 		strb	r3, [r0, #60]
+ 445:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 446:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR controller state */
+ 447:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if(hnor->State == HAL_NOR_STATE_BUSY)
+ 511              		.loc 1 447 0 is_stmt 1 discriminator 2
+ 512 000e 90F83D30 		ldrb	r3, [r0, #61]	@ zero_extendqisi2
+ 513 0012 DBB2     		uxtb	r3, r3
+ 514 0014 022B     		cmp	r3, #2
+ 515 0016 37D0     		beq	.L66
+ 440:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint32_t deviceaddress = 0U;
+ 516              		.loc 1 440 0
+ 517 0018 70B4     		push	{r4, r5, r6}
+ 518              	.LCFI7:
+ 519              		.cfi_def_cfa_offset 12
+ 520              		.cfi_offset 4, -12
+ 521              		.cfi_offset 5, -8
+ 522              		.cfi_offset 6, -4
+ 448:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 449:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****      return HAL_BUSY;
+ 450:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 451:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 452:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Select the NOR device address */
+ 453:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if (hnor->Init.NSBank == FSMC_NORSRAM_BANK1)
+ 523              		.loc 1 453 0
+ 524 001a 8368     		ldr	r3, [r0, #8]
+ 525 001c 4BB1     		cbz	r3, .L67
+ 454:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 455:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS1;
+ 456:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 457:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK2)
+ 526              		.loc 1 457 0
+ 527 001e 022B     		cmp	r3, #2
+ 528 0020 27D0     		beq	.L68
+ 458:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 459:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS2;
+ 460:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 461:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK3)
+ 529              		.loc 1 461 0
+ 530 0022 042B     		cmp	r3, #4
+ 531 0024 02D0     		beq	.L74
+ 462:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 463:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS3;
+ 464:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 465:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else /* FSMC_NORSRAM_BANK4 */
+ 466:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 467:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS4;
+ 532              		.loc 1 467 0
+ 533 0026 4FF0D843 		mov	r3, #1811939328
+ 534 002a 04E0     		b	.L60
+ARM GAS  /tmp/ccMkjQ8H.s 			page 19
+
+
+ 535              	.L74:
+ 463:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 536              		.loc 1 463 0
+ 537 002c 4FF0D043 		mov	r3, #1744830464
+ 538 0030 01E0     		b	.L60
+ 539              	.L67:
+ 455:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 540              		.loc 1 455 0
+ 541 0032 4FF0C043 		mov	r3, #1610612736
+ 542              	.L60:
+ 543              	.LVL34:
+ 468:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   } 
+ 469:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+ 470:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Update the NOR controller state */
+ 471:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_BUSY;
+ 544              		.loc 1 471 0
+ 545 0036 0224     		movs	r4, #2
+ 546 0038 80F83D40 		strb	r4, [r0, #61]
+ 472:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 473:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Send read data command */
+ 474:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_FIRST), NOR_CMD_DAT
+ 547              		.loc 1 474 0
+ 548 003c 134C     		ldr	r4, .L77
+ 549 003e 2468     		ldr	r4, [r4]
+ 550 0040 012C     		cmp	r4, #1
+ 551 0042 19D0     		beq	.L75
+ 552              		.loc 1 474 0 is_stmt 0 discriminator 2
+ 553 0044 03F25556 		addw	r6, r3, #1365
+ 554              	.L62:
+ 555              		.loc 1 474 0 discriminator 4
+ 556 0048 AA25     		movs	r5, #170
+ 557 004a 3580     		strh	r5, [r6]	@ movhi
+ 475:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_SECOND), NOR_CMD_DA
+ 558              		.loc 1 475 0 is_stmt 1 discriminator 4
+ 559 004c 012C     		cmp	r4, #1
+ 560 004e 16D0     		beq	.L76
+ 561              		.loc 1 475 0 is_stmt 0 discriminator 2
+ 562 0050 03F2AA23 		addw	r3, r3, #682
+ 563              	.LVL35:
+ 564              	.L64:
+ 565              		.loc 1 475 0 discriminator 4
+ 566 0054 5524     		movs	r4, #85
+ 567 0056 1C80     		strh	r4, [r3]	@ movhi
+ 476:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE((uint32_t)pAddress, NOR_CMD_DATA_READ_RESET);
+ 568              		.loc 1 476 0 is_stmt 1 discriminator 4
+ 569 0058 F023     		movs	r3, #240
+ 570 005a 0B80     		strh	r3, [r1]	@ movhi
+ 477:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 478:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Read the data */
+ 479:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *pData = *(__IO uint32_t *)(uint32_t)pAddress;
+ 571              		.loc 1 479 0 discriminator 4
+ 572 005c 0B68     		ldr	r3, [r1]
+ 573 005e 1380     		strh	r3, [r2]	@ movhi
+ 480:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 481:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR controller state */
+ 482:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_READY;
+ 574              		.loc 1 482 0 discriminator 4
+ARM GAS  /tmp/ccMkjQ8H.s 			page 20
+
+
+ 575 0060 0123     		movs	r3, #1
+ 576 0062 80F83D30 		strb	r3, [r0, #61]
+ 483:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 484:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process unlocked */
+ 485:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_UNLOCK(hnor);
+ 577              		.loc 1 485 0 discriminator 4
+ 578 0066 0023     		movs	r3, #0
+ 579 0068 80F83C30 		strb	r3, [r0, #60]
+ 486:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 487:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   return HAL_OK;  
+ 580              		.loc 1 487 0 discriminator 4
+ 581 006c 1846     		mov	r0, r3
+ 582              	.LVL36:
+ 488:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 583              		.loc 1 488 0 discriminator 4
+ 584 006e 70BC     		pop	{r4, r5, r6}
+ 585              	.LCFI8:
+ 586              		.cfi_remember_state
+ 587              		.cfi_restore 6
+ 588              		.cfi_restore 5
+ 589              		.cfi_restore 4
+ 590              		.cfi_def_cfa_offset 0
+ 591 0070 7047     		bx	lr
+ 592              	.LVL37:
+ 593              	.L68:
+ 594              	.LCFI9:
+ 595              		.cfi_restore_state
+ 459:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 596              		.loc 1 459 0
+ 597 0072 4FF0C843 		mov	r3, #1677721600
+ 598 0076 DEE7     		b	.L60
+ 599              	.LVL38:
+ 600              	.L75:
+ 474:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_SECOND), NOR_CMD_DA
+ 601              		.loc 1 474 0 discriminator 1
+ 602 0078 03F6AA26 		addw	r6, r3, #2730
+ 603 007c E4E7     		b	.L62
+ 604              	.L76:
+ 475:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE((uint32_t)pAddress, NOR_CMD_DATA_READ_RESET);
+ 605              		.loc 1 475 0 discriminator 1
+ 606 007e 03F25453 		addw	r3, r3, #1364
+ 607              	.LVL39:
+ 608 0082 E7E7     		b	.L64
+ 609              	.LVL40:
+ 610              	.L65:
+ 611              	.LCFI10:
+ 612              		.cfi_def_cfa_offset 0
+ 613              		.cfi_restore 4
+ 614              		.cfi_restore 5
+ 615              		.cfi_restore 6
+ 444:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 616              		.loc 1 444 0
+ 617 0084 0220     		movs	r0, #2
+ 618              	.LVL41:
+ 619 0086 7047     		bx	lr
+ 620              	.LVL42:
+ 621              	.L66:
+ARM GAS  /tmp/ccMkjQ8H.s 			page 21
+
+
+ 449:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 622              		.loc 1 449 0
+ 623 0088 0220     		movs	r0, #2
+ 624              	.LVL43:
+ 625 008a 7047     		bx	lr
+ 626              	.L78:
+ 627              		.align	2
+ 628              	.L77:
+ 629 008c 00000000 		.word	.LANCHOR0
+ 630              		.cfi_endproc
+ 631              	.LFE71:
+ 633              		.section	.text.HAL_NOR_Program,"ax",%progbits
+ 634              		.align	1
+ 635              		.global	HAL_NOR_Program
+ 636              		.syntax unified
+ 637              		.thumb
+ 638              		.thumb_func
+ 639              		.fpu softvfp
+ 641              	HAL_NOR_Program:
+ 642              	.LFB72:
+ 489:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 490:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 491:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  Program data to NOR memory 
+ 492:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ 493:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.
+ 494:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  pAddress: Device address
+ 495:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  pData : pointer to the data to write   
+ 496:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval HAL status
+ 497:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 498:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** HAL_StatusTypeDef HAL_NOR_Program(NOR_HandleTypeDef *hnor, uint32_t *pAddress, uint16_t *pData)
+ 499:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** {
+ 643              		.loc 1 499 0
+ 644              		.cfi_startproc
+ 645              		@ args = 0, pretend = 0, frame = 0
+ 646              		@ frame_needed = 0, uses_anonymous_args = 0
+ 647              		@ link register save eliminated.
+ 648              	.LVL44:
+ 500:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint32_t deviceaddress = 0U;
+ 501:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 502:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process Locked */
+ 503:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_LOCK(hnor);
+ 649              		.loc 1 503 0
+ 650 0000 90F83C30 		ldrb	r3, [r0, #60]	@ zero_extendqisi2
+ 651 0004 012B     		cmp	r3, #1
+ 652 0006 3ED0     		beq	.L86
+ 653              		.loc 1 503 0 is_stmt 0 discriminator 2
+ 654 0008 0123     		movs	r3, #1
+ 655 000a 80F83C30 		strb	r3, [r0, #60]
+ 504:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 505:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR controller state */
+ 506:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if(hnor->State == HAL_NOR_STATE_BUSY)
+ 656              		.loc 1 506 0 is_stmt 1 discriminator 2
+ 657 000e 90F83D30 		ldrb	r3, [r0, #61]	@ zero_extendqisi2
+ 658 0012 DBB2     		uxtb	r3, r3
+ 659 0014 022B     		cmp	r3, #2
+ 660 0016 38D0     		beq	.L87
+ 499:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint32_t deviceaddress = 0U;
+ARM GAS  /tmp/ccMkjQ8H.s 			page 22
+
+
+ 661              		.loc 1 499 0
+ 662 0018 F0B4     		push	{r4, r5, r6, r7}
+ 663              	.LCFI11:
+ 664              		.cfi_def_cfa_offset 16
+ 665              		.cfi_offset 4, -16
+ 666              		.cfi_offset 5, -12
+ 667              		.cfi_offset 6, -8
+ 668              		.cfi_offset 7, -4
+ 507:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 508:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****      return HAL_BUSY;
+ 509:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 510:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 511:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Select the NOR device address */
+ 512:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if (hnor->Init.NSBank == FSMC_NORSRAM_BANK1)
+ 669              		.loc 1 512 0
+ 670 001a 8368     		ldr	r3, [r0, #8]
+ 671 001c 4BB1     		cbz	r3, .L88
+ 513:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 514:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS1;
+ 515:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 516:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK2)
+ 672              		.loc 1 516 0
+ 673 001e 022B     		cmp	r3, #2
+ 674 0020 28D0     		beq	.L89
+ 517:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 518:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS2;
+ 519:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 520:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK3)
+ 675              		.loc 1 520 0
+ 676 0022 042B     		cmp	r3, #4
+ 677 0024 02D0     		beq	.L95
+ 521:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 522:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS3;
+ 523:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 524:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else /* FSMC_NORSRAM_BANK4 */
+ 525:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 526:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS4;
+ 678              		.loc 1 526 0
+ 679 0026 4FF0D843 		mov	r3, #1811939328
+ 680 002a 04E0     		b	.L81
+ 681              	.L95:
+ 522:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 682              		.loc 1 522 0
+ 683 002c 4FF0D043 		mov	r3, #1744830464
+ 684 0030 01E0     		b	.L81
+ 685              	.L88:
+ 514:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 686              		.loc 1 514 0
+ 687 0032 4FF0C043 		mov	r3, #1610612736
+ 688              	.L81:
+ 689              	.LVL45:
+ 527:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   } 
+ 528:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+ 529:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Update the NOR controller state */
+ 530:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_BUSY;
+ 690              		.loc 1 530 0
+ 691 0036 0224     		movs	r4, #2
+ARM GAS  /tmp/ccMkjQ8H.s 			page 23
+
+
+ 692 0038 80F83D40 		strb	r4, [r0, #61]
+ 531:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 532:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Send program data command */
+ 533:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_FIRST), NOR_CMD_DAT
+ 693              		.loc 1 533 0
+ 694 003c 144C     		ldr	r4, .L98
+ 695 003e 2468     		ldr	r4, [r4]
+ 696 0040 012C     		cmp	r4, #1
+ 697 0042 1AD0     		beq	.L96
+ 698              		.loc 1 533 0 is_stmt 0 discriminator 2
+ 699 0044 03F25555 		addw	r5, r3, #1365
+ 700              	.L83:
+ 701              		.loc 1 533 0 discriminator 4
+ 702 0048 2E46     		mov	r6, r5
+ 703 004a AA27     		movs	r7, #170
+ 704 004c 2F80     		strh	r7, [r5]	@ movhi
+ 534:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_SECOND), NOR_CMD_DA
+ 705              		.loc 1 534 0 is_stmt 1 discriminator 4
+ 706 004e 012C     		cmp	r4, #1
+ 707 0050 16D0     		beq	.L97
+ 708              		.loc 1 534 0 is_stmt 0 discriminator 2
+ 709 0052 03F2AA23 		addw	r3, r3, #682
+ 710              	.LVL46:
+ 711              	.L85:
+ 712              		.loc 1 534 0 discriminator 4
+ 713 0056 5524     		movs	r4, #85
+ 714 0058 1C80     		strh	r4, [r3]	@ movhi
+ 535:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_THIRD), NOR_CMD_DAT
+ 715              		.loc 1 535 0 is_stmt 1 discriminator 4
+ 716 005a A023     		movs	r3, #160
+ 717 005c 3380     		strh	r3, [r6]	@ movhi
+ 536:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 537:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Write the data */
+ 538:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(pAddress, *pData);
+ 718              		.loc 1 538 0 discriminator 4
+ 719 005e 1388     		ldrh	r3, [r2]
+ 720 0060 0B80     		strh	r3, [r1]	@ movhi
+ 539:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 540:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR controller state */
+ 541:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_READY;
+ 721              		.loc 1 541 0 discriminator 4
+ 722 0062 0123     		movs	r3, #1
+ 723 0064 80F83D30 		strb	r3, [r0, #61]
+ 542:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 543:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process unlocked */
+ 544:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_UNLOCK(hnor);
+ 724              		.loc 1 544 0 discriminator 4
+ 725 0068 0023     		movs	r3, #0
+ 726 006a 80F83C30 		strb	r3, [r0, #60]
+ 545:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 546:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   return HAL_OK;  
+ 727              		.loc 1 546 0 discriminator 4
+ 728 006e 1846     		mov	r0, r3
+ 729              	.LVL47:
+ 547:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 730              		.loc 1 547 0 discriminator 4
+ 731 0070 F0BC     		pop	{r4, r5, r6, r7}
+ARM GAS  /tmp/ccMkjQ8H.s 			page 24
+
+
+ 732              	.LCFI12:
+ 733              		.cfi_remember_state
+ 734              		.cfi_restore 7
+ 735              		.cfi_restore 6
+ 736              		.cfi_restore 5
+ 737              		.cfi_restore 4
+ 738              		.cfi_def_cfa_offset 0
+ 739 0072 7047     		bx	lr
+ 740              	.LVL48:
+ 741              	.L89:
+ 742              	.LCFI13:
+ 743              		.cfi_restore_state
+ 518:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 744              		.loc 1 518 0
+ 745 0074 4FF0C843 		mov	r3, #1677721600
+ 746 0078 DDE7     		b	.L81
+ 747              	.LVL49:
+ 748              	.L96:
+ 533:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_SECOND), NOR_CMD_DA
+ 749              		.loc 1 533 0 discriminator 1
+ 750 007a 03F6AA25 		addw	r5, r3, #2730
+ 751 007e E3E7     		b	.L83
+ 752              	.L97:
+ 534:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_THIRD), NOR_CMD_DAT
+ 753              		.loc 1 534 0 discriminator 1
+ 754 0080 03F25453 		addw	r3, r3, #1364
+ 755              	.LVL50:
+ 756 0084 E7E7     		b	.L85
+ 757              	.LVL51:
+ 758              	.L86:
+ 759              	.LCFI14:
+ 760              		.cfi_def_cfa_offset 0
+ 761              		.cfi_restore 4
+ 762              		.cfi_restore 5
+ 763              		.cfi_restore 6
+ 764              		.cfi_restore 7
+ 503:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 765              		.loc 1 503 0
+ 766 0086 0220     		movs	r0, #2
+ 767              	.LVL52:
+ 768 0088 7047     		bx	lr
+ 769              	.LVL53:
+ 770              	.L87:
+ 508:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 771              		.loc 1 508 0
+ 772 008a 0220     		movs	r0, #2
+ 773              	.LVL54:
+ 774 008c 7047     		bx	lr
+ 775              	.L99:
+ 776 008e 00BF     		.align	2
+ 777              	.L98:
+ 778 0090 00000000 		.word	.LANCHOR0
+ 779              		.cfi_endproc
+ 780              	.LFE72:
+ 782              		.section	.text.HAL_NOR_ReadBuffer,"ax",%progbits
+ 783              		.align	1
+ 784              		.global	HAL_NOR_ReadBuffer
+ARM GAS  /tmp/ccMkjQ8H.s 			page 25
+
+
+ 785              		.syntax unified
+ 786              		.thumb
+ 787              		.thumb_func
+ 788              		.fpu softvfp
+ 790              	HAL_NOR_ReadBuffer:
+ 791              	.LFB73:
+ 548:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 549:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 550:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  Reads a block of data from the FSMC NOR memory.
+ 551:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ 552:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.
+ 553:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  uwAddress: NOR memory internal address to read from.
+ 554:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  pData: pointer to the buffer that receives the data read from the 
+ 555:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *         NOR memory.
+ 556:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  uwBufferSize : number of Half word to read.
+ 557:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval HAL status
+ 558:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 559:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** HAL_StatusTypeDef HAL_NOR_ReadBuffer(NOR_HandleTypeDef *hnor, uint32_t uwAddress, uint16_t *pData, 
+ 560:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** {
+ 792              		.loc 1 560 0
+ 793              		.cfi_startproc
+ 794              		@ args = 0, pretend = 0, frame = 0
+ 795              		@ frame_needed = 0, uses_anonymous_args = 0
+ 796              		@ link register save eliminated.
+ 797              	.LVL55:
+ 798 0000 F0B4     		push	{r4, r5, r6, r7}
+ 799              	.LCFI15:
+ 800              		.cfi_def_cfa_offset 16
+ 801              		.cfi_offset 4, -16
+ 802              		.cfi_offset 5, -12
+ 803              		.cfi_offset 6, -8
+ 804              		.cfi_offset 7, -4
+ 805              	.LVL56:
+ 561:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint32_t deviceaddress = 0U;
+ 562:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 563:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process Locked */
+ 564:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_LOCK(hnor);
+ 806              		.loc 1 564 0
+ 807 0002 90F83C40 		ldrb	r4, [r0, #60]	@ zero_extendqisi2
+ 808 0006 012C     		cmp	r4, #1
+ 809 0008 41D0     		beq	.L109
+ 810              		.loc 1 564 0 is_stmt 0 discriminator 2
+ 811 000a 0124     		movs	r4, #1
+ 812 000c 80F83C40 		strb	r4, [r0, #60]
+ 565:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 566:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR controller state */
+ 567:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if(hnor->State == HAL_NOR_STATE_BUSY)
+ 813              		.loc 1 567 0 is_stmt 1 discriminator 2
+ 814 0010 90F83D40 		ldrb	r4, [r0, #61]	@ zero_extendqisi2
+ 815 0014 E4B2     		uxtb	r4, r4
+ 816 0016 022C     		cmp	r4, #2
+ 817 0018 3CD0     		beq	.L110
+ 568:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 569:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****      return HAL_BUSY;
+ 570:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 571:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 572:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Select the NOR device address */
+ARM GAS  /tmp/ccMkjQ8H.s 			page 26
+
+
+ 573:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if (hnor->Init.NSBank == FSMC_NORSRAM_BANK1)
+ 818              		.loc 1 573 0
+ 819 001a 8468     		ldr	r4, [r0, #8]
+ 820 001c 4CB1     		cbz	r4, .L111
+ 574:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 575:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS1;
+ 576:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 577:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK2)
+ 821              		.loc 1 577 0
+ 822 001e 022C     		cmp	r4, #2
+ 823 0020 1DD0     		beq	.L112
+ 578:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 579:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS2;
+ 580:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 581:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK3)
+ 824              		.loc 1 581 0
+ 825 0022 042C     		cmp	r4, #4
+ 826 0024 02D0     		beq	.L115
+ 582:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 583:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS3;
+ 584:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 585:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else /* FSMC_NORSRAM_BANK4 */
+ 586:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 587:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS4;
+ 827              		.loc 1 587 0
+ 828 0026 4FF0D844 		mov	r4, #1811939328
+ 829 002a 04E0     		b	.L102
+ 830              	.L115:
+ 583:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 831              		.loc 1 583 0
+ 832 002c 4FF0D044 		mov	r4, #1744830464
+ 833 0030 01E0     		b	.L102
+ 834              	.L111:
+ 575:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 835              		.loc 1 575 0
+ 836 0032 4FF0C044 		mov	r4, #1610612736
+ 837              	.L102:
+ 838              	.LVL57:
+ 588:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }  
+ 589:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+ 590:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Update the NOR controller state */
+ 591:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_BUSY;
+ 839              		.loc 1 591 0
+ 840 0036 0225     		movs	r5, #2
+ 841 0038 80F83D50 		strb	r5, [r0, #61]
+ 592:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 593:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Send read data command */
+ 594:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_FIRST), NOR_CMD_DAT
+ 842              		.loc 1 594 0
+ 843 003c 164D     		ldr	r5, .L118
+ 844 003e 2D68     		ldr	r5, [r5]
+ 845 0040 012D     		cmp	r5, #1
+ 846 0042 0FD0     		beq	.L116
+ 847              		.loc 1 594 0 is_stmt 0 discriminator 2
+ 848 0044 04F25557 		addw	r7, r4, #1365
+ 849              	.L104:
+ 850              		.loc 1 594 0 discriminator 4
+ARM GAS  /tmp/ccMkjQ8H.s 			page 27
+
+
+ 851 0048 AA26     		movs	r6, #170
+ 852 004a 3E80     		strh	r6, [r7]	@ movhi
+ 595:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_SECOND), NOR_CMD_DA
+ 853              		.loc 1 595 0 is_stmt 1 discriminator 4
+ 854 004c 012D     		cmp	r5, #1
+ 855 004e 0CD0     		beq	.L117
+ 856              		.loc 1 595 0 is_stmt 0 discriminator 2
+ 857 0050 04F2AA24 		addw	r4, r4, #682
+ 858              	.LVL58:
+ 859              	.L106:
+ 860              		.loc 1 595 0 discriminator 4
+ 861 0054 5525     		movs	r5, #85
+ 862 0056 2580     		strh	r5, [r4]	@ movhi
+ 596:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(uwAddress, NOR_CMD_DATA_READ_RESET);
+ 863              		.loc 1 596 0 is_stmt 1 discriminator 4
+ 864 0058 F024     		movs	r4, #240
+ 865 005a 0C80     		strh	r4, [r1]	@ movhi
+ 597:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 598:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Read buffer */
+ 599:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   while( uwBufferSize > 0U)
+ 866              		.loc 1 599 0 discriminator 4
+ 867 005c 0DE0     		b	.L107
+ 868              	.LVL59:
+ 869              	.L112:
+ 579:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 870              		.loc 1 579 0
+ 871 005e 4FF0C844 		mov	r4, #1677721600
+ 872 0062 E8E7     		b	.L102
+ 873              	.LVL60:
+ 874              	.L116:
+ 594:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_SECOND), NOR_CMD_DA
+ 875              		.loc 1 594 0 discriminator 1
+ 876 0064 04F6AA27 		addw	r7, r4, #2730
+ 877 0068 EEE7     		b	.L104
+ 878              	.L117:
+ 595:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(uwAddress, NOR_CMD_DATA_READ_RESET);
+ 879              		.loc 1 595 0 discriminator 1
+ 880 006a 04F25454 		addw	r4, r4, #1364
+ 881              	.LVL61:
+ 882 006e F1E7     		b	.L106
+ 883              	.LVL62:
+ 884              	.L108:
+ 600:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 601:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     *pData++ = *(__IO uint16_t *)uwAddress;
+ 885              		.loc 1 601 0
+ 886 0070 31F8024B 		ldrh	r4, [r1], #2
+ 887              	.LVL63:
+ 888 0074 1480     		strh	r4, [r2]	@ movhi
+ 889              	.LVL64:
+ 602:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     uwAddress += 2U;
+ 603:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     uwBufferSize--;
+ 890              		.loc 1 603 0
+ 891 0076 013B     		subs	r3, r3, #1
+ 892              	.LVL65:
+ 601:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     uwAddress += 2U;
+ 893              		.loc 1 601 0
+ 894 0078 0232     		adds	r2, r2, #2
+ARM GAS  /tmp/ccMkjQ8H.s 			page 28
+
+
+ 895              	.LVL66:
+ 896              	.L107:
+ 599:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 897              		.loc 1 599 0
+ 898 007a 002B     		cmp	r3, #0
+ 899 007c F8D1     		bne	.L108
+ 604:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   } 
+ 605:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 606:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR controller state */
+ 607:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_READY;
+ 900              		.loc 1 607 0
+ 901 007e 0123     		movs	r3, #1
+ 902              	.LVL67:
+ 903 0080 80F83D30 		strb	r3, [r0, #61]
+ 608:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 609:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process unlocked */
+ 610:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_UNLOCK(hnor);
+ 904              		.loc 1 610 0
+ 905 0084 0023     		movs	r3, #0
+ 906 0086 80F83C30 		strb	r3, [r0, #60]
+ 611:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 612:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   return HAL_OK;  
+ 907              		.loc 1 612 0
+ 908 008a 1846     		mov	r0, r3
+ 909              	.LVL68:
+ 910 008c 00E0     		b	.L101
+ 911              	.LVL69:
+ 912              	.L109:
+ 564:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 913              		.loc 1 564 0
+ 914 008e 0220     		movs	r0, #2
+ 915              	.LVL70:
+ 916              	.L101:
+ 613:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 917              		.loc 1 613 0
+ 918 0090 F0BC     		pop	{r4, r5, r6, r7}
+ 919              	.LCFI16:
+ 920              		.cfi_remember_state
+ 921              		.cfi_restore 7
+ 922              		.cfi_restore 6
+ 923              		.cfi_restore 5
+ 924              		.cfi_restore 4
+ 925              		.cfi_def_cfa_offset 0
+ 926 0092 7047     		bx	lr
+ 927              	.LVL71:
+ 928              	.L110:
+ 929              	.LCFI17:
+ 930              		.cfi_restore_state
+ 569:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 931              		.loc 1 569 0
+ 932 0094 0220     		movs	r0, #2
+ 933              	.LVL72:
+ 934 0096 FBE7     		b	.L101
+ 935              	.L119:
+ 936              		.align	2
+ 937              	.L118:
+ 938 0098 00000000 		.word	.LANCHOR0
+ARM GAS  /tmp/ccMkjQ8H.s 			page 29
+
+
+ 939              		.cfi_endproc
+ 940              	.LFE73:
+ 942              		.section	.text.HAL_NOR_ProgramBuffer,"ax",%progbits
+ 943              		.align	1
+ 944              		.global	HAL_NOR_ProgramBuffer
+ 945              		.syntax unified
+ 946              		.thumb
+ 947              		.thumb_func
+ 948              		.fpu softvfp
+ 950              	HAL_NOR_ProgramBuffer:
+ 951              	.LFB74:
+ 614:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 615:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 616:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  Writes a half-word buffer to the FSMC NOR memory. This function 
+ 617:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *         must be used only with S29GL128P NOR memory. 
+ 618:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ 619:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.
+ 620:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  uwAddress: NOR memory internal address from which the data 
+ 621:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @note   Some NOR memory need Address aligned to xx bytes (can be aligned to 
+ 622:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *          64 bytes boundary for example).
+ 623:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  pData: pointer to source data buffer. 
+ 624:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  uwBufferSize: number of Half words to write. 
+ 625:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @note   The maximum buffer size allowed is NOR memory dependent
+ 626:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *         (can be 64 Bytes max for example).
+ 627:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval HAL status
+ 628:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */ 
+ 629:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** HAL_StatusTypeDef HAL_NOR_ProgramBuffer(NOR_HandleTypeDef *hnor, uint32_t uwAddress, uint16_t *pDat
+ 630:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** {
+ 952              		.loc 1 630 0
+ 953              		.cfi_startproc
+ 954              		@ args = 0, pretend = 0, frame = 0
+ 955              		@ frame_needed = 0, uses_anonymous_args = 0
+ 956              	.LVL73:
+ 957 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 958              	.LCFI18:
+ 959              		.cfi_def_cfa_offset 20
+ 960              		.cfi_offset 4, -20
+ 961              		.cfi_offset 5, -16
+ 962              		.cfi_offset 6, -12
+ 963              		.cfi_offset 7, -8
+ 964              		.cfi_offset 14, -4
+ 965              	.LVL74:
+ 631:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint16_t * p_currentaddress = (uint16_t *)NULL;
+ 632:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint16_t * p_endaddress = (uint16_t *)NULL;
+ 633:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint32_t lastloadedaddress = 0U, deviceaddress = 0U;
+ 634:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 635:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process Locked */
+ 636:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_LOCK(hnor);
+ 966              		.loc 1 636 0
+ 967 0002 90F83C40 		ldrb	r4, [r0, #60]	@ zero_extendqisi2
+ 968 0006 012C     		cmp	r4, #1
+ 969 0008 4ED0     		beq	.L129
+ 970              		.loc 1 636 0 is_stmt 0 discriminator 2
+ 971 000a 0124     		movs	r4, #1
+ 972 000c 80F83C40 		strb	r4, [r0, #60]
+ 637:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 638:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR controller state */
+ARM GAS  /tmp/ccMkjQ8H.s 			page 30
+
+
+ 639:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if(hnor->State == HAL_NOR_STATE_BUSY)
+ 973              		.loc 1 639 0 is_stmt 1 discriminator 2
+ 974 0010 90F83D40 		ldrb	r4, [r0, #61]	@ zero_extendqisi2
+ 975 0014 E4B2     		uxtb	r4, r4
+ 976 0016 022C     		cmp	r4, #2
+ 977 0018 48D0     		beq	.L130
+ 640:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 641:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****      return HAL_BUSY;
+ 642:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 643:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 644:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Select the NOR device address */
+ 645:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if (hnor->Init.NSBank == FSMC_NORSRAM_BANK1)
+ 978              		.loc 1 645 0
+ 979 001a 8468     		ldr	r4, [r0, #8]
+ 980 001c 4CB1     		cbz	r4, .L131
+ 646:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 647:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS1;
+ 648:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 649:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK2)
+ 981              		.loc 1 649 0
+ 982 001e 022C     		cmp	r4, #2
+ 983 0020 28D0     		beq	.L132
+ 650:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 651:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS2;
+ 652:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 653:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK3)
+ 984              		.loc 1 653 0
+ 985 0022 042C     		cmp	r4, #4
+ 986 0024 02D0     		beq	.L135
+ 654:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 655:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS3;
+ 656:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 657:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else /* FSMC_NORSRAM_BANK4 */
+ 658:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 659:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS4;
+ 987              		.loc 1 659 0
+ 988 0026 4FF0D846 		mov	r6, #1811939328
+ 989 002a 04E0     		b	.L122
+ 990              	.L135:
+ 655:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 991              		.loc 1 655 0
+ 992 002c 4FF0D046 		mov	r6, #1744830464
+ 993 0030 01E0     		b	.L122
+ 994              	.L131:
+ 647:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 995              		.loc 1 647 0
+ 996 0032 4FF0C046 		mov	r6, #1610612736
+ 997              	.L122:
+ 998              	.LVL75:
+ 660:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }  
+ 661:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+ 662:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Update the NOR controller state */
+ 663:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_BUSY;
+ 999              		.loc 1 663 0
+ 1000 0036 0224     		movs	r4, #2
+ 1001 0038 80F83D40 		strb	r4, [r0, #61]
+ 664:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ARM GAS  /tmp/ccMkjQ8H.s 			page 31
+
+
+ 665:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Initialize variables */
+ 666:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   p_currentaddress  = (uint16_t*)((uint32_t)(uwAddress));
+ 1002              		.loc 1 666 0
+ 1003 003c 0C46     		mov	r4, r1
+ 1004              	.LVL76:
+ 667:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   p_endaddress      = p_currentaddress + (uwBufferSize-1U);
+ 1005              		.loc 1 667 0
+ 1006 003e 03F10045 		add	r5, r3, #-2147483648
+ 1007 0042 013D     		subs	r5, r5, #1
+ 1008 0044 01EB4505 		add	r5, r1, r5, lsl #1
+ 1009              	.LVL77:
+ 668:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   lastloadedaddress = (uint32_t)(uwAddress);
+ 669:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 670:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Issue unlock command sequence */
+ 671:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_FIRST), NOR_CMD_DAT
+ 1010              		.loc 1 671 0
+ 1011 0048 194F     		ldr	r7, .L138
+ 1012 004a 3F68     		ldr	r7, [r7]
+ 1013 004c 012F     		cmp	r7, #1
+ 1014 004e 14D0     		beq	.L136
+ 1015              	.LVL78:
+ 1016              		.loc 1 671 0 is_stmt 0 discriminator 2
+ 1017 0050 06F2555C 		addw	ip, r6, #1365
+ 1018              	.L124:
+ 1019              		.loc 1 671 0 discriminator 4
+ 1020 0054 4FF0AA0E 		mov	lr, #170
+ 1021 0058 ACF800E0 		strh	lr, [ip]	@ movhi
+ 672:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_SECOND), NOR_CMD_DA
+ 1022              		.loc 1 672 0 is_stmt 1 discriminator 4
+ 1023 005c 012F     		cmp	r7, #1
+ 1024 005e 0FD0     		beq	.L137
+ 1025              		.loc 1 672 0 is_stmt 0 discriminator 2
+ 1026 0060 06F2AA26 		addw	r6, r6, #682
+ 1027              	.LVL79:
+ 1028              	.L126:
+ 1029              		.loc 1 672 0 discriminator 4
+ 1030 0064 5527     		movs	r7, #85
+ 1031 0066 3780     		strh	r7, [r6]	@ movhi
+ 673:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 674:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Write Buffer Load Command */
+ 675:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE((uint32_t)(p_currentaddress), NOR_CMD_DATA_BUFFER_AND_PROG); 
+ 1032              		.loc 1 675 0 is_stmt 1 discriminator 4
+ 1033 0068 2526     		movs	r6, #37
+ 1034 006a 2680     		strh	r6, [r4]	@ movhi
+ 676:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE((uint32_t)(p_currentaddress), (uwBufferSize-1U)); 
+ 1035              		.loc 1 676 0 discriminator 4
+ 1036 006c 013B     		subs	r3, r3, #1
+ 1037              	.LVL80:
+ 1038 006e 9BB2     		uxth	r3, r3
+ 1039              	.LVL81:
+ 1040 0070 2380     		strh	r3, [r4]	@ movhi
+ 677:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 678:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Load Data into NOR Buffer */
+ 679:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   while(p_currentaddress <= p_endaddress)
+ 1041              		.loc 1 679 0 discriminator 4
+ 1042 0072 0DE0     		b	.L127
+ 1043              	.LVL82:
+ARM GAS  /tmp/ccMkjQ8H.s 			page 32
+
+
+ 1044              	.L132:
+ 651:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 1045              		.loc 1 651 0
+ 1046 0074 4FF0C846 		mov	r6, #1677721600
+ 1047 0078 DDE7     		b	.L122
+ 1048              	.LVL83:
+ 1049              	.L136:
+ 671:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_SECOND), NOR_CMD_DA
+ 1050              		.loc 1 671 0 discriminator 1
+ 1051 007a 06F6AA2C 		addw	ip, r6, #2730
+ 1052 007e E9E7     		b	.L124
+ 1053              	.L137:
+ 672:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 1054              		.loc 1 672 0 discriminator 1
+ 1055 0080 06F25456 		addw	r6, r6, #1364
+ 1056              	.LVL84:
+ 1057 0084 EEE7     		b	.L126
+ 1058              	.LVL85:
+ 1059              	.L128:
+ 680:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 681:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     /* Store last loaded address & data value (for polling) */
+ 682:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     lastloadedaddress = (uint32_t)p_currentaddress;
+ 1060              		.loc 1 682 0
+ 1061 0086 2146     		mov	r1, r4
+ 1062              	.LVL86:
+ 683:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****  
+ 684:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     NOR_WRITE(p_currentaddress, *pData++);
+ 1063              		.loc 1 684 0
+ 1064 0088 1388     		ldrh	r3, [r2]
+ 1065 008a 24F8023B 		strh	r3, [r4], #2	@ movhi
+ 1066              	.LVL87:
+ 1067 008e 0232     		adds	r2, r2, #2
+ 1068              	.LVL88:
+ 1069              	.L127:
+ 679:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 1070              		.loc 1 679 0
+ 1071 0090 AC42     		cmp	r4, r5
+ 1072 0092 F8D9     		bls	.L128
+ 685:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+ 686:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     p_currentaddress++;
+ 687:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 688:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 689:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE((uint32_t)(lastloadedaddress), NOR_CMD_DATA_BUFFER_AND_PROG_CONFIRM); 
+ 1073              		.loc 1 689 0
+ 1074 0094 2923     		movs	r3, #41
+ 1075 0096 0B80     		strh	r3, [r1]	@ movhi
+ 690:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 691:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR controller state */
+ 692:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_READY;
+ 1076              		.loc 1 692 0
+ 1077 0098 0123     		movs	r3, #1
+ 1078 009a 80F83D30 		strb	r3, [r0, #61]
+ 693:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 694:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process unlocked */
+ 695:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_UNLOCK(hnor);
+ 1079              		.loc 1 695 0
+ 1080 009e 0023     		movs	r3, #0
+ARM GAS  /tmp/ccMkjQ8H.s 			page 33
+
+
+ 1081 00a0 80F83C30 		strb	r3, [r0, #60]
+ 696:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 697:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   return HAL_OK; 
+ 1082              		.loc 1 697 0
+ 1083 00a4 1846     		mov	r0, r3
+ 1084              	.LVL89:
+ 1085 00a6 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 1086              	.LVL90:
+ 1087              	.L129:
+ 636:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 1088              		.loc 1 636 0
+ 1089 00a8 0220     		movs	r0, #2
+ 1090              	.LVL91:
+ 1091 00aa F0BD     		pop	{r4, r5, r6, r7, pc}
+ 1092              	.LVL92:
+ 1093              	.L130:
+ 641:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 1094              		.loc 1 641 0
+ 1095 00ac 0220     		movs	r0, #2
+ 1096              	.LVL93:
+ 698:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 699:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 1097              		.loc 1 699 0
+ 1098 00ae F0BD     		pop	{r4, r5, r6, r7, pc}
+ 1099              	.L139:
+ 1100              		.align	2
+ 1101              	.L138:
+ 1102 00b0 00000000 		.word	.LANCHOR0
+ 1103              		.cfi_endproc
+ 1104              	.LFE74:
+ 1106              		.section	.text.HAL_NOR_Erase_Block,"ax",%progbits
+ 1107              		.align	1
+ 1108              		.global	HAL_NOR_Erase_Block
+ 1109              		.syntax unified
+ 1110              		.thumb
+ 1111              		.thumb_func
+ 1112              		.fpu softvfp
+ 1114              	HAL_NOR_Erase_Block:
+ 1115              	.LFB75:
+ 700:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 701:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 702:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  Erase the specified block of the NOR memory 
+ 703:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ 704:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.
+ 705:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  BlockAddress : Block to erase address 
+ 706:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  Address: Device address
+ 707:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval HAL status
+ 708:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 709:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** HAL_StatusTypeDef HAL_NOR_Erase_Block(NOR_HandleTypeDef *hnor, uint32_t BlockAddress, uint32_t Addr
+ 710:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** {
+ 1116              		.loc 1 710 0
+ 1117              		.cfi_startproc
+ 1118              		@ args = 0, pretend = 0, frame = 0
+ 1119              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1120              		@ link register save eliminated.
+ 1121              	.LVL94:
+ 711:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint32_t deviceaddress = 0U;
+ARM GAS  /tmp/ccMkjQ8H.s 			page 34
+
+
+ 712:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 713:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process Locked */
+ 714:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_LOCK(hnor);
+ 1122              		.loc 1 714 0
+ 1123 0000 90F83C30 		ldrb	r3, [r0, #60]	@ zero_extendqisi2
+ 1124 0004 012B     		cmp	r3, #1
+ 1125 0006 41D0     		beq	.L147
+ 1126              		.loc 1 714 0 is_stmt 0 discriminator 2
+ 1127 0008 0123     		movs	r3, #1
+ 1128 000a 80F83C30 		strb	r3, [r0, #60]
+ 715:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 716:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR controller state */
+ 717:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if(hnor->State == HAL_NOR_STATE_BUSY)
+ 1129              		.loc 1 717 0 is_stmt 1 discriminator 2
+ 1130 000e 90F83D30 		ldrb	r3, [r0, #61]	@ zero_extendqisi2
+ 1131 0012 DBB2     		uxtb	r3, r3
+ 1132 0014 022B     		cmp	r3, #2
+ 1133 0016 3BD0     		beq	.L148
+ 710:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint32_t deviceaddress = 0U;
+ 1134              		.loc 1 710 0
+ 1135 0018 F0B4     		push	{r4, r5, r6, r7}
+ 1136              	.LCFI19:
+ 1137              		.cfi_def_cfa_offset 16
+ 1138              		.cfi_offset 4, -16
+ 1139              		.cfi_offset 5, -12
+ 1140              		.cfi_offset 6, -8
+ 1141              		.cfi_offset 7, -4
+ 718:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 719:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****      return HAL_BUSY;
+ 720:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 721:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 722:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Select the NOR device address */
+ 723:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if (hnor->Init.NSBank == FSMC_NORSRAM_BANK1)
+ 1142              		.loc 1 723 0
+ 1143 001a 8368     		ldr	r3, [r0, #8]
+ 1144 001c 4BB1     		cbz	r3, .L149
+ 724:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 725:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS1;
+ 726:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 727:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK2)
+ 1145              		.loc 1 727 0
+ 1146 001e 022B     		cmp	r3, #2
+ 1147 0020 2BD0     		beq	.L150
+ 728:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 729:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS2;
+ 730:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 731:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK3)
+ 1148              		.loc 1 731 0
+ 1149 0022 042B     		cmp	r3, #4
+ 1150 0024 02D0     		beq	.L156
+ 732:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 733:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS3;
+ 734:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 735:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else /* FSMC_NORSRAM_BANK4 */
+ 736:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 737:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS4;
+ 1151              		.loc 1 737 0
+ARM GAS  /tmp/ccMkjQ8H.s 			page 35
+
+
+ 1152 0026 4FF0D843 		mov	r3, #1811939328
+ 1153 002a 04E0     		b	.L142
+ 1154              	.L156:
+ 733:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 1155              		.loc 1 733 0
+ 1156 002c 4FF0D043 		mov	r3, #1744830464
+ 1157 0030 01E0     		b	.L142
+ 1158              	.L149:
+ 725:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 1159              		.loc 1 725 0
+ 1160 0032 4FF0C043 		mov	r3, #1610612736
+ 1161              	.L142:
+ 1162              	.LVL95:
+ 738:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 739:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+ 740:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Update the NOR controller state */
+ 741:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_BUSY;
+ 1163              		.loc 1 741 0
+ 1164 0036 0224     		movs	r4, #2
+ 1165 0038 80F83D40 		strb	r4, [r0, #61]
+ 742:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 743:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Send block erase command sequence */
+ 744:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_FIRST), NOR_CMD_DAT
+ 1166              		.loc 1 744 0
+ 1167 003c 154C     		ldr	r4, .L159
+ 1168 003e 2468     		ldr	r4, [r4]
+ 1169 0040 012C     		cmp	r4, #1
+ 1170 0042 1DD0     		beq	.L157
+ 1171              		.loc 1 744 0 is_stmt 0 discriminator 2
+ 1172 0044 03F25556 		addw	r6, r3, #1365
+ 1173              	.L144:
+ 1174              		.loc 1 744 0 discriminator 4
+ 1175 0048 3546     		mov	r5, r6
+ 1176 004a AA27     		movs	r7, #170
+ 1177 004c 3780     		strh	r7, [r6]	@ movhi
+ 745:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_SECOND), NOR_CMD_DA
+ 1178              		.loc 1 745 0 is_stmt 1 discriminator 4
+ 1179 004e 012C     		cmp	r4, #1
+ 1180 0050 19D0     		beq	.L158
+ 1181              		.loc 1 745 0 is_stmt 0 discriminator 2
+ 1182 0052 03F2AA23 		addw	r3, r3, #682
+ 1183              	.LVL96:
+ 1184              	.L146:
+ 1185              		.loc 1 745 0 discriminator 4
+ 1186 0056 5524     		movs	r4, #85
+ 1187 0058 1C80     		strh	r4, [r3]	@ movhi
+ 746:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_THIRD), NOR_CMD_DAT
+ 1188              		.loc 1 746 0 is_stmt 1 discriminator 4
+ 1189 005a 8026     		movs	r6, #128
+ 1190 005c 2E80     		strh	r6, [r5]	@ movhi
+ 747:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_FOURTH), NOR_CMD_DA
+ 1191              		.loc 1 747 0 discriminator 4
+ 1192 005e AA26     		movs	r6, #170
+ 1193 0060 2E80     		strh	r6, [r5]	@ movhi
+ 748:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_FIFTH), NOR_CMD_DAT
+ 1194              		.loc 1 748 0 discriminator 4
+ 1195 0062 1C80     		strh	r4, [r3]	@ movhi
+ARM GAS  /tmp/ccMkjQ8H.s 			page 36
+
+
+ 749:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE((uint32_t)(BlockAddress + Address), NOR_CMD_DATA_BLOCK_ERASE);
+ 1196              		.loc 1 749 0 discriminator 4
+ 1197 0064 3023     		movs	r3, #48
+ 1198 0066 8B52     		strh	r3, [r1, r2]	@ movhi
+ 750:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 751:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR memory status and update the controller state */
+ 752:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_READY;
+ 1199              		.loc 1 752 0 discriminator 4
+ 1200 0068 0123     		movs	r3, #1
+ 1201 006a 80F83D30 		strb	r3, [r0, #61]
+ 753:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+ 754:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process unlocked */
+ 755:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_UNLOCK(hnor);
+ 1202              		.loc 1 755 0 discriminator 4
+ 1203 006e 0023     		movs	r3, #0
+ 1204 0070 80F83C30 		strb	r3, [r0, #60]
+ 756:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 757:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   return HAL_OK;
+ 1205              		.loc 1 757 0 discriminator 4
+ 1206 0074 1846     		mov	r0, r3
+ 1207              	.LVL97:
+ 758:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****  
+ 759:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 1208              		.loc 1 759 0 discriminator 4
+ 1209 0076 F0BC     		pop	{r4, r5, r6, r7}
+ 1210              	.LCFI20:
+ 1211              		.cfi_remember_state
+ 1212              		.cfi_restore 7
+ 1213              		.cfi_restore 6
+ 1214              		.cfi_restore 5
+ 1215              		.cfi_restore 4
+ 1216              		.cfi_def_cfa_offset 0
+ 1217 0078 7047     		bx	lr
+ 1218              	.LVL98:
+ 1219              	.L150:
+ 1220              	.LCFI21:
+ 1221              		.cfi_restore_state
+ 729:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 1222              		.loc 1 729 0
+ 1223 007a 4FF0C843 		mov	r3, #1677721600
+ 1224 007e DAE7     		b	.L142
+ 1225              	.LVL99:
+ 1226              	.L157:
+ 744:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_SECOND), NOR_CMD_DA
+ 1227              		.loc 1 744 0 discriminator 1
+ 1228 0080 03F6AA26 		addw	r6, r3, #2730
+ 1229 0084 E0E7     		b	.L144
+ 1230              	.L158:
+ 745:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_THIRD), NOR_CMD_DAT
+ 1231              		.loc 1 745 0 discriminator 1
+ 1232 0086 03F25453 		addw	r3, r3, #1364
+ 1233              	.LVL100:
+ 1234 008a E4E7     		b	.L146
+ 1235              	.LVL101:
+ 1236              	.L147:
+ 1237              	.LCFI22:
+ 1238              		.cfi_def_cfa_offset 0
+ARM GAS  /tmp/ccMkjQ8H.s 			page 37
+
+
+ 1239              		.cfi_restore 4
+ 1240              		.cfi_restore 5
+ 1241              		.cfi_restore 6
+ 1242              		.cfi_restore 7
+ 714:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 1243              		.loc 1 714 0
+ 1244 008c 0220     		movs	r0, #2
+ 1245              	.LVL102:
+ 1246 008e 7047     		bx	lr
+ 1247              	.LVL103:
+ 1248              	.L148:
+ 719:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 1249              		.loc 1 719 0
+ 1250 0090 0220     		movs	r0, #2
+ 1251              	.LVL104:
+ 1252 0092 7047     		bx	lr
+ 1253              	.L160:
+ 1254              		.align	2
+ 1255              	.L159:
+ 1256 0094 00000000 		.word	.LANCHOR0
+ 1257              		.cfi_endproc
+ 1258              	.LFE75:
+ 1260              		.section	.text.HAL_NOR_Erase_Chip,"ax",%progbits
+ 1261              		.align	1
+ 1262              		.global	HAL_NOR_Erase_Chip
+ 1263              		.syntax unified
+ 1264              		.thumb
+ 1265              		.thumb_func
+ 1266              		.fpu softvfp
+ 1268              	HAL_NOR_Erase_Chip:
+ 1269              	.LFB76:
+ 760:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 761:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 762:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  Erase the entire NOR chip.
+ 763:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ 764:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.
+ 765:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  Address : Device address  
+ 766:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval HAL status
+ 767:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 768:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** HAL_StatusTypeDef HAL_NOR_Erase_Chip(NOR_HandleTypeDef *hnor, uint32_t Address)
+ 769:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** {
+ 1270              		.loc 1 769 0
+ 1271              		.cfi_startproc
+ 1272              		@ args = 0, pretend = 0, frame = 0
+ 1273              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1274              		@ link register save eliminated.
+ 1275              	.LVL105:
+ 770:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Prevent unused argument(s) compilation warning */
+ 771:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   UNUSED(Address);
+ 772:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 773:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint32_t deviceaddress = 0U;
+ 774:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 775:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process Locked */
+ 776:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_LOCK(hnor);
+ 1276              		.loc 1 776 0
+ 1277 0000 90F83C30 		ldrb	r3, [r0, #60]	@ zero_extendqisi2
+ 1278 0004 012B     		cmp	r3, #1
+ARM GAS  /tmp/ccMkjQ8H.s 			page 38
+
+
+ 1279 0006 41D0     		beq	.L168
+ 1280              		.loc 1 776 0 is_stmt 0 discriminator 2
+ 1281 0008 0123     		movs	r3, #1
+ 1282 000a 80F83C30 		strb	r3, [r0, #60]
+ 777:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 778:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR controller state */
+ 779:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if(hnor->State == HAL_NOR_STATE_BUSY)
+ 1283              		.loc 1 779 0 is_stmt 1 discriminator 2
+ 1284 000e 90F83D30 		ldrb	r3, [r0, #61]	@ zero_extendqisi2
+ 1285 0012 DBB2     		uxtb	r3, r3
+ 1286 0014 022B     		cmp	r3, #2
+ 1287 0016 3BD0     		beq	.L169
+ 769:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Prevent unused argument(s) compilation warning */
+ 1288              		.loc 1 769 0
+ 1289 0018 30B4     		push	{r4, r5}
+ 1290              	.LCFI23:
+ 1291              		.cfi_def_cfa_offset 8
+ 1292              		.cfi_offset 4, -8
+ 1293              		.cfi_offset 5, -4
+ 780:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 781:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****      return HAL_BUSY;
+ 782:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 783:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 784:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Select the NOR device address */
+ 785:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if (hnor->Init.NSBank == FSMC_NORSRAM_BANK1)
+ 1294              		.loc 1 785 0
+ 1295 001a 8368     		ldr	r3, [r0, #8]
+ 1296 001c 4BB1     		cbz	r3, .L170
+ 786:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 787:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS1;
+ 788:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 789:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK2)
+ 1297              		.loc 1 789 0
+ 1298 001e 022B     		cmp	r3, #2
+ 1299 0020 2BD0     		beq	.L171
+ 790:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 791:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS2;
+ 792:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 793:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK3)
+ 1300              		.loc 1 793 0
+ 1301 0022 042B     		cmp	r3, #4
+ 1302 0024 02D0     		beq	.L177
+ 794:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 795:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS3;
+ 796:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 797:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else /* FSMC_NORSRAM_BANK4 */
+ 798:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 799:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS4;
+ 1303              		.loc 1 799 0
+ 1304 0026 4FF0D843 		mov	r3, #1811939328
+ 1305 002a 04E0     		b	.L163
+ 1306              	.L177:
+ 795:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 1307              		.loc 1 795 0
+ 1308 002c 4FF0D043 		mov	r3, #1744830464
+ 1309 0030 01E0     		b	.L163
+ 1310              	.L170:
+ARM GAS  /tmp/ccMkjQ8H.s 			page 39
+
+
+ 787:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 1311              		.loc 1 787 0
+ 1312 0032 4FF0C043 		mov	r3, #1610612736
+ 1313              	.L163:
+ 1314              	.LVL106:
+ 800:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 801:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+ 802:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Update the NOR controller state */
+ 803:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_BUSY;  
+ 1315              		.loc 1 803 0
+ 1316 0036 0222     		movs	r2, #2
+ 1317 0038 80F83D20 		strb	r2, [r0, #61]
+ 804:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+ 805:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Send NOR chip erase command sequence */
+ 806:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_FIRST), NOR_CMD_DAT
+ 1318              		.loc 1 806 0
+ 1319 003c 154A     		ldr	r2, .L180
+ 1320 003e 1168     		ldr	r1, [r2]
+ 1321              	.LVL107:
+ 1322 0040 0129     		cmp	r1, #1
+ 1323 0042 1DD0     		beq	.L178
+ 1324              		.loc 1 806 0 is_stmt 0 discriminator 2
+ 1325 0044 03F25554 		addw	r4, r3, #1365
+ 1326              	.L165:
+ 1327              		.loc 1 806 0 discriminator 4
+ 1328 0048 2246     		mov	r2, r4
+ 1329 004a AA25     		movs	r5, #170
+ 1330 004c 2580     		strh	r5, [r4]	@ movhi
+ 807:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_SECOND), NOR_CMD_DA
+ 1331              		.loc 1 807 0 is_stmt 1 discriminator 4
+ 1332 004e 0129     		cmp	r1, #1
+ 1333 0050 19D0     		beq	.L179
+ 1334              		.loc 1 807 0 is_stmt 0 discriminator 2
+ 1335 0052 03F2AA23 		addw	r3, r3, #682
+ 1336              	.LVL108:
+ 1337              	.L167:
+ 1338              		.loc 1 807 0 discriminator 4
+ 1339 0056 5521     		movs	r1, #85
+ 1340 0058 1980     		strh	r1, [r3]	@ movhi
+ 808:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_THIRD), NOR_CMD_DAT
+ 1341              		.loc 1 808 0 is_stmt 1 discriminator 4
+ 1342 005a 8024     		movs	r4, #128
+ 1343 005c 1480     		strh	r4, [r2]	@ movhi
+ 809:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_FOURTH), NOR_CMD_DA
+ 1344              		.loc 1 809 0 discriminator 4
+ 1345 005e AA24     		movs	r4, #170
+ 1346 0060 1480     		strh	r4, [r2]	@ movhi
+ 810:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_FIFTH), NOR_CMD_DAT
+ 1347              		.loc 1 810 0 discriminator 4
+ 1348 0062 1980     		strh	r1, [r3]	@ movhi
+ 811:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_SIXTH), NOR_CMD_DAT
+ 1349              		.loc 1 811 0 discriminator 4
+ 1350 0064 1023     		movs	r3, #16
+ 1351 0066 1380     		strh	r3, [r2]	@ movhi
+ 812:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 813:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR memory status and update the controller state */
+ 814:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_READY;
+ARM GAS  /tmp/ccMkjQ8H.s 			page 40
+
+
+ 1352              		.loc 1 814 0 discriminator 4
+ 1353 0068 0123     		movs	r3, #1
+ 1354 006a 80F83D30 		strb	r3, [r0, #61]
+ 815:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+ 816:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process unlocked */
+ 817:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_UNLOCK(hnor);
+ 1355              		.loc 1 817 0 discriminator 4
+ 1356 006e 0023     		movs	r3, #0
+ 1357 0070 80F83C30 		strb	r3, [r0, #60]
+ 818:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 819:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   return HAL_OK;  
+ 1358              		.loc 1 819 0 discriminator 4
+ 1359 0074 1846     		mov	r0, r3
+ 1360              	.LVL109:
+ 820:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 1361              		.loc 1 820 0 discriminator 4
+ 1362 0076 30BC     		pop	{r4, r5}
+ 1363              	.LCFI24:
+ 1364              		.cfi_remember_state
+ 1365              		.cfi_restore 5
+ 1366              		.cfi_restore 4
+ 1367              		.cfi_def_cfa_offset 0
+ 1368 0078 7047     		bx	lr
+ 1369              	.LVL110:
+ 1370              	.L171:
+ 1371              	.LCFI25:
+ 1372              		.cfi_restore_state
+ 791:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 1373              		.loc 1 791 0
+ 1374 007a 4FF0C843 		mov	r3, #1677721600
+ 1375 007e DAE7     		b	.L163
+ 1376              	.LVL111:
+ 1377              	.L178:
+ 806:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_SECOND), NOR_CMD_DA
+ 1378              		.loc 1 806 0 discriminator 1
+ 1379 0080 03F6AA24 		addw	r4, r3, #2730
+ 1380 0084 E0E7     		b	.L165
+ 1381              	.L179:
+ 807:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_THIRD), NOR_CMD_DAT
+ 1382              		.loc 1 807 0 discriminator 1
+ 1383 0086 03F25453 		addw	r3, r3, #1364
+ 1384              	.LVL112:
+ 1385 008a E4E7     		b	.L167
+ 1386              	.LVL113:
+ 1387              	.L168:
+ 1388              	.LCFI26:
+ 1389              		.cfi_def_cfa_offset 0
+ 1390              		.cfi_restore 4
+ 1391              		.cfi_restore 5
+ 776:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 1392              		.loc 1 776 0
+ 1393 008c 0220     		movs	r0, #2
+ 1394              	.LVL114:
+ 1395 008e 7047     		bx	lr
+ 1396              	.LVL115:
+ 1397              	.L169:
+ 781:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ARM GAS  /tmp/ccMkjQ8H.s 			page 41
+
+
+ 1398              		.loc 1 781 0
+ 1399 0090 0220     		movs	r0, #2
+ 1400              	.LVL116:
+ 1401 0092 7047     		bx	lr
+ 1402              	.L181:
+ 1403              		.align	2
+ 1404              	.L180:
+ 1405 0094 00000000 		.word	.LANCHOR0
+ 1406              		.cfi_endproc
+ 1407              	.LFE76:
+ 1409              		.section	.text.HAL_NOR_Read_CFI,"ax",%progbits
+ 1410              		.align	1
+ 1411              		.global	HAL_NOR_Read_CFI
+ 1412              		.syntax unified
+ 1413              		.thumb
+ 1414              		.thumb_func
+ 1415              		.fpu softvfp
+ 1417              	HAL_NOR_Read_CFI:
+ 1418              	.LFB77:
+ 821:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 822:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 823:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  Read NOR flash CFI IDs
+ 824:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ 825:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.
+ 826:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  pNOR_CFI : pointer to NOR CFI IDs structure  
+ 827:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval HAL status
+ 828:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 829:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** HAL_StatusTypeDef HAL_NOR_Read_CFI(NOR_HandleTypeDef *hnor, NOR_CFITypeDef *pNOR_CFI)
+ 830:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** {
+ 1419              		.loc 1 830 0
+ 1420              		.cfi_startproc
+ 1421              		@ args = 0, pretend = 0, frame = 0
+ 1422              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1423              		@ link register save eliminated.
+ 1424              	.LVL117:
+ 831:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint32_t deviceaddress = 0U;
+ 832:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 833:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process Locked */
+ 834:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_LOCK(hnor);
+ 1425              		.loc 1 834 0
+ 1426 0000 90F83C30 		ldrb	r3, [r0, #60]	@ zero_extendqisi2
+ 1427 0004 012B     		cmp	r3, #1
+ 1428 0006 52D0     		beq	.L195
+ 1429              		.loc 1 834 0 is_stmt 0 discriminator 2
+ 1430 0008 0123     		movs	r3, #1
+ 1431 000a 80F83C30 		strb	r3, [r0, #60]
+ 835:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 836:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR controller state */
+ 837:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if(hnor->State == HAL_NOR_STATE_BUSY)
+ 1432              		.loc 1 837 0 is_stmt 1 discriminator 2
+ 1433 000e 90F83D30 		ldrb	r3, [r0, #61]	@ zero_extendqisi2
+ 1434 0012 DBB2     		uxtb	r3, r3
+ 1435 0014 022B     		cmp	r3, #2
+ 1436 0016 4CD0     		beq	.L196
+ 830:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint32_t deviceaddress = 0U;
+ 1437              		.loc 1 830 0
+ 1438 0018 30B4     		push	{r4, r5}
+ARM GAS  /tmp/ccMkjQ8H.s 			page 42
+
+
+ 1439              	.LCFI27:
+ 1440              		.cfi_def_cfa_offset 8
+ 1441              		.cfi_offset 4, -8
+ 1442              		.cfi_offset 5, -4
+ 838:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 839:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****      return HAL_BUSY;
+ 840:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 841:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 842:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Select the NOR device address */
+ 843:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   if (hnor->Init.NSBank == FSMC_NORSRAM_BANK1)
+ 1443              		.loc 1 843 0
+ 1444 001a 8368     		ldr	r3, [r0, #8]
+ 1445 001c 4BB1     		cbz	r3, .L197
+ 844:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 845:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS1;
+ 846:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 847:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK2)
+ 1446              		.loc 1 847 0
+ 1447 001e 022B     		cmp	r3, #2
+ 1448 0020 34D0     		beq	.L198
+ 848:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 849:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS2;
+ 850:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 851:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else if (hnor->Init.NSBank == FSMC_NORSRAM_BANK3)
+ 1449              		.loc 1 851 0
+ 1450 0022 042B     		cmp	r3, #4
+ 1451 0024 02D0     		beq	.L204
+ 852:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 853:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS3;
+ 854:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 855:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   else /* FSMC_NORSRAM_BANK4 */
+ 856:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 857:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     deviceaddress = NOR_MEMORY_ADRESS4;
+ 1452              		.loc 1 857 0
+ 1453 0026 4FF0D843 		mov	r3, #1811939328
+ 1454 002a 04E0     		b	.L184
+ 1455              	.L204:
+ 853:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 1456              		.loc 1 853 0
+ 1457 002c 4FF0D043 		mov	r3, #1744830464
+ 1458 0030 01E0     		b	.L184
+ 1459              	.L197:
+ 845:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 1460              		.loc 1 845 0
+ 1461 0032 4FF0C043 		mov	r3, #1610612736
+ 1462              	.L184:
+ 1463              	.LVL118:
+ 858:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }  
+ 859:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+ 860:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Update the NOR controller state */
+ 861:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_BUSY;
+ 1464              		.loc 1 861 0
+ 1465 0036 0222     		movs	r2, #2
+ 1466 0038 80F83D20 		strb	r2, [r0, #61]
+ 862:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 863:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Send read CFI query command */
+ 864:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, NOR_CMD_ADDRESS_FIRST_CFI), NOR_CMD
+ARM GAS  /tmp/ccMkjQ8H.s 			page 43
+
+
+ 1467              		.loc 1 864 0
+ 1468 003c 1E4A     		ldr	r2, .L210
+ 1469 003e 1268     		ldr	r2, [r2]
+ 1470 0040 012A     		cmp	r2, #1
+ 1471 0042 26D0     		beq	.L205
+ 1472              		.loc 1 864 0 is_stmt 0 discriminator 2
+ 1473 0044 03F15505 		add	r5, r3, #85
+ 1474              	.L186:
+ 1475              		.loc 1 864 0 discriminator 4
+ 1476 0048 9824     		movs	r4, #152
+ 1477 004a 2C80     		strh	r4, [r5]	@ movhi
+ 865:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 866:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* read the NOR CFI information */
+ 867:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   pNOR_CFI->CFI_1 = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, CFI1_ADD
+ 1478              		.loc 1 867 0 is_stmt 1 discriminator 4
+ 1479 004c 012A     		cmp	r2, #1
+ 1480 004e 23D0     		beq	.L206
+ 1481              		.loc 1 867 0 is_stmt 0 discriminator 2
+ 1482 0050 03F11004 		add	r4, r3, #16
+ 1483              	.L188:
+ 1484              		.loc 1 867 0 discriminator 4
+ 1485 0054 2488     		ldrh	r4, [r4]
+ 1486 0056 0C80     		strh	r4, [r1]	@ movhi
+ 868:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   pNOR_CFI->CFI_2 = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, CFI2_ADD
+ 1487              		.loc 1 868 0 is_stmt 1 discriminator 4
+ 1488 0058 012A     		cmp	r2, #1
+ 1489 005a 20D0     		beq	.L207
+ 1490              		.loc 1 868 0 is_stmt 0 discriminator 2
+ 1491 005c 03F11104 		add	r4, r3, #17
+ 1492              	.L190:
+ 1493              		.loc 1 868 0 discriminator 4
+ 1494 0060 2488     		ldrh	r4, [r4]
+ 1495 0062 4C80     		strh	r4, [r1, #2]	@ movhi
+ 869:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   pNOR_CFI->CFI_3 = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, CFI3_ADD
+ 1496              		.loc 1 869 0 is_stmt 1 discriminator 4
+ 1497 0064 012A     		cmp	r2, #1
+ 1498 0066 1DD0     		beq	.L208
+ 1499              		.loc 1 869 0 is_stmt 0 discriminator 2
+ 1500 0068 03F11204 		add	r4, r3, #18
+ 1501              	.L192:
+ 1502              		.loc 1 869 0 discriminator 4
+ 1503 006c 2488     		ldrh	r4, [r4]
+ 1504 006e 8C80     		strh	r4, [r1, #4]	@ movhi
+ 870:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   pNOR_CFI->CFI_4 = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, CFI4_ADD
+ 1505              		.loc 1 870 0 is_stmt 1 discriminator 4
+ 1506 0070 012A     		cmp	r2, #1
+ 1507 0072 1AD0     		beq	.L209
+ 1508              		.loc 1 870 0 is_stmt 0 discriminator 2
+ 1509 0074 1333     		adds	r3, r3, #19
+ 1510              	.LVL119:
+ 1511              	.L194:
+ 1512              		.loc 1 870 0 discriminator 4
+ 1513 0076 1B88     		ldrh	r3, [r3]
+ 1514 0078 CB80     		strh	r3, [r1, #6]	@ movhi
+ 871:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 872:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Check the NOR controller state */
+ 873:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_READY;
+ARM GAS  /tmp/ccMkjQ8H.s 			page 44
+
+
+ 1515              		.loc 1 873 0 is_stmt 1 discriminator 4
+ 1516 007a 0123     		movs	r3, #1
+ 1517 007c 80F83D30 		strb	r3, [r0, #61]
+ 874:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 875:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process unlocked */
+ 876:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_UNLOCK(hnor);
+ 1518              		.loc 1 876 0 discriminator 4
+ 1519 0080 0023     		movs	r3, #0
+ 1520 0082 80F83C30 		strb	r3, [r0, #60]
+ 877:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 878:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   return HAL_OK;
+ 1521              		.loc 1 878 0 discriminator 4
+ 1522 0086 1846     		mov	r0, r3
+ 1523              	.LVL120:
+ 879:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 1524              		.loc 1 879 0 discriminator 4
+ 1525 0088 30BC     		pop	{r4, r5}
+ 1526              	.LCFI28:
+ 1527              		.cfi_remember_state
+ 1528              		.cfi_restore 5
+ 1529              		.cfi_restore 4
+ 1530              		.cfi_def_cfa_offset 0
+ 1531 008a 7047     		bx	lr
+ 1532              	.LVL121:
+ 1533              	.L198:
+ 1534              	.LCFI29:
+ 1535              		.cfi_restore_state
+ 849:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 1536              		.loc 1 849 0
+ 1537 008c 4FF0C843 		mov	r3, #1677721600
+ 1538 0090 D1E7     		b	.L184
+ 1539              	.LVL122:
+ 1540              	.L205:
+ 864:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 1541              		.loc 1 864 0 discriminator 1
+ 1542 0092 03F1AA05 		add	r5, r3, #170
+ 1543 0096 D7E7     		b	.L186
+ 1544              	.L206:
+ 867:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   pNOR_CFI->CFI_2 = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, CFI2_ADD
+ 1545              		.loc 1 867 0 discriminator 1
+ 1546 0098 03F12004 		add	r4, r3, #32
+ 1547 009c DAE7     		b	.L188
+ 1548              	.L207:
+ 868:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   pNOR_CFI->CFI_3 = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, CFI3_ADD
+ 1549              		.loc 1 868 0 discriminator 1
+ 1550 009e 03F12204 		add	r4, r3, #34
+ 1551 00a2 DDE7     		b	.L190
+ 1552              	.L208:
+ 869:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   pNOR_CFI->CFI_4 = *(__IO uint16_t *) NOR_ADDR_SHIFT(deviceaddress, uwNORMemoryDataWidth, CFI4_ADD
+ 1553              		.loc 1 869 0 discriminator 1
+ 1554 00a4 03F12404 		add	r4, r3, #36
+ 1555 00a8 E0E7     		b	.L192
+ 1556              	.L209:
+ 870:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 1557              		.loc 1 870 0 discriminator 1
+ 1558 00aa 2633     		adds	r3, r3, #38
+ 1559              	.LVL123:
+ARM GAS  /tmp/ccMkjQ8H.s 			page 45
+
+
+ 1560 00ac E3E7     		b	.L194
+ 1561              	.LVL124:
+ 1562              	.L195:
+ 1563              	.LCFI30:
+ 1564              		.cfi_def_cfa_offset 0
+ 1565              		.cfi_restore 4
+ 1566              		.cfi_restore 5
+ 834:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 1567              		.loc 1 834 0
+ 1568 00ae 0220     		movs	r0, #2
+ 1569              	.LVL125:
+ 1570 00b0 7047     		bx	lr
+ 1571              	.LVL126:
+ 1572              	.L196:
+ 839:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+ 1573              		.loc 1 839 0
+ 1574 00b2 0220     		movs	r0, #2
+ 1575              	.LVL127:
+ 1576 00b4 7047     		bx	lr
+ 1577              	.L211:
+ 1578 00b6 00BF     		.align	2
+ 1579              	.L210:
+ 1580 00b8 00000000 		.word	.LANCHOR0
+ 1581              		.cfi_endproc
+ 1582              	.LFE77:
+ 1584              		.section	.text.HAL_NOR_WriteOperation_Enable,"ax",%progbits
+ 1585              		.align	1
+ 1586              		.global	HAL_NOR_WriteOperation_Enable
+ 1587              		.syntax unified
+ 1588              		.thumb
+ 1589              		.thumb_func
+ 1590              		.fpu softvfp
+ 1592              	HAL_NOR_WriteOperation_Enable:
+ 1593              	.LFB78:
+ 880:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 881:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 882:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @}
+ 883:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 884:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 885:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /** @defgroup NOR_Exported_Functions_Group3 Control functions 
+ 886:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****  *  @brief   management functions 
+ 887:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****  *
+ 888:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** @verbatim   
+ 889:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   ==============================================================================
+ 890:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****                         ##### NOR Control functions #####
+ 891:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   ==============================================================================
+ 892:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   [..]
+ 893:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     This subsection provides a set of functions allowing to control dynamically
+ 894:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     the NOR interface.
+ 895:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 896:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** @endverbatim
+ 897:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @{
+ 898:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 899:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+ 900:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 901:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  Enables dynamically NOR write operation.
+ 902:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ARM GAS  /tmp/ccMkjQ8H.s 			page 46
+
+
+ 903:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.
+ 904:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval HAL status
+ 905:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 906:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** HAL_StatusTypeDef HAL_NOR_WriteOperation_Enable(NOR_HandleTypeDef *hnor)
+ 907:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** {
+ 1594              		.loc 1 907 0
+ 1595              		.cfi_startproc
+ 1596              		@ args = 0, pretend = 0, frame = 0
+ 1597              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1598              	.LVL128:
+ 1599 0000 38B5     		push	{r3, r4, r5, lr}
+ 1600              	.LCFI31:
+ 1601              		.cfi_def_cfa_offset 16
+ 1602              		.cfi_offset 3, -16
+ 1603              		.cfi_offset 4, -12
+ 1604              		.cfi_offset 5, -8
+ 1605              		.cfi_offset 14, -4
+ 908:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process Locked */
+ 909:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_LOCK(hnor);
+ 1606              		.loc 1 909 0
+ 1607 0002 90F83C30 		ldrb	r3, [r0, #60]	@ zero_extendqisi2
+ 1608 0006 012B     		cmp	r3, #1
+ 1609 0008 01D1     		bne	.L216
+ 1610 000a 0220     		movs	r0, #2
+ 1611              	.LVL129:
+ 910:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 911:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Enable write operation */
+ 912:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   FSMC_NORSRAM_WriteOperation_Enable(hnor->Instance, hnor->Init.NSBank); 
+ 913:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 914:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Update the NOR controller state */
+ 915:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_READY;
+ 916:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 917:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process unlocked */
+ 918:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_UNLOCK(hnor); 
+ 919:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 920:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   return HAL_OK;  
+ 921:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 1612              		.loc 1 921 0
+ 1613 000c 38BD     		pop	{r3, r4, r5, pc}
+ 1614              	.LVL130:
+ 1615              	.L216:
+ 1616 000e 0446     		mov	r4, r0
+ 909:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 1617              		.loc 1 909 0 discriminator 2
+ 1618 0010 0125     		movs	r5, #1
+ 1619 0012 80F83C50 		strb	r5, [r0, #60]
+ 912:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 1620              		.loc 1 912 0 discriminator 2
+ 1621 0016 8168     		ldr	r1, [r0, #8]
+ 1622 0018 0068     		ldr	r0, [r0]
+ 1623              	.LVL131:
+ 1624 001a FFF7FEFF 		bl	FSMC_NORSRAM_WriteOperation_Enable
+ 1625              	.LVL132:
+ 915:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 1626              		.loc 1 915 0 discriminator 2
+ 1627 001e 84F83D50 		strb	r5, [r4, #61]
+ 918:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ARM GAS  /tmp/ccMkjQ8H.s 			page 47
+
+
+ 1628              		.loc 1 918 0 discriminator 2
+ 1629 0022 0020     		movs	r0, #0
+ 1630 0024 84F83C00 		strb	r0, [r4, #60]
+ 920:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 1631              		.loc 1 920 0 discriminator 2
+ 1632 0028 38BD     		pop	{r3, r4, r5, pc}
+ 1633              		.cfi_endproc
+ 1634              	.LFE78:
+ 1636              		.section	.text.HAL_NOR_WriteOperation_Disable,"ax",%progbits
+ 1637              		.align	1
+ 1638              		.global	HAL_NOR_WriteOperation_Disable
+ 1639              		.syntax unified
+ 1640              		.thumb
+ 1641              		.thumb_func
+ 1642              		.fpu softvfp
+ 1644              	HAL_NOR_WriteOperation_Disable:
+ 1645              	.LFB79:
+ 922:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 923:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 924:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  Disables dynamically NOR write operation.
+ 925:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ 926:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.
+ 927:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval HAL status
+ 928:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 929:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** HAL_StatusTypeDef HAL_NOR_WriteOperation_Disable(NOR_HandleTypeDef *hnor)
+ 930:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** {
+ 1646              		.loc 1 930 0
+ 1647              		.cfi_startproc
+ 1648              		@ args = 0, pretend = 0, frame = 0
+ 1649              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1650              	.LVL133:
+ 931:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process Locked */
+ 932:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_LOCK(hnor);
+ 1651              		.loc 1 932 0
+ 1652 0000 90F83C30 		ldrb	r3, [r0, #60]	@ zero_extendqisi2
+ 1653 0004 012B     		cmp	r3, #1
+ 1654 0006 01D1     		bne	.L224
+ 1655 0008 0220     		movs	r0, #2
+ 1656              	.LVL134:
+ 1657 000a 7047     		bx	lr
+ 1658              	.LVL135:
+ 1659              	.L224:
+ 930:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process Locked */
+ 1660              		.loc 1 930 0 discriminator 2
+ 1661 000c 10B5     		push	{r4, lr}
+ 1662              	.LCFI32:
+ 1663              		.cfi_def_cfa_offset 8
+ 1664              		.cfi_offset 4, -8
+ 1665              		.cfi_offset 14, -4
+ 1666 000e 0446     		mov	r4, r0
+ 1667              		.loc 1 932 0 discriminator 2
+ 1668 0010 0123     		movs	r3, #1
+ 1669 0012 80F83C30 		strb	r3, [r0, #60]
+ 933:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 934:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Update the SRAM controller state */
+ 935:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_BUSY;
+ 1670              		.loc 1 935 0 discriminator 2
+ARM GAS  /tmp/ccMkjQ8H.s 			page 48
+
+
+ 1671 0016 0223     		movs	r3, #2
+ 1672 0018 80F83D30 		strb	r3, [r0, #61]
+ 936:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+ 937:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Disable write operation */
+ 938:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   FSMC_NORSRAM_WriteOperation_Disable(hnor->Instance, hnor->Init.NSBank); 
+ 1673              		.loc 1 938 0 discriminator 2
+ 1674 001c 8168     		ldr	r1, [r0, #8]
+ 1675 001e 0068     		ldr	r0, [r0]
+ 1676              	.LVL136:
+ 1677 0020 FFF7FEFF 		bl	FSMC_NORSRAM_WriteOperation_Disable
+ 1678              	.LVL137:
+ 939:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 940:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Update the NOR controller state */
+ 941:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   hnor->State = HAL_NOR_STATE_PROTECTED;
+ 1679              		.loc 1 941 0 discriminator 2
+ 1680 0024 0423     		movs	r3, #4
+ 1681 0026 84F83D30 		strb	r3, [r4, #61]
+ 942:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 943:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Process unlocked */
+ 944:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   __HAL_UNLOCK(hnor); 
+ 1682              		.loc 1 944 0 discriminator 2
+ 1683 002a 0020     		movs	r0, #0
+ 1684 002c 84F83C00 		strb	r0, [r4, #60]
+ 945:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 946:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   return HAL_OK;  
+ 1685              		.loc 1 946 0 discriminator 2
+ 1686 0030 10BD     		pop	{r4, pc}
+ 1687              		.cfi_endproc
+ 1688              	.LFE79:
+ 1690              		.section	.text.HAL_NOR_GetState,"ax",%progbits
+ 1691              		.align	1
+ 1692              		.global	HAL_NOR_GetState
+ 1693              		.syntax unified
+ 1694              		.thumb
+ 1695              		.thumb_func
+ 1696              		.fpu softvfp
+ 1698              	HAL_NOR_GetState:
+ 1699              	.LFB80:
+ 947:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 948:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 949:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 950:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @}
+ 951:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */  
+ 952:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 953:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /** @defgroup NOR_Exported_Functions_Group4 State functions 
+ 954:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****  *  @brief   Peripheral State functions 
+ 955:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****  *
+ 956:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** @verbatim   
+ 957:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   ==============================================================================
+ 958:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****                       ##### NOR State functions #####
+ 959:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   ==============================================================================  
+ 960:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   [..]
+ 961:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     This subsection permits to get in run-time the status of the NOR controller 
+ 962:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     and the data flow.
+ 963:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 964:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** @endverbatim
+ 965:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @{
+ARM GAS  /tmp/ccMkjQ8H.s 			page 49
+
+
+ 966:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 967:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 968:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 969:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  return the NOR controller state
+ 970:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ 971:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.
+ 972:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval NOR controller state
+ 973:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 974:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** HAL_NOR_StateTypeDef HAL_NOR_GetState(NOR_HandleTypeDef *hnor)
+ 975:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** {
+ 1700              		.loc 1 975 0
+ 1701              		.cfi_startproc
+ 1702              		@ args = 0, pretend = 0, frame = 0
+ 1703              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1704              		@ link register save eliminated.
+ 1705              	.LVL138:
+ 976:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   return hnor->State;
+ 1706              		.loc 1 976 0
+ 1707 0000 90F83D00 		ldrb	r0, [r0, #61]	@ zero_extendqisi2
+ 1708              	.LVL139:
+ 977:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 1709              		.loc 1 977 0
+ 1710 0004 7047     		bx	lr
+ 1711              		.cfi_endproc
+ 1712              	.LFE80:
+ 1714              		.section	.text.HAL_NOR_GetStatus,"ax",%progbits
+ 1715              		.align	1
+ 1716              		.global	HAL_NOR_GetStatus
+ 1717              		.syntax unified
+ 1718              		.thumb
+ 1719              		.thumb_func
+ 1720              		.fpu softvfp
+ 1722              	HAL_NOR_GetStatus:
+ 1723              	.LFB81:
+ 978:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 979:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** /**
+ 980:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @brief  Returns the NOR operation status.
+ 981:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
+ 982:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *                the configuration information for NOR module.   
+ 983:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  Address: Device address
+ 984:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @param  Timeout: NOR progamming Timeout
+ 985:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   * @retval NOR_Status: The returned value can be: HAL_NOR_STATUS_SUCCESS, HAL_NOR_STATUS_ERROR
+ 986:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   *         or HAL_NOR_STATUS_TIMEOUT
+ 987:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   */
+ 988:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** HAL_NOR_StatusTypeDef HAL_NOR_GetStatus(NOR_HandleTypeDef *hnor, uint32_t Address, uint32_t Timeout
+ 989:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** { 
+ 1724              		.loc 1 989 0
+ 1725              		.cfi_startproc
+ 1726              		@ args = 0, pretend = 0, frame = 0
+ 1727              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1728              	.LVL140:
+ 1729 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 1730              	.LCFI33:
+ 1731              		.cfi_def_cfa_offset 24
+ 1732              		.cfi_offset 3, -24
+ 1733              		.cfi_offset 4, -20
+ 1734              		.cfi_offset 5, -16
+ARM GAS  /tmp/ccMkjQ8H.s 			page 50
+
+
+ 1735              		.cfi_offset 6, -12
+ 1736              		.cfi_offset 7, -8
+ 1737              		.cfi_offset 14, -4
+ 1738 0002 0C46     		mov	r4, r1
+ 1739 0004 1646     		mov	r6, r2
+ 1740              	.LVL141:
+ 990:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   HAL_NOR_StatusTypeDef status = HAL_NOR_STATUS_ONGOING;
+ 991:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint16_t tmp_sr1 = 0, tmp_sr2 = 0;
+ 992:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   uint32_t tickstart = 0U;
+ 993:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 994:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Poll on NOR memory Ready/Busy signal ------------------------------------*/
+ 995:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   HAL_NOR_MspWait(hnor, Timeout);
+ 1741              		.loc 1 995 0
+ 1742 0006 1146     		mov	r1, r2
+ 1743              	.LVL142:
+ 1744 0008 FFF7FEFF 		bl	HAL_NOR_MspWait
+ 1745              	.LVL143:
+ 996:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   
+ 997:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Get tick */
+ 998:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   tickstart = HAL_GetTick();
+ 1746              		.loc 1 998 0
+ 1747 000c FFF7FEFF 		bl	HAL_GetTick
+ 1748              	.LVL144:
+ 1749 0010 0746     		mov	r7, r0
+ 1750              	.LVL145:
+ 990:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   HAL_NOR_StatusTypeDef status = HAL_NOR_STATUS_ONGOING;
+ 1751              		.loc 1 990 0
+ 1752 0012 0125     		movs	r5, #1
+ 999:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   while((status != HAL_NOR_STATUS_SUCCESS) && (status != HAL_NOR_STATUS_TIMEOUT))
+ 1753              		.loc 1 999 0
+ 1754 0014 11E0     		b	.L227
+ 1755              	.LVL146:
+ 1756              	.L239:
+1000:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+1001:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     /* Check for the Timeout */
+1002:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     if(Timeout != HAL_MAX_DELAY)
+1003:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     {
+1004:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       if((Timeout == 0U)||((HAL_GetTick() - tickstart ) > Timeout))
+ 1757              		.loc 1 1004 0 discriminator 1
+ 1758 0016 FFF7FEFF 		bl	HAL_GetTick
+ 1759              	.LVL147:
+ 1760 001a C01B     		subs	r0, r0, r7
+ 1761 001c 8642     		cmp	r6, r0
+ 1762 001e 15D2     		bcs	.L228
+1005:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       {
+1006:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****         status = HAL_NOR_STATUS_TIMEOUT; 
+ 1763              		.loc 1 1006 0
+ 1764 0020 0325     		movs	r5, #3
+ 1765              	.LVL148:
+ 1766 0022 13E0     		b	.L228
+ 1767              	.LVL149:
+ 1768              	.L230:
+1007:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       }  
+1008:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     } 
+1009:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+1010:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     /* Read NOR status register (DQ6 and DQ5) */
+1011:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     tmp_sr1 = *(__IO uint16_t *)Address;
+ARM GAS  /tmp/ccMkjQ8H.s 			page 51
+
+
+1012:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     tmp_sr2 = *(__IO uint16_t *)Address;
+1013:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+1014:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     /* If DQ6 did not toggle between the two reads then return NOR_Success */
+1015:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     if((tmp_sr1 & NOR_MASK_STATUS_DQ6) == (tmp_sr2 & NOR_MASK_STATUS_DQ6)) 
+1016:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     {
+1017:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       return HAL_NOR_STATUS_SUCCESS;
+1018:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     }
+1019:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+1020:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     if((tmp_sr1 & NOR_MASK_STATUS_DQ5) != NOR_MASK_STATUS_DQ5)
+1021:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     {
+1022:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       status = HAL_NOR_STATUS_ONGOING;
+1023:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     }
+1024:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     
+1025:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     tmp_sr1 = *(__IO uint16_t *)Address;
+ 1769              		.loc 1 1025 0
+ 1770 0024 2288     		ldrh	r2, [r4]
+ 1771              	.LVL150:
+ 1772 0026 92B2     		uxth	r2, r2
+ 1773              	.LVL151:
+1026:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     tmp_sr2 = *(__IO uint16_t *)Address;
+ 1774              		.loc 1 1026 0
+ 1775 0028 2388     		ldrh	r3, [r4]
+ 1776 002a 9BB2     		uxth	r3, r3
+ 1777              	.LVL152:
+1027:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+1028:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     /* If DQ6 did not toggle between the two reads then return NOR_Success */
+1029:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     if((tmp_sr1 & NOR_MASK_STATUS_DQ6) == (tmp_sr2 & NOR_MASK_STATUS_DQ6)) 
+ 1778              		.loc 1 1029 0
+ 1779 002c 5340     		eors	r3, r3, r2
+ 1780              	.LVL153:
+ 1781 002e 13F0400F 		tst	r3, #64
+ 1782 0032 1BD0     		beq	.L236
+1030:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     {
+1031:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       return HAL_NOR_STATUS_SUCCESS;
+1032:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     }
+1033:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     else if((tmp_sr1 & NOR_MASK_STATUS_DQ5) == NOR_MASK_STATUS_DQ5)
+ 1783              		.loc 1 1033 0
+ 1784 0034 12F0200F 		tst	r2, #32
+ 1785 0038 1AD1     		bne	.L237
+ 1786              	.LVL154:
+ 1787              	.L227:
+ 999:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 1788              		.loc 1 999 0
+ 1789 003a ADB1     		cbz	r5, .L229
+ 999:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   {
+ 1790              		.loc 1 999 0 is_stmt 0 discriminator 1
+ 1791 003c 032D     		cmp	r5, #3
+ 1792 003e 13D0     		beq	.L229
+1002:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     {
+ 1793              		.loc 1 1002 0 is_stmt 1
+ 1794 0040 B6F1FF3F 		cmp	r6, #-1
+ 1795 0044 02D0     		beq	.L228
+1004:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       {
+ 1796              		.loc 1 1004 0
+ 1797 0046 002E     		cmp	r6, #0
+ 1798 0048 E5D1     		bne	.L239
+1006:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       }  
+ARM GAS  /tmp/ccMkjQ8H.s 			page 52
+
+
+ 1799              		.loc 1 1006 0
+ 1800 004a 0325     		movs	r5, #3
+ 1801              	.LVL155:
+ 1802              	.L228:
+1011:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     tmp_sr2 = *(__IO uint16_t *)Address;
+ 1803              		.loc 1 1011 0
+ 1804 004c 2288     		ldrh	r2, [r4]
+ 1805 004e 92B2     		uxth	r2, r2
+ 1806              	.LVL156:
+1012:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+ 1807              		.loc 1 1012 0
+ 1808 0050 2388     		ldrh	r3, [r4]
+ 1809 0052 9BB2     		uxth	r3, r3
+ 1810              	.LVL157:
+1015:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     {
+ 1811              		.loc 1 1015 0
+ 1812 0054 5340     		eors	r3, r3, r2
+ 1813              	.LVL158:
+ 1814 0056 13F0400F 		tst	r3, #64
+ 1815 005a 04D0     		beq	.L234
+1020:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     {
+ 1816              		.loc 1 1020 0
+ 1817 005c 12F0200F 		tst	r2, #32
+ 1818 0060 E0D1     		bne	.L230
+1022:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     }
+ 1819              		.loc 1 1022 0
+ 1820 0062 0125     		movs	r5, #1
+ 1821              	.LVL159:
+ 1822 0064 DEE7     		b	.L230
+ 1823              	.LVL160:
+ 1824              	.L234:
+1017:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     }
+ 1825              		.loc 1 1017 0
+ 1826 0066 0025     		movs	r5, #0
+ 1827              	.LVL161:
+ 1828              	.L229:
+1034:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     {
+1035:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****       return HAL_NOR_STATUS_ERROR;
+1036:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     } 
+1037:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   }
+1038:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** 
+1039:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   /* Return the operation status */
+1040:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****   return status;
+1041:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c **** }
+ 1829              		.loc 1 1041 0
+ 1830 0068 2846     		mov	r0, r5
+ 1831 006a F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 1832              	.LVL162:
+ 1833              	.L236:
+1031:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     }
+ 1834              		.loc 1 1031 0
+ 1835 006c 0025     		movs	r5, #0
+ 1836              	.LVL163:
+ 1837 006e FBE7     		b	.L229
+ 1838              	.LVL164:
+ 1839              	.L237:
+1035:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_nor.c ****     } 
+ARM GAS  /tmp/ccMkjQ8H.s 			page 53
+
+
+ 1840              		.loc 1 1035 0
+ 1841 0070 0225     		movs	r5, #2
+ 1842              	.LVL165:
+ 1843 0072 F9E7     		b	.L229
+ 1844              		.cfi_endproc
+ 1845              	.LFE81:
+ 1847              		.section	.bss.uwNORMemoryDataWidth,"aw",%nobits
+ 1848              		.align	2
+ 1849              		.set	.LANCHOR0,. + 0
+ 1852              	uwNORMemoryDataWidth:
+ 1853 0000 00000000 		.space	4
+ 1854              		.text
+ 1855              	.Letext0:
+ 1856              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 1857              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 1858              		.file 4 "Libraries/CMSIS/Include/core_cm3.h"
+ 1859              		.file 5 "Libraries/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h"
+ 1860              		.file 6 "Libraries/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h"
+ 1861              		.file 7 "/usr/include/newlib/sys/lock.h"
+ 1862              		.file 8 "/usr/include/newlib/sys/_types.h"
+ 1863              		.file 9 "/usr/lib/gcc/arm-none-eabi/6.3.1/include/stddef.h"
+ 1864              		.file 10 "/usr/include/newlib/sys/reent.h"
+ 1865              		.file 11 "Libraries/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 1866              		.file 12 "Libraries/STM32F1xx_HAL_Driver/Inc/stm32f1xx_ll_fsmc.h"
+ 1867              		.file 13 "Libraries/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_nor.h"
+ 1868              		.file 14 "Libraries/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
+ARM GAS  /tmp/ccMkjQ8H.s 			page 54
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f1xx_hal_nor.c
+     /tmp/ccMkjQ8H.s:16     .text.HAL_NOR_MspInit:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:23     .text.HAL_NOR_MspInit:0000000000000000 HAL_NOR_MspInit
+     /tmp/ccMkjQ8H.s:37     .text.HAL_NOR_Init:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:44     .text.HAL_NOR_Init:0000000000000000 HAL_NOR_Init
+     /tmp/ccMkjQ8H.s:136    .text.HAL_NOR_Init:000000000000006c $d
+     /tmp/ccMkjQ8H.s:141    .text.HAL_NOR_MspDeInit:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:148    .text.HAL_NOR_MspDeInit:0000000000000000 HAL_NOR_MspDeInit
+     /tmp/ccMkjQ8H.s:161    .text.HAL_NOR_DeInit:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:168    .text.HAL_NOR_DeInit:0000000000000000 HAL_NOR_DeInit
+     /tmp/ccMkjQ8H.s:202    .text.HAL_NOR_MspWait:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:209    .text.HAL_NOR_MspWait:0000000000000000 HAL_NOR_MspWait
+     /tmp/ccMkjQ8H.s:222    .text.HAL_NOR_Read_ID:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:229    .text.HAL_NOR_Read_ID:0000000000000000 HAL_NOR_Read_ID
+     /tmp/ccMkjQ8H.s:402    .text.HAL_NOR_Read_ID:00000000000000bc $d
+     /tmp/ccMkjQ8H.s:407    .text.HAL_NOR_ReturnToReadMode:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:414    .text.HAL_NOR_ReturnToReadMode:0000000000000000 HAL_NOR_ReturnToReadMode
+     /tmp/ccMkjQ8H.s:489    .text.HAL_NOR_Read:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:496    .text.HAL_NOR_Read:0000000000000000 HAL_NOR_Read
+     /tmp/ccMkjQ8H.s:629    .text.HAL_NOR_Read:000000000000008c $d
+     /tmp/ccMkjQ8H.s:634    .text.HAL_NOR_Program:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:641    .text.HAL_NOR_Program:0000000000000000 HAL_NOR_Program
+     /tmp/ccMkjQ8H.s:778    .text.HAL_NOR_Program:0000000000000090 $d
+     /tmp/ccMkjQ8H.s:783    .text.HAL_NOR_ReadBuffer:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:790    .text.HAL_NOR_ReadBuffer:0000000000000000 HAL_NOR_ReadBuffer
+     /tmp/ccMkjQ8H.s:938    .text.HAL_NOR_ReadBuffer:0000000000000098 $d
+     /tmp/ccMkjQ8H.s:943    .text.HAL_NOR_ProgramBuffer:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:950    .text.HAL_NOR_ProgramBuffer:0000000000000000 HAL_NOR_ProgramBuffer
+     /tmp/ccMkjQ8H.s:1102   .text.HAL_NOR_ProgramBuffer:00000000000000b0 $d
+     /tmp/ccMkjQ8H.s:1107   .text.HAL_NOR_Erase_Block:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:1114   .text.HAL_NOR_Erase_Block:0000000000000000 HAL_NOR_Erase_Block
+     /tmp/ccMkjQ8H.s:1256   .text.HAL_NOR_Erase_Block:0000000000000094 $d
+     /tmp/ccMkjQ8H.s:1261   .text.HAL_NOR_Erase_Chip:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:1268   .text.HAL_NOR_Erase_Chip:0000000000000000 HAL_NOR_Erase_Chip
+     /tmp/ccMkjQ8H.s:1405   .text.HAL_NOR_Erase_Chip:0000000000000094 $d
+     /tmp/ccMkjQ8H.s:1410   .text.HAL_NOR_Read_CFI:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:1417   .text.HAL_NOR_Read_CFI:0000000000000000 HAL_NOR_Read_CFI
+     /tmp/ccMkjQ8H.s:1580   .text.HAL_NOR_Read_CFI:00000000000000b8 $d
+     /tmp/ccMkjQ8H.s:1585   .text.HAL_NOR_WriteOperation_Enable:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:1592   .text.HAL_NOR_WriteOperation_Enable:0000000000000000 HAL_NOR_WriteOperation_Enable
+     /tmp/ccMkjQ8H.s:1637   .text.HAL_NOR_WriteOperation_Disable:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:1644   .text.HAL_NOR_WriteOperation_Disable:0000000000000000 HAL_NOR_WriteOperation_Disable
+     /tmp/ccMkjQ8H.s:1691   .text.HAL_NOR_GetState:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:1698   .text.HAL_NOR_GetState:0000000000000000 HAL_NOR_GetState
+     /tmp/ccMkjQ8H.s:1715   .text.HAL_NOR_GetStatus:0000000000000000 $t
+     /tmp/ccMkjQ8H.s:1722   .text.HAL_NOR_GetStatus:0000000000000000 HAL_NOR_GetStatus
+     /tmp/ccMkjQ8H.s:1848   .bss.uwNORMemoryDataWidth:0000000000000000 $d
+     /tmp/ccMkjQ8H.s:1852   .bss.uwNORMemoryDataWidth:0000000000000000 uwNORMemoryDataWidth
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+FSMC_NORSRAM_Init
+FSMC_NORSRAM_Timing_Init
+FSMC_NORSRAM_Extended_Timing_Init
+FSMC_NORSRAM_DeInit
+FSMC_NORSRAM_WriteOperation_Enable
+ARM GAS  /tmp/ccMkjQ8H.s 			page 55
+
+
+FSMC_NORSRAM_WriteOperation_Disable
+HAL_GetTick

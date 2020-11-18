@@ -1,0 +1,2125 @@
+ARM GAS  /tmp/ccHZpORU.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"bsp_spi_flash.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.SPI_TIMEOUT_UserCallback,"ax",%progbits
+  16              		.align	1
+  17              		.syntax unified
+  18              		.thumb
+  19              		.thumb_func
+  20              		.fpu softvfp
+  22              	SPI_TIMEOUT_UserCallback:
+  23              	.LFB46:
+  24              		.file 1 "User/flash/bsp_spi_flash.c"
+   1:User/flash/bsp_spi_flash.c ****   /**
+   2:User/flash/bsp_spi_flash.c ****   ******************************************************************************
+   3:User/flash/bsp_spi_flash.c ****   * @file    bsp_xxx.c
+   4:User/flash/bsp_spi_flash.c ****   * @author  STMicroelectronics
+   5:User/flash/bsp_spi_flash.c ****   * @version V1.0
+   6:User/flash/bsp_spi_flash.c ****   * @date    2013-xx-xx
+   7:User/flash/bsp_spi_flash.c ****   * @brief   spi flash 底层应用函数bsp 
+   8:User/flash/bsp_spi_flash.c ****   ******************************************************************************
+   9:User/flash/bsp_spi_flash.c ****   * @attention
+  10:User/flash/bsp_spi_flash.c ****   *
+  11:User/flash/bsp_spi_flash.c ****   * 实验平台:野火 F103-MINI STM32 开发板 
+  12:User/flash/bsp_spi_flash.c ****   * 论坛    :http://www.firebbs.cn
+  13:User/flash/bsp_spi_flash.c ****   * 淘宝    :https://fire-stm32.taobao.com
+  14:User/flash/bsp_spi_flash.c ****   *
+  15:User/flash/bsp_spi_flash.c ****   ******************************************************************************
+  16:User/flash/bsp_spi_flash.c ****   */
+  17:User/flash/bsp_spi_flash.c ****   
+  18:User/flash/bsp_spi_flash.c **** #include "./flash/bsp_spi_flash.h"
+  19:User/flash/bsp_spi_flash.c **** 
+  20:User/flash/bsp_spi_flash.c **** static __IO uint32_t  SPITimeout = SPIT_LONG_TIMEOUT;    
+  21:User/flash/bsp_spi_flash.c **** static uint16_t SPI_TIMEOUT_UserCallback(uint8_t errorCode);
+  22:User/flash/bsp_spi_flash.c **** 
+  23:User/flash/bsp_spi_flash.c **** /**
+  24:User/flash/bsp_spi_flash.c ****   * @brief  SPI_FLASH初始化
+  25:User/flash/bsp_spi_flash.c ****   * @param  无
+  26:User/flash/bsp_spi_flash.c ****   * @retval 无
+  27:User/flash/bsp_spi_flash.c ****   */
+  28:User/flash/bsp_spi_flash.c **** void SPI_FLASH_Init(void)
+  29:User/flash/bsp_spi_flash.c **** {
+  30:User/flash/bsp_spi_flash.c ****   SPI_InitTypeDef  SPI_InitStructure;
+  31:User/flash/bsp_spi_flash.c ****   GPIO_InitTypeDef GPIO_InitStructure;
+  32:User/flash/bsp_spi_flash.c **** 	
+  33:User/flash/bsp_spi_flash.c **** 	/* 使能SPI时钟 */
+  34:User/flash/bsp_spi_flash.c **** 	FLASH_SPI_APBxClock_FUN ( FLASH_SPI_CLK, ENABLE );
+ARM GAS  /tmp/ccHZpORU.s 			page 2
+
+
+  35:User/flash/bsp_spi_flash.c **** 	
+  36:User/flash/bsp_spi_flash.c **** 	/* 使能SPI引脚相关的时钟 */
+  37:User/flash/bsp_spi_flash.c ****  	FLASH_SPI_CS_APBxClock_FUN ( FLASH_SPI_CS_CLK|FLASH_SPI_SCK_CLK|
+  38:User/flash/bsp_spi_flash.c **** 																	FLASH_SPI_MISO_PIN|FLASH_SPI_MOSI_PIN, ENABLE );
+  39:User/flash/bsp_spi_flash.c **** 	
+  40:User/flash/bsp_spi_flash.c ****   /* 配置SPI的 CS引脚，普通IO即可 */
+  41:User/flash/bsp_spi_flash.c ****   GPIO_InitStructure.GPIO_Pin = FLASH_SPI_CS_PIN;
+  42:User/flash/bsp_spi_flash.c **** 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  43:User/flash/bsp_spi_flash.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  44:User/flash/bsp_spi_flash.c ****   GPIO_Init(FLASH_SPI_CS_PORT, &GPIO_InitStructure);
+  45:User/flash/bsp_spi_flash.c **** 	
+  46:User/flash/bsp_spi_flash.c ****   /* 配置SPI的 SCK引脚*/
+  47:User/flash/bsp_spi_flash.c ****   GPIO_InitStructure.GPIO_Pin = FLASH_SPI_SCK_PIN;
+  48:User/flash/bsp_spi_flash.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+  49:User/flash/bsp_spi_flash.c ****   GPIO_Init(FLASH_SPI_SCK_PORT, &GPIO_InitStructure);
+  50:User/flash/bsp_spi_flash.c **** 
+  51:User/flash/bsp_spi_flash.c ****   /* 配置SPI的 MISO引脚*/
+  52:User/flash/bsp_spi_flash.c ****   GPIO_InitStructure.GPIO_Pin = FLASH_SPI_MISO_PIN;
+  53:User/flash/bsp_spi_flash.c ****   GPIO_Init(FLASH_SPI_MISO_PORT, &GPIO_InitStructure);
+  54:User/flash/bsp_spi_flash.c **** 
+  55:User/flash/bsp_spi_flash.c ****   /* 配置SPI的 MOSI引脚*/
+  56:User/flash/bsp_spi_flash.c ****   GPIO_InitStructure.GPIO_Pin = FLASH_SPI_MOSI_PIN;
+  57:User/flash/bsp_spi_flash.c ****   GPIO_Init(FLASH_SPI_MOSI_PORT, &GPIO_InitStructure);
+  58:User/flash/bsp_spi_flash.c **** 
+  59:User/flash/bsp_spi_flash.c ****   /* 停止信号 FLASH: CS引脚高电平*/
+  60:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_HIGH();
+  61:User/flash/bsp_spi_flash.c **** 
+  62:User/flash/bsp_spi_flash.c ****   /* SPI 模式配置 */
+  63:User/flash/bsp_spi_flash.c ****   // FLASH芯片 支持SPI模式0及模式3，据此设置CPOL CPHA
+  64:User/flash/bsp_spi_flash.c ****   SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
+  65:User/flash/bsp_spi_flash.c ****   SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
+  66:User/flash/bsp_spi_flash.c ****   SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;
+  67:User/flash/bsp_spi_flash.c ****   SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;
+  68:User/flash/bsp_spi_flash.c ****   SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;
+  69:User/flash/bsp_spi_flash.c ****   SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;
+  70:User/flash/bsp_spi_flash.c ****   SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_4;
+  71:User/flash/bsp_spi_flash.c ****   SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
+  72:User/flash/bsp_spi_flash.c ****   SPI_InitStructure.SPI_CRCPolynomial = 7;
+  73:User/flash/bsp_spi_flash.c ****   SPI_Init(FLASH_SPIx , &SPI_InitStructure);
+  74:User/flash/bsp_spi_flash.c **** 
+  75:User/flash/bsp_spi_flash.c ****   /* 使能 SPI  */
+  76:User/flash/bsp_spi_flash.c ****   SPI_Cmd(FLASH_SPIx , ENABLE);
+  77:User/flash/bsp_spi_flash.c **** 	
+  78:User/flash/bsp_spi_flash.c **** }
+  79:User/flash/bsp_spi_flash.c ****  /**
+  80:User/flash/bsp_spi_flash.c ****   * @brief  擦除FLASH扇区
+  81:User/flash/bsp_spi_flash.c ****   * @param  SectorAddr：要擦除的扇区地址
+  82:User/flash/bsp_spi_flash.c ****   * @retval 无
+  83:User/flash/bsp_spi_flash.c ****   */
+  84:User/flash/bsp_spi_flash.c **** void SPI_FLASH_SectorErase(u32 SectorAddr)
+  85:User/flash/bsp_spi_flash.c **** {
+  86:User/flash/bsp_spi_flash.c ****   /* 发送FLASH写使能命令 */
+  87:User/flash/bsp_spi_flash.c ****   SPI_FLASH_WriteEnable();
+  88:User/flash/bsp_spi_flash.c ****   SPI_FLASH_WaitForWriteEnd();
+  89:User/flash/bsp_spi_flash.c ****   /* 擦除扇区 */
+  90:User/flash/bsp_spi_flash.c ****   /* 选择FLASH: CS低电平 */
+  91:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_LOW();
+ARM GAS  /tmp/ccHZpORU.s 			page 3
+
+
+  92:User/flash/bsp_spi_flash.c ****   /* 发送扇区擦除指令*/
+  93:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(W25X_SectorErase);
+  94:User/flash/bsp_spi_flash.c ****   /*发送擦除扇区地址的高位*/
+  95:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte((SectorAddr & 0xFF0000) >> 16);
+  96:User/flash/bsp_spi_flash.c ****   /* 发送擦除扇区地址的中位 */
+  97:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte((SectorAddr & 0xFF00) >> 8);
+  98:User/flash/bsp_spi_flash.c ****   /* 发送擦除扇区地址的低位 */
+  99:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(SectorAddr & 0xFF);
+ 100:User/flash/bsp_spi_flash.c ****   /* 停止信号 FLASH: CS 高电平 */
+ 101:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_HIGH();
+ 102:User/flash/bsp_spi_flash.c ****   /* 等待擦除完毕*/
+ 103:User/flash/bsp_spi_flash.c ****   SPI_FLASH_WaitForWriteEnd();
+ 104:User/flash/bsp_spi_flash.c **** }
+ 105:User/flash/bsp_spi_flash.c **** 
+ 106:User/flash/bsp_spi_flash.c ****  /**
+ 107:User/flash/bsp_spi_flash.c ****   * @brief  擦除FLASH扇区，整片擦除
+ 108:User/flash/bsp_spi_flash.c ****   * @param  无
+ 109:User/flash/bsp_spi_flash.c ****   * @retval 无
+ 110:User/flash/bsp_spi_flash.c ****   */
+ 111:User/flash/bsp_spi_flash.c **** void SPI_FLASH_BulkErase(void)
+ 112:User/flash/bsp_spi_flash.c **** {
+ 113:User/flash/bsp_spi_flash.c ****   /* 发送FLASH写使能命令 */
+ 114:User/flash/bsp_spi_flash.c ****   SPI_FLASH_WriteEnable();
+ 115:User/flash/bsp_spi_flash.c **** 
+ 116:User/flash/bsp_spi_flash.c ****   /* 整块 Erase */
+ 117:User/flash/bsp_spi_flash.c ****   /* 选择FLASH: CS低电平 */
+ 118:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_LOW();
+ 119:User/flash/bsp_spi_flash.c ****   /* 发送整块擦除指令*/
+ 120:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(W25X_ChipErase);
+ 121:User/flash/bsp_spi_flash.c ****   /* 停止信号 FLASH: CS 高电平 */
+ 122:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_HIGH();
+ 123:User/flash/bsp_spi_flash.c **** 
+ 124:User/flash/bsp_spi_flash.c ****   /* 等待擦除完毕*/
+ 125:User/flash/bsp_spi_flash.c ****   SPI_FLASH_WaitForWriteEnd();
+ 126:User/flash/bsp_spi_flash.c **** }
+ 127:User/flash/bsp_spi_flash.c **** 
+ 128:User/flash/bsp_spi_flash.c ****  /**
+ 129:User/flash/bsp_spi_flash.c ****   * @brief  对FLASH按页写入数据，调用本函数写入数据前需要先擦除扇区
+ 130:User/flash/bsp_spi_flash.c ****   * @param	pBuffer，要写入数据的指针
+ 131:User/flash/bsp_spi_flash.c ****   * @param WriteAddr，写入地址
+ 132:User/flash/bsp_spi_flash.c ****   * @param  NumByteToWrite，写入数据长度，必须小于等于SPI_FLASH_PerWritePageSize
+ 133:User/flash/bsp_spi_flash.c ****   * @retval 无
+ 134:User/flash/bsp_spi_flash.c ****   */
+ 135:User/flash/bsp_spi_flash.c **** void SPI_FLASH_PageWrite(u8* pBuffer, u32 WriteAddr, u16 NumByteToWrite)
+ 136:User/flash/bsp_spi_flash.c **** {
+ 137:User/flash/bsp_spi_flash.c ****   /* 发送FLASH写使能命令 */
+ 138:User/flash/bsp_spi_flash.c ****   SPI_FLASH_WriteEnable();
+ 139:User/flash/bsp_spi_flash.c **** 
+ 140:User/flash/bsp_spi_flash.c ****   /* 选择FLASH: CS低电平 */
+ 141:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_LOW();
+ 142:User/flash/bsp_spi_flash.c ****   /* 写页写指令*/
+ 143:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(W25X_PageProgram);
+ 144:User/flash/bsp_spi_flash.c ****   /*发送写地址的高位*/
+ 145:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte((WriteAddr & 0xFF0000) >> 16);
+ 146:User/flash/bsp_spi_flash.c ****   /*发送写地址的中位*/
+ 147:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte((WriteAddr & 0xFF00) >> 8);
+ 148:User/flash/bsp_spi_flash.c ****   /*发送写地址的低位*/
+ARM GAS  /tmp/ccHZpORU.s 			page 4
+
+
+ 149:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(WriteAddr & 0xFF);
+ 150:User/flash/bsp_spi_flash.c **** 
+ 151:User/flash/bsp_spi_flash.c ****   if(NumByteToWrite > SPI_FLASH_PerWritePageSize)
+ 152:User/flash/bsp_spi_flash.c ****   {
+ 153:User/flash/bsp_spi_flash.c ****      NumByteToWrite = SPI_FLASH_PerWritePageSize;
+ 154:User/flash/bsp_spi_flash.c ****      FLASH_ERROR("SPI_FLASH_PageWrite too large!"); 
+ 155:User/flash/bsp_spi_flash.c ****   }
+ 156:User/flash/bsp_spi_flash.c **** 
+ 157:User/flash/bsp_spi_flash.c ****   /* 写入数据*/
+ 158:User/flash/bsp_spi_flash.c ****   while (NumByteToWrite--)
+ 159:User/flash/bsp_spi_flash.c ****   {
+ 160:User/flash/bsp_spi_flash.c ****     /* 发送当前要写入的字节数据 */
+ 161:User/flash/bsp_spi_flash.c ****     SPI_FLASH_SendByte(*pBuffer);
+ 162:User/flash/bsp_spi_flash.c ****     /* 指向下一字节数据 */
+ 163:User/flash/bsp_spi_flash.c ****     pBuffer++;
+ 164:User/flash/bsp_spi_flash.c ****   }
+ 165:User/flash/bsp_spi_flash.c **** 
+ 166:User/flash/bsp_spi_flash.c ****   /* 停止信号 FLASH: CS 高电平 */
+ 167:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_HIGH();
+ 168:User/flash/bsp_spi_flash.c **** 
+ 169:User/flash/bsp_spi_flash.c ****   /* 等待写入完毕*/
+ 170:User/flash/bsp_spi_flash.c ****   SPI_FLASH_WaitForWriteEnd();
+ 171:User/flash/bsp_spi_flash.c **** }
+ 172:User/flash/bsp_spi_flash.c **** 
+ 173:User/flash/bsp_spi_flash.c ****  /**
+ 174:User/flash/bsp_spi_flash.c ****   * @brief  对FLASH写入数据，调用本函数写入数据前需要先擦除扇区
+ 175:User/flash/bsp_spi_flash.c ****   * @param	pBuffer，要写入数据的指针
+ 176:User/flash/bsp_spi_flash.c ****   * @param  WriteAddr，写入地址
+ 177:User/flash/bsp_spi_flash.c ****   * @param  NumByteToWrite，写入数据长度
+ 178:User/flash/bsp_spi_flash.c ****   * @retval 无
+ 179:User/flash/bsp_spi_flash.c ****   */
+ 180:User/flash/bsp_spi_flash.c **** void SPI_FLASH_BufferWrite(u8* pBuffer, u32 WriteAddr, u16 NumByteToWrite)
+ 181:User/flash/bsp_spi_flash.c **** {
+ 182:User/flash/bsp_spi_flash.c ****   u8 NumOfPage = 0, NumOfSingle = 0, Addr = 0, count = 0, temp = 0;
+ 183:User/flash/bsp_spi_flash.c **** 	
+ 184:User/flash/bsp_spi_flash.c **** 	/*mod运算求余，若writeAddr是SPI_FLASH_PageSize整数倍，运算结果Addr值为0*/
+ 185:User/flash/bsp_spi_flash.c ****   Addr = WriteAddr % SPI_FLASH_PageSize;
+ 186:User/flash/bsp_spi_flash.c **** 	
+ 187:User/flash/bsp_spi_flash.c **** 	/*差count个数据值，刚好可以对齐到页地址*/
+ 188:User/flash/bsp_spi_flash.c ****   count = SPI_FLASH_PageSize - Addr;
+ 189:User/flash/bsp_spi_flash.c **** 	/*计算出要写多少整数页*/
+ 190:User/flash/bsp_spi_flash.c ****   NumOfPage =  NumByteToWrite / SPI_FLASH_PageSize;
+ 191:User/flash/bsp_spi_flash.c **** 	/*mod运算求余，计算出剩余不满一页的字节数*/
+ 192:User/flash/bsp_spi_flash.c ****   NumOfSingle = NumByteToWrite % SPI_FLASH_PageSize;
+ 193:User/flash/bsp_spi_flash.c **** 	
+ 194:User/flash/bsp_spi_flash.c **** 	/* Addr=0,则WriteAddr 刚好按页对齐 aligned  */
+ 195:User/flash/bsp_spi_flash.c ****   if (Addr == 0)
+ 196:User/flash/bsp_spi_flash.c ****   {
+ 197:User/flash/bsp_spi_flash.c **** 		/* NumByteToWrite < SPI_FLASH_PageSize */
+ 198:User/flash/bsp_spi_flash.c ****     if (NumOfPage == 0) 
+ 199:User/flash/bsp_spi_flash.c ****     {
+ 200:User/flash/bsp_spi_flash.c ****       SPI_FLASH_PageWrite(pBuffer, WriteAddr, NumByteToWrite);
+ 201:User/flash/bsp_spi_flash.c ****     }
+ 202:User/flash/bsp_spi_flash.c ****     else /* NumByteToWrite > SPI_FLASH_PageSize */
+ 203:User/flash/bsp_spi_flash.c ****     { 
+ 204:User/flash/bsp_spi_flash.c **** 			/*先把整数页都写了*/
+ 205:User/flash/bsp_spi_flash.c ****       while (NumOfPage--)
+ARM GAS  /tmp/ccHZpORU.s 			page 5
+
+
+ 206:User/flash/bsp_spi_flash.c ****       {
+ 207:User/flash/bsp_spi_flash.c ****         SPI_FLASH_PageWrite(pBuffer, WriteAddr, SPI_FLASH_PageSize);
+ 208:User/flash/bsp_spi_flash.c ****         WriteAddr +=  SPI_FLASH_PageSize;
+ 209:User/flash/bsp_spi_flash.c ****         pBuffer += SPI_FLASH_PageSize;
+ 210:User/flash/bsp_spi_flash.c ****       }
+ 211:User/flash/bsp_spi_flash.c **** 			/*若有多余的不满一页的数据，把它写完*/
+ 212:User/flash/bsp_spi_flash.c ****       SPI_FLASH_PageWrite(pBuffer, WriteAddr, NumOfSingle);
+ 213:User/flash/bsp_spi_flash.c ****     }
+ 214:User/flash/bsp_spi_flash.c ****   }
+ 215:User/flash/bsp_spi_flash.c **** 	/* 若地址与 SPI_FLASH_PageSize 不对齐  */
+ 216:User/flash/bsp_spi_flash.c ****   else 
+ 217:User/flash/bsp_spi_flash.c ****   {
+ 218:User/flash/bsp_spi_flash.c **** 		/* NumByteToWrite < SPI_FLASH_PageSize */
+ 219:User/flash/bsp_spi_flash.c ****     if (NumOfPage == 0)
+ 220:User/flash/bsp_spi_flash.c ****     {
+ 221:User/flash/bsp_spi_flash.c **** 			/*当前页剩余的count个位置比NumOfSingle小，一页写不完*/
+ 222:User/flash/bsp_spi_flash.c ****       if (NumOfSingle > count) 
+ 223:User/flash/bsp_spi_flash.c ****       {
+ 224:User/flash/bsp_spi_flash.c ****         temp = NumOfSingle - count;
+ 225:User/flash/bsp_spi_flash.c **** 				/*先写满当前页*/
+ 226:User/flash/bsp_spi_flash.c ****         SPI_FLASH_PageWrite(pBuffer, WriteAddr, count);
+ 227:User/flash/bsp_spi_flash.c **** 				
+ 228:User/flash/bsp_spi_flash.c ****         WriteAddr +=  count;
+ 229:User/flash/bsp_spi_flash.c ****         pBuffer += count;
+ 230:User/flash/bsp_spi_flash.c **** 				/*再写剩余的数据*/
+ 231:User/flash/bsp_spi_flash.c ****         SPI_FLASH_PageWrite(pBuffer, WriteAddr, temp);
+ 232:User/flash/bsp_spi_flash.c ****       }
+ 233:User/flash/bsp_spi_flash.c ****       else /*当前页剩余的count个位置能写完NumOfSingle个数据*/
+ 234:User/flash/bsp_spi_flash.c ****       {
+ 235:User/flash/bsp_spi_flash.c ****         SPI_FLASH_PageWrite(pBuffer, WriteAddr, NumByteToWrite);
+ 236:User/flash/bsp_spi_flash.c ****       }
+ 237:User/flash/bsp_spi_flash.c ****     }
+ 238:User/flash/bsp_spi_flash.c ****     else /* NumByteToWrite > SPI_FLASH_PageSize */
+ 239:User/flash/bsp_spi_flash.c ****     {
+ 240:User/flash/bsp_spi_flash.c **** 			/*地址不对齐多出的count分开处理，不加入这个运算*/
+ 241:User/flash/bsp_spi_flash.c ****       NumByteToWrite -= count;
+ 242:User/flash/bsp_spi_flash.c ****       NumOfPage =  NumByteToWrite / SPI_FLASH_PageSize;
+ 243:User/flash/bsp_spi_flash.c ****       NumOfSingle = NumByteToWrite % SPI_FLASH_PageSize;
+ 244:User/flash/bsp_spi_flash.c **** 			
+ 245:User/flash/bsp_spi_flash.c **** 			/* 先写完count个数据，为的是让下一次要写的地址对齐 */
+ 246:User/flash/bsp_spi_flash.c ****       SPI_FLASH_PageWrite(pBuffer, WriteAddr, count);
+ 247:User/flash/bsp_spi_flash.c **** 			
+ 248:User/flash/bsp_spi_flash.c **** 			/* 接下来就重复地址对齐的情况 */
+ 249:User/flash/bsp_spi_flash.c ****       WriteAddr +=  count;
+ 250:User/flash/bsp_spi_flash.c ****       pBuffer += count;
+ 251:User/flash/bsp_spi_flash.c **** 			/*把整数页都写了*/
+ 252:User/flash/bsp_spi_flash.c ****       while (NumOfPage--)
+ 253:User/flash/bsp_spi_flash.c ****       {
+ 254:User/flash/bsp_spi_flash.c ****         SPI_FLASH_PageWrite(pBuffer, WriteAddr, SPI_FLASH_PageSize);
+ 255:User/flash/bsp_spi_flash.c ****         WriteAddr +=  SPI_FLASH_PageSize;
+ 256:User/flash/bsp_spi_flash.c ****         pBuffer += SPI_FLASH_PageSize;
+ 257:User/flash/bsp_spi_flash.c ****       }
+ 258:User/flash/bsp_spi_flash.c **** 			/*若有多余的不满一页的数据，把它写完*/
+ 259:User/flash/bsp_spi_flash.c ****       if (NumOfSingle != 0)
+ 260:User/flash/bsp_spi_flash.c ****       {
+ 261:User/flash/bsp_spi_flash.c ****         SPI_FLASH_PageWrite(pBuffer, WriteAddr, NumOfSingle);
+ 262:User/flash/bsp_spi_flash.c ****       }
+ARM GAS  /tmp/ccHZpORU.s 			page 6
+
+
+ 263:User/flash/bsp_spi_flash.c ****     }
+ 264:User/flash/bsp_spi_flash.c ****   }
+ 265:User/flash/bsp_spi_flash.c **** }
+ 266:User/flash/bsp_spi_flash.c **** 
+ 267:User/flash/bsp_spi_flash.c ****  /**
+ 268:User/flash/bsp_spi_flash.c ****   * @brief  读取FLASH数据
+ 269:User/flash/bsp_spi_flash.c ****   * @param 	pBuffer，存储读出数据的指针
+ 270:User/flash/bsp_spi_flash.c ****   * @param   ReadAddr，读取地址
+ 271:User/flash/bsp_spi_flash.c ****   * @param   NumByteToRead，读取数据长度
+ 272:User/flash/bsp_spi_flash.c ****   * @retval 无
+ 273:User/flash/bsp_spi_flash.c ****   */
+ 274:User/flash/bsp_spi_flash.c **** void SPI_FLASH_BufferRead(u8* pBuffer, u32 ReadAddr, u16 NumByteToRead)
+ 275:User/flash/bsp_spi_flash.c **** {
+ 276:User/flash/bsp_spi_flash.c ****   /* 选择FLASH: CS低电平 */
+ 277:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_LOW();
+ 278:User/flash/bsp_spi_flash.c **** 
+ 279:User/flash/bsp_spi_flash.c ****   /* 发送 读 指令 */
+ 280:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(W25X_ReadData);
+ 281:User/flash/bsp_spi_flash.c **** 
+ 282:User/flash/bsp_spi_flash.c ****   /* 发送 读 地址高位 */
+ 283:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte((ReadAddr & 0xFF0000) >> 16);
+ 284:User/flash/bsp_spi_flash.c ****   /* 发送 读 地址中位 */
+ 285:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte((ReadAddr& 0xFF00) >> 8);
+ 286:User/flash/bsp_spi_flash.c ****   /* 发送 读 地址低位 */
+ 287:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(ReadAddr & 0xFF);
+ 288:User/flash/bsp_spi_flash.c **** 	
+ 289:User/flash/bsp_spi_flash.c **** 	/* 读取数据 */
+ 290:User/flash/bsp_spi_flash.c ****   while (NumByteToRead--) /* while there is data to be read */
+ 291:User/flash/bsp_spi_flash.c ****   {
+ 292:User/flash/bsp_spi_flash.c ****     /* 读取一个字节*/
+ 293:User/flash/bsp_spi_flash.c ****     *pBuffer = SPI_FLASH_SendByte(Dummy_Byte);
+ 294:User/flash/bsp_spi_flash.c ****     /* 指向下一个字节缓冲区 */
+ 295:User/flash/bsp_spi_flash.c ****     pBuffer++;
+ 296:User/flash/bsp_spi_flash.c ****   }
+ 297:User/flash/bsp_spi_flash.c **** 
+ 298:User/flash/bsp_spi_flash.c ****   /* 停止信号 FLASH: CS 高电平 */
+ 299:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_HIGH();
+ 300:User/flash/bsp_spi_flash.c **** }
+ 301:User/flash/bsp_spi_flash.c **** 
+ 302:User/flash/bsp_spi_flash.c ****  /**
+ 303:User/flash/bsp_spi_flash.c ****   * @brief  读取FLASH ID
+ 304:User/flash/bsp_spi_flash.c ****   * @param 	无
+ 305:User/flash/bsp_spi_flash.c ****   * @retval FLASH ID
+ 306:User/flash/bsp_spi_flash.c ****   */
+ 307:User/flash/bsp_spi_flash.c **** u32 SPI_FLASH_ReadID(void)
+ 308:User/flash/bsp_spi_flash.c **** {
+ 309:User/flash/bsp_spi_flash.c ****   u32 Temp = 0, Temp0 = 0, Temp1 = 0, Temp2 = 0;
+ 310:User/flash/bsp_spi_flash.c **** 
+ 311:User/flash/bsp_spi_flash.c ****   /* 开始通讯：CS低电平 */
+ 312:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_LOW();
+ 313:User/flash/bsp_spi_flash.c **** 
+ 314:User/flash/bsp_spi_flash.c ****   /* 发送JEDEC指令，读取ID */
+ 315:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(W25X_JedecDeviceID);
+ 316:User/flash/bsp_spi_flash.c **** 
+ 317:User/flash/bsp_spi_flash.c ****   /* 读取一个字节数据 */
+ 318:User/flash/bsp_spi_flash.c ****   Temp0 = SPI_FLASH_SendByte(Dummy_Byte);
+ 319:User/flash/bsp_spi_flash.c **** 
+ARM GAS  /tmp/ccHZpORU.s 			page 7
+
+
+ 320:User/flash/bsp_spi_flash.c ****   /* 读取一个字节数据 */
+ 321:User/flash/bsp_spi_flash.c ****   Temp1 = SPI_FLASH_SendByte(Dummy_Byte);
+ 322:User/flash/bsp_spi_flash.c **** 
+ 323:User/flash/bsp_spi_flash.c ****   /* 读取一个字节数据 */
+ 324:User/flash/bsp_spi_flash.c ****   Temp2 = SPI_FLASH_SendByte(Dummy_Byte);
+ 325:User/flash/bsp_spi_flash.c **** 
+ 326:User/flash/bsp_spi_flash.c ****  /* 停止通讯：CS高电平 */
+ 327:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_HIGH();
+ 328:User/flash/bsp_spi_flash.c **** 
+ 329:User/flash/bsp_spi_flash.c ****   /*把数据组合起来，作为函数的返回值*/
+ 330:User/flash/bsp_spi_flash.c **** 	Temp = (Temp0 << 16) | (Temp1 << 8) | Temp2;
+ 331:User/flash/bsp_spi_flash.c **** 
+ 332:User/flash/bsp_spi_flash.c ****   return Temp;
+ 333:User/flash/bsp_spi_flash.c **** }
+ 334:User/flash/bsp_spi_flash.c ****  /**
+ 335:User/flash/bsp_spi_flash.c ****   * @brief  读取FLASH Device ID
+ 336:User/flash/bsp_spi_flash.c ****   * @param 	无
+ 337:User/flash/bsp_spi_flash.c ****   * @retval FLASH Device ID
+ 338:User/flash/bsp_spi_flash.c ****   */
+ 339:User/flash/bsp_spi_flash.c **** u32 SPI_FLASH_ReadDeviceID(void)
+ 340:User/flash/bsp_spi_flash.c **** {
+ 341:User/flash/bsp_spi_flash.c ****   u32 Temp = 0;
+ 342:User/flash/bsp_spi_flash.c **** 
+ 343:User/flash/bsp_spi_flash.c ****   /* Select the FLASH: Chip Select low */
+ 344:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_LOW();
+ 345:User/flash/bsp_spi_flash.c **** 
+ 346:User/flash/bsp_spi_flash.c ****   /* Send "RDID " instruction */
+ 347:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(W25X_DeviceID);
+ 348:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(Dummy_Byte);
+ 349:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(Dummy_Byte);
+ 350:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(Dummy_Byte);
+ 351:User/flash/bsp_spi_flash.c ****   
+ 352:User/flash/bsp_spi_flash.c ****   /* Read a byte from the FLASH */
+ 353:User/flash/bsp_spi_flash.c ****   Temp = SPI_FLASH_SendByte(Dummy_Byte);
+ 354:User/flash/bsp_spi_flash.c **** 
+ 355:User/flash/bsp_spi_flash.c ****   /* Deselect the FLASH: Chip Select high */
+ 356:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_HIGH();
+ 357:User/flash/bsp_spi_flash.c **** 
+ 358:User/flash/bsp_spi_flash.c ****   return Temp;
+ 359:User/flash/bsp_spi_flash.c **** }
+ 360:User/flash/bsp_spi_flash.c **** /*******************************************************************************
+ 361:User/flash/bsp_spi_flash.c **** * Function Name  : SPI_FLASH_StartReadSequence
+ 362:User/flash/bsp_spi_flash.c **** * Description    : Initiates a read data byte (READ) sequence from the Flash.
+ 363:User/flash/bsp_spi_flash.c **** *                  This is done by driving the /CS line low to select the device,
+ 364:User/flash/bsp_spi_flash.c **** *                  then the READ instruction is transmitted followed by 3 bytes
+ 365:User/flash/bsp_spi_flash.c **** *                  address. This function exit and keep the /CS line low, so the
+ 366:User/flash/bsp_spi_flash.c **** *                  Flash still being selected. With this technique the whole
+ 367:User/flash/bsp_spi_flash.c **** *                  content of the Flash is read with a single READ instruction.
+ 368:User/flash/bsp_spi_flash.c **** * Input          : - ReadAddr : FLASH's internal address to read from.
+ 369:User/flash/bsp_spi_flash.c **** * Output         : None
+ 370:User/flash/bsp_spi_flash.c **** * Return         : None
+ 371:User/flash/bsp_spi_flash.c **** *******************************************************************************/
+ 372:User/flash/bsp_spi_flash.c **** void SPI_FLASH_StartReadSequence(u32 ReadAddr)
+ 373:User/flash/bsp_spi_flash.c **** {
+ 374:User/flash/bsp_spi_flash.c ****   /* Select the FLASH: Chip Select low */
+ 375:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_LOW();
+ 376:User/flash/bsp_spi_flash.c **** 
+ARM GAS  /tmp/ccHZpORU.s 			page 8
+
+
+ 377:User/flash/bsp_spi_flash.c ****   /* Send "Read from Memory " instruction */
+ 378:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(W25X_ReadData);
+ 379:User/flash/bsp_spi_flash.c **** 
+ 380:User/flash/bsp_spi_flash.c ****   /* Send the 24-bit address of the address to read from -----------------------*/
+ 381:User/flash/bsp_spi_flash.c ****   /* Send ReadAddr high nibble address byte */
+ 382:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte((ReadAddr & 0xFF0000) >> 16);
+ 383:User/flash/bsp_spi_flash.c ****   /* Send ReadAddr medium nibble address byte */
+ 384:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte((ReadAddr& 0xFF00) >> 8);
+ 385:User/flash/bsp_spi_flash.c ****   /* Send ReadAddr low nibble address byte */
+ 386:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(ReadAddr & 0xFF);
+ 387:User/flash/bsp_spi_flash.c **** }
+ 388:User/flash/bsp_spi_flash.c **** 
+ 389:User/flash/bsp_spi_flash.c **** 
+ 390:User/flash/bsp_spi_flash.c ****  /**
+ 391:User/flash/bsp_spi_flash.c ****   * @brief  使用SPI读取一个字节的数据
+ 392:User/flash/bsp_spi_flash.c ****   * @param  无
+ 393:User/flash/bsp_spi_flash.c ****   * @retval 返回接收到的数据
+ 394:User/flash/bsp_spi_flash.c ****   */
+ 395:User/flash/bsp_spi_flash.c **** u8 SPI_FLASH_ReadByte(void)
+ 396:User/flash/bsp_spi_flash.c **** {
+ 397:User/flash/bsp_spi_flash.c ****   return (SPI_FLASH_SendByte(Dummy_Byte));
+ 398:User/flash/bsp_spi_flash.c **** }
+ 399:User/flash/bsp_spi_flash.c **** 
+ 400:User/flash/bsp_spi_flash.c ****  /**
+ 401:User/flash/bsp_spi_flash.c ****   * @brief  使用SPI发送一个字节的数据
+ 402:User/flash/bsp_spi_flash.c ****   * @param  byte：要发送的数据
+ 403:User/flash/bsp_spi_flash.c ****   * @retval 返回接收到的数据
+ 404:User/flash/bsp_spi_flash.c ****   */
+ 405:User/flash/bsp_spi_flash.c **** u8 SPI_FLASH_SendByte(u8 byte)
+ 406:User/flash/bsp_spi_flash.c **** {
+ 407:User/flash/bsp_spi_flash.c **** 	 SPITimeout = SPIT_FLAG_TIMEOUT;
+ 408:User/flash/bsp_spi_flash.c ****   /* 等待发送缓冲区为空，TXE事件 */
+ 409:User/flash/bsp_spi_flash.c ****   while (SPI_I2S_GetFlagStatus(FLASH_SPIx , SPI_I2S_FLAG_TXE) == RESET)
+ 410:User/flash/bsp_spi_flash.c **** 	{
+ 411:User/flash/bsp_spi_flash.c ****     if((SPITimeout--) == 0) return SPI_TIMEOUT_UserCallback(0);
+ 412:User/flash/bsp_spi_flash.c ****    }
+ 413:User/flash/bsp_spi_flash.c **** 
+ 414:User/flash/bsp_spi_flash.c ****   /* 写入数据寄存器，把要写入的数据写入发送缓冲区 */
+ 415:User/flash/bsp_spi_flash.c ****   SPI_I2S_SendData(FLASH_SPIx , byte);
+ 416:User/flash/bsp_spi_flash.c **** 
+ 417:User/flash/bsp_spi_flash.c **** 	SPITimeout = SPIT_FLAG_TIMEOUT;
+ 418:User/flash/bsp_spi_flash.c ****   /* 等待接收缓冲区非空，RXNE事件 */
+ 419:User/flash/bsp_spi_flash.c ****   while (SPI_I2S_GetFlagStatus(FLASH_SPIx , SPI_I2S_FLAG_RXNE) == RESET)
+ 420:User/flash/bsp_spi_flash.c ****   {
+ 421:User/flash/bsp_spi_flash.c ****     if((SPITimeout--) == 0) return SPI_TIMEOUT_UserCallback(1);
+ 422:User/flash/bsp_spi_flash.c ****    }
+ 423:User/flash/bsp_spi_flash.c **** 
+ 424:User/flash/bsp_spi_flash.c ****   /* 读取数据寄存器，获取接收缓冲区数据 */
+ 425:User/flash/bsp_spi_flash.c ****   return SPI_I2S_ReceiveData(FLASH_SPIx );
+ 426:User/flash/bsp_spi_flash.c **** }
+ 427:User/flash/bsp_spi_flash.c **** 
+ 428:User/flash/bsp_spi_flash.c ****  /**
+ 429:User/flash/bsp_spi_flash.c ****   * @brief  使用SPI发送两个字节的数据
+ 430:User/flash/bsp_spi_flash.c ****   * @param  byte：要发送的数据
+ 431:User/flash/bsp_spi_flash.c ****   * @retval 返回接收到的数据
+ 432:User/flash/bsp_spi_flash.c ****   */
+ 433:User/flash/bsp_spi_flash.c **** u16 SPI_FLASH_SendHalfWord(u16 HalfWord)
+ARM GAS  /tmp/ccHZpORU.s 			page 9
+
+
+ 434:User/flash/bsp_spi_flash.c **** {
+ 435:User/flash/bsp_spi_flash.c **** 	  SPITimeout = SPIT_FLAG_TIMEOUT;
+ 436:User/flash/bsp_spi_flash.c ****   /* 等待发送缓冲区为空，TXE事件 */
+ 437:User/flash/bsp_spi_flash.c ****   while (SPI_I2S_GetFlagStatus(FLASH_SPIx , SPI_I2S_FLAG_TXE) == RESET)
+ 438:User/flash/bsp_spi_flash.c **** 	{
+ 439:User/flash/bsp_spi_flash.c ****     if((SPITimeout--) == 0) return SPI_TIMEOUT_UserCallback(2);
+ 440:User/flash/bsp_spi_flash.c ****    }
+ 441:User/flash/bsp_spi_flash.c **** 	
+ 442:User/flash/bsp_spi_flash.c ****   /* 写入数据寄存器，把要写入的数据写入发送缓冲区 */
+ 443:User/flash/bsp_spi_flash.c ****   SPI_I2S_SendData(FLASH_SPIx , HalfWord);
+ 444:User/flash/bsp_spi_flash.c **** 
+ 445:User/flash/bsp_spi_flash.c **** 	 SPITimeout = SPIT_FLAG_TIMEOUT;
+ 446:User/flash/bsp_spi_flash.c ****   /* 等待接收缓冲区非空，RXNE事件 */
+ 447:User/flash/bsp_spi_flash.c ****   while (SPI_I2S_GetFlagStatus(FLASH_SPIx , SPI_I2S_FLAG_RXNE) == RESET)
+ 448:User/flash/bsp_spi_flash.c **** 	 {
+ 449:User/flash/bsp_spi_flash.c ****     if((SPITimeout--) == 0) return SPI_TIMEOUT_UserCallback(3);
+ 450:User/flash/bsp_spi_flash.c ****    }
+ 451:User/flash/bsp_spi_flash.c ****   /* 读取数据寄存器，获取接收缓冲区数据 */
+ 452:User/flash/bsp_spi_flash.c ****   return SPI_I2S_ReceiveData(FLASH_SPIx );
+ 453:User/flash/bsp_spi_flash.c **** }
+ 454:User/flash/bsp_spi_flash.c **** 
+ 455:User/flash/bsp_spi_flash.c ****  /**
+ 456:User/flash/bsp_spi_flash.c ****   * @brief  向FLASH发送 写使能 命令
+ 457:User/flash/bsp_spi_flash.c ****   * @param  none
+ 458:User/flash/bsp_spi_flash.c ****   * @retval none
+ 459:User/flash/bsp_spi_flash.c ****   */
+ 460:User/flash/bsp_spi_flash.c **** void SPI_FLASH_WriteEnable(void)
+ 461:User/flash/bsp_spi_flash.c **** {
+ 462:User/flash/bsp_spi_flash.c ****   /* 通讯开始：CS低 */
+ 463:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_LOW();
+ 464:User/flash/bsp_spi_flash.c **** 
+ 465:User/flash/bsp_spi_flash.c ****   /* 发送写使能命令*/
+ 466:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(W25X_WriteEnable);
+ 467:User/flash/bsp_spi_flash.c **** 
+ 468:User/flash/bsp_spi_flash.c ****   /*通讯结束：CS高 */
+ 469:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_HIGH();
+ 470:User/flash/bsp_spi_flash.c **** }
+ 471:User/flash/bsp_spi_flash.c **** 
+ 472:User/flash/bsp_spi_flash.c **** /* WIP(busy)标志，FLASH内部正在写入 */
+ 473:User/flash/bsp_spi_flash.c **** #define WIP_Flag                  0x01
+ 474:User/flash/bsp_spi_flash.c **** 
+ 475:User/flash/bsp_spi_flash.c ****  /**
+ 476:User/flash/bsp_spi_flash.c ****   * @brief  等待WIP(BUSY)标志被置0，即等待到FLASH内部数据写入完毕
+ 477:User/flash/bsp_spi_flash.c ****   * @param  none
+ 478:User/flash/bsp_spi_flash.c ****   * @retval none
+ 479:User/flash/bsp_spi_flash.c ****   */
+ 480:User/flash/bsp_spi_flash.c **** void SPI_FLASH_WaitForWriteEnd(void)
+ 481:User/flash/bsp_spi_flash.c **** {
+ 482:User/flash/bsp_spi_flash.c ****   u8 FLASH_Status = 0;
+ 483:User/flash/bsp_spi_flash.c **** 
+ 484:User/flash/bsp_spi_flash.c ****   /* 选择 FLASH: CS 低 */
+ 485:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_LOW();
+ 486:User/flash/bsp_spi_flash.c **** 
+ 487:User/flash/bsp_spi_flash.c ****   /* 发送 读状态寄存器 命令 */
+ 488:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(W25X_ReadStatusReg);
+ 489:User/flash/bsp_spi_flash.c **** 
+ 490:User/flash/bsp_spi_flash.c ****   /* 若FLASH忙碌，则等待 */
+ARM GAS  /tmp/ccHZpORU.s 			page 10
+
+
+ 491:User/flash/bsp_spi_flash.c ****   do
+ 492:User/flash/bsp_spi_flash.c ****   {
+ 493:User/flash/bsp_spi_flash.c **** 		/* 读取FLASH芯片的状态寄存器 */
+ 494:User/flash/bsp_spi_flash.c ****     FLASH_Status = SPI_FLASH_SendByte(Dummy_Byte);	 
+ 495:User/flash/bsp_spi_flash.c ****   }
+ 496:User/flash/bsp_spi_flash.c ****   while ((FLASH_Status & WIP_Flag) == SET);  /* 正在写入标志 */
+ 497:User/flash/bsp_spi_flash.c **** 
+ 498:User/flash/bsp_spi_flash.c ****   /* 停止信号  FLASH: CS 高 */
+ 499:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_HIGH();
+ 500:User/flash/bsp_spi_flash.c **** }
+ 501:User/flash/bsp_spi_flash.c **** 
+ 502:User/flash/bsp_spi_flash.c **** 
+ 503:User/flash/bsp_spi_flash.c **** //进入掉电模式
+ 504:User/flash/bsp_spi_flash.c **** void SPI_Flash_PowerDown(void)   
+ 505:User/flash/bsp_spi_flash.c **** { 
+ 506:User/flash/bsp_spi_flash.c ****   /* 通讯开始：CS低 */
+ 507:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_LOW();
+ 508:User/flash/bsp_spi_flash.c **** 
+ 509:User/flash/bsp_spi_flash.c ****   /* 发送 掉电 命令 */
+ 510:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(W25X_PowerDown);
+ 511:User/flash/bsp_spi_flash.c **** 
+ 512:User/flash/bsp_spi_flash.c ****   /*通讯结束：CS高 */
+ 513:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_HIGH();
+ 514:User/flash/bsp_spi_flash.c **** }   
+ 515:User/flash/bsp_spi_flash.c **** 
+ 516:User/flash/bsp_spi_flash.c **** //唤醒
+ 517:User/flash/bsp_spi_flash.c **** void SPI_Flash_WAKEUP(void)   
+ 518:User/flash/bsp_spi_flash.c **** {
+ 519:User/flash/bsp_spi_flash.c ****   /*选择 FLASH: CS 低 */
+ 520:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_LOW();
+ 521:User/flash/bsp_spi_flash.c **** 
+ 522:User/flash/bsp_spi_flash.c ****   /* 发送 上电 命令 */
+ 523:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(W25X_ReleasePowerDown);
+ 524:User/flash/bsp_spi_flash.c **** 
+ 525:User/flash/bsp_spi_flash.c ****    /* 停止信号 FLASH: CS 高 */
+ 526:User/flash/bsp_spi_flash.c ****   SPI_FLASH_CS_HIGH();
+ 527:User/flash/bsp_spi_flash.c **** }   
+ 528:User/flash/bsp_spi_flash.c ****    
+ 529:User/flash/bsp_spi_flash.c **** 
+ 530:User/flash/bsp_spi_flash.c **** /**
+ 531:User/flash/bsp_spi_flash.c ****   * @brief  等待超时回调函数
+ 532:User/flash/bsp_spi_flash.c ****   * @param  None.
+ 533:User/flash/bsp_spi_flash.c ****   * @retval None.
+ 534:User/flash/bsp_spi_flash.c ****   */
+ 535:User/flash/bsp_spi_flash.c **** static  uint16_t SPI_TIMEOUT_UserCallback(uint8_t errorCode)
+ 536:User/flash/bsp_spi_flash.c **** {
+  25              		.loc 1 536 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 0
+  28              		@ frame_needed = 0, uses_anonymous_args = 0
+  29              	.LVL0:
+  30 0000 08B5     		push	{r3, lr}
+  31              	.LCFI0:
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 3, -8
+  34              		.cfi_offset 14, -4
+ 537:User/flash/bsp_spi_flash.c ****   /* 等待超时后的处理,输出错误信息 */
+ARM GAS  /tmp/ccHZpORU.s 			page 11
+
+
+ 538:User/flash/bsp_spi_flash.c ****   FLASH_ERROR("SPI 等待超时!errorCode = %d",errorCode);
+  35              		.loc 1 538 0
+  36 0002 0146     		mov	r1, r0
+  37 0004 0248     		ldr	r0, .L3
+  38              	.LVL1:
+  39 0006 FFF7FEFF 		bl	printf
+  40              	.LVL2:
+ 539:User/flash/bsp_spi_flash.c ****   return 0;
+ 540:User/flash/bsp_spi_flash.c **** }
+  41              		.loc 1 540 0
+  42 000a 0020     		movs	r0, #0
+  43 000c 08BD     		pop	{r3, pc}
+  44              	.L4:
+  45 000e 00BF     		.align	2
+  46              	.L3:
+  47 0010 00000000 		.word	.LC0
+  48              		.cfi_endproc
+  49              	.LFE46:
+  51              		.section	.text.SPI_FLASH_Init,"ax",%progbits
+  52              		.align	1
+  53              		.global	SPI_FLASH_Init
+  54              		.syntax unified
+  55              		.thumb
+  56              		.thumb_func
+  57              		.fpu softvfp
+  59              	SPI_FLASH_Init:
+  60              	.LFB30:
+  29:User/flash/bsp_spi_flash.c ****   SPI_InitTypeDef  SPI_InitStructure;
+  61              		.loc 1 29 0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 24
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65 0000 30B5     		push	{r4, r5, lr}
+  66              	.LCFI1:
+  67              		.cfi_def_cfa_offset 12
+  68              		.cfi_offset 4, -12
+  69              		.cfi_offset 5, -8
+  70              		.cfi_offset 14, -4
+  71 0002 87B0     		sub	sp, sp, #28
+  72              	.LCFI2:
+  73              		.cfi_def_cfa_offset 40
+  34:User/flash/bsp_spi_flash.c **** 	
+  74              		.loc 1 34 0
+  75 0004 0121     		movs	r1, #1
+  76 0006 4FF48050 		mov	r0, #4096
+  77 000a FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  78              	.LVL3:
+  37:User/flash/bsp_spi_flash.c **** 																	FLASH_SPI_MISO_PIN|FLASH_SPI_MOSI_PIN, ENABLE );
+  79              		.loc 1 37 0
+  80 000e 0121     		movs	r1, #1
+  81 0010 C420     		movs	r0, #196
+  82 0012 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  83              	.LVL4:
+  41:User/flash/bsp_spi_flash.c **** 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  84              		.loc 1 41 0
+  85 0016 1025     		movs	r5, #16
+  86 0018 ADF80050 		strh	r5, [sp]	@ movhi
+ARM GAS  /tmp/ccHZpORU.s 			page 12
+
+
+  42:User/flash/bsp_spi_flash.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  87              		.loc 1 42 0
+  88 001c 0323     		movs	r3, #3
+  89 001e 8DF80230 		strb	r3, [sp, #2]
+  43:User/flash/bsp_spi_flash.c ****   GPIO_Init(FLASH_SPI_CS_PORT, &GPIO_InitStructure);
+  90              		.loc 1 43 0
+  91 0022 8DF80350 		strb	r5, [sp, #3]
+  44:User/flash/bsp_spi_flash.c **** 	
+  92              		.loc 1 44 0
+  93 0026 244C     		ldr	r4, .L7
+  94 0028 6946     		mov	r1, sp
+  95 002a 2046     		mov	r0, r4
+  96 002c FFF7FEFF 		bl	GPIO_Init
+  97              	.LVL5:
+  47:User/flash/bsp_spi_flash.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+  98              		.loc 1 47 0
+  99 0030 2023     		movs	r3, #32
+ 100 0032 ADF80030 		strh	r3, [sp]	@ movhi
+  48:User/flash/bsp_spi_flash.c ****   GPIO_Init(FLASH_SPI_SCK_PORT, &GPIO_InitStructure);
+ 101              		.loc 1 48 0
+ 102 0036 1823     		movs	r3, #24
+ 103 0038 8DF80330 		strb	r3, [sp, #3]
+  49:User/flash/bsp_spi_flash.c **** 
+ 104              		.loc 1 49 0
+ 105 003c 6946     		mov	r1, sp
+ 106 003e 2046     		mov	r0, r4
+ 107 0040 FFF7FEFF 		bl	GPIO_Init
+ 108              	.LVL6:
+  52:User/flash/bsp_spi_flash.c ****   GPIO_Init(FLASH_SPI_MISO_PORT, &GPIO_InitStructure);
+ 109              		.loc 1 52 0
+ 110 0044 4023     		movs	r3, #64
+ 111 0046 ADF80030 		strh	r3, [sp]	@ movhi
+  53:User/flash/bsp_spi_flash.c **** 
+ 112              		.loc 1 53 0
+ 113 004a 6946     		mov	r1, sp
+ 114 004c 2046     		mov	r0, r4
+ 115 004e FFF7FEFF 		bl	GPIO_Init
+ 116              	.LVL7:
+  56:User/flash/bsp_spi_flash.c ****   GPIO_Init(FLASH_SPI_MOSI_PORT, &GPIO_InitStructure);
+ 117              		.loc 1 56 0
+ 118 0052 8023     		movs	r3, #128
+ 119 0054 ADF80030 		strh	r3, [sp]	@ movhi
+  57:User/flash/bsp_spi_flash.c **** 
+ 120              		.loc 1 57 0
+ 121 0058 6946     		mov	r1, sp
+ 122 005a 2046     		mov	r0, r4
+ 123 005c FFF7FEFF 		bl	GPIO_Init
+ 124              	.LVL8:
+  60:User/flash/bsp_spi_flash.c **** 
+ 125              		.loc 1 60 0
+ 126 0060 2946     		mov	r1, r5
+ 127 0062 2046     		mov	r0, r4
+ 128 0064 FFF7FEFF 		bl	GPIO_SetBits
+ 129              	.LVL9:
+  64:User/flash/bsp_spi_flash.c ****   SPI_InitStructure.SPI_Mode = SPI_Mode_Master;
+ 130              		.loc 1 64 0
+ 131 0068 0023     		movs	r3, #0
+ARM GAS  /tmp/ccHZpORU.s 			page 13
+
+
+ 132 006a ADF80430 		strh	r3, [sp, #4]	@ movhi
+  65:User/flash/bsp_spi_flash.c ****   SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b;
+ 133              		.loc 1 65 0
+ 134 006e 4FF48272 		mov	r2, #260
+ 135 0072 ADF80620 		strh	r2, [sp, #6]	@ movhi
+  66:User/flash/bsp_spi_flash.c ****   SPI_InitStructure.SPI_CPOL = SPI_CPOL_High;
+ 136              		.loc 1 66 0
+ 137 0076 ADF80830 		strh	r3, [sp, #8]	@ movhi
+  67:User/flash/bsp_spi_flash.c ****   SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge;
+ 138              		.loc 1 67 0
+ 139 007a 0222     		movs	r2, #2
+ 140 007c ADF80A20 		strh	r2, [sp, #10]	@ movhi
+  68:User/flash/bsp_spi_flash.c ****   SPI_InitStructure.SPI_NSS = SPI_NSS_Soft;
+ 141              		.loc 1 68 0
+ 142 0080 0125     		movs	r5, #1
+ 143 0082 ADF80C50 		strh	r5, [sp, #12]	@ movhi
+  69:User/flash/bsp_spi_flash.c ****   SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_4;
+ 144              		.loc 1 69 0
+ 145 0086 4FF40072 		mov	r2, #512
+ 146 008a ADF80E20 		strh	r2, [sp, #14]	@ movhi
+  70:User/flash/bsp_spi_flash.c ****   SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
+ 147              		.loc 1 70 0
+ 148 008e 0822     		movs	r2, #8
+ 149 0090 ADF81020 		strh	r2, [sp, #16]	@ movhi
+  71:User/flash/bsp_spi_flash.c ****   SPI_InitStructure.SPI_CRCPolynomial = 7;
+ 150              		.loc 1 71 0
+ 151 0094 ADF81230 		strh	r3, [sp, #18]	@ movhi
+  72:User/flash/bsp_spi_flash.c ****   SPI_Init(FLASH_SPIx , &SPI_InitStructure);
+ 152              		.loc 1 72 0
+ 153 0098 0723     		movs	r3, #7
+ 154 009a ADF81430 		strh	r3, [sp, #20]	@ movhi
+  73:User/flash/bsp_spi_flash.c **** 
+ 155              		.loc 1 73 0
+ 156 009e 04F52054 		add	r4, r4, #10240
+ 157 00a2 01A9     		add	r1, sp, #4
+ 158 00a4 2046     		mov	r0, r4
+ 159 00a6 FFF7FEFF 		bl	SPI_Init
+ 160              	.LVL10:
+  76:User/flash/bsp_spi_flash.c **** 	
+ 161              		.loc 1 76 0
+ 162 00aa 2946     		mov	r1, r5
+ 163 00ac 2046     		mov	r0, r4
+ 164 00ae FFF7FEFF 		bl	SPI_Cmd
+ 165              	.LVL11:
+  78:User/flash/bsp_spi_flash.c ****  /**
+ 166              		.loc 1 78 0
+ 167 00b2 07B0     		add	sp, sp, #28
+ 168              	.LCFI3:
+ 169              		.cfi_def_cfa_offset 12
+ 170              		@ sp needed
+ 171 00b4 30BD     		pop	{r4, r5, pc}
+ 172              	.L8:
+ 173 00b6 00BF     		.align	2
+ 174              	.L7:
+ 175 00b8 00080140 		.word	1073809408
+ 176              		.cfi_endproc
+ 177              	.LFE30:
+ARM GAS  /tmp/ccHZpORU.s 			page 14
+
+
+ 179              		.section	.text.SPI_FLASH_SendByte,"ax",%progbits
+ 180              		.align	1
+ 181              		.global	SPI_FLASH_SendByte
+ 182              		.syntax unified
+ 183              		.thumb
+ 184              		.thumb_func
+ 185              		.fpu softvfp
+ 187              	SPI_FLASH_SendByte:
+ 188              	.LFB40:
+ 406:User/flash/bsp_spi_flash.c **** 	 SPITimeout = SPIT_FLAG_TIMEOUT;
+ 189              		.loc 1 406 0
+ 190              		.cfi_startproc
+ 191              		@ args = 0, pretend = 0, frame = 0
+ 192              		@ frame_needed = 0, uses_anonymous_args = 0
+ 193              	.LVL12:
+ 194 0000 10B5     		push	{r4, lr}
+ 195              	.LCFI4:
+ 196              		.cfi_def_cfa_offset 8
+ 197              		.cfi_offset 4, -8
+ 198              		.cfi_offset 14, -4
+ 199 0002 0446     		mov	r4, r0
+ 407:User/flash/bsp_spi_flash.c ****   /* 等待发送缓冲区为空，TXE事件 */
+ 200              		.loc 1 407 0
+ 201 0004 4FF48052 		mov	r2, #4096
+ 202 0008 174B     		ldr	r3, .L18
+ 203 000a 1A60     		str	r2, [r3]
+ 204              	.LVL13:
+ 205              	.L10:
+ 409:User/flash/bsp_spi_flash.c **** 	{
+ 206              		.loc 1 409 0
+ 207 000c 0221     		movs	r1, #2
+ 208 000e 1748     		ldr	r0, .L18+4
+ 209 0010 FFF7FEFF 		bl	SPI_I2S_GetFlagStatus
+ 210              	.LVL14:
+ 211 0014 50B9     		cbnz	r0, .L16
+ 411:User/flash/bsp_spi_flash.c ****    }
+ 212              		.loc 1 411 0
+ 213 0016 144A     		ldr	r2, .L18
+ 214 0018 1368     		ldr	r3, [r2]
+ 215 001a 591E     		subs	r1, r3, #1
+ 216 001c 1160     		str	r1, [r2]
+ 217 001e 002B     		cmp	r3, #0
+ 218 0020 F4D1     		bne	.L10
+ 411:User/flash/bsp_spi_flash.c ****    }
+ 219              		.loc 1 411 0 is_stmt 0 discriminator 1
+ 220 0022 0020     		movs	r0, #0
+ 221 0024 FFF7FEFF 		bl	SPI_TIMEOUT_UserCallback
+ 222              	.LVL15:
+ 223 0028 C0B2     		uxtb	r0, r0
+ 224 002a 10BD     		pop	{r4, pc}
+ 225              	.L16:
+ 415:User/flash/bsp_spi_flash.c **** 
+ 226              		.loc 1 415 0 is_stmt 1
+ 227 002c 2146     		mov	r1, r4
+ 228 002e 0F48     		ldr	r0, .L18+4
+ 229 0030 FFF7FEFF 		bl	SPI_I2S_SendData
+ 230              	.LVL16:
+ARM GAS  /tmp/ccHZpORU.s 			page 15
+
+
+ 417:User/flash/bsp_spi_flash.c ****   /* 等待接收缓冲区非空，RXNE事件 */
+ 231              		.loc 1 417 0
+ 232 0034 4FF48052 		mov	r2, #4096
+ 233 0038 0B4B     		ldr	r3, .L18
+ 234 003a 1A60     		str	r2, [r3]
+ 235              	.L13:
+ 419:User/flash/bsp_spi_flash.c ****   {
+ 236              		.loc 1 419 0
+ 237 003c 0121     		movs	r1, #1
+ 238 003e 0B48     		ldr	r0, .L18+4
+ 239 0040 FFF7FEFF 		bl	SPI_I2S_GetFlagStatus
+ 240              	.LVL17:
+ 241 0044 50B9     		cbnz	r0, .L17
+ 421:User/flash/bsp_spi_flash.c ****    }
+ 242              		.loc 1 421 0
+ 243 0046 084A     		ldr	r2, .L18
+ 244 0048 1368     		ldr	r3, [r2]
+ 245 004a 591E     		subs	r1, r3, #1
+ 246 004c 1160     		str	r1, [r2]
+ 247 004e 002B     		cmp	r3, #0
+ 248 0050 F4D1     		bne	.L13
+ 421:User/flash/bsp_spi_flash.c ****    }
+ 249              		.loc 1 421 0 is_stmt 0 discriminator 1
+ 250 0052 0120     		movs	r0, #1
+ 251 0054 FFF7FEFF 		bl	SPI_TIMEOUT_UserCallback
+ 252              	.LVL18:
+ 253 0058 C0B2     		uxtb	r0, r0
+ 254 005a 10BD     		pop	{r4, pc}
+ 255              	.L17:
+ 425:User/flash/bsp_spi_flash.c **** }
+ 256              		.loc 1 425 0 is_stmt 1
+ 257 005c 0348     		ldr	r0, .L18+4
+ 258 005e FFF7FEFF 		bl	SPI_I2S_ReceiveData
+ 259              	.LVL19:
+ 260 0062 C0B2     		uxtb	r0, r0
+ 426:User/flash/bsp_spi_flash.c **** 
+ 261              		.loc 1 426 0
+ 262 0064 10BD     		pop	{r4, pc}
+ 263              	.L19:
+ 264 0066 00BF     		.align	2
+ 265              	.L18:
+ 266 0068 00000000 		.word	.LANCHOR0
+ 267 006c 00300140 		.word	1073819648
+ 268              		.cfi_endproc
+ 269              	.LFE40:
+ 271              		.section	.text.SPI_FLASH_BufferRead,"ax",%progbits
+ 272              		.align	1
+ 273              		.global	SPI_FLASH_BufferRead
+ 274              		.syntax unified
+ 275              		.thumb
+ 276              		.thumb_func
+ 277              		.fpu softvfp
+ 279              	SPI_FLASH_BufferRead:
+ 280              	.LFB35:
+ 275:User/flash/bsp_spi_flash.c ****   /* 选择FLASH: CS低电平 */
+ 281              		.loc 1 275 0
+ 282              		.cfi_startproc
+ARM GAS  /tmp/ccHZpORU.s 			page 16
+
+
+ 283              		@ args = 0, pretend = 0, frame = 0
+ 284              		@ frame_needed = 0, uses_anonymous_args = 0
+ 285              	.LVL20:
+ 286 0000 70B5     		push	{r4, r5, r6, lr}
+ 287              	.LCFI5:
+ 288              		.cfi_def_cfa_offset 16
+ 289              		.cfi_offset 4, -16
+ 290              		.cfi_offset 5, -12
+ 291              		.cfi_offset 6, -8
+ 292              		.cfi_offset 14, -4
+ 293 0002 0646     		mov	r6, r0
+ 294 0004 0C46     		mov	r4, r1
+ 295 0006 1546     		mov	r5, r2
+ 277:User/flash/bsp_spi_flash.c **** 
+ 296              		.loc 1 277 0
+ 297 0008 1021     		movs	r1, #16
+ 298              	.LVL21:
+ 299 000a 1048     		ldr	r0, .L24
+ 300              	.LVL22:
+ 301 000c FFF7FEFF 		bl	GPIO_ResetBits
+ 302              	.LVL23:
+ 280:User/flash/bsp_spi_flash.c **** 
+ 303              		.loc 1 280 0
+ 304 0010 0320     		movs	r0, #3
+ 305 0012 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 306              	.LVL24:
+ 283:User/flash/bsp_spi_flash.c ****   /* 发送 读 地址中位 */
+ 307              		.loc 1 283 0
+ 308 0016 C4F30740 		ubfx	r0, r4, #16, #8
+ 309 001a FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 310              	.LVL25:
+ 285:User/flash/bsp_spi_flash.c ****   /* 发送 读 地址低位 */
+ 311              		.loc 1 285 0
+ 312 001e C4F30720 		ubfx	r0, r4, #8, #8
+ 313 0022 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 314              	.LVL26:
+ 287:User/flash/bsp_spi_flash.c **** 	
+ 315              		.loc 1 287 0
+ 316 0026 E0B2     		uxtb	r0, r4
+ 317 0028 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 318              	.LVL27:
+ 290:User/flash/bsp_spi_flash.c ****   {
+ 319              		.loc 1 290 0
+ 320 002c 05E0     		b	.L21
+ 321              	.LVL28:
+ 322              	.L22:
+ 293:User/flash/bsp_spi_flash.c ****     /* 指向下一个字节缓冲区 */
+ 323              		.loc 1 293 0
+ 324 002e FF20     		movs	r0, #255
+ 325 0030 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 326              	.LVL29:
+ 327 0034 06F8010B 		strb	r0, [r6], #1
+ 328              	.LVL30:
+ 290:User/flash/bsp_spi_flash.c ****   {
+ 329              		.loc 1 290 0
+ 330 0038 2546     		mov	r5, r4
+ 331              	.LVL31:
+ARM GAS  /tmp/ccHZpORU.s 			page 17
+
+
+ 332              	.L21:
+ 333 003a 6B1E     		subs	r3, r5, #1
+ 334 003c 9CB2     		uxth	r4, r3
+ 335              	.LVL32:
+ 336 003e 002D     		cmp	r5, #0
+ 337 0040 F5D1     		bne	.L22
+ 299:User/flash/bsp_spi_flash.c **** }
+ 338              		.loc 1 299 0
+ 339 0042 1021     		movs	r1, #16
+ 340 0044 0148     		ldr	r0, .L24
+ 341 0046 FFF7FEFF 		bl	GPIO_SetBits
+ 342              	.LVL33:
+ 343 004a 70BD     		pop	{r4, r5, r6, pc}
+ 344              	.LVL34:
+ 345              	.L25:
+ 346              		.align	2
+ 347              	.L24:
+ 348 004c 00080140 		.word	1073809408
+ 349              		.cfi_endproc
+ 350              	.LFE35:
+ 352              		.section	.text.SPI_FLASH_ReadID,"ax",%progbits
+ 353              		.align	1
+ 354              		.global	SPI_FLASH_ReadID
+ 355              		.syntax unified
+ 356              		.thumb
+ 357              		.thumb_func
+ 358              		.fpu softvfp
+ 360              	SPI_FLASH_ReadID:
+ 361              	.LFB36:
+ 308:User/flash/bsp_spi_flash.c ****   u32 Temp = 0, Temp0 = 0, Temp1 = 0, Temp2 = 0;
+ 362              		.loc 1 308 0
+ 363              		.cfi_startproc
+ 364              		@ args = 0, pretend = 0, frame = 0
+ 365              		@ frame_needed = 0, uses_anonymous_args = 0
+ 366 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 367              	.LCFI6:
+ 368              		.cfi_def_cfa_offset 24
+ 369              		.cfi_offset 3, -24
+ 370              		.cfi_offset 4, -20
+ 371              		.cfi_offset 5, -16
+ 372              		.cfi_offset 6, -12
+ 373              		.cfi_offset 7, -8
+ 374              		.cfi_offset 14, -4
+ 375              	.LVL35:
+ 312:User/flash/bsp_spi_flash.c **** 
+ 376              		.loc 1 312 0
+ 377 0002 0E4D     		ldr	r5, .L28
+ 378 0004 1021     		movs	r1, #16
+ 379 0006 2846     		mov	r0, r5
+ 380 0008 FFF7FEFF 		bl	GPIO_ResetBits
+ 381              	.LVL36:
+ 315:User/flash/bsp_spi_flash.c **** 
+ 382              		.loc 1 315 0
+ 383 000c 9F20     		movs	r0, #159
+ 384 000e FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 385              	.LVL37:
+ 318:User/flash/bsp_spi_flash.c **** 
+ARM GAS  /tmp/ccHZpORU.s 			page 18
+
+
+ 386              		.loc 1 318 0
+ 387 0012 FF20     		movs	r0, #255
+ 388 0014 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 389              	.LVL38:
+ 390 0018 0746     		mov	r7, r0
+ 391              	.LVL39:
+ 321:User/flash/bsp_spi_flash.c **** 
+ 392              		.loc 1 321 0
+ 393 001a FF20     		movs	r0, #255
+ 394              	.LVL40:
+ 395 001c FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 396              	.LVL41:
+ 397 0020 0446     		mov	r4, r0
+ 398              	.LVL42:
+ 324:User/flash/bsp_spi_flash.c **** 
+ 399              		.loc 1 324 0
+ 400 0022 FF20     		movs	r0, #255
+ 401              	.LVL43:
+ 402 0024 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 403              	.LVL44:
+ 404 0028 0646     		mov	r6, r0
+ 405              	.LVL45:
+ 327:User/flash/bsp_spi_flash.c **** 
+ 406              		.loc 1 327 0
+ 407 002a 1021     		movs	r1, #16
+ 408 002c 2846     		mov	r0, r5
+ 409              	.LVL46:
+ 410 002e FFF7FEFF 		bl	GPIO_SetBits
+ 411              	.LVL47:
+ 330:User/flash/bsp_spi_flash.c **** 
+ 412              		.loc 1 330 0
+ 413 0032 2002     		lsls	r0, r4, #8
+ 414 0034 40EA0740 		orr	r0, r0, r7, lsl #16
+ 415              	.LVL48:
+ 333:User/flash/bsp_spi_flash.c ****  /**
+ 416              		.loc 1 333 0
+ 417 0038 3043     		orrs	r0, r0, r6
+ 418              	.LVL49:
+ 419 003a F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 420              	.LVL50:
+ 421              	.L29:
+ 422              		.align	2
+ 423              	.L28:
+ 424 003c 00080140 		.word	1073809408
+ 425              		.cfi_endproc
+ 426              	.LFE36:
+ 428              		.section	.text.SPI_FLASH_ReadDeviceID,"ax",%progbits
+ 429              		.align	1
+ 430              		.global	SPI_FLASH_ReadDeviceID
+ 431              		.syntax unified
+ 432              		.thumb
+ 433              		.thumb_func
+ 434              		.fpu softvfp
+ 436              	SPI_FLASH_ReadDeviceID:
+ 437              	.LFB37:
+ 340:User/flash/bsp_spi_flash.c ****   u32 Temp = 0;
+ 438              		.loc 1 340 0
+ARM GAS  /tmp/ccHZpORU.s 			page 19
+
+
+ 439              		.cfi_startproc
+ 440              		@ args = 0, pretend = 0, frame = 0
+ 441              		@ frame_needed = 0, uses_anonymous_args = 0
+ 442 0000 38B5     		push	{r3, r4, r5, lr}
+ 443              	.LCFI7:
+ 444              		.cfi_def_cfa_offset 16
+ 445              		.cfi_offset 3, -16
+ 446              		.cfi_offset 4, -12
+ 447              		.cfi_offset 5, -8
+ 448              		.cfi_offset 14, -4
+ 449              	.LVL51:
+ 344:User/flash/bsp_spi_flash.c **** 
+ 450              		.loc 1 344 0
+ 451 0002 0D4C     		ldr	r4, .L32
+ 452 0004 1021     		movs	r1, #16
+ 453 0006 2046     		mov	r0, r4
+ 454 0008 FFF7FEFF 		bl	GPIO_ResetBits
+ 455              	.LVL52:
+ 347:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(Dummy_Byte);
+ 456              		.loc 1 347 0
+ 457 000c AB20     		movs	r0, #171
+ 458 000e FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 459              	.LVL53:
+ 348:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(Dummy_Byte);
+ 460              		.loc 1 348 0
+ 461 0012 FF20     		movs	r0, #255
+ 462 0014 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 463              	.LVL54:
+ 349:User/flash/bsp_spi_flash.c ****   SPI_FLASH_SendByte(Dummy_Byte);
+ 464              		.loc 1 349 0
+ 465 0018 FF20     		movs	r0, #255
+ 466 001a FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 467              	.LVL55:
+ 350:User/flash/bsp_spi_flash.c ****   
+ 468              		.loc 1 350 0
+ 469 001e FF20     		movs	r0, #255
+ 470 0020 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 471              	.LVL56:
+ 353:User/flash/bsp_spi_flash.c **** 
+ 472              		.loc 1 353 0
+ 473 0024 FF20     		movs	r0, #255
+ 474 0026 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 475              	.LVL57:
+ 476 002a 0546     		mov	r5, r0
+ 477              	.LVL58:
+ 356:User/flash/bsp_spi_flash.c **** 
+ 478              		.loc 1 356 0
+ 479 002c 1021     		movs	r1, #16
+ 480 002e 2046     		mov	r0, r4
+ 481              	.LVL59:
+ 482 0030 FFF7FEFF 		bl	GPIO_SetBits
+ 483              	.LVL60:
+ 359:User/flash/bsp_spi_flash.c **** /*******************************************************************************
+ 484              		.loc 1 359 0
+ 485 0034 2846     		mov	r0, r5
+ 486 0036 38BD     		pop	{r3, r4, r5, pc}
+ 487              	.LVL61:
+ARM GAS  /tmp/ccHZpORU.s 			page 20
+
+
+ 488              	.L33:
+ 489              		.align	2
+ 490              	.L32:
+ 491 0038 00080140 		.word	1073809408
+ 492              		.cfi_endproc
+ 493              	.LFE37:
+ 495              		.section	.text.SPI_FLASH_StartReadSequence,"ax",%progbits
+ 496              		.align	1
+ 497              		.global	SPI_FLASH_StartReadSequence
+ 498              		.syntax unified
+ 499              		.thumb
+ 500              		.thumb_func
+ 501              		.fpu softvfp
+ 503              	SPI_FLASH_StartReadSequence:
+ 504              	.LFB38:
+ 373:User/flash/bsp_spi_flash.c ****   /* Select the FLASH: Chip Select low */
+ 505              		.loc 1 373 0
+ 506              		.cfi_startproc
+ 507              		@ args = 0, pretend = 0, frame = 0
+ 508              		@ frame_needed = 0, uses_anonymous_args = 0
+ 509              	.LVL62:
+ 510 0000 10B5     		push	{r4, lr}
+ 511              	.LCFI8:
+ 512              		.cfi_def_cfa_offset 8
+ 513              		.cfi_offset 4, -8
+ 514              		.cfi_offset 14, -4
+ 515 0002 0446     		mov	r4, r0
+ 375:User/flash/bsp_spi_flash.c **** 
+ 516              		.loc 1 375 0
+ 517 0004 1021     		movs	r1, #16
+ 518 0006 0948     		ldr	r0, .L36
+ 519              	.LVL63:
+ 520 0008 FFF7FEFF 		bl	GPIO_ResetBits
+ 521              	.LVL64:
+ 378:User/flash/bsp_spi_flash.c **** 
+ 522              		.loc 1 378 0
+ 523 000c 0320     		movs	r0, #3
+ 524 000e FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 525              	.LVL65:
+ 382:User/flash/bsp_spi_flash.c ****   /* Send ReadAddr medium nibble address byte */
+ 526              		.loc 1 382 0
+ 527 0012 C4F30740 		ubfx	r0, r4, #16, #8
+ 528 0016 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 529              	.LVL66:
+ 384:User/flash/bsp_spi_flash.c ****   /* Send ReadAddr low nibble address byte */
+ 530              		.loc 1 384 0
+ 531 001a C4F30720 		ubfx	r0, r4, #8, #8
+ 532 001e FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 533              	.LVL67:
+ 386:User/flash/bsp_spi_flash.c **** }
+ 534              		.loc 1 386 0
+ 535 0022 E0B2     		uxtb	r0, r4
+ 536 0024 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 537              	.LVL68:
+ 538 0028 10BD     		pop	{r4, pc}
+ 539              	.LVL69:
+ 540              	.L37:
+ARM GAS  /tmp/ccHZpORU.s 			page 21
+
+
+ 541 002a 00BF     		.align	2
+ 542              	.L36:
+ 543 002c 00080140 		.word	1073809408
+ 544              		.cfi_endproc
+ 545              	.LFE38:
+ 547              		.section	.text.SPI_FLASH_ReadByte,"ax",%progbits
+ 548              		.align	1
+ 549              		.global	SPI_FLASH_ReadByte
+ 550              		.syntax unified
+ 551              		.thumb
+ 552              		.thumb_func
+ 553              		.fpu softvfp
+ 555              	SPI_FLASH_ReadByte:
+ 556              	.LFB39:
+ 396:User/flash/bsp_spi_flash.c ****   return (SPI_FLASH_SendByte(Dummy_Byte));
+ 557              		.loc 1 396 0
+ 558              		.cfi_startproc
+ 559              		@ args = 0, pretend = 0, frame = 0
+ 560              		@ frame_needed = 0, uses_anonymous_args = 0
+ 561 0000 08B5     		push	{r3, lr}
+ 562              	.LCFI9:
+ 563              		.cfi_def_cfa_offset 8
+ 564              		.cfi_offset 3, -8
+ 565              		.cfi_offset 14, -4
+ 397:User/flash/bsp_spi_flash.c **** }
+ 566              		.loc 1 397 0
+ 567 0002 FF20     		movs	r0, #255
+ 568 0004 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 569              	.LVL70:
+ 398:User/flash/bsp_spi_flash.c **** 
+ 570              		.loc 1 398 0
+ 571 0008 08BD     		pop	{r3, pc}
+ 572              		.cfi_endproc
+ 573              	.LFE39:
+ 575              		.section	.text.SPI_FLASH_SendHalfWord,"ax",%progbits
+ 576              		.align	1
+ 577              		.global	SPI_FLASH_SendHalfWord
+ 578              		.syntax unified
+ 579              		.thumb
+ 580              		.thumb_func
+ 581              		.fpu softvfp
+ 583              	SPI_FLASH_SendHalfWord:
+ 584              	.LFB41:
+ 434:User/flash/bsp_spi_flash.c **** 	  SPITimeout = SPIT_FLAG_TIMEOUT;
+ 585              		.loc 1 434 0
+ 586              		.cfi_startproc
+ 587              		@ args = 0, pretend = 0, frame = 0
+ 588              		@ frame_needed = 0, uses_anonymous_args = 0
+ 589              	.LVL71:
+ 590 0000 10B5     		push	{r4, lr}
+ 591              	.LCFI10:
+ 592              		.cfi_def_cfa_offset 8
+ 593              		.cfi_offset 4, -8
+ 594              		.cfi_offset 14, -4
+ 595 0002 0446     		mov	r4, r0
+ 435:User/flash/bsp_spi_flash.c ****   /* 等待发送缓冲区为空，TXE事件 */
+ 596              		.loc 1 435 0
+ARM GAS  /tmp/ccHZpORU.s 			page 22
+
+
+ 597 0004 4FF48052 		mov	r2, #4096
+ 598 0008 154B     		ldr	r3, .L49
+ 599 000a 1A60     		str	r2, [r3]
+ 600              	.LVL72:
+ 601              	.L41:
+ 437:User/flash/bsp_spi_flash.c **** 	{
+ 602              		.loc 1 437 0
+ 603 000c 0221     		movs	r1, #2
+ 604 000e 1548     		ldr	r0, .L49+4
+ 605 0010 FFF7FEFF 		bl	SPI_I2S_GetFlagStatus
+ 606              	.LVL73:
+ 607 0014 48B9     		cbnz	r0, .L47
+ 439:User/flash/bsp_spi_flash.c ****    }
+ 608              		.loc 1 439 0
+ 609 0016 124A     		ldr	r2, .L49
+ 610 0018 1368     		ldr	r3, [r2]
+ 611 001a 591E     		subs	r1, r3, #1
+ 612 001c 1160     		str	r1, [r2]
+ 613 001e 002B     		cmp	r3, #0
+ 614 0020 F4D1     		bne	.L41
+ 439:User/flash/bsp_spi_flash.c ****    }
+ 615              		.loc 1 439 0 is_stmt 0 discriminator 1
+ 616 0022 0220     		movs	r0, #2
+ 617 0024 FFF7FEFF 		bl	SPI_TIMEOUT_UserCallback
+ 618              	.LVL74:
+ 619 0028 10BD     		pop	{r4, pc}
+ 620              	.L47:
+ 443:User/flash/bsp_spi_flash.c **** 
+ 621              		.loc 1 443 0 is_stmt 1
+ 622 002a 2146     		mov	r1, r4
+ 623 002c 0D48     		ldr	r0, .L49+4
+ 624 002e FFF7FEFF 		bl	SPI_I2S_SendData
+ 625              	.LVL75:
+ 445:User/flash/bsp_spi_flash.c ****   /* 等待接收缓冲区非空，RXNE事件 */
+ 626              		.loc 1 445 0
+ 627 0032 4FF48052 		mov	r2, #4096
+ 628 0036 0A4B     		ldr	r3, .L49
+ 629 0038 1A60     		str	r2, [r3]
+ 630              	.L44:
+ 447:User/flash/bsp_spi_flash.c **** 	 {
+ 631              		.loc 1 447 0
+ 632 003a 0121     		movs	r1, #1
+ 633 003c 0948     		ldr	r0, .L49+4
+ 634 003e FFF7FEFF 		bl	SPI_I2S_GetFlagStatus
+ 635              	.LVL76:
+ 636 0042 48B9     		cbnz	r0, .L48
+ 449:User/flash/bsp_spi_flash.c ****    }
+ 637              		.loc 1 449 0
+ 638 0044 064A     		ldr	r2, .L49
+ 639 0046 1368     		ldr	r3, [r2]
+ 640 0048 591E     		subs	r1, r3, #1
+ 641 004a 1160     		str	r1, [r2]
+ 642 004c 002B     		cmp	r3, #0
+ 643 004e F4D1     		bne	.L44
+ 449:User/flash/bsp_spi_flash.c ****    }
+ 644              		.loc 1 449 0 is_stmt 0 discriminator 1
+ 645 0050 0320     		movs	r0, #3
+ARM GAS  /tmp/ccHZpORU.s 			page 23
+
+
+ 646 0052 FFF7FEFF 		bl	SPI_TIMEOUT_UserCallback
+ 647              	.LVL77:
+ 648 0056 10BD     		pop	{r4, pc}
+ 649              	.L48:
+ 452:User/flash/bsp_spi_flash.c **** }
+ 650              		.loc 1 452 0 is_stmt 1
+ 651 0058 0248     		ldr	r0, .L49+4
+ 652 005a FFF7FEFF 		bl	SPI_I2S_ReceiveData
+ 653              	.LVL78:
+ 453:User/flash/bsp_spi_flash.c **** 
+ 654              		.loc 1 453 0
+ 655 005e 10BD     		pop	{r4, pc}
+ 656              	.L50:
+ 657              		.align	2
+ 658              	.L49:
+ 659 0060 00000000 		.word	.LANCHOR0
+ 660 0064 00300140 		.word	1073819648
+ 661              		.cfi_endproc
+ 662              	.LFE41:
+ 664              		.section	.text.SPI_FLASH_WriteEnable,"ax",%progbits
+ 665              		.align	1
+ 666              		.global	SPI_FLASH_WriteEnable
+ 667              		.syntax unified
+ 668              		.thumb
+ 669              		.thumb_func
+ 670              		.fpu softvfp
+ 672              	SPI_FLASH_WriteEnable:
+ 673              	.LFB42:
+ 461:User/flash/bsp_spi_flash.c ****   /* 通讯开始：CS低 */
+ 674              		.loc 1 461 0
+ 675              		.cfi_startproc
+ 676              		@ args = 0, pretend = 0, frame = 0
+ 677              		@ frame_needed = 0, uses_anonymous_args = 0
+ 678 0000 10B5     		push	{r4, lr}
+ 679              	.LCFI11:
+ 680              		.cfi_def_cfa_offset 8
+ 681              		.cfi_offset 4, -8
+ 682              		.cfi_offset 14, -4
+ 463:User/flash/bsp_spi_flash.c **** 
+ 683              		.loc 1 463 0
+ 684 0002 064C     		ldr	r4, .L53
+ 685 0004 1021     		movs	r1, #16
+ 686 0006 2046     		mov	r0, r4
+ 687 0008 FFF7FEFF 		bl	GPIO_ResetBits
+ 688              	.LVL79:
+ 466:User/flash/bsp_spi_flash.c **** 
+ 689              		.loc 1 466 0
+ 690 000c 0620     		movs	r0, #6
+ 691 000e FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 692              	.LVL80:
+ 469:User/flash/bsp_spi_flash.c **** }
+ 693              		.loc 1 469 0
+ 694 0012 1021     		movs	r1, #16
+ 695 0014 2046     		mov	r0, r4
+ 696 0016 FFF7FEFF 		bl	GPIO_SetBits
+ 697              	.LVL81:
+ 698 001a 10BD     		pop	{r4, pc}
+ARM GAS  /tmp/ccHZpORU.s 			page 24
+
+
+ 699              	.L54:
+ 700              		.align	2
+ 701              	.L53:
+ 702 001c 00080140 		.word	1073809408
+ 703              		.cfi_endproc
+ 704              	.LFE42:
+ 706              		.section	.text.SPI_FLASH_WaitForWriteEnd,"ax",%progbits
+ 707              		.align	1
+ 708              		.global	SPI_FLASH_WaitForWriteEnd
+ 709              		.syntax unified
+ 710              		.thumb
+ 711              		.thumb_func
+ 712              		.fpu softvfp
+ 714              	SPI_FLASH_WaitForWriteEnd:
+ 715              	.LFB43:
+ 481:User/flash/bsp_spi_flash.c ****   u8 FLASH_Status = 0;
+ 716              		.loc 1 481 0
+ 717              		.cfi_startproc
+ 718              		@ args = 0, pretend = 0, frame = 0
+ 719              		@ frame_needed = 0, uses_anonymous_args = 0
+ 720 0000 08B5     		push	{r3, lr}
+ 721              	.LCFI12:
+ 722              		.cfi_def_cfa_offset 8
+ 723              		.cfi_offset 3, -8
+ 724              		.cfi_offset 14, -4
+ 725              	.LVL82:
+ 485:User/flash/bsp_spi_flash.c **** 
+ 726              		.loc 1 485 0
+ 727 0002 1021     		movs	r1, #16
+ 728 0004 0848     		ldr	r0, .L58
+ 729 0006 FFF7FEFF 		bl	GPIO_ResetBits
+ 730              	.LVL83:
+ 488:User/flash/bsp_spi_flash.c **** 
+ 731              		.loc 1 488 0
+ 732 000a 0520     		movs	r0, #5
+ 733 000c FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 734              	.LVL84:
+ 735              	.L56:
+ 494:User/flash/bsp_spi_flash.c ****   }
+ 736              		.loc 1 494 0 discriminator 1
+ 737 0010 FF20     		movs	r0, #255
+ 738 0012 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 739              	.LVL85:
+ 496:User/flash/bsp_spi_flash.c **** 
+ 740              		.loc 1 496 0 discriminator 1
+ 741 0016 10F0010F 		tst	r0, #1
+ 742 001a F9D1     		bne	.L56
+ 499:User/flash/bsp_spi_flash.c **** }
+ 743              		.loc 1 499 0
+ 744 001c 1021     		movs	r1, #16
+ 745 001e 0248     		ldr	r0, .L58
+ 746              	.LVL86:
+ 747 0020 FFF7FEFF 		bl	GPIO_SetBits
+ 748              	.LVL87:
+ 749 0024 08BD     		pop	{r3, pc}
+ 750              	.L59:
+ 751 0026 00BF     		.align	2
+ARM GAS  /tmp/ccHZpORU.s 			page 25
+
+
+ 752              	.L58:
+ 753 0028 00080140 		.word	1073809408
+ 754              		.cfi_endproc
+ 755              	.LFE43:
+ 757              		.section	.text.SPI_FLASH_SectorErase,"ax",%progbits
+ 758              		.align	1
+ 759              		.global	SPI_FLASH_SectorErase
+ 760              		.syntax unified
+ 761              		.thumb
+ 762              		.thumb_func
+ 763              		.fpu softvfp
+ 765              	SPI_FLASH_SectorErase:
+ 766              	.LFB31:
+  85:User/flash/bsp_spi_flash.c ****   /* 发送FLASH写使能命令 */
+ 767              		.loc 1 85 0
+ 768              		.cfi_startproc
+ 769              		@ args = 0, pretend = 0, frame = 0
+ 770              		@ frame_needed = 0, uses_anonymous_args = 0
+ 771              	.LVL88:
+ 772 0000 38B5     		push	{r3, r4, r5, lr}
+ 773              	.LCFI13:
+ 774              		.cfi_def_cfa_offset 16
+ 775              		.cfi_offset 3, -16
+ 776              		.cfi_offset 4, -12
+ 777              		.cfi_offset 5, -8
+ 778              		.cfi_offset 14, -4
+ 779 0002 0446     		mov	r4, r0
+  87:User/flash/bsp_spi_flash.c ****   SPI_FLASH_WaitForWriteEnd();
+ 780              		.loc 1 87 0
+ 781 0004 FFF7FEFF 		bl	SPI_FLASH_WriteEnable
+ 782              	.LVL89:
+  88:User/flash/bsp_spi_flash.c ****   /* 擦除扇区 */
+ 783              		.loc 1 88 0
+ 784 0008 FFF7FEFF 		bl	SPI_FLASH_WaitForWriteEnd
+ 785              	.LVL90:
+  91:User/flash/bsp_spi_flash.c ****   /* 发送扇区擦除指令*/
+ 786              		.loc 1 91 0
+ 787 000c 0C4D     		ldr	r5, .L62
+ 788 000e 1021     		movs	r1, #16
+ 789 0010 2846     		mov	r0, r5
+ 790 0012 FFF7FEFF 		bl	GPIO_ResetBits
+ 791              	.LVL91:
+  93:User/flash/bsp_spi_flash.c ****   /*发送擦除扇区地址的高位*/
+ 792              		.loc 1 93 0
+ 793 0016 2020     		movs	r0, #32
+ 794 0018 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 795              	.LVL92:
+  95:User/flash/bsp_spi_flash.c ****   /* 发送擦除扇区地址的中位 */
+ 796              		.loc 1 95 0
+ 797 001c C4F30740 		ubfx	r0, r4, #16, #8
+ 798 0020 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 799              	.LVL93:
+  97:User/flash/bsp_spi_flash.c ****   /* 发送擦除扇区地址的低位 */
+ 800              		.loc 1 97 0
+ 801 0024 C4F30720 		ubfx	r0, r4, #8, #8
+ 802 0028 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 803              	.LVL94:
+ARM GAS  /tmp/ccHZpORU.s 			page 26
+
+
+  99:User/flash/bsp_spi_flash.c ****   /* 停止信号 FLASH: CS 高电平 */
+ 804              		.loc 1 99 0
+ 805 002c E0B2     		uxtb	r0, r4
+ 806 002e FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 807              	.LVL95:
+ 101:User/flash/bsp_spi_flash.c ****   /* 等待擦除完毕*/
+ 808              		.loc 1 101 0
+ 809 0032 1021     		movs	r1, #16
+ 810 0034 2846     		mov	r0, r5
+ 811 0036 FFF7FEFF 		bl	GPIO_SetBits
+ 812              	.LVL96:
+ 103:User/flash/bsp_spi_flash.c **** }
+ 813              		.loc 1 103 0
+ 814 003a FFF7FEFF 		bl	SPI_FLASH_WaitForWriteEnd
+ 815              	.LVL97:
+ 816 003e 38BD     		pop	{r3, r4, r5, pc}
+ 817              	.LVL98:
+ 818              	.L63:
+ 819              		.align	2
+ 820              	.L62:
+ 821 0040 00080140 		.word	1073809408
+ 822              		.cfi_endproc
+ 823              	.LFE31:
+ 825              		.section	.text.SPI_FLASH_BulkErase,"ax",%progbits
+ 826              		.align	1
+ 827              		.global	SPI_FLASH_BulkErase
+ 828              		.syntax unified
+ 829              		.thumb
+ 830              		.thumb_func
+ 831              		.fpu softvfp
+ 833              	SPI_FLASH_BulkErase:
+ 834              	.LFB32:
+ 112:User/flash/bsp_spi_flash.c ****   /* 发送FLASH写使能命令 */
+ 835              		.loc 1 112 0
+ 836              		.cfi_startproc
+ 837              		@ args = 0, pretend = 0, frame = 0
+ 838              		@ frame_needed = 0, uses_anonymous_args = 0
+ 839 0000 10B5     		push	{r4, lr}
+ 840              	.LCFI14:
+ 841              		.cfi_def_cfa_offset 8
+ 842              		.cfi_offset 4, -8
+ 843              		.cfi_offset 14, -4
+ 114:User/flash/bsp_spi_flash.c **** 
+ 844              		.loc 1 114 0
+ 845 0002 FFF7FEFF 		bl	SPI_FLASH_WriteEnable
+ 846              	.LVL99:
+ 118:User/flash/bsp_spi_flash.c ****   /* 发送整块擦除指令*/
+ 847              		.loc 1 118 0
+ 848 0006 074C     		ldr	r4, .L66
+ 849 0008 1021     		movs	r1, #16
+ 850 000a 2046     		mov	r0, r4
+ 851 000c FFF7FEFF 		bl	GPIO_ResetBits
+ 852              	.LVL100:
+ 120:User/flash/bsp_spi_flash.c ****   /* 停止信号 FLASH: CS 高电平 */
+ 853              		.loc 1 120 0
+ 854 0010 C720     		movs	r0, #199
+ 855 0012 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ARM GAS  /tmp/ccHZpORU.s 			page 27
+
+
+ 856              	.LVL101:
+ 122:User/flash/bsp_spi_flash.c **** 
+ 857              		.loc 1 122 0
+ 858 0016 1021     		movs	r1, #16
+ 859 0018 2046     		mov	r0, r4
+ 860 001a FFF7FEFF 		bl	GPIO_SetBits
+ 861              	.LVL102:
+ 125:User/flash/bsp_spi_flash.c **** }
+ 862              		.loc 1 125 0
+ 863 001e FFF7FEFF 		bl	SPI_FLASH_WaitForWriteEnd
+ 864              	.LVL103:
+ 865 0022 10BD     		pop	{r4, pc}
+ 866              	.L67:
+ 867              		.align	2
+ 868              	.L66:
+ 869 0024 00080140 		.word	1073809408
+ 870              		.cfi_endproc
+ 871              	.LFE32:
+ 873              		.section	.text.SPI_FLASH_PageWrite,"ax",%progbits
+ 874              		.align	1
+ 875              		.global	SPI_FLASH_PageWrite
+ 876              		.syntax unified
+ 877              		.thumb
+ 878              		.thumb_func
+ 879              		.fpu softvfp
+ 881              	SPI_FLASH_PageWrite:
+ 882              	.LFB33:
+ 136:User/flash/bsp_spi_flash.c ****   /* 发送FLASH写使能命令 */
+ 883              		.loc 1 136 0
+ 884              		.cfi_startproc
+ 885              		@ args = 0, pretend = 0, frame = 0
+ 886              		@ frame_needed = 0, uses_anonymous_args = 0
+ 887              	.LVL104:
+ 888 0000 70B5     		push	{r4, r5, r6, lr}
+ 889              	.LCFI15:
+ 890              		.cfi_def_cfa_offset 16
+ 891              		.cfi_offset 4, -16
+ 892              		.cfi_offset 5, -12
+ 893              		.cfi_offset 6, -8
+ 894              		.cfi_offset 14, -4
+ 895 0002 0646     		mov	r6, r0
+ 896 0004 0C46     		mov	r4, r1
+ 897 0006 1546     		mov	r5, r2
+ 138:User/flash/bsp_spi_flash.c **** 
+ 898              		.loc 1 138 0
+ 899 0008 FFF7FEFF 		bl	SPI_FLASH_WriteEnable
+ 900              	.LVL105:
+ 141:User/flash/bsp_spi_flash.c ****   /* 写页写指令*/
+ 901              		.loc 1 141 0
+ 902 000c 1021     		movs	r1, #16
+ 903 000e 1548     		ldr	r0, .L73
+ 904 0010 FFF7FEFF 		bl	GPIO_ResetBits
+ 905              	.LVL106:
+ 143:User/flash/bsp_spi_flash.c ****   /*发送写地址的高位*/
+ 906              		.loc 1 143 0
+ 907 0014 0220     		movs	r0, #2
+ 908 0016 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ARM GAS  /tmp/ccHZpORU.s 			page 28
+
+
+ 909              	.LVL107:
+ 145:User/flash/bsp_spi_flash.c ****   /*发送写地址的中位*/
+ 910              		.loc 1 145 0
+ 911 001a C4F30740 		ubfx	r0, r4, #16, #8
+ 912 001e FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 913              	.LVL108:
+ 147:User/flash/bsp_spi_flash.c ****   /*发送写地址的低位*/
+ 914              		.loc 1 147 0
+ 915 0022 C4F30720 		ubfx	r0, r4, #8, #8
+ 916 0026 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 917              	.LVL109:
+ 149:User/flash/bsp_spi_flash.c **** 
+ 918              		.loc 1 149 0
+ 919 002a E0B2     		uxtb	r0, r4
+ 920 002c FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 921              	.LVL110:
+ 151:User/flash/bsp_spi_flash.c ****   {
+ 922              		.loc 1 151 0
+ 923 0030 B5F5807F 		cmp	r5, #256
+ 924 0034 0AD9     		bls	.L70
+ 925              	.LVL111:
+ 154:User/flash/bsp_spi_flash.c ****   }
+ 926              		.loc 1 154 0
+ 927 0036 0C48     		ldr	r0, .L73+4
+ 928 0038 FFF7FEFF 		bl	puts
+ 929              	.LVL112:
+ 153:User/flash/bsp_spi_flash.c ****      FLASH_ERROR("SPI_FLASH_PageWrite too large!"); 
+ 930              		.loc 1 153 0
+ 931 003c 4FF48075 		mov	r5, #256
+ 932 0040 04E0     		b	.L70
+ 933              	.LVL113:
+ 934              	.L71:
+ 161:User/flash/bsp_spi_flash.c ****     /* 指向下一字节数据 */
+ 935              		.loc 1 161 0
+ 936 0042 16F8010B 		ldrb	r0, [r6], #1	@ zero_extendqisi2
+ 937              	.LVL114:
+ 938 0046 FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 939              	.LVL115:
+ 158:User/flash/bsp_spi_flash.c ****   {
+ 940              		.loc 1 158 0
+ 941 004a 2546     		mov	r5, r4
+ 942              	.LVL116:
+ 943              	.L70:
+ 944 004c 6B1E     		subs	r3, r5, #1
+ 945 004e 9CB2     		uxth	r4, r3
+ 946              	.LVL117:
+ 947 0050 002D     		cmp	r5, #0
+ 948 0052 F6D1     		bne	.L71
+ 167:User/flash/bsp_spi_flash.c **** 
+ 949              		.loc 1 167 0
+ 950 0054 1021     		movs	r1, #16
+ 951 0056 0348     		ldr	r0, .L73
+ 952 0058 FFF7FEFF 		bl	GPIO_SetBits
+ 953              	.LVL118:
+ 170:User/flash/bsp_spi_flash.c **** }
+ 954              		.loc 1 170 0
+ 955 005c FFF7FEFF 		bl	SPI_FLASH_WaitForWriteEnd
+ARM GAS  /tmp/ccHZpORU.s 			page 29
+
+
+ 956              	.LVL119:
+ 957 0060 70BD     		pop	{r4, r5, r6, pc}
+ 958              	.LVL120:
+ 959              	.L74:
+ 960 0062 00BF     		.align	2
+ 961              	.L73:
+ 962 0064 00080140 		.word	1073809408
+ 963 0068 00000000 		.word	.LC1
+ 964              		.cfi_endproc
+ 965              	.LFE33:
+ 967              		.section	.text.SPI_FLASH_BufferWrite,"ax",%progbits
+ 968              		.align	1
+ 969              		.global	SPI_FLASH_BufferWrite
+ 970              		.syntax unified
+ 971              		.thumb
+ 972              		.thumb_func
+ 973              		.fpu softvfp
+ 975              	SPI_FLASH_BufferWrite:
+ 976              	.LFB34:
+ 181:User/flash/bsp_spi_flash.c ****   u8 NumOfPage = 0, NumOfSingle = 0, Addr = 0, count = 0, temp = 0;
+ 977              		.loc 1 181 0
+ 978              		.cfi_startproc
+ 979              		@ args = 0, pretend = 0, frame = 0
+ 980              		@ frame_needed = 0, uses_anonymous_args = 0
+ 981              	.LVL121:
+ 982 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 983              	.LCFI16:
+ 984              		.cfi_def_cfa_offset 32
+ 985              		.cfi_offset 3, -32
+ 986              		.cfi_offset 4, -28
+ 987              		.cfi_offset 5, -24
+ 988              		.cfi_offset 6, -20
+ 989              		.cfi_offset 7, -16
+ 990              		.cfi_offset 8, -12
+ 991              		.cfi_offset 9, -8
+ 992              		.cfi_offset 14, -4
+ 993 0004 0546     		mov	r5, r0
+ 994 0006 0C46     		mov	r4, r1
+ 995 0008 9046     		mov	r8, r2
+ 996              	.LVL122:
+ 185:User/flash/bsp_spi_flash.c **** 	
+ 997              		.loc 1 185 0
+ 998 000a CBB2     		uxtb	r3, r1
+ 999              	.LVL123:
+ 190:User/flash/bsp_spi_flash.c **** 	/*mod运算求余，计算出剩余不满一页的字节数*/
+ 1000              		.loc 1 190 0
+ 1001 000c 120A     		lsrs	r2, r2, #8
+ 1002              	.LVL124:
+ 195:User/flash/bsp_spi_flash.c ****   {
+ 1003              		.loc 1 195 0
+ 1004 000e E3B9     		cbnz	r3, .L76
+ 198:User/flash/bsp_spi_flash.c ****     {
+ 1005              		.loc 1 198 0
+ 1006 0010 7AB9     		cbnz	r2, .L77
+ 200:User/flash/bsp_spi_flash.c ****     }
+ 1007              		.loc 1 200 0
+ 1008 0012 4246     		mov	r2, r8
+ARM GAS  /tmp/ccHZpORU.s 			page 30
+
+
+ 1009              	.LVL125:
+ 1010 0014 FFF7FEFF 		bl	SPI_FLASH_PageWrite
+ 1011              	.LVL126:
+ 1012 0018 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 1013              	.LVL127:
+ 1014              	.L79:
+ 207:User/flash/bsp_spi_flash.c ****         WriteAddr +=  SPI_FLASH_PageSize;
+ 1015              		.loc 1 207 0
+ 1016 001c 4FF48072 		mov	r2, #256
+ 1017 0020 2146     		mov	r1, r4
+ 1018 0022 2846     		mov	r0, r5
+ 1019 0024 FFF7FEFF 		bl	SPI_FLASH_PageWrite
+ 1020              	.LVL128:
+ 208:User/flash/bsp_spi_flash.c ****         pBuffer += SPI_FLASH_PageSize;
+ 1021              		.loc 1 208 0
+ 1022 0028 04F58074 		add	r4, r4, #256
+ 1023              	.LVL129:
+ 209:User/flash/bsp_spi_flash.c ****       }
+ 1024              		.loc 1 209 0
+ 1025 002c 05F58075 		add	r5, r5, #256
+ 1026              	.LVL130:
+ 205:User/flash/bsp_spi_flash.c ****       {
+ 1027              		.loc 1 205 0
+ 1028 0030 3246     		mov	r2, r6
+ 1029              	.LVL131:
+ 1030              	.L77:
+ 1031 0032 531E     		subs	r3, r2, #1
+ 1032 0034 DEB2     		uxtb	r6, r3
+ 1033              	.LVL132:
+ 1034 0036 002A     		cmp	r2, #0
+ 1035 0038 F0D1     		bne	.L79
+ 212:User/flash/bsp_spi_flash.c ****     }
+ 1036              		.loc 1 212 0
+ 1037 003a 5FFA88F2 		uxtb	r2, r8
+ 1038 003e 2146     		mov	r1, r4
+ 1039 0040 2846     		mov	r0, r5
+ 1040 0042 FFF7FEFF 		bl	SPI_FLASH_PageWrite
+ 1041              	.LVL133:
+ 1042 0046 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 1043              	.LVL134:
+ 1044              	.L76:
+ 1045 004a 5E42     		negs	r6, r3
+ 1046 004c F6B2     		uxtb	r6, r6
+ 1047 004e 5FFA88F7 		uxtb	r7, r8
+ 219:User/flash/bsp_spi_flash.c ****     {
+ 1048              		.loc 1 219 0
+ 1049 0052 92B9     		cbnz	r2, .L80
+ 222:User/flash/bsp_spi_flash.c ****       {
+ 1050              		.loc 1 222 0
+ 1051 0054 BE42     		cmp	r6, r7
+ 1052 0056 0BD2     		bcs	.L81
+ 224:User/flash/bsp_spi_flash.c **** 				/*先写满当前页*/
+ 1053              		.loc 1 224 0
+ 1054 0058 3B44     		add	r3, r3, r7
+ 1055              	.LVL135:
+ 1056 005a DFB2     		uxtb	r7, r3
+ 1057              	.LVL136:
+ARM GAS  /tmp/ccHZpORU.s 			page 31
+
+
+ 226:User/flash/bsp_spi_flash.c **** 				
+ 1058              		.loc 1 226 0
+ 1059 005c 3246     		mov	r2, r6
+ 1060              	.LVL137:
+ 1061 005e FFF7FEFF 		bl	SPI_FLASH_PageWrite
+ 1062              	.LVL138:
+ 231:User/flash/bsp_spi_flash.c ****       }
+ 1063              		.loc 1 231 0
+ 1064 0062 3A46     		mov	r2, r7
+ 1065 0064 A119     		adds	r1, r4, r6
+ 1066              	.LVL139:
+ 1067 0066 A819     		adds	r0, r5, r6
+ 1068              	.LVL140:
+ 1069 0068 FFF7FEFF 		bl	SPI_FLASH_PageWrite
+ 1070              	.LVL141:
+ 1071 006c BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 1072              	.LVL142:
+ 1073              	.L81:
+ 235:User/flash/bsp_spi_flash.c ****       }
+ 1074              		.loc 1 235 0
+ 1075 0070 4246     		mov	r2, r8
+ 1076              	.LVL143:
+ 1077 0072 FFF7FEFF 		bl	SPI_FLASH_PageWrite
+ 1078              	.LVL144:
+ 1079 0076 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 1080              	.LVL145:
+ 1081              	.L80:
+ 241:User/flash/bsp_spi_flash.c ****       NumOfPage =  NumByteToWrite / SPI_FLASH_PageSize;
+ 1082              		.loc 1 241 0
+ 1083 007a B2B2     		uxth	r2, r6
+ 1084              	.LVL146:
+ 1085 007c A8EB0208 		sub	r8, r8, r2
+ 1086              	.LVL147:
+ 1087 0080 1FFA88F8 		uxth	r8, r8
+ 1088              	.LVL148:
+ 242:User/flash/bsp_spi_flash.c ****       NumOfSingle = NumByteToWrite % SPI_FLASH_PageSize;
+ 1089              		.loc 1 242 0
+ 1090 0084 4FEA1827 		lsr	r7, r8, #8
+ 1091              	.LVL149:
+ 243:User/flash/bsp_spi_flash.c **** 			
+ 1092              		.loc 1 243 0
+ 1093 0088 5FFA88F9 		uxtb	r9, r8
+ 1094              	.LVL150:
+ 246:User/flash/bsp_spi_flash.c **** 			
+ 1095              		.loc 1 246 0
+ 1096 008c FFF7FEFF 		bl	SPI_FLASH_PageWrite
+ 1097              	.LVL151:
+ 249:User/flash/bsp_spi_flash.c ****       pBuffer += count;
+ 1098              		.loc 1 249 0
+ 1099 0090 3444     		add	r4, r4, r6
+ 1100              	.LVL152:
+ 250:User/flash/bsp_spi_flash.c **** 			/*把整数页都写了*/
+ 1101              		.loc 1 250 0
+ 1102 0092 3544     		add	r5, r5, r6
+ 1103              	.LVL153:
+ 252:User/flash/bsp_spi_flash.c ****       {
+ 1104              		.loc 1 252 0
+ARM GAS  /tmp/ccHZpORU.s 			page 32
+
+
+ 1105 0094 0AE0     		b	.L82
+ 1106              	.LVL154:
+ 1107              	.L83:
+ 254:User/flash/bsp_spi_flash.c ****         WriteAddr +=  SPI_FLASH_PageSize;
+ 1108              		.loc 1 254 0
+ 1109 0096 4FF48072 		mov	r2, #256
+ 1110 009a 2146     		mov	r1, r4
+ 1111 009c 2846     		mov	r0, r5
+ 1112 009e FFF7FEFF 		bl	SPI_FLASH_PageWrite
+ 1113              	.LVL155:
+ 255:User/flash/bsp_spi_flash.c ****         pBuffer += SPI_FLASH_PageSize;
+ 1114              		.loc 1 255 0
+ 1115 00a2 04F58074 		add	r4, r4, #256
+ 1116              	.LVL156:
+ 256:User/flash/bsp_spi_flash.c ****       }
+ 1117              		.loc 1 256 0
+ 1118 00a6 05F58075 		add	r5, r5, #256
+ 1119              	.LVL157:
+ 252:User/flash/bsp_spi_flash.c ****       {
+ 1120              		.loc 1 252 0
+ 1121 00aa 3746     		mov	r7, r6
+ 1122              	.LVL158:
+ 1123              	.L82:
+ 1124 00ac 7B1E     		subs	r3, r7, #1
+ 1125 00ae DEB2     		uxtb	r6, r3
+ 1126              	.LVL159:
+ 1127 00b0 002F     		cmp	r7, #0
+ 1128 00b2 F0D1     		bne	.L83
+ 259:User/flash/bsp_spi_flash.c ****       {
+ 1129              		.loc 1 259 0
+ 1130 00b4 B9F1000F 		cmp	r9, #0
+ 1131 00b8 01D1     		bne	.L85
+ 1132              	.L75:
+ 1133 00ba BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 1134              	.LVL160:
+ 1135              	.L85:
+ 261:User/flash/bsp_spi_flash.c ****       }
+ 1136              		.loc 1 261 0
+ 1137 00be 5FFA88F2 		uxtb	r2, r8
+ 1138 00c2 2146     		mov	r1, r4
+ 1139 00c4 2846     		mov	r0, r5
+ 1140 00c6 FFF7FEFF 		bl	SPI_FLASH_PageWrite
+ 1141              	.LVL161:
+ 265:User/flash/bsp_spi_flash.c **** 
+ 1142              		.loc 1 265 0
+ 1143 00ca F6E7     		b	.L75
+ 1144              		.cfi_endproc
+ 1145              	.LFE34:
+ 1147              		.section	.text.SPI_Flash_PowerDown,"ax",%progbits
+ 1148              		.align	1
+ 1149              		.global	SPI_Flash_PowerDown
+ 1150              		.syntax unified
+ 1151              		.thumb
+ 1152              		.thumb_func
+ 1153              		.fpu softvfp
+ 1155              	SPI_Flash_PowerDown:
+ 1156              	.LFB44:
+ARM GAS  /tmp/ccHZpORU.s 			page 33
+
+
+ 505:User/flash/bsp_spi_flash.c ****   /* 通讯开始：CS低 */
+ 1157              		.loc 1 505 0
+ 1158              		.cfi_startproc
+ 1159              		@ args = 0, pretend = 0, frame = 0
+ 1160              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1161 0000 10B5     		push	{r4, lr}
+ 1162              	.LCFI17:
+ 1163              		.cfi_def_cfa_offset 8
+ 1164              		.cfi_offset 4, -8
+ 1165              		.cfi_offset 14, -4
+ 507:User/flash/bsp_spi_flash.c **** 
+ 1166              		.loc 1 507 0
+ 1167 0002 064C     		ldr	r4, .L88
+ 1168 0004 1021     		movs	r1, #16
+ 1169 0006 2046     		mov	r0, r4
+ 1170 0008 FFF7FEFF 		bl	GPIO_ResetBits
+ 1171              	.LVL162:
+ 510:User/flash/bsp_spi_flash.c **** 
+ 1172              		.loc 1 510 0
+ 1173 000c B920     		movs	r0, #185
+ 1174 000e FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 1175              	.LVL163:
+ 513:User/flash/bsp_spi_flash.c **** }   
+ 1176              		.loc 1 513 0
+ 1177 0012 1021     		movs	r1, #16
+ 1178 0014 2046     		mov	r0, r4
+ 1179 0016 FFF7FEFF 		bl	GPIO_SetBits
+ 1180              	.LVL164:
+ 1181 001a 10BD     		pop	{r4, pc}
+ 1182              	.L89:
+ 1183              		.align	2
+ 1184              	.L88:
+ 1185 001c 00080140 		.word	1073809408
+ 1186              		.cfi_endproc
+ 1187              	.LFE44:
+ 1189              		.section	.text.SPI_Flash_WAKEUP,"ax",%progbits
+ 1190              		.align	1
+ 1191              		.global	SPI_Flash_WAKEUP
+ 1192              		.syntax unified
+ 1193              		.thumb
+ 1194              		.thumb_func
+ 1195              		.fpu softvfp
+ 1197              	SPI_Flash_WAKEUP:
+ 1198              	.LFB45:
+ 518:User/flash/bsp_spi_flash.c ****   /*选择 FLASH: CS 低 */
+ 1199              		.loc 1 518 0
+ 1200              		.cfi_startproc
+ 1201              		@ args = 0, pretend = 0, frame = 0
+ 1202              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1203 0000 10B5     		push	{r4, lr}
+ 1204              	.LCFI18:
+ 1205              		.cfi_def_cfa_offset 8
+ 1206              		.cfi_offset 4, -8
+ 1207              		.cfi_offset 14, -4
+ 520:User/flash/bsp_spi_flash.c **** 
+ 1208              		.loc 1 520 0
+ 1209 0002 064C     		ldr	r4, .L92
+ARM GAS  /tmp/ccHZpORU.s 			page 34
+
+
+ 1210 0004 1021     		movs	r1, #16
+ 1211 0006 2046     		mov	r0, r4
+ 1212 0008 FFF7FEFF 		bl	GPIO_ResetBits
+ 1213              	.LVL165:
+ 523:User/flash/bsp_spi_flash.c **** 
+ 1214              		.loc 1 523 0
+ 1215 000c AB20     		movs	r0, #171
+ 1216 000e FFF7FEFF 		bl	SPI_FLASH_SendByte
+ 1217              	.LVL166:
+ 526:User/flash/bsp_spi_flash.c **** }   
+ 1218              		.loc 1 526 0
+ 1219 0012 1021     		movs	r1, #16
+ 1220 0014 2046     		mov	r0, r4
+ 1221 0016 FFF7FEFF 		bl	GPIO_SetBits
+ 1222              	.LVL167:
+ 1223 001a 10BD     		pop	{r4, pc}
+ 1224              	.L93:
+ 1225              		.align	2
+ 1226              	.L92:
+ 1227 001c 00080140 		.word	1073809408
+ 1228              		.cfi_endproc
+ 1229              	.LFE45:
+ 1231              		.section	.data.SPITimeout,"aw",%progbits
+ 1232              		.align	2
+ 1233              		.set	.LANCHOR0,. + 0
+ 1236              	SPITimeout:
+ 1237 0000 00A00000 		.word	40960
+ 1238              		.section	.rodata.SPI_FLASH_PageWrite.str1.4,"aMS",%progbits,1
+ 1239              		.align	2
+ 1240              	.LC1:
+ 1241 0000 3C3C2D46 		.ascii	"<<-FLASH-ERROR->> SPI_FLASH_PageWrite too large!\000"
+ 1241      4C415348 
+ 1241      2D455252 
+ 1241      4F522D3E 
+ 1241      3E205350 
+ 1242              		.section	.rodata.SPI_TIMEOUT_UserCallback.str1.4,"aMS",%progbits,1
+ 1243              		.align	2
+ 1244              	.LC0:
+ 1245 0000 3C3C2D46 		.ascii	"<<-FLASH-ERROR->> SPI \265\310\264\375\263\254\312\261"
+ 1245      4C415348 
+ 1245      2D455252 
+ 1245      4F522D3E 
+ 1245      3E205350 
+ 1246 001e 21657272 		.ascii	"!errorCode = %d\012\000"
+ 1246      6F72436F 
+ 1246      6465203D 
+ 1246      2025640A 
+ 1246      00
+ 1247              		.text
+ 1248              	.Letext0:
+ 1249              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 1250              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 1251              		.file 4 "Libraries/CMSIS/core_cm3.h"
+ 1252              		.file 5 "Libraries/CMSIS/system_stm32f10x.h"
+ 1253              		.file 6 "Libraries/CMSIS/stm32f10x.h"
+ 1254              		.file 7 "Libraries/FWlib/inc/stm32f10x_gpio.h"
+ 1255              		.file 8 "Libraries/FWlib/inc/stm32f10x_spi.h"
+ARM GAS  /tmp/ccHZpORU.s 			page 35
+
+
+ 1256              		.file 9 "/usr/include/newlib/sys/lock.h"
+ 1257              		.file 10 "/usr/include/newlib/sys/_types.h"
+ 1258              		.file 11 "/usr/lib/gcc/arm-none-eabi/6.3.1/include/stddef.h"
+ 1259              		.file 12 "/usr/include/newlib/sys/reent.h"
+ 1260              		.file 13 "/usr/include/newlib/stdio.h"
+ 1261              		.file 14 "Libraries/FWlib/inc/stm32f10x_rcc.h"
+ 1262              		.file 15 "<built-in>"
+ARM GAS  /tmp/ccHZpORU.s 			page 36
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 bsp_spi_flash.c
+     /tmp/ccHZpORU.s:16     .text.SPI_TIMEOUT_UserCallback:0000000000000000 $t
+     /tmp/ccHZpORU.s:22     .text.SPI_TIMEOUT_UserCallback:0000000000000000 SPI_TIMEOUT_UserCallback
+     /tmp/ccHZpORU.s:47     .text.SPI_TIMEOUT_UserCallback:0000000000000010 $d
+     /tmp/ccHZpORU.s:52     .text.SPI_FLASH_Init:0000000000000000 $t
+     /tmp/ccHZpORU.s:59     .text.SPI_FLASH_Init:0000000000000000 SPI_FLASH_Init
+     /tmp/ccHZpORU.s:175    .text.SPI_FLASH_Init:00000000000000b8 $d
+     /tmp/ccHZpORU.s:180    .text.SPI_FLASH_SendByte:0000000000000000 $t
+     /tmp/ccHZpORU.s:187    .text.SPI_FLASH_SendByte:0000000000000000 SPI_FLASH_SendByte
+     /tmp/ccHZpORU.s:266    .text.SPI_FLASH_SendByte:0000000000000068 $d
+     /tmp/ccHZpORU.s:272    .text.SPI_FLASH_BufferRead:0000000000000000 $t
+     /tmp/ccHZpORU.s:279    .text.SPI_FLASH_BufferRead:0000000000000000 SPI_FLASH_BufferRead
+     /tmp/ccHZpORU.s:348    .text.SPI_FLASH_BufferRead:000000000000004c $d
+     /tmp/ccHZpORU.s:353    .text.SPI_FLASH_ReadID:0000000000000000 $t
+     /tmp/ccHZpORU.s:360    .text.SPI_FLASH_ReadID:0000000000000000 SPI_FLASH_ReadID
+     /tmp/ccHZpORU.s:424    .text.SPI_FLASH_ReadID:000000000000003c $d
+     /tmp/ccHZpORU.s:429    .text.SPI_FLASH_ReadDeviceID:0000000000000000 $t
+     /tmp/ccHZpORU.s:436    .text.SPI_FLASH_ReadDeviceID:0000000000000000 SPI_FLASH_ReadDeviceID
+     /tmp/ccHZpORU.s:491    .text.SPI_FLASH_ReadDeviceID:0000000000000038 $d
+     /tmp/ccHZpORU.s:496    .text.SPI_FLASH_StartReadSequence:0000000000000000 $t
+     /tmp/ccHZpORU.s:503    .text.SPI_FLASH_StartReadSequence:0000000000000000 SPI_FLASH_StartReadSequence
+     /tmp/ccHZpORU.s:543    .text.SPI_FLASH_StartReadSequence:000000000000002c $d
+     /tmp/ccHZpORU.s:548    .text.SPI_FLASH_ReadByte:0000000000000000 $t
+     /tmp/ccHZpORU.s:555    .text.SPI_FLASH_ReadByte:0000000000000000 SPI_FLASH_ReadByte
+     /tmp/ccHZpORU.s:576    .text.SPI_FLASH_SendHalfWord:0000000000000000 $t
+     /tmp/ccHZpORU.s:583    .text.SPI_FLASH_SendHalfWord:0000000000000000 SPI_FLASH_SendHalfWord
+     /tmp/ccHZpORU.s:659    .text.SPI_FLASH_SendHalfWord:0000000000000060 $d
+     /tmp/ccHZpORU.s:665    .text.SPI_FLASH_WriteEnable:0000000000000000 $t
+     /tmp/ccHZpORU.s:672    .text.SPI_FLASH_WriteEnable:0000000000000000 SPI_FLASH_WriteEnable
+     /tmp/ccHZpORU.s:702    .text.SPI_FLASH_WriteEnable:000000000000001c $d
+     /tmp/ccHZpORU.s:707    .text.SPI_FLASH_WaitForWriteEnd:0000000000000000 $t
+     /tmp/ccHZpORU.s:714    .text.SPI_FLASH_WaitForWriteEnd:0000000000000000 SPI_FLASH_WaitForWriteEnd
+     /tmp/ccHZpORU.s:753    .text.SPI_FLASH_WaitForWriteEnd:0000000000000028 $d
+     /tmp/ccHZpORU.s:758    .text.SPI_FLASH_SectorErase:0000000000000000 $t
+     /tmp/ccHZpORU.s:765    .text.SPI_FLASH_SectorErase:0000000000000000 SPI_FLASH_SectorErase
+     /tmp/ccHZpORU.s:821    .text.SPI_FLASH_SectorErase:0000000000000040 $d
+     /tmp/ccHZpORU.s:826    .text.SPI_FLASH_BulkErase:0000000000000000 $t
+     /tmp/ccHZpORU.s:833    .text.SPI_FLASH_BulkErase:0000000000000000 SPI_FLASH_BulkErase
+     /tmp/ccHZpORU.s:869    .text.SPI_FLASH_BulkErase:0000000000000024 $d
+     /tmp/ccHZpORU.s:874    .text.SPI_FLASH_PageWrite:0000000000000000 $t
+     /tmp/ccHZpORU.s:881    .text.SPI_FLASH_PageWrite:0000000000000000 SPI_FLASH_PageWrite
+     /tmp/ccHZpORU.s:962    .text.SPI_FLASH_PageWrite:0000000000000064 $d
+     /tmp/ccHZpORU.s:968    .text.SPI_FLASH_BufferWrite:0000000000000000 $t
+     /tmp/ccHZpORU.s:975    .text.SPI_FLASH_BufferWrite:0000000000000000 SPI_FLASH_BufferWrite
+     /tmp/ccHZpORU.s:1148   .text.SPI_Flash_PowerDown:0000000000000000 $t
+     /tmp/ccHZpORU.s:1155   .text.SPI_Flash_PowerDown:0000000000000000 SPI_Flash_PowerDown
+     /tmp/ccHZpORU.s:1185   .text.SPI_Flash_PowerDown:000000000000001c $d
+     /tmp/ccHZpORU.s:1190   .text.SPI_Flash_WAKEUP:0000000000000000 $t
+     /tmp/ccHZpORU.s:1197   .text.SPI_Flash_WAKEUP:0000000000000000 SPI_Flash_WAKEUP
+     /tmp/ccHZpORU.s:1227   .text.SPI_Flash_WAKEUP:000000000000001c $d
+     /tmp/ccHZpORU.s:1232   .data.SPITimeout:0000000000000000 $d
+     /tmp/ccHZpORU.s:1236   .data.SPITimeout:0000000000000000 SPITimeout
+     /tmp/ccHZpORU.s:1239   .rodata.SPI_FLASH_PageWrite.str1.4:0000000000000000 $d
+     /tmp/ccHZpORU.s:1243   .rodata.SPI_TIMEOUT_UserCallback.str1.4:0000000000000000 $d
+                     .debug_frame:0000000000000010 $d
+
+ARM GAS  /tmp/ccHZpORU.s 			page 37
+
+
+UNDEFINED SYMBOLS
+printf
+RCC_APB2PeriphClockCmd
+GPIO_Init
+GPIO_SetBits
+SPI_Init
+SPI_Cmd
+SPI_I2S_GetFlagStatus
+SPI_I2S_SendData
+SPI_I2S_ReceiveData
+GPIO_ResetBits
+puts

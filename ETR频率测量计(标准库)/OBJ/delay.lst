@@ -1,0 +1,468 @@
+ARM GAS  /tmp/ccrnC9SQ.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"delay.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.delay_init,"ax",%progbits
+  16              		.align	1
+  17              		.global	delay_init
+  18              		.syntax unified
+  19              		.thumb
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	delay_init:
+  24              	.LFB112:
+  25              		.file 1 "SYSTEM/delay/delay.c"
+   1:SYSTEM/delay/delay.c **** #include "delay.h"
+   2:SYSTEM/delay/delay.c **** #include "sys.h"
+   3:SYSTEM/delay/delay.c **** 
+   4:SYSTEM/delay/delay.c **** #if SYSTEM_SUPPORT_OS
+   5:SYSTEM/delay/delay.c **** #include "includes.h"
+   6:SYSTEM/delay/delay.c **** #endif
+   7:SYSTEM/delay/delay.c **** 
+   8:SYSTEM/delay/delay.c **** static u8 fac_us = 0;
+   9:SYSTEM/delay/delay.c **** static u16 fac_ms = 0;
+  10:SYSTEM/delay/delay.c **** 
+  11:SYSTEM/delay/delay.c **** #if SYSTEM_SUPPORT_OS
+  12:SYSTEM/delay/delay.c **** 
+  13:SYSTEM/delay/delay.c **** #ifdef OS_CRITICAL_METHOD
+  14:SYSTEM/delay/delay.c **** #define delay_osrunning OSRunning
+  15:SYSTEM/delay/delay.c **** #define delay_ostickspersec OS_TICKS_PER_SEC
+  16:SYSTEM/delay/delay.c **** #define delay_osintnesting OSIntNesting
+  17:SYSTEM/delay/delay.c **** #endif
+  18:SYSTEM/delay/delay.c **** 
+  19:SYSTEM/delay/delay.c **** #ifdef CPU_CFG_CRITICAL_METHOD
+  20:SYSTEM/delay/delay.c **** #define delay_osrunning OSRunning
+  21:SYSTEM/delay/delay.c **** #define delay_ostickspersec OSCfg_TickRate_Hz
+  22:SYSTEM/delay/delay.c **** #define delay_osintnesting OSIntNestingCtr
+  23:SYSTEM/delay/delay.c **** #endif
+  24:SYSTEM/delay/delay.c **** 
+  25:SYSTEM/delay/delay.c **** void delay_osschedlock(void)
+  26:SYSTEM/delay/delay.c **** {
+  27:SYSTEM/delay/delay.c **** #ifdef CPU_CFG_CRITICAL_METHOD
+  28:SYSTEM/delay/delay.c ****   OS_ERR err;
+  29:SYSTEM/delay/delay.c ****   OSSchedLock(&err);
+  30:SYSTEM/delay/delay.c **** #else
+  31:SYSTEM/delay/delay.c ****   OSSchedLock();
+  32:SYSTEM/delay/delay.c **** #endif
+  33:SYSTEM/delay/delay.c **** }
+ARM GAS  /tmp/ccrnC9SQ.s 			page 2
+
+
+  34:SYSTEM/delay/delay.c **** 
+  35:SYSTEM/delay/delay.c **** void delay_osschedunlock(void)
+  36:SYSTEM/delay/delay.c **** {
+  37:SYSTEM/delay/delay.c **** #ifdef CPU_CFG_CRITICAL_METHOD
+  38:SYSTEM/delay/delay.c ****   OS_ERR err;
+  39:SYSTEM/delay/delay.c ****   OSSchedUnlock(&err);
+  40:SYSTEM/delay/delay.c **** #else
+  41:SYSTEM/delay/delay.c ****   OSSchedUnlock();
+  42:SYSTEM/delay/delay.c **** #endif
+  43:SYSTEM/delay/delay.c **** }
+  44:SYSTEM/delay/delay.c **** 
+  45:SYSTEM/delay/delay.c **** void delay_ostimedly(u32 ticks)
+  46:SYSTEM/delay/delay.c **** {
+  47:SYSTEM/delay/delay.c **** #ifdef CPU_CFG_CRITICAL_METHOD
+  48:SYSTEM/delay/delay.c ****   OS_ERR err;
+  49:SYSTEM/delay/delay.c ****   OSTimeDly(ticks, OS_OPT_TIME_PERIODIC, &err);
+  50:SYSTEM/delay/delay.c **** #else
+  51:SYSTEM/delay/delay.c ****   OSTimeDly(ticks);
+  52:SYSTEM/delay/delay.c **** #endif
+  53:SYSTEM/delay/delay.c **** }
+  54:SYSTEM/delay/delay.c **** 
+  55:SYSTEM/delay/delay.c **** void SysTick_Handler(void)
+  56:SYSTEM/delay/delay.c **** {
+  57:SYSTEM/delay/delay.c ****   if (delay_osrunning == 1)
+  58:SYSTEM/delay/delay.c ****   {
+  59:SYSTEM/delay/delay.c ****     OSIntEnter();
+  60:SYSTEM/delay/delay.c ****     OSTimeTick();
+  61:SYSTEM/delay/delay.c ****     OSIntExit();
+  62:SYSTEM/delay/delay.c ****   }
+  63:SYSTEM/delay/delay.c **** }
+  64:SYSTEM/delay/delay.c **** #endif
+  65:SYSTEM/delay/delay.c **** 
+  66:SYSTEM/delay/delay.c **** void delay_init(u8 SYSCLK)
+  67:SYSTEM/delay/delay.c **** {
+  26              		.loc 1 67 0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30              	.LVL0:
+  31 0000 10B5     		push	{r4, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+  36 0002 0446     		mov	r4, r0
+  68:SYSTEM/delay/delay.c **** #if SYSTEM_SUPPORT_OS
+  69:SYSTEM/delay/delay.c ****   u32 reload;
+  70:SYSTEM/delay/delay.c **** #endif
+  71:SYSTEM/delay/delay.c ****   SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK_Div8);
+  37              		.loc 1 71 0
+  38 0004 6FF00400 		mvn	r0, #4
+  39              	.LVL1:
+  40 0008 FFF7FEFF 		bl	SysTick_CLKSourceConfig
+  41              	.LVL2:
+  72:SYSTEM/delay/delay.c ****   fac_us = SYSCLK / 8;
+  42              		.loc 1 72 0
+  43 000c E008     		lsrs	r0, r4, #3
+ARM GAS  /tmp/ccrnC9SQ.s 			page 3
+
+
+  44 000e 054B     		ldr	r3, .L3
+  45 0010 1870     		strb	r0, [r3]
+  73:SYSTEM/delay/delay.c **** #if SYSTEM_SUPPORT_OS
+  74:SYSTEM/delay/delay.c ****   reload = SYSCLK / 8;
+  75:SYSTEM/delay/delay.c ****   reload *= 1000000 / delay_ostickspersec;
+  76:SYSTEM/delay/delay.c ****   / fac_ms = 1000 / delay_ostickspersec;
+  77:SYSTEM/delay/delay.c ****   SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
+  78:SYSTEM/delay/delay.c ****   SysTick->LOAD = reload;
+  79:SYSTEM/delay/delay.c ****   SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
+  80:SYSTEM/delay/delay.c **** #else
+  81:SYSTEM/delay/delay.c ****   fac_ms = (u16)fac_us * 1000;
+  46              		.loc 1 81 0
+  47 0012 C0EB4013 		rsb	r3, r0, r0, lsl #5
+  48 0016 00EB8300 		add	r0, r0, r3, lsl #2
+  49 001a C300     		lsls	r3, r0, #3
+  50 001c 024A     		ldr	r2, .L3+4
+  51 001e 1380     		strh	r3, [r2]	@ movhi
+  52 0020 10BD     		pop	{r4, pc}
+  53              	.L4:
+  54 0022 00BF     		.align	2
+  55              	.L3:
+  56 0024 00000000 		.word	.LANCHOR0
+  57 0028 00000000 		.word	.LANCHOR1
+  58              		.cfi_endproc
+  59              	.LFE112:
+  61              		.section	.text.delay_us,"ax",%progbits
+  62              		.align	1
+  63              		.global	delay_us
+  64              		.syntax unified
+  65              		.thumb
+  66              		.thumb_func
+  67              		.fpu softvfp
+  69              	delay_us:
+  70              	.LFB113:
+  82:SYSTEM/delay/delay.c **** #endif
+  83:SYSTEM/delay/delay.c **** }
+  84:SYSTEM/delay/delay.c **** 
+  85:SYSTEM/delay/delay.c **** #if SYSTEM_SUPPORT_OS
+  86:SYSTEM/delay/delay.c **** 
+  87:SYSTEM/delay/delay.c **** void delay_us(u32 nus)
+  88:SYSTEM/delay/delay.c **** {
+  89:SYSTEM/delay/delay.c ****   u32 ticks;
+  90:SYSTEM/delay/delay.c ****   u32 told, tnow, tcnt = 0;
+  91:SYSTEM/delay/delay.c ****   u32 reload = SysTick->LOAD;
+  92:SYSTEM/delay/delay.c ****   ticks = nus * fac_us;
+  93:SYSTEM/delay/delay.c ****   delay_osschedlock();
+  94:SYSTEM/delay/delay.c ****   told = SysTick->VAL;
+  95:SYSTEM/delay/delay.c ****   while (1)
+  96:SYSTEM/delay/delay.c ****   {
+  97:SYSTEM/delay/delay.c ****     tnow = SysTick->VAL;
+  98:SYSTEM/delay/delay.c ****     if (tnow != told)
+  99:SYSTEM/delay/delay.c ****     {
+ 100:SYSTEM/delay/delay.c ****       if (tnow < told)
+ 101:SYSTEM/delay/delay.c ****         tcnt += told - tnow;
+ 102:SYSTEM/delay/delay.c ****       else
+ 103:SYSTEM/delay/delay.c ****         tcnt += reload - tnow + told;
+ 104:SYSTEM/delay/delay.c ****       told = tnow;
+ARM GAS  /tmp/ccrnC9SQ.s 			page 4
+
+
+ 105:SYSTEM/delay/delay.c ****       if (tcnt >= ticks)
+ 106:SYSTEM/delay/delay.c ****         break;
+ 107:SYSTEM/delay/delay.c ****     }
+ 108:SYSTEM/delay/delay.c ****   };
+ 109:SYSTEM/delay/delay.c ****   delay_osschedunlock();
+ 110:SYSTEM/delay/delay.c **** }
+ 111:SYSTEM/delay/delay.c **** 
+ 112:SYSTEM/delay/delay.c **** void delay_ms(u16 nms)
+ 113:SYSTEM/delay/delay.c **** {
+ 114:SYSTEM/delay/delay.c ****   if (delay_osrunning && delay_osintnesting == 0)
+ 115:SYSTEM/delay/delay.c ****   {
+ 116:SYSTEM/delay/delay.c ****     if (nms >= fac_ms)
+ 117:SYSTEM/delay/delay.c ****     {
+ 118:SYSTEM/delay/delay.c ****       delay_ostimedly(nms / fac_ms);
+ 119:SYSTEM/delay/delay.c ****     }
+ 120:SYSTEM/delay/delay.c ****     nms %= fac_ms;
+ 121:SYSTEM/delay/delay.c ****   }
+ 122:SYSTEM/delay/delay.c ****   delay_us((u32)(nms * 1000));
+ 123:SYSTEM/delay/delay.c **** }
+ 124:SYSTEM/delay/delay.c **** #else
+ 125:SYSTEM/delay/delay.c **** 
+ 126:SYSTEM/delay/delay.c **** void delay_us(u32 nus)
+ 127:SYSTEM/delay/delay.c **** {
+  71              		.loc 1 127 0
+  72              		.cfi_startproc
+  73              		@ args = 0, pretend = 0, frame = 0
+  74              		@ frame_needed = 0, uses_anonymous_args = 0
+  75              		@ link register save eliminated.
+  76              	.LVL3:
+ 128:SYSTEM/delay/delay.c ****   u32 temp;
+ 129:SYSTEM/delay/delay.c ****   SysTick->LOAD = nus * fac_us;
+  77              		.loc 1 129 0
+  78 0000 0C4B     		ldr	r3, .L7
+  79 0002 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  80 0004 00FB03F0 		mul	r0, r0, r3
+  81              	.LVL4:
+  82 0008 0B4B     		ldr	r3, .L7+4
+  83 000a 5860     		str	r0, [r3, #4]
+ 130:SYSTEM/delay/delay.c ****   SysTick->VAL = 0x00;
+  84              		.loc 1 130 0
+  85 000c 0022     		movs	r2, #0
+  86 000e 9A60     		str	r2, [r3, #8]
+ 131:SYSTEM/delay/delay.c ****   SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
+  87              		.loc 1 131 0
+  88 0010 1A68     		ldr	r2, [r3]
+  89 0012 42F00102 		orr	r2, r2, #1
+  90 0016 1A60     		str	r2, [r3]
+  91              	.L6:
+ 132:SYSTEM/delay/delay.c ****   do
+ 133:SYSTEM/delay/delay.c ****   {
+ 134:SYSTEM/delay/delay.c ****     temp = SysTick->CTRL;
+  92              		.loc 1 134 0 discriminator 1
+  93 0018 074B     		ldr	r3, .L7+4
+  94 001a 1B68     		ldr	r3, [r3]
+  95              	.LVL5:
+ 135:SYSTEM/delay/delay.c ****   } while ((temp & 0x01) && !(temp & (1 << 16)));
+  96              		.loc 1 135 0 discriminator 1
+ARM GAS  /tmp/ccrnC9SQ.s 			page 5
+
+
+  97 001c 03F00113 		and	r3, r3, #65537
+  98              	.LVL6:
+  99 0020 012B     		cmp	r3, #1
+ 100 0022 F9D0     		beq	.L6
+ 136:SYSTEM/delay/delay.c ****   SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
+ 101              		.loc 1 136 0
+ 102 0024 044B     		ldr	r3, .L7+4
+ 103 0026 1A68     		ldr	r2, [r3]
+ 104 0028 22F00102 		bic	r2, r2, #1
+ 105 002c 1A60     		str	r2, [r3]
+ 137:SYSTEM/delay/delay.c ****   SysTick->VAL = 0X00;
+ 106              		.loc 1 137 0
+ 107 002e 0022     		movs	r2, #0
+ 108 0030 9A60     		str	r2, [r3, #8]
+ 109 0032 7047     		bx	lr
+ 110              	.L8:
+ 111              		.align	2
+ 112              	.L7:
+ 113 0034 00000000 		.word	.LANCHOR0
+ 114 0038 10E000E0 		.word	-536813552
+ 115              		.cfi_endproc
+ 116              	.LFE113:
+ 118              		.section	.text.delay_xms,"ax",%progbits
+ 119              		.align	1
+ 120              		.global	delay_xms
+ 121              		.syntax unified
+ 122              		.thumb
+ 123              		.thumb_func
+ 124              		.fpu softvfp
+ 126              	delay_xms:
+ 127              	.LFB114:
+ 138:SYSTEM/delay/delay.c **** }
+ 139:SYSTEM/delay/delay.c **** 
+ 140:SYSTEM/delay/delay.c **** void delay_xms(u16 nms)
+ 141:SYSTEM/delay/delay.c **** {
+ 128              		.loc 1 141 0
+ 129              		.cfi_startproc
+ 130              		@ args = 0, pretend = 0, frame = 0
+ 131              		@ frame_needed = 0, uses_anonymous_args = 0
+ 132              		@ link register save eliminated.
+ 133              	.LVL7:
+ 142:SYSTEM/delay/delay.c ****   u32 temp;
+ 143:SYSTEM/delay/delay.c ****   SysTick->LOAD = (u32)nms * fac_ms;
+ 134              		.loc 1 143 0
+ 135 0000 0C4B     		ldr	r3, .L11
+ 136 0002 1B88     		ldrh	r3, [r3]
+ 137 0004 00FB03F0 		mul	r0, r0, r3
+ 138              	.LVL8:
+ 139 0008 0B4B     		ldr	r3, .L11+4
+ 140 000a 5860     		str	r0, [r3, #4]
+ 144:SYSTEM/delay/delay.c ****   SysTick->VAL = 0x00;
+ 141              		.loc 1 144 0
+ 142 000c 0022     		movs	r2, #0
+ 143 000e 9A60     		str	r2, [r3, #8]
+ 145:SYSTEM/delay/delay.c ****   SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
+ 144              		.loc 1 145 0
+ 145 0010 1A68     		ldr	r2, [r3]
+ARM GAS  /tmp/ccrnC9SQ.s 			page 6
+
+
+ 146 0012 42F00102 		orr	r2, r2, #1
+ 147 0016 1A60     		str	r2, [r3]
+ 148              	.L10:
+ 146:SYSTEM/delay/delay.c ****   do
+ 147:SYSTEM/delay/delay.c ****   {
+ 148:SYSTEM/delay/delay.c ****     temp = SysTick->CTRL;
+ 149              		.loc 1 148 0 discriminator 1
+ 150 0018 074B     		ldr	r3, .L11+4
+ 151 001a 1B68     		ldr	r3, [r3]
+ 152              	.LVL9:
+ 149:SYSTEM/delay/delay.c ****   } while ((temp & 0x01) && !(temp & (1 << 16)));
+ 153              		.loc 1 149 0 discriminator 1
+ 154 001c 03F00113 		and	r3, r3, #65537
+ 155              	.LVL10:
+ 156 0020 012B     		cmp	r3, #1
+ 157 0022 F9D0     		beq	.L10
+ 150:SYSTEM/delay/delay.c ****   SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
+ 158              		.loc 1 150 0
+ 159 0024 044B     		ldr	r3, .L11+4
+ 160 0026 1A68     		ldr	r2, [r3]
+ 161 0028 22F00102 		bic	r2, r2, #1
+ 162 002c 1A60     		str	r2, [r3]
+ 151:SYSTEM/delay/delay.c ****   SysTick->VAL = 0X00;
+ 163              		.loc 1 151 0
+ 164 002e 0022     		movs	r2, #0
+ 165 0030 9A60     		str	r2, [r3, #8]
+ 166 0032 7047     		bx	lr
+ 167              	.L12:
+ 168              		.align	2
+ 169              	.L11:
+ 170 0034 00000000 		.word	.LANCHOR1
+ 171 0038 10E000E0 		.word	-536813552
+ 172              		.cfi_endproc
+ 173              	.LFE114:
+ 175              		.section	.text.delay_ms,"ax",%progbits
+ 176              		.align	1
+ 177              		.global	delay_ms
+ 178              		.syntax unified
+ 179              		.thumb
+ 180              		.thumb_func
+ 181              		.fpu softvfp
+ 183              	delay_ms:
+ 184              	.LFB115:
+ 152:SYSTEM/delay/delay.c **** }
+ 153:SYSTEM/delay/delay.c **** 
+ 154:SYSTEM/delay/delay.c **** void delay_ms(u16 nms)
+ 155:SYSTEM/delay/delay.c **** {
+ 185              		.loc 1 155 0
+ 186              		.cfi_startproc
+ 187              		@ args = 0, pretend = 0, frame = 0
+ 188              		@ frame_needed = 0, uses_anonymous_args = 0
+ 189              	.LVL11:
+ 190 0000 38B5     		push	{r3, r4, r5, lr}
+ 191              	.LCFI1:
+ 192              		.cfi_def_cfa_offset 16
+ 193              		.cfi_offset 3, -16
+ 194              		.cfi_offset 4, -12
+ARM GAS  /tmp/ccrnC9SQ.s 			page 7
+
+
+ 195              		.cfi_offset 5, -8
+ 196              		.cfi_offset 14, -4
+ 156:SYSTEM/delay/delay.c ****   u8 repeat = nms / 540;
+ 197              		.loc 1 156 0
+ 198 0002 0C4B     		ldr	r3, .L19
+ 199 0004 A3FB0023 		umull	r2, r3, r3, r0
+ 200 0008 5B0A     		lsrs	r3, r3, #9
+ 201 000a DCB2     		uxtb	r4, r3
+ 202              	.LVL12:
+ 157:SYSTEM/delay/delay.c **** 
+ 158:SYSTEM/delay/delay.c ****   u16 remain = nms % 540;
+ 203              		.loc 1 158 0
+ 204 000c 4FF40775 		mov	r5, #540
+ 205 0010 05FB1303 		mls	r3, r5, r3, r0
+ 206 0014 9DB2     		uxth	r5, r3
+ 207              	.LVL13:
+ 159:SYSTEM/delay/delay.c ****   while (repeat)
+ 208              		.loc 1 159 0
+ 209 0016 05E0     		b	.L14
+ 210              	.LVL14:
+ 211              	.L15:
+ 160:SYSTEM/delay/delay.c ****   {
+ 161:SYSTEM/delay/delay.c ****     delay_xms(540);
+ 212              		.loc 1 161 0
+ 213 0018 4FF40770 		mov	r0, #540
+ 214 001c FFF7FEFF 		bl	delay_xms
+ 215              	.LVL15:
+ 162:SYSTEM/delay/delay.c ****     repeat--;
+ 216              		.loc 1 162 0
+ 217 0020 013C     		subs	r4, r4, #1
+ 218              	.LVL16:
+ 219 0022 E4B2     		uxtb	r4, r4
+ 220              	.LVL17:
+ 221              	.L14:
+ 159:SYSTEM/delay/delay.c ****   while (repeat)
+ 222              		.loc 1 159 0
+ 223 0024 002C     		cmp	r4, #0
+ 224 0026 F7D1     		bne	.L15
+ 163:SYSTEM/delay/delay.c ****   }
+ 164:SYSTEM/delay/delay.c ****   if (remain)
+ 225              		.loc 1 164 0
+ 226 0028 05B9     		cbnz	r5, .L18
+ 227              	.L13:
+ 228 002a 38BD     		pop	{r3, r4, r5, pc}
+ 229              	.LVL18:
+ 230              	.L18:
+ 165:SYSTEM/delay/delay.c ****     delay_xms(remain);
+ 231              		.loc 1 165 0
+ 232 002c 2846     		mov	r0, r5
+ 233 002e FFF7FEFF 		bl	delay_xms
+ 234              	.LVL19:
+ 166:SYSTEM/delay/delay.c **** }
+ 235              		.loc 1 166 0
+ 236 0032 FAE7     		b	.L13
+ 237              	.L20:
+ 238              		.align	2
+ 239              	.L19:
+ARM GAS  /tmp/ccrnC9SQ.s 			page 8
+
+
+ 240 0034 49D6B9F2 		.word	-222702007
+ 241              		.cfi_endproc
+ 242              	.LFE115:
+ 244              		.section	.bss.fac_ms,"aw",%nobits
+ 245              		.align	1
+ 246              		.set	.LANCHOR1,. + 0
+ 249              	fac_ms:
+ 250 0000 0000     		.space	2
+ 251              		.section	.bss.fac_us,"aw",%nobits
+ 252              		.set	.LANCHOR0,. + 0
+ 255              	fac_us:
+ 256 0000 00       		.space	1
+ 257              		.text
+ 258              	.Letext0:
+ 259              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 260              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 261              		.file 4 "CORE/core_cm4.h"
+ 262              		.file 5 "USER/system_stm32f4xx.h"
+ 263              		.file 6 "USER/stm32f4xx.h"
+ 264              		.file 7 "FWLIB/inc/misc.h"
+ARM GAS  /tmp/ccrnC9SQ.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 delay.c
+     /tmp/ccrnC9SQ.s:16     .text.delay_init:0000000000000000 $t
+     /tmp/ccrnC9SQ.s:23     .text.delay_init:0000000000000000 delay_init
+     /tmp/ccrnC9SQ.s:56     .text.delay_init:0000000000000024 $d
+     /tmp/ccrnC9SQ.s:62     .text.delay_us:0000000000000000 $t
+     /tmp/ccrnC9SQ.s:69     .text.delay_us:0000000000000000 delay_us
+     /tmp/ccrnC9SQ.s:113    .text.delay_us:0000000000000034 $d
+     /tmp/ccrnC9SQ.s:119    .text.delay_xms:0000000000000000 $t
+     /tmp/ccrnC9SQ.s:126    .text.delay_xms:0000000000000000 delay_xms
+     /tmp/ccrnC9SQ.s:170    .text.delay_xms:0000000000000034 $d
+     /tmp/ccrnC9SQ.s:176    .text.delay_ms:0000000000000000 $t
+     /tmp/ccrnC9SQ.s:183    .text.delay_ms:0000000000000000 delay_ms
+     /tmp/ccrnC9SQ.s:240    .text.delay_ms:0000000000000034 $d
+     /tmp/ccrnC9SQ.s:245    .bss.fac_ms:0000000000000000 $d
+     /tmp/ccrnC9SQ.s:249    .bss.fac_ms:0000000000000000 fac_ms
+     /tmp/ccrnC9SQ.s:255    .bss.fac_us:0000000000000000 fac_us
+     /tmp/ccrnC9SQ.s:256    .bss.fac_us:0000000000000000 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+SysTick_CLKSourceConfig

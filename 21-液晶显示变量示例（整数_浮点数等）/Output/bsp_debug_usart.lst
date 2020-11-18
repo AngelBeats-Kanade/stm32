@@ -1,0 +1,473 @@
+ARM GAS  /tmp/ccs42uqv.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"bsp_debug_usart.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.DEBUG_USART_Config,"ax",%progbits
+  16              		.align	1
+  17              		.global	DEBUG_USART_Config
+  18              		.syntax unified
+  19              		.thumb
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	DEBUG_USART_Config:
+  24              	.LFB64:
+  25              		.file 1 "User/usart/bsp_debug_usart.c"
+   1:User/usart/bsp_debug_usart.c **** /**
+   2:User/usart/bsp_debug_usart.c ****   ******************************************************************************
+   3:User/usart/bsp_debug_usart.c ****   * @file    bsp_debug_usart.c
+   4:User/usart/bsp_debug_usart.c ****   * @author  fire
+   5:User/usart/bsp_debug_usart.c ****   * @version V1.0
+   6:User/usart/bsp_debug_usart.c ****   * @date    2016-xx-xx
+   7:User/usart/bsp_debug_usart.c ****   * @brief   使用串口1，重定向c库printf函数到usart端口，中断接收模式
+   8:User/usart/bsp_debug_usart.c ****   ******************************************************************************
+   9:User/usart/bsp_debug_usart.c ****   * @attention
+  10:User/usart/bsp_debug_usart.c ****   *
+  11:User/usart/bsp_debug_usart.c ****   * 实验平台:野火 STM32 F103 开发板  
+  12:User/usart/bsp_debug_usart.c ****   * 论坛    :http://www.firebbs.cn
+  13:User/usart/bsp_debug_usart.c ****   * 淘宝    :http://firestm32.taobao.com
+  14:User/usart/bsp_debug_usart.c ****   *
+  15:User/usart/bsp_debug_usart.c ****   ******************************************************************************
+  16:User/usart/bsp_debug_usart.c ****   */ 
+  17:User/usart/bsp_debug_usart.c ****   
+  18:User/usart/bsp_debug_usart.c **** #include "./usart/bsp_debug_usart.h"
+  19:User/usart/bsp_debug_usart.c **** 
+  20:User/usart/bsp_debug_usart.c **** UART_HandleTypeDef UartHandle;
+  21:User/usart/bsp_debug_usart.c **** //extern uint8_t ucTemp;  
+  22:User/usart/bsp_debug_usart.c **** 
+  23:User/usart/bsp_debug_usart.c ****  /**
+  24:User/usart/bsp_debug_usart.c ****   * @brief  DEBUG_USART GPIO 配置,工作模式配置。115200 8-N-1
+  25:User/usart/bsp_debug_usart.c ****   * @param  无
+  26:User/usart/bsp_debug_usart.c ****   * @retval 无
+  27:User/usart/bsp_debug_usart.c ****   */  
+  28:User/usart/bsp_debug_usart.c **** void DEBUG_USART_Config(void)
+  29:User/usart/bsp_debug_usart.c **** { 
+  26              		.loc 1 29 0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccs42uqv.s 			page 2
+
+
+  30 0000 08B5     		push	{r3, lr}
+  31              	.LCFI0:
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 3, -8
+  34              		.cfi_offset 14, -4
+  30:User/usart/bsp_debug_usart.c ****   
+  31:User/usart/bsp_debug_usart.c ****   UartHandle.Instance          = DEBUG_USART;
+  35              		.loc 1 31 0
+  36 0002 0848     		ldr	r0, .L3
+  37 0004 084B     		ldr	r3, .L3+4
+  38 0006 0360     		str	r3, [r0]
+  32:User/usart/bsp_debug_usart.c ****   
+  33:User/usart/bsp_debug_usart.c ****   UartHandle.Init.BaudRate     = DEBUG_USART_BAUDRATE;
+  39              		.loc 1 33 0
+  40 0008 4FF4E133 		mov	r3, #115200
+  41 000c 4360     		str	r3, [r0, #4]
+  34:User/usart/bsp_debug_usart.c ****   UartHandle.Init.WordLength   = UART_WORDLENGTH_8B;
+  42              		.loc 1 34 0
+  43 000e 0023     		movs	r3, #0
+  44 0010 8360     		str	r3, [r0, #8]
+  35:User/usart/bsp_debug_usart.c ****   UartHandle.Init.StopBits     = UART_STOPBITS_1;
+  45              		.loc 1 35 0
+  46 0012 C360     		str	r3, [r0, #12]
+  36:User/usart/bsp_debug_usart.c ****   UartHandle.Init.Parity       = UART_PARITY_NONE;
+  47              		.loc 1 36 0
+  48 0014 0361     		str	r3, [r0, #16]
+  37:User/usart/bsp_debug_usart.c ****   UartHandle.Init.HwFlowCtl    = UART_HWCONTROL_NONE;
+  49              		.loc 1 37 0
+  50 0016 8361     		str	r3, [r0, #24]
+  38:User/usart/bsp_debug_usart.c ****   UartHandle.Init.Mode         = UART_MODE_TX_RX;
+  51              		.loc 1 38 0
+  52 0018 0C23     		movs	r3, #12
+  53 001a 4361     		str	r3, [r0, #20]
+  39:User/usart/bsp_debug_usart.c ****   
+  40:User/usart/bsp_debug_usart.c ****   HAL_UART_Init(&UartHandle);
+  54              		.loc 1 40 0
+  55 001c FFF7FEFF 		bl	HAL_UART_Init
+  56              	.LVL0:
+  57 0020 08BD     		pop	{r3, pc}
+  58              	.L4:
+  59 0022 00BF     		.align	2
+  60              	.L3:
+  61 0024 00000000 		.word	UartHandle
+  62 0028 00380140 		.word	1073821696
+  63              		.cfi_endproc
+  64              	.LFE64:
+  66              		.section	.text.HAL_UART_MspInit,"ax",%progbits
+  67              		.align	1
+  68              		.global	HAL_UART_MspInit
+  69              		.syntax unified
+  70              		.thumb
+  71              		.thumb_func
+  72              		.fpu softvfp
+  74              	HAL_UART_MspInit:
+  75              	.LFB65:
+  41:User/usart/bsp_debug_usart.c ****     
+  42:User/usart/bsp_debug_usart.c **** // /*使能串口接收断 */
+ARM GAS  /tmp/ccs42uqv.s 			page 3
+
+
+  43:User/usart/bsp_debug_usart.c **** //  __HAL_UART_ENABLE_IT(&UartHandle,UART_IT_RXNE);  
+  44:User/usart/bsp_debug_usart.c **** }
+  45:User/usart/bsp_debug_usart.c **** 
+  46:User/usart/bsp_debug_usart.c **** 
+  47:User/usart/bsp_debug_usart.c **** /**
+  48:User/usart/bsp_debug_usart.c ****   * @brief UART MSP 初始化 
+  49:User/usart/bsp_debug_usart.c ****   * @param huart: UART handle
+  50:User/usart/bsp_debug_usart.c ****   * @retval 无
+  51:User/usart/bsp_debug_usart.c ****   */
+  52:User/usart/bsp_debug_usart.c **** void HAL_UART_MspInit(UART_HandleTypeDef *huart)
+  53:User/usart/bsp_debug_usart.c **** {  
+  76              		.loc 1 53 0
+  77              		.cfi_startproc
+  78              		@ args = 0, pretend = 0, frame = 32
+  79              		@ frame_needed = 0, uses_anonymous_args = 0
+  80              	.LVL1:
+  81 0000 10B5     		push	{r4, lr}
+  82              	.LCFI1:
+  83              		.cfi_def_cfa_offset 8
+  84              		.cfi_offset 4, -8
+  85              		.cfi_offset 14, -4
+  86 0002 88B0     		sub	sp, sp, #32
+  87              	.LCFI2:
+  88              		.cfi_def_cfa_offset 40
+  89              	.LBB2:
+  54:User/usart/bsp_debug_usart.c ****   GPIO_InitTypeDef  GPIO_InitStruct;
+  55:User/usart/bsp_debug_usart.c ****   
+  56:User/usart/bsp_debug_usart.c ****   DEBUG_USART_CLK_ENABLE();
+  90              		.loc 1 56 0
+  91 0004 1A4B     		ldr	r3, .L7
+  92 0006 9A69     		ldr	r2, [r3, #24]
+  93 0008 42F48042 		orr	r2, r2, #16384
+  94 000c 9A61     		str	r2, [r3, #24]
+  95 000e 9A69     		ldr	r2, [r3, #24]
+  96 0010 02F48042 		and	r2, r2, #16384
+  97 0014 0192     		str	r2, [sp, #4]
+  98 0016 019A     		ldr	r2, [sp, #4]
+  99              	.LBE2:
+ 100              	.LBB3:
+  57:User/usart/bsp_debug_usart.c **** 	
+  58:User/usart/bsp_debug_usart.c **** 	DEBUG_USART_RX_GPIO_CLK_ENABLE();
+ 101              		.loc 1 58 0
+ 102 0018 9A69     		ldr	r2, [r3, #24]
+ 103 001a 42F00402 		orr	r2, r2, #4
+ 104 001e 9A61     		str	r2, [r3, #24]
+ 105 0020 9A69     		ldr	r2, [r3, #24]
+ 106 0022 02F00402 		and	r2, r2, #4
+ 107 0026 0292     		str	r2, [sp, #8]
+ 108 0028 029A     		ldr	r2, [sp, #8]
+ 109              	.LBE3:
+ 110              	.LBB4:
+  59:User/usart/bsp_debug_usart.c ****   DEBUG_USART_TX_GPIO_CLK_ENABLE();
+ 111              		.loc 1 59 0
+ 112 002a 9A69     		ldr	r2, [r3, #24]
+ 113 002c 42F00402 		orr	r2, r2, #4
+ 114 0030 9A61     		str	r2, [r3, #24]
+ 115 0032 9B69     		ldr	r3, [r3, #24]
+ARM GAS  /tmp/ccs42uqv.s 			page 4
+
+
+ 116 0034 03F00403 		and	r3, r3, #4
+ 117 0038 0393     		str	r3, [sp, #12]
+ 118 003a 039B     		ldr	r3, [sp, #12]
+ 119              	.LBE4:
+  60:User/usart/bsp_debug_usart.c ****   
+  61:User/usart/bsp_debug_usart.c **** /**USART1 GPIO Configuration    
+  62:User/usart/bsp_debug_usart.c ****   PA9     ------> USART1_TX
+  63:User/usart/bsp_debug_usart.c ****   PA10    ------> USART1_RX 
+  64:User/usart/bsp_debug_usart.c ****   */
+  65:User/usart/bsp_debug_usart.c ****   /* 配置Tx引脚为复用功能  */
+  66:User/usart/bsp_debug_usart.c ****   GPIO_InitStruct.Pin = DEBUG_USART_TX_PIN;
+ 120              		.loc 1 66 0
+ 121 003c 4FF40073 		mov	r3, #512
+ 122 0040 0493     		str	r3, [sp, #16]
+  67:User/usart/bsp_debug_usart.c ****   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 123              		.loc 1 67 0
+ 124 0042 0223     		movs	r3, #2
+ 125 0044 0593     		str	r3, [sp, #20]
+  68:User/usart/bsp_debug_usart.c ****   GPIO_InitStruct.Pull = GPIO_PULLUP;
+ 126              		.loc 1 68 0
+ 127 0046 0123     		movs	r3, #1
+ 128 0048 0693     		str	r3, [sp, #24]
+  69:User/usart/bsp_debug_usart.c ****   GPIO_InitStruct.Speed =  GPIO_SPEED_FREQ_HIGH;
+ 129              		.loc 1 69 0
+ 130 004a 0323     		movs	r3, #3
+ 131 004c 0793     		str	r3, [sp, #28]
+  70:User/usart/bsp_debug_usart.c ****   HAL_GPIO_Init(DEBUG_USART_TX_GPIO_PORT, &GPIO_InitStruct);
+ 132              		.loc 1 70 0
+ 133 004e 094C     		ldr	r4, .L7+4
+ 134 0050 04A9     		add	r1, sp, #16
+ 135 0052 2046     		mov	r0, r4
+ 136              	.LVL2:
+ 137 0054 FFF7FEFF 		bl	HAL_GPIO_Init
+ 138              	.LVL3:
+  71:User/usart/bsp_debug_usart.c ****   
+  72:User/usart/bsp_debug_usart.c ****   /* 配置Rx引脚为复用功能 */
+  73:User/usart/bsp_debug_usart.c ****   GPIO_InitStruct.Pin = DEBUG_USART_RX_PIN;
+ 139              		.loc 1 73 0
+ 140 0058 4FF48063 		mov	r3, #1024
+ 141 005c 0493     		str	r3, [sp, #16]
+  74:User/usart/bsp_debug_usart.c ****   GPIO_InitStruct.Mode=GPIO_MODE_AF_INPUT;	//模式要设置为复用输入模式！	
+ 142              		.loc 1 74 0
+ 143 005e 0023     		movs	r3, #0
+ 144 0060 0593     		str	r3, [sp, #20]
+  75:User/usart/bsp_debug_usart.c ****   HAL_GPIO_Init(DEBUG_USART_RX_GPIO_PORT, &GPIO_InitStruct); 
+ 145              		.loc 1 75 0
+ 146 0062 04A9     		add	r1, sp, #16
+ 147 0064 2046     		mov	r0, r4
+ 148 0066 FFF7FEFF 		bl	HAL_GPIO_Init
+ 149              	.LVL4:
+  76:User/usart/bsp_debug_usart.c ****  
+  77:User/usart/bsp_debug_usart.c **** //  HAL_NVIC_SetPriority(DEBUG_USART_IRQ ,0,1);	//抢占优先级0，子优先级1
+  78:User/usart/bsp_debug_usart.c **** //  HAL_NVIC_EnableIRQ(DEBUG_USART_IRQ );		    //使能USART1中断通道  
+  79:User/usart/bsp_debug_usart.c **** }
+ 150              		.loc 1 79 0
+ 151 006a 08B0     		add	sp, sp, #32
+ 152              	.LCFI3:
+ARM GAS  /tmp/ccs42uqv.s 			page 5
+
+
+ 153              		.cfi_def_cfa_offset 8
+ 154              		@ sp needed
+ 155 006c 10BD     		pop	{r4, pc}
+ 156              	.L8:
+ 157 006e 00BF     		.align	2
+ 158              	.L7:
+ 159 0070 00100240 		.word	1073876992
+ 160 0074 00080140 		.word	1073809408
+ 161              		.cfi_endproc
+ 162              	.LFE65:
+ 164              		.section	.text.Usart_SendString,"ax",%progbits
+ 165              		.align	1
+ 166              		.global	Usart_SendString
+ 167              		.syntax unified
+ 168              		.thumb
+ 169              		.thumb_func
+ 170              		.fpu softvfp
+ 172              	Usart_SendString:
+ 173              	.LFB66:
+  80:User/usart/bsp_debug_usart.c **** 
+  81:User/usart/bsp_debug_usart.c **** 
+  82:User/usart/bsp_debug_usart.c **** /*****************  发送字符串 **********************/
+  83:User/usart/bsp_debug_usart.c **** void Usart_SendString(uint8_t *str)
+  84:User/usart/bsp_debug_usart.c **** {
+ 174              		.loc 1 84 0
+ 175              		.cfi_startproc
+ 176              		@ args = 0, pretend = 0, frame = 0
+ 177              		@ frame_needed = 0, uses_anonymous_args = 0
+ 178              	.LVL5:
+ 179 0000 38B5     		push	{r3, r4, r5, lr}
+ 180              	.LCFI4:
+ 181              		.cfi_def_cfa_offset 16
+ 182              		.cfi_offset 3, -16
+ 183              		.cfi_offset 4, -12
+ 184              		.cfi_offset 5, -8
+ 185              		.cfi_offset 14, -4
+ 186 0002 0546     		mov	r5, r0
+ 187              	.LVL6:
+  85:User/usart/bsp_debug_usart.c **** 	unsigned int k=0;
+ 188              		.loc 1 85 0
+ 189 0004 0024     		movs	r4, #0
+ 190              	.LVL7:
+ 191              	.L10:
+  86:User/usart/bsp_debug_usart.c ****   do 
+  87:User/usart/bsp_debug_usart.c ****   {
+  88:User/usart/bsp_debug_usart.c ****       HAL_UART_Transmit(&UartHandle,(uint8_t *)(str + k) ,1,1000);
+ 192              		.loc 1 88 0 discriminator 1
+ 193 0006 4FF47A73 		mov	r3, #1000
+ 194 000a 0122     		movs	r2, #1
+ 195 000c 2919     		adds	r1, r5, r4
+ 196 000e 0448     		ldr	r0, .L12
+ 197 0010 FFF7FEFF 		bl	HAL_UART_Transmit
+ 198              	.LVL8:
+  89:User/usart/bsp_debug_usart.c ****       k++;
+ 199              		.loc 1 89 0 discriminator 1
+ 200 0014 0134     		adds	r4, r4, #1
+ 201              	.LVL9:
+ARM GAS  /tmp/ccs42uqv.s 			page 6
+
+
+  90:User/usart/bsp_debug_usart.c ****   } while(*(str + k)!='\0');
+ 202              		.loc 1 90 0 discriminator 1
+ 203 0016 2B5D     		ldrb	r3, [r5, r4]	@ zero_extendqisi2
+ 204 0018 002B     		cmp	r3, #0
+ 205 001a F4D1     		bne	.L10
+  91:User/usart/bsp_debug_usart.c ****   
+  92:User/usart/bsp_debug_usart.c **** }
+ 206              		.loc 1 92 0
+ 207 001c 38BD     		pop	{r3, r4, r5, pc}
+ 208              	.LVL10:
+ 209              	.L13:
+ 210 001e 00BF     		.align	2
+ 211              	.L12:
+ 212 0020 00000000 		.word	UartHandle
+ 213              		.cfi_endproc
+ 214              	.LFE66:
+ 216              		.section	.text.fputc,"ax",%progbits
+ 217              		.align	1
+ 218              		.global	fputc
+ 219              		.syntax unified
+ 220              		.thumb
+ 221              		.thumb_func
+ 222              		.fpu softvfp
+ 224              	fputc:
+ 225              	.LFB67:
+  93:User/usart/bsp_debug_usart.c **** //重定向c库函数printf到串口DEBUG_USART，重定向后可使用printf函数
+  94:User/usart/bsp_debug_usart.c **** int fputc(int ch, FILE *f)
+  95:User/usart/bsp_debug_usart.c **** {
+ 226              		.loc 1 95 0
+ 227              		.cfi_startproc
+ 228              		@ args = 0, pretend = 0, frame = 8
+ 229              		@ frame_needed = 0, uses_anonymous_args = 0
+ 230              	.LVL11:
+ 231 0000 00B5     		push	{lr}
+ 232              	.LCFI5:
+ 233              		.cfi_def_cfa_offset 4
+ 234              		.cfi_offset 14, -4
+ 235 0002 83B0     		sub	sp, sp, #12
+ 236              	.LCFI6:
+ 237              		.cfi_def_cfa_offset 16
+ 238 0004 02A9     		add	r1, sp, #8
+ 239              	.LVL12:
+ 240 0006 41F8040D 		str	r0, [r1, #-4]!
+  96:User/usart/bsp_debug_usart.c **** 	/* 发送一个字节数据到串口DEBUG_USART */
+  97:User/usart/bsp_debug_usart.c **** 	HAL_UART_Transmit(&UartHandle, (uint8_t *)&ch, 1, 1000);	
+ 241              		.loc 1 97 0
+ 242 000a 4FF47A73 		mov	r3, #1000
+ 243 000e 0122     		movs	r2, #1
+ 244 0010 0348     		ldr	r0, .L16
+ 245              	.LVL13:
+ 246 0012 FFF7FEFF 		bl	HAL_UART_Transmit
+ 247              	.LVL14:
+  98:User/usart/bsp_debug_usart.c **** 	
+  99:User/usart/bsp_debug_usart.c **** 	return (ch);
+ 100:User/usart/bsp_debug_usart.c **** }
+ 248              		.loc 1 100 0
+ 249 0016 0198     		ldr	r0, [sp, #4]
+ARM GAS  /tmp/ccs42uqv.s 			page 7
+
+
+ 250 0018 03B0     		add	sp, sp, #12
+ 251              	.LCFI7:
+ 252              		.cfi_def_cfa_offset 4
+ 253              		@ sp needed
+ 254 001a 5DF804FB 		ldr	pc, [sp], #4
+ 255              	.L17:
+ 256 001e 00BF     		.align	2
+ 257              	.L16:
+ 258 0020 00000000 		.word	UartHandle
+ 259              		.cfi_endproc
+ 260              	.LFE67:
+ 262              		.section	.text.fgetc,"ax",%progbits
+ 263              		.align	1
+ 264              		.global	fgetc
+ 265              		.syntax unified
+ 266              		.thumb
+ 267              		.thumb_func
+ 268              		.fpu softvfp
+ 270              	fgetc:
+ 271              	.LFB68:
+ 101:User/usart/bsp_debug_usart.c **** 
+ 102:User/usart/bsp_debug_usart.c **** //重定向c库函数scanf到串口DEBUG_USART，重写向后可使用scanf、getchar等函数
+ 103:User/usart/bsp_debug_usart.c **** int fgetc(FILE *f)
+ 104:User/usart/bsp_debug_usart.c **** {		
+ 272              		.loc 1 104 0
+ 273              		.cfi_startproc
+ 274              		@ args = 0, pretend = 0, frame = 8
+ 275              		@ frame_needed = 0, uses_anonymous_args = 0
+ 276              	.LVL15:
+ 277 0000 00B5     		push	{lr}
+ 278              	.LCFI8:
+ 279              		.cfi_def_cfa_offset 4
+ 280              		.cfi_offset 14, -4
+ 281 0002 83B0     		sub	sp, sp, #12
+ 282              	.LCFI9:
+ 283              		.cfi_def_cfa_offset 16
+ 105:User/usart/bsp_debug_usart.c **** 	int ch;
+ 106:User/usart/bsp_debug_usart.c **** 	HAL_UART_Receive(&UartHandle, (uint8_t *)&ch, 1, 1000);	
+ 284              		.loc 1 106 0
+ 285 0004 4FF47A73 		mov	r3, #1000
+ 286 0008 0122     		movs	r2, #1
+ 287 000a 01A9     		add	r1, sp, #4
+ 288 000c 0348     		ldr	r0, .L20
+ 289              	.LVL16:
+ 290 000e FFF7FEFF 		bl	HAL_UART_Receive
+ 291              	.LVL17:
+ 107:User/usart/bsp_debug_usart.c **** 	return (ch);
+ 108:User/usart/bsp_debug_usart.c **** }
+ 292              		.loc 1 108 0
+ 293 0012 0198     		ldr	r0, [sp, #4]
+ 294 0014 03B0     		add	sp, sp, #12
+ 295              	.LCFI10:
+ 296              		.cfi_def_cfa_offset 4
+ 297              		@ sp needed
+ 298 0016 5DF804FB 		ldr	pc, [sp], #4
+ 299              	.L21:
+ 300 001a 00BF     		.align	2
+ARM GAS  /tmp/ccs42uqv.s 			page 8
+
+
+ 301              	.L20:
+ 302 001c 00000000 		.word	UartHandle
+ 303              		.cfi_endproc
+ 304              	.LFE68:
+ 306              		.comm	UartHandle,64,4
+ 307              		.text
+ 308              	.Letext0:
+ 309              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 310              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 311              		.file 4 "Libraries/CMSIS/Include/core_cm3.h"
+ 312              		.file 5 "Libraries/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h"
+ 313              		.file 6 "Libraries/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h"
+ 314              		.file 7 "/usr/include/newlib/sys/lock.h"
+ 315              		.file 8 "/usr/include/newlib/sys/_types.h"
+ 316              		.file 9 "/usr/lib/gcc/arm-none-eabi/6.3.1/include/stddef.h"
+ 317              		.file 10 "/usr/include/newlib/sys/reent.h"
+ 318              		.file 11 "/usr/include/newlib/stdio.h"
+ 319              		.file 12 "Libraries/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 320              		.file 13 "Libraries/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ 321              		.file 14 "Libraries/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 322              		.file 15 "Libraries/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h"
+ 323              		.file 16 "User/./usart/bsp_debug_usart.h"
+ARM GAS  /tmp/ccs42uqv.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 bsp_debug_usart.c
+     /tmp/ccs42uqv.s:16     .text.DEBUG_USART_Config:0000000000000000 $t
+     /tmp/ccs42uqv.s:23     .text.DEBUG_USART_Config:0000000000000000 DEBUG_USART_Config
+     /tmp/ccs42uqv.s:61     .text.DEBUG_USART_Config:0000000000000024 $d
+                            *COM*:0000000000000040 UartHandle
+     /tmp/ccs42uqv.s:67     .text.HAL_UART_MspInit:0000000000000000 $t
+     /tmp/ccs42uqv.s:74     .text.HAL_UART_MspInit:0000000000000000 HAL_UART_MspInit
+     /tmp/ccs42uqv.s:159    .text.HAL_UART_MspInit:0000000000000070 $d
+     /tmp/ccs42uqv.s:165    .text.Usart_SendString:0000000000000000 $t
+     /tmp/ccs42uqv.s:172    .text.Usart_SendString:0000000000000000 Usart_SendString
+     /tmp/ccs42uqv.s:212    .text.Usart_SendString:0000000000000020 $d
+     /tmp/ccs42uqv.s:217    .text.fputc:0000000000000000 $t
+     /tmp/ccs42uqv.s:224    .text.fputc:0000000000000000 fputc
+     /tmp/ccs42uqv.s:258    .text.fputc:0000000000000020 $d
+     /tmp/ccs42uqv.s:263    .text.fgetc:0000000000000000 $t
+     /tmp/ccs42uqv.s:270    .text.fgetc:0000000000000000 fgetc
+     /tmp/ccs42uqv.s:302    .text.fgetc:000000000000001c $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+HAL_UART_Init
+HAL_GPIO_Init
+HAL_UART_Transmit
+HAL_UART_Receive

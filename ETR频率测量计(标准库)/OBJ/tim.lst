@@ -1,0 +1,494 @@
+ARM GAS  /tmp/ccfeiBuZ.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"tim.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.TIM3_Int_Init,"ax",%progbits
+  16              		.align	1
+  17              		.global	TIM3_Int_Init
+  18              		.syntax unified
+  19              		.thumb
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	TIM3_Int_Init:
+  24              	.LFB113:
+  25              		.file 1 "HARDWARE/TIM/tim.c"
+   1:HARDWARE/TIM/tim.c **** #include "ad9959.h"
+   2:HARDWARE/TIM/tim.c **** #include "adf4351.h"
+   3:HARDWARE/TIM/tim.c **** #include "delay.h"
+   4:HARDWARE/TIM/tim.c **** #include "sys.h"
+   5:HARDWARE/TIM/tim.c **** #include "timer.h"
+   6:HARDWARE/TIM/tim.c **** #include "usart.h"
+   7:HARDWARE/TIM/tim.c **** 
+   8:HARDWARE/TIM/tim.c **** void TIM3_Int_Init(u16 arr, u16 psc)
+   9:HARDWARE/TIM/tim.c **** {
+  26              		.loc 1 9 0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 16
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30              	.LVL0:
+  31 0000 30B5     		push	{r4, r5, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 12
+  34              		.cfi_offset 4, -12
+  35              		.cfi_offset 5, -8
+  36              		.cfi_offset 14, -4
+  37 0002 85B0     		sub	sp, sp, #20
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 32
+  40 0004 0546     		mov	r5, r0
+  41 0006 0C46     		mov	r4, r1
+  10:HARDWARE/TIM/tim.c ****   TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;
+  11:HARDWARE/TIM/tim.c ****   NVIC_InitTypeDef NVIC_InitStructure;
+  12:HARDWARE/TIM/tim.c ****   RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
+  42              		.loc 1 12 0
+  43 0008 0121     		movs	r1, #1
+  44              	.LVL1:
+  45 000a 0220     		movs	r0, #2
+  46              	.LVL2:
+ARM GAS  /tmp/ccfeiBuZ.s 			page 2
+
+
+  47 000c FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+  48              	.LVL3:
+  13:HARDWARE/TIM/tim.c ****   TIM_TimeBaseInitStructure.TIM_Period = arr;
+  49              		.loc 1 13 0
+  50 0010 0295     		str	r5, [sp, #8]
+  14:HARDWARE/TIM/tim.c ****   TIM_TimeBaseInitStructure.TIM_Prescaler = psc;
+  51              		.loc 1 14 0
+  52 0012 ADF80440 		strh	r4, [sp, #4]	@ movhi
+  15:HARDWARE/TIM/tim.c ****   TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
+  53              		.loc 1 15 0
+  54 0016 0023     		movs	r3, #0
+  55 0018 ADF80630 		strh	r3, [sp, #6]	@ movhi
+  16:HARDWARE/TIM/tim.c ****   TIM_TimeBaseInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+  56              		.loc 1 16 0
+  57 001c ADF80C30 		strh	r3, [sp, #12]	@ movhi
+  17:HARDWARE/TIM/tim.c **** 
+  18:HARDWARE/TIM/tim.c ****   TIM_TimeBaseInit(TIM3, &TIM_TimeBaseInitStructure);
+  58              		.loc 1 18 0
+  59 0020 0E4C     		ldr	r4, .L3
+  60 0022 01A9     		add	r1, sp, #4
+  61 0024 2046     		mov	r0, r4
+  62 0026 FFF7FEFF 		bl	TIM_TimeBaseInit
+  63              	.LVL4:
+  19:HARDWARE/TIM/tim.c ****   TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+  64              		.loc 1 19 0
+  65 002a 0122     		movs	r2, #1
+  66 002c 1146     		mov	r1, r2
+  67 002e 2046     		mov	r0, r4
+  68 0030 FFF7FEFF 		bl	TIM_ITConfig
+  69              	.LVL5:
+  20:HARDWARE/TIM/tim.c **** 
+  21:HARDWARE/TIM/tim.c ****   NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
+  70              		.loc 1 21 0
+  71 0034 1D23     		movs	r3, #29
+  72 0036 8DF80030 		strb	r3, [sp]
+  22:HARDWARE/TIM/tim.c ****   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x01;
+  73              		.loc 1 22 0
+  74 003a 0125     		movs	r5, #1
+  75 003c 8DF80150 		strb	r5, [sp, #1]
+  23:HARDWARE/TIM/tim.c ****   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x03;
+  76              		.loc 1 23 0
+  77 0040 0323     		movs	r3, #3
+  78 0042 8DF80230 		strb	r3, [sp, #2]
+  24:HARDWARE/TIM/tim.c ****   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+  79              		.loc 1 24 0
+  80 0046 8DF80350 		strb	r5, [sp, #3]
+  25:HARDWARE/TIM/tim.c ****   NVIC_Init(&NVIC_InitStructure);
+  81              		.loc 1 25 0
+  82 004a 6846     		mov	r0, sp
+  83 004c FFF7FEFF 		bl	NVIC_Init
+  84              	.LVL6:
+  26:HARDWARE/TIM/tim.c ****   TIM_Cmd(TIM3, ENABLE);
+  85              		.loc 1 26 0
+  86 0050 2946     		mov	r1, r5
+  87 0052 2046     		mov	r0, r4
+  88 0054 FFF7FEFF 		bl	TIM_Cmd
+  89              	.LVL7:
+ARM GAS  /tmp/ccfeiBuZ.s 			page 3
+
+
+  27:HARDWARE/TIM/tim.c **** }
+  90              		.loc 1 27 0
+  91 0058 05B0     		add	sp, sp, #20
+  92              	.LCFI2:
+  93              		.cfi_def_cfa_offset 12
+  94              		@ sp needed
+  95 005a 30BD     		pop	{r4, r5, pc}
+  96              	.L4:
+  97              		.align	2
+  98              	.L3:
+  99 005c 00040040 		.word	1073742848
+ 100              		.cfi_endproc
+ 101              	.LFE113:
+ 103              		.section	.text.TIM2_Int_Init,"ax",%progbits
+ 104              		.align	1
+ 105              		.global	TIM2_Int_Init
+ 106              		.syntax unified
+ 107              		.thumb
+ 108              		.thumb_func
+ 109              		.fpu softvfp
+ 111              	TIM2_Int_Init:
+ 112              	.LFB114:
+  28:HARDWARE/TIM/tim.c **** 
+  29:HARDWARE/TIM/tim.c **** void TIM2_Int_Init(void)
+  30:HARDWARE/TIM/tim.c **** {
+ 113              		.loc 1 30 0
+ 114              		.cfi_startproc
+ 115              		@ args = 0, pretend = 0, frame = 8
+ 116              		@ frame_needed = 0, uses_anonymous_args = 0
+ 117 0000 70B5     		push	{r4, r5, r6, lr}
+ 118              	.LCFI3:
+ 119              		.cfi_def_cfa_offset 16
+ 120              		.cfi_offset 4, -16
+ 121              		.cfi_offset 5, -12
+ 122              		.cfi_offset 6, -8
+ 123              		.cfi_offset 14, -4
+ 124 0002 82B0     		sub	sp, sp, #8
+ 125              	.LCFI4:
+ 126              		.cfi_def_cfa_offset 24
+  31:HARDWARE/TIM/tim.c ****   GPIO_InitTypeDef GPIO_InitStructure;
+  32:HARDWARE/TIM/tim.c **** 
+  33:HARDWARE/TIM/tim.c ****   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
+ 127              		.loc 1 33 0
+ 128 0004 0121     		movs	r1, #1
+ 129 0006 0846     		mov	r0, r1
+ 130 0008 FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
+ 131              	.LVL8:
+  34:HARDWARE/TIM/tim.c ****   RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+ 132              		.loc 1 34 0
+ 133 000c 0121     		movs	r1, #1
+ 134 000e 0846     		mov	r0, r1
+ 135 0010 FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+ 136              	.LVL9:
+  35:HARDWARE/TIM/tim.c **** 
+  36:HARDWARE/TIM/tim.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+ 137              		.loc 1 36 0
+ 138 0014 0126     		movs	r6, #1
+ARM GAS  /tmp/ccfeiBuZ.s 			page 4
+
+
+ 139 0016 0096     		str	r6, [sp]
+  37:HARDWARE/TIM/tim.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+ 140              		.loc 1 37 0
+ 141 0018 0223     		movs	r3, #2
+ 142 001a 8DF80430 		strb	r3, [sp, #4]
+  38:HARDWARE/TIM/tim.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 143              		.loc 1 38 0
+ 144 001e 0025     		movs	r5, #0
+ 145 0020 8DF80650 		strb	r5, [sp, #6]
+  39:HARDWARE/TIM/tim.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
+ 146              		.loc 1 39 0
+ 147 0024 0322     		movs	r2, #3
+ 148 0026 8DF80520 		strb	r2, [sp, #5]
+  40:HARDWARE/TIM/tim.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
+ 149              		.loc 1 40 0
+ 150 002a 8DF80730 		strb	r3, [sp, #7]
+  41:HARDWARE/TIM/tim.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 151              		.loc 1 41 0
+ 152 002e 064C     		ldr	r4, .L7
+ 153 0030 6946     		mov	r1, sp
+ 154 0032 2046     		mov	r0, r4
+ 155 0034 FFF7FEFF 		bl	GPIO_Init
+ 156              	.LVL10:
+  42:HARDWARE/TIM/tim.c **** 
+  43:HARDWARE/TIM/tim.c ****   GPIO_PinAFConfig(GPIOA, GPIO_PinSource0, GPIO_AF_TIM2);
+ 157              		.loc 1 43 0
+ 158 0038 3246     		mov	r2, r6
+ 159 003a 2946     		mov	r1, r5
+ 160 003c 2046     		mov	r0, r4
+ 161 003e FFF7FEFF 		bl	GPIO_PinAFConfig
+ 162              	.LVL11:
+  44:HARDWARE/TIM/tim.c **** }
+ 163              		.loc 1 44 0
+ 164 0042 02B0     		add	sp, sp, #8
+ 165              	.LCFI5:
+ 166              		.cfi_def_cfa_offset 16
+ 167              		@ sp needed
+ 168 0044 70BD     		pop	{r4, r5, r6, pc}
+ 169              	.L8:
+ 170 0046 00BF     		.align	2
+ 171              	.L7:
+ 172 0048 00000240 		.word	1073872896
+ 173              		.cfi_endproc
+ 174              	.LFE114:
+ 176              		.section	.text.TIM2_Mode_Sec,"ax",%progbits
+ 177              		.align	1
+ 178              		.global	TIM2_Mode_Sec
+ 179              		.syntax unified
+ 180              		.thumb
+ 181              		.thumb_func
+ 182              		.fpu softvfp
+ 184              	TIM2_Mode_Sec:
+ 185              	.LFB115:
+  45:HARDWARE/TIM/tim.c **** 
+  46:HARDWARE/TIM/tim.c **** void TIM2_Mode_Sec()
+  47:HARDWARE/TIM/tim.c **** {
+ 186              		.loc 1 47 0
+ARM GAS  /tmp/ccfeiBuZ.s 			page 5
+
+
+ 187              		.cfi_startproc
+ 188              		@ args = 0, pretend = 0, frame = 16
+ 189              		@ frame_needed = 0, uses_anonymous_args = 0
+ 190 0000 10B5     		push	{r4, lr}
+ 191              	.LCFI6:
+ 192              		.cfi_def_cfa_offset 8
+ 193              		.cfi_offset 4, -8
+ 194              		.cfi_offset 14, -4
+ 195 0002 84B0     		sub	sp, sp, #16
+ 196              	.LCFI7:
+ 197              		.cfi_def_cfa_offset 24
+  48:HARDWARE/TIM/tim.c ****   TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStructure;
+  49:HARDWARE/TIM/tim.c **** 
+  50:HARDWARE/TIM/tim.c ****   TIM_DeInit(TIM2);
+ 198              		.loc 1 50 0
+ 199 0004 4FF08040 		mov	r0, #1073741824
+ 200 0008 FFF7FEFF 		bl	TIM_DeInit
+ 201              	.LVL12:
+  51:HARDWARE/TIM/tim.c **** 
+  52:HARDWARE/TIM/tim.c ****   TIM_TimeBaseInitStructure.TIM_Period = 0xffffffff;
+ 202              		.loc 1 52 0
+ 203 000c 4FF0FF33 		mov	r3, #-1
+ 204 0010 0293     		str	r3, [sp, #8]
+  53:HARDWARE/TIM/tim.c ****   TIM_TimeBaseInitStructure.TIM_Prescaler = 0;
+ 205              		.loc 1 53 0
+ 206 0012 0024     		movs	r4, #0
+ 207 0014 ADF80440 		strh	r4, [sp, #4]	@ movhi
+  54:HARDWARE/TIM/tim.c ****   TIM_TimeBaseInitStructure.TIM_CounterMode = TIM_CounterMode_Up;
+ 208              		.loc 1 54 0
+ 209 0018 ADF80640 		strh	r4, [sp, #6]	@ movhi
+  55:HARDWARE/TIM/tim.c ****   TIM_TimeBaseInitStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+ 210              		.loc 1 55 0
+ 211 001c ADF80C40 		strh	r4, [sp, #12]	@ movhi
+  56:HARDWARE/TIM/tim.c **** 
+  57:HARDWARE/TIM/tim.c ****   TIM_TimeBaseInit(TIM2, &TIM_TimeBaseInitStructure);
+ 212              		.loc 1 57 0
+ 213 0020 01A9     		add	r1, sp, #4
+ 214 0022 4FF08040 		mov	r0, #1073741824
+ 215 0026 FFF7FEFF 		bl	TIM_TimeBaseInit
+ 216              	.LVL13:
+  58:HARDWARE/TIM/tim.c ****   TIM_ETRClockMode2Config(TIM2, TIM_ExtTRGPSC_OFF, TIM_ExtTRGPolarity_NonInverted, 0x00);
+ 217              		.loc 1 58 0
+ 218 002a 2346     		mov	r3, r4
+ 219 002c 2246     		mov	r2, r4
+ 220 002e 2146     		mov	r1, r4
+ 221 0030 4FF08040 		mov	r0, #1073741824
+ 222 0034 FFF7FEFF 		bl	TIM_ETRClockMode2Config
+ 223              	.LVL14:
+  59:HARDWARE/TIM/tim.c **** 
+  60:HARDWARE/TIM/tim.c ****   TIM_SetCounter(TIM2, 0);
+ 224              		.loc 1 60 0
+ 225 0038 2146     		mov	r1, r4
+ 226 003a 4FF08040 		mov	r0, #1073741824
+ 227 003e FFF7FEFF 		bl	TIM_SetCounter
+ 228              	.LVL15:
+  61:HARDWARE/TIM/tim.c ****   TIM_Cmd(TIM2, ENABLE);
+ 229              		.loc 1 61 0
+ARM GAS  /tmp/ccfeiBuZ.s 			page 6
+
+
+ 230 0042 0121     		movs	r1, #1
+ 231 0044 4FF08040 		mov	r0, #1073741824
+ 232 0048 FFF7FEFF 		bl	TIM_Cmd
+ 233              	.LVL16:
+  62:HARDWARE/TIM/tim.c **** }
+ 234              		.loc 1 62 0
+ 235 004c 04B0     		add	sp, sp, #16
+ 236              	.LCFI8:
+ 237              		.cfi_def_cfa_offset 8
+ 238              		@ sp needed
+ 239 004e 10BD     		pop	{r4, pc}
+ 240              		.cfi_endproc
+ 241              	.LFE115:
+ 243              		.section	.text.TIM3_IRQHandler,"ax",%progbits
+ 244              		.align	1
+ 245              		.global	TIM3_IRQHandler
+ 246              		.syntax unified
+ 247              		.thumb
+ 248              		.thumb_func
+ 249              		.fpu softvfp
+ 251              	TIM3_IRQHandler:
+ 252              	.LFB116:
+  63:HARDWARE/TIM/tim.c **** extern u32 CNT;
+  64:HARDWARE/TIM/tim.c **** extern u16 x;
+  65:HARDWARE/TIM/tim.c **** extern float frequency;
+  66:HARDWARE/TIM/tim.c **** extern float n;
+  67:HARDWARE/TIM/tim.c **** void TIM3_IRQHandler(void)
+  68:HARDWARE/TIM/tim.c **** {
+ 253              		.loc 1 68 0
+ 254              		.cfi_startproc
+ 255              		@ args = 0, pretend = 0, frame = 0
+ 256              		@ frame_needed = 0, uses_anonymous_args = 0
+ 257 0000 10B5     		push	{r4, lr}
+ 258              	.LCFI9:
+ 259              		.cfi_def_cfa_offset 8
+ 260              		.cfi_offset 4, -8
+ 261              		.cfi_offset 14, -4
+  69:HARDWARE/TIM/tim.c ****   if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
+ 262              		.loc 1 69 0
+ 263 0002 0121     		movs	r1, #1
+ 264 0004 1848     		ldr	r0, .L15
+ 265 0006 FFF7FEFF 		bl	TIM_GetITStatus
+ 266              	.LVL17:
+ 267 000a 20B9     		cbnz	r0, .L14
+ 268              	.L12:
+  70:HARDWARE/TIM/tim.c ****   {
+  71:HARDWARE/TIM/tim.c **** 
+  72:HARDWARE/TIM/tim.c ****     TIM_Cmd(TIM2, DISABLE);
+  73:HARDWARE/TIM/tim.c ****     TIM_Cmd(TIM3, DISABLE);
+  74:HARDWARE/TIM/tim.c ****     CNT = TIM_GetCounter(TIM2);
+  75:HARDWARE/TIM/tim.c ****     CNT = 10 * CNT;
+  76:HARDWARE/TIM/tim.c ****     printf("\r\n%d", CNT);
+  77:HARDWARE/TIM/tim.c ****     TIM_SetCounter(TIM2, 0);
+  78:HARDWARE/TIM/tim.c ****     TIM_SetCounter(TIM3, 0);
+  79:HARDWARE/TIM/tim.c ****     TIM_Cmd(TIM2, ENABLE);
+  80:HARDWARE/TIM/tim.c ****     TIM_Cmd(TIM3, ENABLE);
+  81:HARDWARE/TIM/tim.c ****   }
+ARM GAS  /tmp/ccfeiBuZ.s 			page 7
+
+
+  82:HARDWARE/TIM/tim.c ****   TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+ 269              		.loc 1 82 0
+ 270 000c 0121     		movs	r1, #1
+ 271 000e 1648     		ldr	r0, .L15
+ 272 0010 FFF7FEFF 		bl	TIM_ClearITPendingBit
+ 273              	.LVL18:
+ 274 0014 10BD     		pop	{r4, pc}
+ 275              	.L14:
+  72:HARDWARE/TIM/tim.c ****     TIM_Cmd(TIM3, DISABLE);
+ 276              		.loc 1 72 0
+ 277 0016 0021     		movs	r1, #0
+ 278 0018 4FF08040 		mov	r0, #1073741824
+ 279 001c FFF7FEFF 		bl	TIM_Cmd
+ 280              	.LVL19:
+  73:HARDWARE/TIM/tim.c ****     CNT = TIM_GetCounter(TIM2);
+ 281              		.loc 1 73 0
+ 282 0020 114C     		ldr	r4, .L15
+ 283 0022 0021     		movs	r1, #0
+ 284 0024 2046     		mov	r0, r4
+ 285 0026 FFF7FEFF 		bl	TIM_Cmd
+ 286              	.LVL20:
+  74:HARDWARE/TIM/tim.c ****     CNT = 10 * CNT;
+ 287              		.loc 1 74 0
+ 288 002a 4FF08040 		mov	r0, #1073741824
+ 289 002e FFF7FEFF 		bl	TIM_GetCounter
+ 290              	.LVL21:
+  75:HARDWARE/TIM/tim.c ****     printf("\r\n%d", CNT);
+ 291              		.loc 1 75 0
+ 292 0032 00EB8000 		add	r0, r0, r0, lsl #2
+ 293 0036 4100     		lsls	r1, r0, #1
+ 294 0038 0C4B     		ldr	r3, .L15+4
+ 295 003a 1960     		str	r1, [r3]
+  76:HARDWARE/TIM/tim.c ****     TIM_SetCounter(TIM2, 0);
+ 296              		.loc 1 76 0
+ 297 003c 0C48     		ldr	r0, .L15+8
+ 298 003e FFF7FEFF 		bl	printf
+ 299              	.LVL22:
+  77:HARDWARE/TIM/tim.c ****     TIM_SetCounter(TIM3, 0);
+ 300              		.loc 1 77 0
+ 301 0042 0021     		movs	r1, #0
+ 302 0044 4FF08040 		mov	r0, #1073741824
+ 303 0048 FFF7FEFF 		bl	TIM_SetCounter
+ 304              	.LVL23:
+  78:HARDWARE/TIM/tim.c ****     TIM_Cmd(TIM2, ENABLE);
+ 305              		.loc 1 78 0
+ 306 004c 0021     		movs	r1, #0
+ 307 004e 2046     		mov	r0, r4
+ 308 0050 FFF7FEFF 		bl	TIM_SetCounter
+ 309              	.LVL24:
+  79:HARDWARE/TIM/tim.c ****     TIM_Cmd(TIM3, ENABLE);
+ 310              		.loc 1 79 0
+ 311 0054 0121     		movs	r1, #1
+ 312 0056 4FF08040 		mov	r0, #1073741824
+ 313 005a FFF7FEFF 		bl	TIM_Cmd
+ 314              	.LVL25:
+  80:HARDWARE/TIM/tim.c ****   }
+ 315              		.loc 1 80 0
+ARM GAS  /tmp/ccfeiBuZ.s 			page 8
+
+
+ 316 005e 0121     		movs	r1, #1
+ 317 0060 2046     		mov	r0, r4
+ 318 0062 FFF7FEFF 		bl	TIM_Cmd
+ 319              	.LVL26:
+ 320 0066 D1E7     		b	.L12
+ 321              	.L16:
+ 322              		.align	2
+ 323              	.L15:
+ 324 0068 00040040 		.word	1073742848
+ 325 006c 00000000 		.word	CNT
+ 326 0070 00000000 		.word	.LC0
+ 327              		.cfi_endproc
+ 328              	.LFE116:
+ 330              		.section	.rodata.TIM3_IRQHandler.str1.4,"aMS",%progbits,1
+ 331              		.align	2
+ 332              	.LC0:
+ 333 0000 0D0A2564 		.ascii	"\015\012%d\000"
+ 333      00
+ 334              		.text
+ 335              	.Letext0:
+ 336              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 337              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 338              		.file 4 "CORE/core_cm4.h"
+ 339              		.file 5 "USER/system_stm32f4xx.h"
+ 340              		.file 6 "USER/stm32f4xx.h"
+ 341              		.file 7 "FWLIB/inc/stm32f4xx_gpio.h"
+ 342              		.file 8 "FWLIB/inc/stm32f4xx_tim.h"
+ 343              		.file 9 "FWLIB/inc/misc.h"
+ 344              		.file 10 "/usr/include/newlib/sys/lock.h"
+ 345              		.file 11 "/usr/include/newlib/sys/_types.h"
+ 346              		.file 12 "/usr/lib/gcc/arm-none-eabi/6.3.1/include/stddef.h"
+ 347              		.file 13 "/usr/include/newlib/sys/reent.h"
+ 348              		.file 14 "SYSTEM/usart/usart.h"
+ 349              		.file 15 "/usr/include/newlib/stdio.h"
+ 350              		.file 16 "FWLIB/inc/stm32f4xx_rcc.h"
+ARM GAS  /tmp/ccfeiBuZ.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 tim.c
+     /tmp/ccfeiBuZ.s:16     .text.TIM3_Int_Init:0000000000000000 $t
+     /tmp/ccfeiBuZ.s:23     .text.TIM3_Int_Init:0000000000000000 TIM3_Int_Init
+     /tmp/ccfeiBuZ.s:99     .text.TIM3_Int_Init:000000000000005c $d
+     /tmp/ccfeiBuZ.s:104    .text.TIM2_Int_Init:0000000000000000 $t
+     /tmp/ccfeiBuZ.s:111    .text.TIM2_Int_Init:0000000000000000 TIM2_Int_Init
+     /tmp/ccfeiBuZ.s:172    .text.TIM2_Int_Init:0000000000000048 $d
+     /tmp/ccfeiBuZ.s:177    .text.TIM2_Mode_Sec:0000000000000000 $t
+     /tmp/ccfeiBuZ.s:184    .text.TIM2_Mode_Sec:0000000000000000 TIM2_Mode_Sec
+     /tmp/ccfeiBuZ.s:244    .text.TIM3_IRQHandler:0000000000000000 $t
+     /tmp/ccfeiBuZ.s:251    .text.TIM3_IRQHandler:0000000000000000 TIM3_IRQHandler
+     /tmp/ccfeiBuZ.s:324    .text.TIM3_IRQHandler:0000000000000068 $d
+     /tmp/ccfeiBuZ.s:331    .rodata.TIM3_IRQHandler.str1.4:0000000000000000 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB1PeriphClockCmd
+TIM_TimeBaseInit
+TIM_ITConfig
+NVIC_Init
+TIM_Cmd
+RCC_AHB1PeriphClockCmd
+GPIO_Init
+GPIO_PinAFConfig
+TIM_DeInit
+TIM_ETRClockMode2Config
+TIM_SetCounter
+TIM_GetITStatus
+TIM_ClearITPendingBit
+TIM_GetCounter
+printf
+CNT

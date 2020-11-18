@@ -1,0 +1,2463 @@
+ARM GAS  /tmp/ccIYPtT2.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"stm32f10x_fsmc.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.FSMC_NORSRAMDeInit,"ax",%progbits
+  16              		.align	1
+  17              		.global	FSMC_NORSRAMDeInit
+  18              		.syntax unified
+  19              		.thumb
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	FSMC_NORSRAMDeInit:
+  24              	.LFB29:
+  25              		.file 1 "Libraries/FWlib/src/stm32f10x_fsmc.c"
+   1:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+   2:Libraries/FWlib/src/stm32f10x_fsmc.c ****   ******************************************************************************
+   3:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @file    stm32f10x_fsmc.c
+   4:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @author  MCD Application Team
+   5:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @version V3.5.0
+   6:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @date    11-March-2011
+   7:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief   This file provides all the FSMC firmware functions.
+   8:Libraries/FWlib/src/stm32f10x_fsmc.c ****   ******************************************************************************
+   9:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @attention
+  10:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *
+  11:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  12:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  13:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  14:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  15:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  16:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  17:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *
+  18:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  19:Libraries/FWlib/src/stm32f10x_fsmc.c ****   ******************************************************************************
+  20:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+  21:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+  22:Libraries/FWlib/src/stm32f10x_fsmc.c **** /* Includes ------------------------------------------------------------------*/
+  23:Libraries/FWlib/src/stm32f10x_fsmc.c **** #include "stm32f10x_fsmc.h"
+  24:Libraries/FWlib/src/stm32f10x_fsmc.c **** #include "stm32f10x_rcc.h"
+  25:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+  26:Libraries/FWlib/src/stm32f10x_fsmc.c **** /** @addtogroup STM32F10x_StdPeriph_Driver
+  27:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @{
+  28:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+  29:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+  30:Libraries/FWlib/src/stm32f10x_fsmc.c **** /** @defgroup FSMC 
+  31:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief FSMC driver modules
+  32:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @{
+  33:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */ 
+ARM GAS  /tmp/ccIYPtT2.s 			page 2
+
+
+  34:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+  35:Libraries/FWlib/src/stm32f10x_fsmc.c **** /** @defgroup FSMC_Private_TypesDefinitions
+  36:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @{
+  37:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */ 
+  38:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+  39:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @}
+  40:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+  41:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+  42:Libraries/FWlib/src/stm32f10x_fsmc.c **** /** @defgroup FSMC_Private_Defines
+  43:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @{
+  44:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+  45:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+  46:Libraries/FWlib/src/stm32f10x_fsmc.c **** /* --------------------- FSMC registers bit mask ---------------------------- */
+  47:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+  48:Libraries/FWlib/src/stm32f10x_fsmc.c **** /* FSMC BCRx Mask */
+  49:Libraries/FWlib/src/stm32f10x_fsmc.c **** #define BCR_MBKEN_Set                       ((uint32_t)0x00000001)
+  50:Libraries/FWlib/src/stm32f10x_fsmc.c **** #define BCR_MBKEN_Reset                     ((uint32_t)0x000FFFFE)
+  51:Libraries/FWlib/src/stm32f10x_fsmc.c **** #define BCR_FACCEN_Set                      ((uint32_t)0x00000040)
+  52:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+  53:Libraries/FWlib/src/stm32f10x_fsmc.c **** /* FSMC PCRx Mask */
+  54:Libraries/FWlib/src/stm32f10x_fsmc.c **** #define PCR_PBKEN_Set                       ((uint32_t)0x00000004)
+  55:Libraries/FWlib/src/stm32f10x_fsmc.c **** #define PCR_PBKEN_Reset                     ((uint32_t)0x000FFFFB)
+  56:Libraries/FWlib/src/stm32f10x_fsmc.c **** #define PCR_ECCEN_Set                       ((uint32_t)0x00000040)
+  57:Libraries/FWlib/src/stm32f10x_fsmc.c **** #define PCR_ECCEN_Reset                     ((uint32_t)0x000FFFBF)
+  58:Libraries/FWlib/src/stm32f10x_fsmc.c **** #define PCR_MemoryType_NAND                 ((uint32_t)0x00000008)
+  59:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+  60:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @}
+  61:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+  62:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+  63:Libraries/FWlib/src/stm32f10x_fsmc.c **** /** @defgroup FSMC_Private_Macros
+  64:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @{
+  65:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+  66:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+  67:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+  68:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @}
+  69:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+  70:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+  71:Libraries/FWlib/src/stm32f10x_fsmc.c **** /** @defgroup FSMC_Private_Variables
+  72:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @{
+  73:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+  74:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+  75:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+  76:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @}
+  77:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+  78:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+  79:Libraries/FWlib/src/stm32f10x_fsmc.c **** /** @defgroup FSMC_Private_FunctionPrototypes
+  80:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @{
+  81:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+  82:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+  83:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+  84:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @}
+  85:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+  86:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+  87:Libraries/FWlib/src/stm32f10x_fsmc.c **** /** @defgroup FSMC_Private_Functions
+  88:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @{
+  89:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+  90:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ARM GAS  /tmp/ccIYPtT2.s 			page 3
+
+
+  91:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+  92:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Deinitializes the FSMC NOR/SRAM Banks registers to their default 
+  93:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *         reset values.
+  94:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_Bank: specifies the FSMC Bank to be used
+  95:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be one of the following values:
+  96:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank1_NORSRAM1: FSMC Bank1 NOR/SRAM1  
+  97:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank1_NORSRAM2: FSMC Bank1 NOR/SRAM2 
+  98:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank1_NORSRAM3: FSMC Bank1 NOR/SRAM3 
+  99:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank1_NORSRAM4: FSMC Bank1 NOR/SRAM4 
+ 100:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval None
+ 101:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 102:Libraries/FWlib/src/stm32f10x_fsmc.c **** void FSMC_NORSRAMDeInit(uint32_t FSMC_Bank)
+ 103:Libraries/FWlib/src/stm32f10x_fsmc.c **** {
+  26              		.loc 1 103 0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30              		@ link register save eliminated.
+  31              	.LVL0:
+ 104:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Check the parameter */
+ 105:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_NORSRAM_BANK(FSMC_Bank));
+ 106:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 107:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* FSMC_Bank1_NORSRAM1 */
+ 108:Libraries/FWlib/src/stm32f10x_fsmc.c ****   if(FSMC_Bank == FSMC_Bank1_NORSRAM1)
+  32              		.loc 1 108 0
+  33 0000 0346     		mov	r3, r0
+  34 0002 88B1     		cbz	r0, .L4
+ 109:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 110:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank1->BTCR[FSMC_Bank] = 0x000030DB;    
+ 111:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 112:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* FSMC_Bank1_NORSRAM2,  FSMC_Bank1_NORSRAM3 or FSMC_Bank1_NORSRAM4 */
+ 113:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else
+ 114:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {   
+ 115:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank1->BTCR[FSMC_Bank] = 0x000030D2; 
+  35              		.loc 1 115 0
+  36 0004 43F2D201 		movw	r1, #12498
+  37 0008 4FF02042 		mov	r2, #-1610612736
+  38 000c 42F82010 		str	r1, [r2, r0, lsl #2]
+  39              	.L3:
+ 116:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 117:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_Bank1->BTCR[FSMC_Bank + 1] = 0x0FFFFFFF;
+  40              		.loc 1 117 0
+  41 0010 581C     		adds	r0, r3, #1
+  42              	.LVL1:
+  43 0012 6FF07042 		mvn	r2, #-268435456
+  44 0016 4FF02041 		mov	r1, #-1610612736
+  45 001a 41F82020 		str	r2, [r1, r0, lsl #2]
+ 118:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_Bank1E->BWTR[FSMC_Bank] = 0x0FFFFFFF;  
+  46              		.loc 1 118 0
+  47 001e 01F58271 		add	r1, r1, #260
+  48 0022 41F82320 		str	r2, [r1, r3, lsl #2]
+  49 0026 7047     		bx	lr
+  50              	.LVL2:
+  51              	.L4:
+ 110:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+  52              		.loc 1 110 0
+  53 0028 43F2DB01 		movw	r1, #12507
+ARM GAS  /tmp/ccIYPtT2.s 			page 4
+
+
+  54 002c 4FF02042 		mov	r2, #-1610612736
+  55 0030 42F82010 		str	r1, [r2, r0, lsl #2]
+  56 0034 ECE7     		b	.L3
+  57              		.cfi_endproc
+  58              	.LFE29:
+  60              		.section	.text.FSMC_NANDDeInit,"ax",%progbits
+  61              		.align	1
+  62              		.global	FSMC_NANDDeInit
+  63              		.syntax unified
+  64              		.thumb
+  65              		.thumb_func
+  66              		.fpu softvfp
+  68              	FSMC_NANDDeInit:
+  69              	.LFB30:
+ 119:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 120:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 121:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 122:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Deinitializes the FSMC NAND Banks registers to their default reset values.
+ 123:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_Bank: specifies the FSMC Bank to be used
+ 124:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be one of the following values:
+ 125:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank2_NAND: FSMC Bank2 NAND 
+ 126:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank3_NAND: FSMC Bank3 NAND 
+ 127:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval None
+ 128:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 129:Libraries/FWlib/src/stm32f10x_fsmc.c **** void FSMC_NANDDeInit(uint32_t FSMC_Bank)
+ 130:Libraries/FWlib/src/stm32f10x_fsmc.c **** {
+  70              		.loc 1 130 0
+  71              		.cfi_startproc
+  72              		@ args = 0, pretend = 0, frame = 0
+  73              		@ frame_needed = 0, uses_anonymous_args = 0
+  74              		@ link register save eliminated.
+  75              	.LVL3:
+ 131:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Check the parameter */
+ 132:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_NAND_BANK(FSMC_Bank));
+ 133:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 134:Libraries/FWlib/src/stm32f10x_fsmc.c ****   if(FSMC_Bank == FSMC_Bank2_NAND)
+  76              		.loc 1 134 0
+  77 0000 1028     		cmp	r0, #16
+  78 0002 09D0     		beq	.L8
+ 135:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 136:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Set the FSMC_Bank2 registers to their reset values */
+ 137:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank2->PCR2 = 0x00000018;
+ 138:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank2->SR2 = 0x00000040;
+ 139:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank2->PMEM2 = 0xFCFCFCFC;
+ 140:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank2->PATT2 = 0xFCFCFCFC;  
+ 141:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 142:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* FSMC_Bank3_NAND */  
+ 143:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else
+ 144:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 145:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Set the FSMC_Bank3 registers to their reset values */
+ 146:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank3->PCR3 = 0x00000018;
+  79              		.loc 1 146 0
+  80 0004 094B     		ldr	r3, .L9
+  81 0006 1822     		movs	r2, #24
+  82 0008 1A60     		str	r2, [r3]
+ 147:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank3->SR3 = 0x00000040;
+  83              		.loc 1 147 0
+ARM GAS  /tmp/ccIYPtT2.s 			page 5
+
+
+  84 000a 4022     		movs	r2, #64
+  85 000c 5A60     		str	r2, [r3, #4]
+ 148:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank3->PMEM3 = 0xFCFCFCFC;
+  86              		.loc 1 148 0
+  87 000e 4FF0FC32 		mov	r2, #-50529028
+  88 0012 9A60     		str	r2, [r3, #8]
+ 149:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank3->PATT3 = 0xFCFCFCFC; 
+  89              		.loc 1 149 0
+  90 0014 DA60     		str	r2, [r3, #12]
+  91 0016 7047     		bx	lr
+  92              	.L8:
+ 137:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank2->SR2 = 0x00000040;
+  93              		.loc 1 137 0
+  94 0018 054B     		ldr	r3, .L9+4
+  95 001a 1822     		movs	r2, #24
+  96 001c 1A60     		str	r2, [r3]
+ 138:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank2->PMEM2 = 0xFCFCFCFC;
+  97              		.loc 1 138 0
+  98 001e 4022     		movs	r2, #64
+  99 0020 5A60     		str	r2, [r3, #4]
+ 139:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank2->PATT2 = 0xFCFCFCFC;  
+ 100              		.loc 1 139 0
+ 101 0022 4FF0FC32 		mov	r2, #-50529028
+ 102 0026 9A60     		str	r2, [r3, #8]
+ 140:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 103              		.loc 1 140 0
+ 104 0028 DA60     		str	r2, [r3, #12]
+ 105 002a 7047     		bx	lr
+ 106              	.L10:
+ 107              		.align	2
+ 108              	.L9:
+ 109 002c 800000A0 		.word	-1610612608
+ 110 0030 600000A0 		.word	-1610612640
+ 111              		.cfi_endproc
+ 112              	.LFE30:
+ 114              		.section	.text.FSMC_PCCARDDeInit,"ax",%progbits
+ 115              		.align	1
+ 116              		.global	FSMC_PCCARDDeInit
+ 117              		.syntax unified
+ 118              		.thumb
+ 119              		.thumb_func
+ 120              		.fpu softvfp
+ 122              	FSMC_PCCARDDeInit:
+ 123              	.LFB31:
+ 150:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }  
+ 151:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 152:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 153:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 154:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Deinitializes the FSMC PCCARD Bank registers to their default reset values.
+ 155:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  None                       
+ 156:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval None
+ 157:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 158:Libraries/FWlib/src/stm32f10x_fsmc.c **** void FSMC_PCCARDDeInit(void)
+ 159:Libraries/FWlib/src/stm32f10x_fsmc.c **** {
+ 124              		.loc 1 159 0
+ 125              		.cfi_startproc
+ 126              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccIYPtT2.s 			page 6
+
+
+ 127              		@ frame_needed = 0, uses_anonymous_args = 0
+ 128              		@ link register save eliminated.
+ 160:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Set the FSMC_Bank4 registers to their reset values */
+ 161:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_Bank4->PCR4 = 0x00000018; 
+ 129              		.loc 1 161 0
+ 130 0000 054B     		ldr	r3, .L12
+ 131 0002 1822     		movs	r2, #24
+ 132 0004 1A60     		str	r2, [r3]
+ 162:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_Bank4->SR4 = 0x00000000;	
+ 133              		.loc 1 162 0
+ 134 0006 0022     		movs	r2, #0
+ 135 0008 5A60     		str	r2, [r3, #4]
+ 163:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_Bank4->PMEM4 = 0xFCFCFCFC;
+ 136              		.loc 1 163 0
+ 137 000a 4FF0FC32 		mov	r2, #-50529028
+ 138 000e 9A60     		str	r2, [r3, #8]
+ 164:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_Bank4->PATT4 = 0xFCFCFCFC;
+ 139              		.loc 1 164 0
+ 140 0010 DA60     		str	r2, [r3, #12]
+ 165:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_Bank4->PIO4 = 0xFCFCFCFC;
+ 141              		.loc 1 165 0
+ 142 0012 1A61     		str	r2, [r3, #16]
+ 143 0014 7047     		bx	lr
+ 144              	.L13:
+ 145 0016 00BF     		.align	2
+ 146              	.L12:
+ 147 0018 A00000A0 		.word	-1610612576
+ 148              		.cfi_endproc
+ 149              	.LFE31:
+ 151              		.section	.text.FSMC_NORSRAMInit,"ax",%progbits
+ 152              		.align	1
+ 153              		.global	FSMC_NORSRAMInit
+ 154              		.syntax unified
+ 155              		.thumb
+ 156              		.thumb_func
+ 157              		.fpu softvfp
+ 159              	FSMC_NORSRAMInit:
+ 160              	.LFB32:
+ 166:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 167:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 168:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 169:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Initializes the FSMC NOR/SRAM Banks according to the specified
+ 170:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *         parameters in the FSMC_NORSRAMInitStruct.
+ 171:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_NORSRAMInitStruct : pointer to a FSMC_NORSRAMInitTypeDef
+ 172:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *         structure that contains the configuration information for 
+ 173:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *        the FSMC NOR/SRAM specified Banks.                       
+ 174:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval None
+ 175:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 176:Libraries/FWlib/src/stm32f10x_fsmc.c **** void FSMC_NORSRAMInit(FSMC_NORSRAMInitTypeDef* FSMC_NORSRAMInitStruct)
+ 177:Libraries/FWlib/src/stm32f10x_fsmc.c **** { 
+ 161              		.loc 1 177 0
+ 162              		.cfi_startproc
+ 163              		@ args = 0, pretend = 0, frame = 0
+ 164              		@ frame_needed = 0, uses_anonymous_args = 0
+ 165              		@ link register save eliminated.
+ 166              	.LVL4:
+ 167 0000 10B4     		push	{r4}
+ARM GAS  /tmp/ccIYPtT2.s 			page 7
+
+
+ 168              	.LCFI0:
+ 169              		.cfi_def_cfa_offset 4
+ 170              		.cfi_offset 4, -4
+ 178:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Check the parameters */
+ 179:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_NORSRAM_BANK(FSMC_NORSRAMInitStruct->FSMC_Bank));
+ 180:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_MUX(FSMC_NORSRAMInitStruct->FSMC_DataAddressMux));
+ 181:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_MEMORY(FSMC_NORSRAMInitStruct->FSMC_MemoryType));
+ 182:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_MEMORY_WIDTH(FSMC_NORSRAMInitStruct->FSMC_MemoryDataWidth));
+ 183:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_BURSTMODE(FSMC_NORSRAMInitStruct->FSMC_BurstAccessMode));
+ 184:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_ASYNWAIT(FSMC_NORSRAMInitStruct->FSMC_AsynchronousWait));
+ 185:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_WAIT_POLARITY(FSMC_NORSRAMInitStruct->FSMC_WaitSignalPolarity));
+ 186:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_WRAP_MODE(FSMC_NORSRAMInitStruct->FSMC_WrapMode));
+ 187:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_WAIT_SIGNAL_ACTIVE(FSMC_NORSRAMInitStruct->FSMC_WaitSignalActive));
+ 188:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_WRITE_OPERATION(FSMC_NORSRAMInitStruct->FSMC_WriteOperation));
+ 189:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_WAITE_SIGNAL(FSMC_NORSRAMInitStruct->FSMC_WaitSignal));
+ 190:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_EXTENDED_MODE(FSMC_NORSRAMInitStruct->FSMC_ExtendedMode));
+ 191:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_WRITE_BURST(FSMC_NORSRAMInitStruct->FSMC_WriteBurst));  
+ 192:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_ADDRESS_SETUP_TIME(FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_
+ 193:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_ADDRESS_HOLD_TIME(FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_A
+ 194:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_DATASETUP_TIME(FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_Data
+ 195:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_TURNAROUND_TIME(FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_Bus
+ 196:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_CLK_DIV(FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_CLKDivision
+ 197:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_DATA_LATENCY(FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_DataLa
+ 198:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_ACCESS_MODE(FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_AccessM
+ 199:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 200:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Bank1 NOR/SRAM control register configuration */ 
+ 201:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_Bank1->BTCR[FSMC_NORSRAMInitStruct->FSMC_Bank] = 
+ 171              		.loc 1 201 0
+ 172 0002 0268     		ldr	r2, [r0]
+ 202:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (uint32_t)FSMC_NORSRAMInitStruct->FSMC_DataAddressMux |
+ 173              		.loc 1 202 0
+ 174 0004 4368     		ldr	r3, [r0, #4]
+ 203:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_MemoryType |
+ 175              		.loc 1 203 0
+ 176 0006 8168     		ldr	r1, [r0, #8]
+ 202:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (uint32_t)FSMC_NORSRAMInitStruct->FSMC_DataAddressMux |
+ 177              		.loc 1 202 0
+ 178 0008 0B43     		orrs	r3, r3, r1
+ 204:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_MemoryDataWidth |
+ 179              		.loc 1 204 0
+ 180 000a C168     		ldr	r1, [r0, #12]
+ 203:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_MemoryType |
+ 181              		.loc 1 203 0
+ 182 000c 0B43     		orrs	r3, r3, r1
+ 205:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_BurstAccessMode |
+ 183              		.loc 1 205 0
+ 184 000e 0169     		ldr	r1, [r0, #16]
+ 204:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_MemoryDataWidth |
+ 185              		.loc 1 204 0
+ 186 0010 0B43     		orrs	r3, r3, r1
+ 206:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_AsynchronousWait |
+ 187              		.loc 1 206 0
+ 188 0012 4169     		ldr	r1, [r0, #20]
+ 205:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_BurstAccessMode |
+ 189              		.loc 1 205 0
+ 190 0014 0B43     		orrs	r3, r3, r1
+ 207:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_WaitSignalPolarity |
+ARM GAS  /tmp/ccIYPtT2.s 			page 8
+
+
+ 191              		.loc 1 207 0
+ 192 0016 8169     		ldr	r1, [r0, #24]
+ 206:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_AsynchronousWait |
+ 193              		.loc 1 206 0
+ 194 0018 0B43     		orrs	r3, r3, r1
+ 208:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_WrapMode |
+ 195              		.loc 1 208 0
+ 196 001a C169     		ldr	r1, [r0, #28]
+ 207:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_WaitSignalPolarity |
+ 197              		.loc 1 207 0
+ 198 001c 0B43     		orrs	r3, r3, r1
+ 209:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_WaitSignalActive |
+ 199              		.loc 1 209 0
+ 200 001e 016A     		ldr	r1, [r0, #32]
+ 208:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_WrapMode |
+ 201              		.loc 1 208 0
+ 202 0020 0B43     		orrs	r3, r3, r1
+ 210:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_WriteOperation |
+ 203              		.loc 1 210 0
+ 204 0022 416A     		ldr	r1, [r0, #36]
+ 209:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_WaitSignalActive |
+ 205              		.loc 1 209 0
+ 206 0024 0B43     		orrs	r3, r3, r1
+ 211:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_WaitSignal |
+ 207              		.loc 1 211 0
+ 208 0026 816A     		ldr	r1, [r0, #40]
+ 210:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_WriteOperation |
+ 209              		.loc 1 210 0
+ 210 0028 0B43     		orrs	r3, r3, r1
+ 212:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_ExtendedMode |
+ 211              		.loc 1 212 0
+ 212 002a C16A     		ldr	r1, [r0, #44]
+ 211:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_WaitSignal |
+ 213              		.loc 1 211 0
+ 214 002c 0B43     		orrs	r3, r3, r1
+ 213:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_WriteBurst;
+ 215              		.loc 1 213 0
+ 216 002e 016B     		ldr	r1, [r0, #48]
+ 212:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NORSRAMInitStruct->FSMC_ExtendedMode |
+ 217              		.loc 1 212 0
+ 218 0030 0B43     		orrs	r3, r3, r1
+ 201:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (uint32_t)FSMC_NORSRAMInitStruct->FSMC_DataAddressMux |
+ 219              		.loc 1 201 0
+ 220 0032 4FF02041 		mov	r1, #-1610612736
+ 221 0036 41F82230 		str	r3, [r1, r2, lsl #2]
+ 214:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 215:Libraries/FWlib/src/stm32f10x_fsmc.c ****   if(FSMC_NORSRAMInitStruct->FSMC_MemoryType == FSMC_MemoryType_NOR)
+ 222              		.loc 1 215 0
+ 223 003a 8368     		ldr	r3, [r0, #8]
+ 224 003c 082B     		cmp	r3, #8
+ 225 003e 24D0     		beq	.L19
+ 226              	.L15:
+ 216:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 217:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank1->BTCR[FSMC_NORSRAMInitStruct->FSMC_Bank] |= (uint32_t)BCR_FACCEN_Set;
+ 218:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 219:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 220:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Bank1 NOR/SRAM timing register configuration */
+ARM GAS  /tmp/ccIYPtT2.s 			page 9
+
+
+ 221:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_Bank1->BTCR[FSMC_NORSRAMInitStruct->FSMC_Bank+1] = 
+ 227              		.loc 1 221 0
+ 228 0040 0168     		ldr	r1, [r0]
+ 229 0042 0131     		adds	r1, r1, #1
+ 222:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (uint32_t)FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_AddressSetupTime |
+ 230              		.loc 1 222 0
+ 231 0044 426B     		ldr	r2, [r0, #52]
+ 232 0046 1368     		ldr	r3, [r2]
+ 223:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_AddressHoldTime << 4) |
+ 233              		.loc 1 223 0
+ 234 0048 5468     		ldr	r4, [r2, #4]
+ 222:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (uint32_t)FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_AddressSetupTime |
+ 235              		.loc 1 222 0
+ 236 004a 43EA0413 		orr	r3, r3, r4, lsl #4
+ 224:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_DataSetupTime << 8) |
+ 237              		.loc 1 224 0
+ 238 004e 9468     		ldr	r4, [r2, #8]
+ 223:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_AddressHoldTime << 4) |
+ 239              		.loc 1 223 0
+ 240 0050 43EA0423 		orr	r3, r3, r4, lsl #8
+ 225:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_BusTurnAroundDuration << 16) 
+ 241              		.loc 1 225 0
+ 242 0054 D468     		ldr	r4, [r2, #12]
+ 224:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_DataSetupTime << 8) |
+ 243              		.loc 1 224 0
+ 244 0056 43EA0443 		orr	r3, r3, r4, lsl #16
+ 226:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_CLKDivision << 20) |
+ 245              		.loc 1 226 0
+ 246 005a 1469     		ldr	r4, [r2, #16]
+ 225:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_BusTurnAroundDuration << 16) 
+ 247              		.loc 1 225 0
+ 248 005c 43EA0453 		orr	r3, r3, r4, lsl #20
+ 227:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_DataLatency << 24) |
+ 249              		.loc 1 227 0
+ 250 0060 5469     		ldr	r4, [r2, #20]
+ 226:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_CLKDivision << 20) |
+ 251              		.loc 1 226 0
+ 252 0062 43EA0463 		orr	r3, r3, r4, lsl #24
+ 228:Libraries/FWlib/src/stm32f10x_fsmc.c ****              FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_AccessMode;
+ 253              		.loc 1 228 0
+ 254 0066 9269     		ldr	r2, [r2, #24]
+ 227:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_DataLatency << 24) |
+ 255              		.loc 1 227 0
+ 256 0068 1343     		orrs	r3, r3, r2
+ 221:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (uint32_t)FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_AddressSetupTime |
+ 257              		.loc 1 221 0
+ 258 006a 4FF02042 		mov	r2, #-1610612736
+ 259 006e 42F82130 		str	r3, [r2, r1, lsl #2]
+ 229:Libraries/FWlib/src/stm32f10x_fsmc.c ****             
+ 230:Libraries/FWlib/src/stm32f10x_fsmc.c ****     
+ 231:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Bank1 NOR/SRAM timing register for write configuration, if extended mode is used */
+ 232:Libraries/FWlib/src/stm32f10x_fsmc.c ****   if(FSMC_NORSRAMInitStruct->FSMC_ExtendedMode == FSMC_ExtendedMode_Enable)
+ 260              		.loc 1 232 0
+ 261 0072 C36A     		ldr	r3, [r0, #44]
+ 262 0074 B3F5804F 		cmp	r3, #16384
+ 263 0078 11D0     		beq	.L20
+ 233:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ARM GAS  /tmp/ccIYPtT2.s 			page 10
+
+
+ 234:Libraries/FWlib/src/stm32f10x_fsmc.c ****     assert_param(IS_FSMC_ADDRESS_SETUP_TIME(FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_Ad
+ 235:Libraries/FWlib/src/stm32f10x_fsmc.c ****     assert_param(IS_FSMC_ADDRESS_HOLD_TIME(FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_Add
+ 236:Libraries/FWlib/src/stm32f10x_fsmc.c ****     assert_param(IS_FSMC_DATASETUP_TIME(FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_DataSe
+ 237:Libraries/FWlib/src/stm32f10x_fsmc.c ****     assert_param(IS_FSMC_CLK_DIV(FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_CLKDivision))
+ 238:Libraries/FWlib/src/stm32f10x_fsmc.c ****     assert_param(IS_FSMC_DATA_LATENCY(FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_DataLate
+ 239:Libraries/FWlib/src/stm32f10x_fsmc.c ****     assert_param(IS_FSMC_ACCESS_MODE(FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_AccessMod
+ 240:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank1E->BWTR[FSMC_NORSRAMInitStruct->FSMC_Bank] = 
+ 241:Libraries/FWlib/src/stm32f10x_fsmc.c ****               (uint32_t)FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_AddressSetupTime |
+ 242:Libraries/FWlib/src/stm32f10x_fsmc.c ****               (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_AddressHoldTime << 4 )|
+ 243:Libraries/FWlib/src/stm32f10x_fsmc.c ****               (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_DataSetupTime << 8) |
+ 244:Libraries/FWlib/src/stm32f10x_fsmc.c ****               (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_CLKDivision << 20) |
+ 245:Libraries/FWlib/src/stm32f10x_fsmc.c ****               (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_DataLatency << 24) |
+ 246:Libraries/FWlib/src/stm32f10x_fsmc.c ****                FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_AccessMode;
+ 247:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 248:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else
+ 249:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 250:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank1E->BWTR[FSMC_NORSRAMInitStruct->FSMC_Bank] = 0x0FFFFFFF;
+ 264              		.loc 1 250 0
+ 265 007a 0268     		ldr	r2, [r0]
+ 266 007c 6FF07041 		mvn	r1, #-268435456
+ 267 0080 114B     		ldr	r3, .L21
+ 268 0082 43F82210 		str	r1, [r3, r2, lsl #2]
+ 269              	.LVL5:
+ 270              	.L14:
+ 251:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 252:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 271              		.loc 1 252 0
+ 272 0086 10BC     		pop	{r4}
+ 273              	.LCFI1:
+ 274              		.cfi_remember_state
+ 275              		.cfi_restore 4
+ 276              		.cfi_def_cfa_offset 0
+ 277 0088 7047     		bx	lr
+ 278              	.LVL6:
+ 279              	.L19:
+ 280              	.LCFI2:
+ 281              		.cfi_restore_state
+ 217:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 282              		.loc 1 217 0
+ 283 008a 0168     		ldr	r1, [r0]
+ 284 008c 4FF02042 		mov	r2, #-1610612736
+ 285 0090 52F82130 		ldr	r3, [r2, r1, lsl #2]
+ 286 0094 43F04003 		orr	r3, r3, #64
+ 287 0098 42F82130 		str	r3, [r2, r1, lsl #2]
+ 288 009c D0E7     		b	.L15
+ 289              	.L20:
+ 240:Libraries/FWlib/src/stm32f10x_fsmc.c ****               (uint32_t)FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_AddressSetupTime |
+ 290              		.loc 1 240 0
+ 291 009e 0168     		ldr	r1, [r0]
+ 241:Libraries/FWlib/src/stm32f10x_fsmc.c ****               (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_AddressHoldTime << 4 )|
+ 292              		.loc 1 241 0
+ 293 00a0 826B     		ldr	r2, [r0, #56]
+ 294 00a2 1368     		ldr	r3, [r2]
+ 242:Libraries/FWlib/src/stm32f10x_fsmc.c ****               (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_DataSetupTime << 8) |
+ 295              		.loc 1 242 0
+ 296 00a4 5068     		ldr	r0, [r2, #4]
+ 297              	.LVL7:
+ARM GAS  /tmp/ccIYPtT2.s 			page 11
+
+
+ 241:Libraries/FWlib/src/stm32f10x_fsmc.c ****               (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_AddressHoldTime << 4 )|
+ 298              		.loc 1 241 0
+ 299 00a6 43EA0013 		orr	r3, r3, r0, lsl #4
+ 243:Libraries/FWlib/src/stm32f10x_fsmc.c ****               (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_CLKDivision << 20) |
+ 300              		.loc 1 243 0
+ 301 00aa 9068     		ldr	r0, [r2, #8]
+ 242:Libraries/FWlib/src/stm32f10x_fsmc.c ****               (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_DataSetupTime << 8) |
+ 302              		.loc 1 242 0
+ 303 00ac 43EA0023 		orr	r3, r3, r0, lsl #8
+ 244:Libraries/FWlib/src/stm32f10x_fsmc.c ****               (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_DataLatency << 24) |
+ 304              		.loc 1 244 0
+ 305 00b0 1069     		ldr	r0, [r2, #16]
+ 243:Libraries/FWlib/src/stm32f10x_fsmc.c ****               (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_CLKDivision << 20) |
+ 306              		.loc 1 243 0
+ 307 00b2 43EA0053 		orr	r3, r3, r0, lsl #20
+ 245:Libraries/FWlib/src/stm32f10x_fsmc.c ****                FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_AccessMode;
+ 308              		.loc 1 245 0
+ 309 00b6 5069     		ldr	r0, [r2, #20]
+ 244:Libraries/FWlib/src/stm32f10x_fsmc.c ****               (FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_DataLatency << 24) |
+ 310              		.loc 1 244 0
+ 311 00b8 43EA0063 		orr	r3, r3, r0, lsl #24
+ 246:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 312              		.loc 1 246 0
+ 313 00bc 9269     		ldr	r2, [r2, #24]
+ 245:Libraries/FWlib/src/stm32f10x_fsmc.c ****                FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_AccessMode;
+ 314              		.loc 1 245 0
+ 315 00be 1343     		orrs	r3, r3, r2
+ 240:Libraries/FWlib/src/stm32f10x_fsmc.c ****               (uint32_t)FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_AddressSetupTime |
+ 316              		.loc 1 240 0
+ 317 00c0 014A     		ldr	r2, .L21
+ 318 00c2 42F82130 		str	r3, [r2, r1, lsl #2]
+ 319 00c6 DEE7     		b	.L14
+ 320              	.L22:
+ 321              		.align	2
+ 322              	.L21:
+ 323 00c8 040100A0 		.word	-1610612476
+ 324              		.cfi_endproc
+ 325              	.LFE32:
+ 327              		.section	.text.FSMC_NANDInit,"ax",%progbits
+ 328              		.align	1
+ 329              		.global	FSMC_NANDInit
+ 330              		.syntax unified
+ 331              		.thumb
+ 332              		.thumb_func
+ 333              		.fpu softvfp
+ 335              	FSMC_NANDInit:
+ 336              	.LFB33:
+ 253:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 254:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 255:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Initializes the FSMC NAND Banks according to the specified 
+ 256:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *         parameters in the FSMC_NANDInitStruct.
+ 257:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_NANDInitStruct : pointer to a FSMC_NANDInitTypeDef 
+ 258:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *         structure that contains the configuration information for the FSMC 
+ 259:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *         NAND specified Banks.                       
+ 260:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval None
+ 261:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 262:Libraries/FWlib/src/stm32f10x_fsmc.c **** void FSMC_NANDInit(FSMC_NANDInitTypeDef* FSMC_NANDInitStruct)
+ARM GAS  /tmp/ccIYPtT2.s 			page 12
+
+
+ 263:Libraries/FWlib/src/stm32f10x_fsmc.c **** {
+ 337              		.loc 1 263 0
+ 338              		.cfi_startproc
+ 339              		@ args = 0, pretend = 0, frame = 0
+ 340              		@ frame_needed = 0, uses_anonymous_args = 0
+ 341              		@ link register save eliminated.
+ 342              	.LVL8:
+ 343 0000 30B4     		push	{r4, r5}
+ 344              	.LCFI3:
+ 345              		.cfi_def_cfa_offset 8
+ 346              		.cfi_offset 4, -8
+ 347              		.cfi_offset 5, -4
+ 348              	.LVL9:
+ 264:Libraries/FWlib/src/stm32f10x_fsmc.c ****   uint32_t tmppcr = 0x00000000, tmppmem = 0x00000000, tmppatt = 0x00000000; 
+ 265:Libraries/FWlib/src/stm32f10x_fsmc.c ****     
+ 266:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Check the parameters */
+ 267:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param( IS_FSMC_NAND_BANK(FSMC_NANDInitStruct->FSMC_Bank));
+ 268:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param( IS_FSMC_WAIT_FEATURE(FSMC_NANDInitStruct->FSMC_Waitfeature));
+ 269:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param( IS_FSMC_MEMORY_WIDTH(FSMC_NANDInitStruct->FSMC_MemoryDataWidth));
+ 270:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param( IS_FSMC_ECC_STATE(FSMC_NANDInitStruct->FSMC_ECC));
+ 271:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param( IS_FSMC_ECCPAGE_SIZE(FSMC_NANDInitStruct->FSMC_ECCPageSize));
+ 272:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param( IS_FSMC_TCLR_TIME(FSMC_NANDInitStruct->FSMC_TCLRSetupTime));
+ 273:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param( IS_FSMC_TAR_TIME(FSMC_NANDInitStruct->FSMC_TARSetupTime));
+ 274:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_SETUP_TIME(FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_SetupTime
+ 275:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_WAIT_TIME(FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_WaitSetupT
+ 276:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_HOLD_TIME(FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_HoldSetupT
+ 277:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_HIZ_TIME(FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_HiZSetupTim
+ 278:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_SETUP_TIME(FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_SetupT
+ 279:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_WAIT_TIME(FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_WaitSet
+ 280:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_HOLD_TIME(FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_HoldSet
+ 281:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_HIZ_TIME(FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_HiZSetup
+ 282:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 283:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Set the tmppcr value according to FSMC_NANDInitStruct parameters */
+ 284:Libraries/FWlib/src/stm32f10x_fsmc.c ****   tmppcr = (uint32_t)FSMC_NANDInitStruct->FSMC_Waitfeature |
+ 349              		.loc 1 284 0
+ 350 0002 4368     		ldr	r3, [r0, #4]
+ 285:Libraries/FWlib/src/stm32f10x_fsmc.c ****             PCR_MemoryType_NAND |
+ 286:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NANDInitStruct->FSMC_MemoryDataWidth |
+ 351              		.loc 1 286 0
+ 352 0004 8268     		ldr	r2, [r0, #8]
+ 285:Libraries/FWlib/src/stm32f10x_fsmc.c ****             PCR_MemoryType_NAND |
+ 353              		.loc 1 285 0
+ 354 0006 1343     		orrs	r3, r3, r2
+ 287:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NANDInitStruct->FSMC_ECC |
+ 355              		.loc 1 287 0
+ 356 0008 C268     		ldr	r2, [r0, #12]
+ 286:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NANDInitStruct->FSMC_ECC |
+ 357              		.loc 1 286 0
+ 358 000a 1343     		orrs	r3, r3, r2
+ 288:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NANDInitStruct->FSMC_ECCPageSize |
+ 359              		.loc 1 288 0
+ 360 000c 0269     		ldr	r2, [r0, #16]
+ 287:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NANDInitStruct->FSMC_ECC |
+ 361              		.loc 1 287 0
+ 362 000e 1343     		orrs	r3, r3, r2
+ 289:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NANDInitStruct->FSMC_TCLRSetupTime << 9 )|
+ 363              		.loc 1 289 0
+ARM GAS  /tmp/ccIYPtT2.s 			page 13
+
+
+ 364 0010 4269     		ldr	r2, [r0, #20]
+ 288:Libraries/FWlib/src/stm32f10x_fsmc.c ****             FSMC_NANDInitStruct->FSMC_ECCPageSize |
+ 365              		.loc 1 288 0
+ 366 0012 43EA4223 		orr	r3, r3, r2, lsl #9
+ 290:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NANDInitStruct->FSMC_TARSetupTime << 13);
+ 367              		.loc 1 290 0
+ 368 0016 8269     		ldr	r2, [r0, #24]
+ 289:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NANDInitStruct->FSMC_TCLRSetupTime << 9 )|
+ 369              		.loc 1 289 0
+ 370 0018 43EA4233 		orr	r3, r3, r2, lsl #13
+ 284:Libraries/FWlib/src/stm32f10x_fsmc.c ****             PCR_MemoryType_NAND |
+ 371              		.loc 1 284 0
+ 372 001c 43F00803 		orr	r3, r3, #8
+ 373              	.LVL10:
+ 291:Libraries/FWlib/src/stm32f10x_fsmc.c ****             
+ 292:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Set tmppmem value according to FSMC_CommonSpaceTimingStructure parameters */
+ 293:Libraries/FWlib/src/stm32f10x_fsmc.c ****   tmppmem = (uint32_t)FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_SetupTime |
+ 374              		.loc 1 293 0
+ 375 0020 C169     		ldr	r1, [r0, #28]
+ 376 0022 0A68     		ldr	r2, [r1]
+ 294:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_WaitSetupTime << 8) |
+ 377              		.loc 1 294 0
+ 378 0024 4C68     		ldr	r4, [r1, #4]
+ 293:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_WaitSetupTime << 8) |
+ 379              		.loc 1 293 0
+ 380 0026 42EA0422 		orr	r2, r2, r4, lsl #8
+ 295:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_HoldSetupTime << 16)|
+ 381              		.loc 1 295 0
+ 382 002a 8C68     		ldr	r4, [r1, #8]
+ 294:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_WaitSetupTime << 8) |
+ 383              		.loc 1 294 0
+ 384 002c 42EA0442 		orr	r2, r2, r4, lsl #16
+ 296:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_HiZSetupTime << 24); 
+ 385              		.loc 1 296 0
+ 386 0030 C968     		ldr	r1, [r1, #12]
+ 293:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_WaitSetupTime << 8) |
+ 387              		.loc 1 293 0
+ 388 0032 42EA0161 		orr	r1, r2, r1, lsl #24
+ 389              	.LVL11:
+ 297:Libraries/FWlib/src/stm32f10x_fsmc.c ****             
+ 298:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Set tmppatt value according to FSMC_AttributeSpaceTimingStructure parameters */
+ 299:Libraries/FWlib/src/stm32f10x_fsmc.c ****   tmppatt = (uint32_t)FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_SetupTime |
+ 390              		.loc 1 299 0
+ 391 0036 046A     		ldr	r4, [r0, #32]
+ 392 0038 2268     		ldr	r2, [r4]
+ 300:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_WaitSetupTime << 8) |
+ 393              		.loc 1 300 0
+ 394 003a 6568     		ldr	r5, [r4, #4]
+ 299:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_WaitSetupTime << 8) |
+ 395              		.loc 1 299 0
+ 396 003c 42EA0522 		orr	r2, r2, r5, lsl #8
+ 301:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_HoldSetupTime << 16)|
+ 397              		.loc 1 301 0
+ 398 0040 A568     		ldr	r5, [r4, #8]
+ 300:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_WaitSetupTime << 8) |
+ 399              		.loc 1 300 0
+ 400 0042 42EA0542 		orr	r2, r2, r5, lsl #16
+ARM GAS  /tmp/ccIYPtT2.s 			page 14
+
+
+ 302:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_HiZSetupTime << 24);
+ 401              		.loc 1 302 0
+ 402 0046 E468     		ldr	r4, [r4, #12]
+ 299:Libraries/FWlib/src/stm32f10x_fsmc.c ****             (FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_WaitSetupTime << 8) |
+ 403              		.loc 1 299 0
+ 404 0048 42EA0462 		orr	r2, r2, r4, lsl #24
+ 405              	.LVL12:
+ 303:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 304:Libraries/FWlib/src/stm32f10x_fsmc.c ****   if(FSMC_NANDInitStruct->FSMC_Bank == FSMC_Bank2_NAND)
+ 406              		.loc 1 304 0
+ 407 004c 0068     		ldr	r0, [r0]
+ 408              	.LVL13:
+ 409 004e 1028     		cmp	r0, #16
+ 410 0050 05D0     		beq	.L27
+ 305:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 306:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* FSMC_Bank2_NAND registers configuration */
+ 307:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank2->PCR2 = tmppcr;
+ 308:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank2->PMEM2 = tmppmem;
+ 309:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank2->PATT2 = tmppatt;
+ 310:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 311:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else
+ 312:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 313:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* FSMC_Bank3_NAND registers configuration */
+ 314:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank3->PCR3 = tmppcr;
+ 411              		.loc 1 314 0
+ 412 0052 0548     		ldr	r0, .L28
+ 413 0054 0360     		str	r3, [r0]
+ 315:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank3->PMEM3 = tmppmem;
+ 414              		.loc 1 315 0
+ 415 0056 8160     		str	r1, [r0, #8]
+ 316:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank3->PATT3 = tmppatt;
+ 416              		.loc 1 316 0
+ 417 0058 C260     		str	r2, [r0, #12]
+ 418              	.L23:
+ 317:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 318:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 419              		.loc 1 318 0
+ 420 005a 30BC     		pop	{r4, r5}
+ 421              	.LCFI4:
+ 422              		.cfi_remember_state
+ 423              		.cfi_restore 5
+ 424              		.cfi_restore 4
+ 425              		.cfi_def_cfa_offset 0
+ 426 005c 7047     		bx	lr
+ 427              	.L27:
+ 428              	.LCFI5:
+ 429              		.cfi_restore_state
+ 307:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank2->PMEM2 = tmppmem;
+ 430              		.loc 1 307 0
+ 431 005e 0348     		ldr	r0, .L28+4
+ 432 0060 0360     		str	r3, [r0]
+ 308:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank2->PATT2 = tmppatt;
+ 433              		.loc 1 308 0
+ 434 0062 8160     		str	r1, [r0, #8]
+ 309:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 435              		.loc 1 309 0
+ 436 0064 C260     		str	r2, [r0, #12]
+ARM GAS  /tmp/ccIYPtT2.s 			page 15
+
+
+ 437 0066 F8E7     		b	.L23
+ 438              	.L29:
+ 439              		.align	2
+ 440              	.L28:
+ 441 0068 800000A0 		.word	-1610612608
+ 442 006c 600000A0 		.word	-1610612640
+ 443              		.cfi_endproc
+ 444              	.LFE33:
+ 446              		.section	.text.FSMC_PCCARDInit,"ax",%progbits
+ 447              		.align	1
+ 448              		.global	FSMC_PCCARDInit
+ 449              		.syntax unified
+ 450              		.thumb
+ 451              		.thumb_func
+ 452              		.fpu softvfp
+ 454              	FSMC_PCCARDInit:
+ 455              	.LFB34:
+ 319:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 320:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 321:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Initializes the FSMC PCCARD Bank according to the specified 
+ 322:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *         parameters in the FSMC_PCCARDInitStruct.
+ 323:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_PCCARDInitStruct : pointer to a FSMC_PCCARDInitTypeDef
+ 324:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *         structure that contains the configuration information for the FSMC 
+ 325:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *         PCCARD Bank.                       
+ 326:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval None
+ 327:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 328:Libraries/FWlib/src/stm32f10x_fsmc.c **** void FSMC_PCCARDInit(FSMC_PCCARDInitTypeDef* FSMC_PCCARDInitStruct)
+ 329:Libraries/FWlib/src/stm32f10x_fsmc.c **** {
+ 456              		.loc 1 329 0
+ 457              		.cfi_startproc
+ 458              		@ args = 0, pretend = 0, frame = 0
+ 459              		@ frame_needed = 0, uses_anonymous_args = 0
+ 460              		@ link register save eliminated.
+ 461              	.LVL14:
+ 462 0000 10B4     		push	{r4}
+ 463              	.LCFI6:
+ 464              		.cfi_def_cfa_offset 4
+ 465              		.cfi_offset 4, -4
+ 330:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Check the parameters */
+ 331:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_WAIT_FEATURE(FSMC_PCCARDInitStruct->FSMC_Waitfeature));
+ 332:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_TCLR_TIME(FSMC_PCCARDInitStruct->FSMC_TCLRSetupTime));
+ 333:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_TAR_TIME(FSMC_PCCARDInitStruct->FSMC_TARSetupTime));
+ 334:Libraries/FWlib/src/stm32f10x_fsmc.c ****  
+ 335:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_SETUP_TIME(FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_SetupTi
+ 336:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_WAIT_TIME(FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_WaitSetu
+ 337:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_HOLD_TIME(FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_HoldSetu
+ 338:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_HIZ_TIME(FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_HiZSetupT
+ 339:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 340:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_SETUP_TIME(FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_Setu
+ 341:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_WAIT_TIME(FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_WaitS
+ 342:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_HOLD_TIME(FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_HoldS
+ 343:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_HIZ_TIME(FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_HiZSet
+ 344:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_SETUP_TIME(FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_SetupTime))
+ 345:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_WAIT_TIME(FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_WaitSetupTim
+ 346:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_HOLD_TIME(FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_HoldSetupTim
+ 347:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_HIZ_TIME(FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_HiZSetupTime)
+ 348:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ARM GAS  /tmp/ccIYPtT2.s 			page 16
+
+
+ 349:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Set the PCR4 register value according to FSMC_PCCARDInitStruct parameters */
+ 350:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_Bank4->PCR4 = (uint32_t)FSMC_PCCARDInitStruct->FSMC_Waitfeature |
+ 466              		.loc 1 350 0
+ 467 0002 0368     		ldr	r3, [r0]
+ 351:Libraries/FWlib/src/stm32f10x_fsmc.c ****                      FSMC_MemoryDataWidth_16b |  
+ 352:Libraries/FWlib/src/stm32f10x_fsmc.c ****                      (FSMC_PCCARDInitStruct->FSMC_TCLRSetupTime << 9) |
+ 468              		.loc 1 352 0
+ 469 0004 4268     		ldr	r2, [r0, #4]
+ 351:Libraries/FWlib/src/stm32f10x_fsmc.c ****                      FSMC_MemoryDataWidth_16b |  
+ 470              		.loc 1 351 0
+ 471 0006 43EA4223 		orr	r3, r3, r2, lsl #9
+ 353:Libraries/FWlib/src/stm32f10x_fsmc.c ****                      (FSMC_PCCARDInitStruct->FSMC_TARSetupTime << 13);
+ 472              		.loc 1 353 0
+ 473 000a 8268     		ldr	r2, [r0, #8]
+ 352:Libraries/FWlib/src/stm32f10x_fsmc.c ****                      (FSMC_PCCARDInitStruct->FSMC_TARSetupTime << 13);
+ 474              		.loc 1 352 0
+ 475 000c 43EA4233 		orr	r3, r3, r2, lsl #13
+ 476 0010 43F01003 		orr	r3, r3, #16
+ 350:Libraries/FWlib/src/stm32f10x_fsmc.c ****                      FSMC_MemoryDataWidth_16b |  
+ 477              		.loc 1 350 0
+ 478 0014 134A     		ldr	r2, .L32
+ 479 0016 1360     		str	r3, [r2]
+ 354:Libraries/FWlib/src/stm32f10x_fsmc.c ****             
+ 355:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Set PMEM4 register value according to FSMC_CommonSpaceTimingStructure parameters */
+ 356:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_Bank4->PMEM4 = (uint32_t)FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_SetupTime
+ 480              		.loc 1 356 0
+ 481 0018 C168     		ldr	r1, [r0, #12]
+ 482 001a 0B68     		ldr	r3, [r1]
+ 357:Libraries/FWlib/src/stm32f10x_fsmc.c ****                       (FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_WaitSetupTime << 8
+ 483              		.loc 1 357 0
+ 484 001c 4C68     		ldr	r4, [r1, #4]
+ 356:Libraries/FWlib/src/stm32f10x_fsmc.c ****                       (FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_WaitSetupTime << 8
+ 485              		.loc 1 356 0
+ 486 001e 43EA0423 		orr	r3, r3, r4, lsl #8
+ 358:Libraries/FWlib/src/stm32f10x_fsmc.c ****                       (FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_HoldSetupTime << 1
+ 487              		.loc 1 358 0
+ 488 0022 8C68     		ldr	r4, [r1, #8]
+ 357:Libraries/FWlib/src/stm32f10x_fsmc.c ****                       (FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_WaitSetupTime << 8
+ 489              		.loc 1 357 0
+ 490 0024 43EA0443 		orr	r3, r3, r4, lsl #16
+ 359:Libraries/FWlib/src/stm32f10x_fsmc.c ****                       (FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_HiZSetupTime << 24
+ 491              		.loc 1 359 0
+ 492 0028 C968     		ldr	r1, [r1, #12]
+ 358:Libraries/FWlib/src/stm32f10x_fsmc.c ****                       (FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_HoldSetupTime << 1
+ 493              		.loc 1 358 0
+ 494 002a 43EA0163 		orr	r3, r3, r1, lsl #24
+ 356:Libraries/FWlib/src/stm32f10x_fsmc.c ****                       (FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_WaitSetupTime << 8
+ 495              		.loc 1 356 0
+ 496 002e 9360     		str	r3, [r2, #8]
+ 360:Libraries/FWlib/src/stm32f10x_fsmc.c ****             
+ 361:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Set PATT4 register value according to FSMC_AttributeSpaceTimingStructure parameters */
+ 362:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_Bank4->PATT4 = (uint32_t)FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_SetupT
+ 497              		.loc 1 362 0
+ 498 0030 0169     		ldr	r1, [r0, #16]
+ 499 0032 0B68     		ldr	r3, [r1]
+ 363:Libraries/FWlib/src/stm32f10x_fsmc.c ****                       (FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_WaitSetupTime <
+ 500              		.loc 1 363 0
+ARM GAS  /tmp/ccIYPtT2.s 			page 17
+
+
+ 501 0034 4C68     		ldr	r4, [r1, #4]
+ 362:Libraries/FWlib/src/stm32f10x_fsmc.c ****                       (FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_WaitSetupTime <
+ 502              		.loc 1 362 0
+ 503 0036 43EA0423 		orr	r3, r3, r4, lsl #8
+ 364:Libraries/FWlib/src/stm32f10x_fsmc.c ****                       (FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_HoldSetupTime <
+ 504              		.loc 1 364 0
+ 505 003a 8C68     		ldr	r4, [r1, #8]
+ 363:Libraries/FWlib/src/stm32f10x_fsmc.c ****                       (FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_WaitSetupTime <
+ 506              		.loc 1 363 0
+ 507 003c 43EA0443 		orr	r3, r3, r4, lsl #16
+ 365:Libraries/FWlib/src/stm32f10x_fsmc.c ****                       (FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_HiZSetupTime <<
+ 508              		.loc 1 365 0
+ 509 0040 C968     		ldr	r1, [r1, #12]
+ 364:Libraries/FWlib/src/stm32f10x_fsmc.c ****                       (FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_HoldSetupTime <
+ 510              		.loc 1 364 0
+ 511 0042 43EA0163 		orr	r3, r3, r1, lsl #24
+ 362:Libraries/FWlib/src/stm32f10x_fsmc.c ****                       (FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_WaitSetupTime <
+ 512              		.loc 1 362 0
+ 513 0046 D360     		str	r3, [r2, #12]
+ 366:Libraries/FWlib/src/stm32f10x_fsmc.c ****             
+ 367:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Set PIO4 register value according to FSMC_IOSpaceTimingStructure parameters */
+ 368:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_Bank4->PIO4 = (uint32_t)FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_SetupTime |
+ 514              		.loc 1 368 0
+ 515 0048 4169     		ldr	r1, [r0, #20]
+ 516 004a 0B68     		ldr	r3, [r1]
+ 369:Libraries/FWlib/src/stm32f10x_fsmc.c ****                      (FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_WaitSetupTime << 8) |
+ 517              		.loc 1 369 0
+ 518 004c 4868     		ldr	r0, [r1, #4]
+ 519              	.LVL15:
+ 368:Libraries/FWlib/src/stm32f10x_fsmc.c ****                      (FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_WaitSetupTime << 8) |
+ 520              		.loc 1 368 0
+ 521 004e 43EA0023 		orr	r3, r3, r0, lsl #8
+ 370:Libraries/FWlib/src/stm32f10x_fsmc.c ****                      (FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_HoldSetupTime << 16)|
+ 522              		.loc 1 370 0
+ 523 0052 8868     		ldr	r0, [r1, #8]
+ 369:Libraries/FWlib/src/stm32f10x_fsmc.c ****                      (FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_WaitSetupTime << 8) |
+ 524              		.loc 1 369 0
+ 525 0054 43EA0043 		orr	r3, r3, r0, lsl #16
+ 371:Libraries/FWlib/src/stm32f10x_fsmc.c ****                      (FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_HiZSetupTime << 24);   
+ 526              		.loc 1 371 0
+ 527 0058 C968     		ldr	r1, [r1, #12]
+ 370:Libraries/FWlib/src/stm32f10x_fsmc.c ****                      (FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_HoldSetupTime << 16)|
+ 528              		.loc 1 370 0
+ 529 005a 43EA0163 		orr	r3, r3, r1, lsl #24
+ 368:Libraries/FWlib/src/stm32f10x_fsmc.c ****                      (FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_WaitSetupTime << 8) |
+ 530              		.loc 1 368 0
+ 531 005e 1361     		str	r3, [r2, #16]
+ 372:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 532              		.loc 1 372 0
+ 533 0060 10BC     		pop	{r4}
+ 534              	.LCFI7:
+ 535              		.cfi_restore 4
+ 536              		.cfi_def_cfa_offset 0
+ 537 0062 7047     		bx	lr
+ 538              	.L33:
+ 539              		.align	2
+ 540              	.L32:
+ARM GAS  /tmp/ccIYPtT2.s 			page 18
+
+
+ 541 0064 A00000A0 		.word	-1610612576
+ 542              		.cfi_endproc
+ 543              	.LFE34:
+ 545              		.section	.text.FSMC_NORSRAMStructInit,"ax",%progbits
+ 546              		.align	1
+ 547              		.global	FSMC_NORSRAMStructInit
+ 548              		.syntax unified
+ 549              		.thumb
+ 550              		.thumb_func
+ 551              		.fpu softvfp
+ 553              	FSMC_NORSRAMStructInit:
+ 554              	.LFB35:
+ 373:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 374:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 375:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Fills each FSMC_NORSRAMInitStruct member with its default value.
+ 376:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_NORSRAMInitStruct: pointer to a FSMC_NORSRAMInitTypeDef 
+ 377:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *         structure which will be initialized.
+ 378:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval None
+ 379:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 380:Libraries/FWlib/src/stm32f10x_fsmc.c **** void FSMC_NORSRAMStructInit(FSMC_NORSRAMInitTypeDef* FSMC_NORSRAMInitStruct)
+ 381:Libraries/FWlib/src/stm32f10x_fsmc.c **** {  
+ 555              		.loc 1 381 0
+ 556              		.cfi_startproc
+ 557              		@ args = 0, pretend = 0, frame = 0
+ 558              		@ frame_needed = 0, uses_anonymous_args = 0
+ 559              		@ link register save eliminated.
+ 560              	.LVL16:
+ 561 0000 10B4     		push	{r4}
+ 562              	.LCFI8:
+ 563              		.cfi_def_cfa_offset 4
+ 564              		.cfi_offset 4, -4
+ 382:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Reset NOR/SRAM Init structure parameters values */
+ 383:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_Bank = FSMC_Bank1_NORSRAM1;
+ 565              		.loc 1 383 0
+ 566 0002 0023     		movs	r3, #0
+ 567 0004 0360     		str	r3, [r0]
+ 384:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_DataAddressMux = FSMC_DataAddressMux_Enable;
+ 568              		.loc 1 384 0
+ 569 0006 0222     		movs	r2, #2
+ 570 0008 4260     		str	r2, [r0, #4]
+ 385:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_MemoryType = FSMC_MemoryType_SRAM;
+ 571              		.loc 1 385 0
+ 572 000a 8360     		str	r3, [r0, #8]
+ 386:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_MemoryDataWidth = FSMC_MemoryDataWidth_8b;
+ 573              		.loc 1 386 0
+ 574 000c C360     		str	r3, [r0, #12]
+ 387:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_BurstAccessMode = FSMC_BurstAccessMode_Disable;
+ 575              		.loc 1 387 0
+ 576 000e 0361     		str	r3, [r0, #16]
+ 388:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_AsynchronousWait = FSMC_AsynchronousWait_Disable;
+ 577              		.loc 1 388 0
+ 578 0010 4361     		str	r3, [r0, #20]
+ 389:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_WaitSignalPolarity = FSMC_WaitSignalPolarity_Low;
+ 579              		.loc 1 389 0
+ 580 0012 8361     		str	r3, [r0, #24]
+ 390:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_WrapMode = FSMC_WrapMode_Disable;
+ 581              		.loc 1 390 0
+ARM GAS  /tmp/ccIYPtT2.s 			page 19
+
+
+ 582 0014 C361     		str	r3, [r0, #28]
+ 391:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_WaitSignalActive = FSMC_WaitSignalActive_BeforeWaitState;
+ 583              		.loc 1 391 0
+ 584 0016 0362     		str	r3, [r0, #32]
+ 392:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_WriteOperation = FSMC_WriteOperation_Enable;
+ 585              		.loc 1 392 0
+ 586 0018 4FF48052 		mov	r2, #4096
+ 587 001c 4262     		str	r2, [r0, #36]
+ 393:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_WaitSignal = FSMC_WaitSignal_Enable;
+ 588              		.loc 1 393 0
+ 589 001e 4FF40052 		mov	r2, #8192
+ 590 0022 8262     		str	r2, [r0, #40]
+ 394:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_ExtendedMode = FSMC_ExtendedMode_Disable;
+ 591              		.loc 1 394 0
+ 592 0024 C362     		str	r3, [r0, #44]
+ 395:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_WriteBurst = FSMC_WriteBurst_Disable;
+ 593              		.loc 1 395 0
+ 594 0026 0363     		str	r3, [r0, #48]
+ 396:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_AddressSetupTime = 0xF;
+ 595              		.loc 1 396 0
+ 596 0028 416B     		ldr	r1, [r0, #52]
+ 597 002a 0F22     		movs	r2, #15
+ 598 002c 0A60     		str	r2, [r1]
+ 397:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_AddressHoldTime = 0xF;
+ 599              		.loc 1 397 0
+ 600 002e 416B     		ldr	r1, [r0, #52]
+ 601 0030 4A60     		str	r2, [r1, #4]
+ 398:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_DataSetupTime = 0xFF;
+ 602              		.loc 1 398 0
+ 603 0032 446B     		ldr	r4, [r0, #52]
+ 604 0034 FF21     		movs	r1, #255
+ 605 0036 A160     		str	r1, [r4, #8]
+ 399:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_BusTurnAroundDuration = 0xF;
+ 606              		.loc 1 399 0
+ 607 0038 446B     		ldr	r4, [r0, #52]
+ 608 003a E260     		str	r2, [r4, #12]
+ 400:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_CLKDivision = 0xF;
+ 609              		.loc 1 400 0
+ 610 003c 446B     		ldr	r4, [r0, #52]
+ 611 003e 2261     		str	r2, [r4, #16]
+ 401:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_DataLatency = 0xF;
+ 612              		.loc 1 401 0
+ 613 0040 446B     		ldr	r4, [r0, #52]
+ 614 0042 6261     		str	r2, [r4, #20]
+ 402:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_ReadWriteTimingStruct->FSMC_AccessMode = FSMC_AccessMode_A; 
+ 615              		.loc 1 402 0
+ 616 0044 446B     		ldr	r4, [r0, #52]
+ 617 0046 A361     		str	r3, [r4, #24]
+ 403:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_AddressSetupTime = 0xF;
+ 618              		.loc 1 403 0
+ 619 0048 846B     		ldr	r4, [r0, #56]
+ 620 004a 2260     		str	r2, [r4]
+ 404:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_AddressHoldTime = 0xF;
+ 621              		.loc 1 404 0
+ 622 004c 846B     		ldr	r4, [r0, #56]
+ 623 004e 6260     		str	r2, [r4, #4]
+ 405:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_DataSetupTime = 0xFF;
+ARM GAS  /tmp/ccIYPtT2.s 			page 20
+
+
+ 624              		.loc 1 405 0
+ 625 0050 846B     		ldr	r4, [r0, #56]
+ 626 0052 A160     		str	r1, [r4, #8]
+ 406:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_BusTurnAroundDuration = 0xF;
+ 627              		.loc 1 406 0
+ 628 0054 816B     		ldr	r1, [r0, #56]
+ 629 0056 CA60     		str	r2, [r1, #12]
+ 407:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_CLKDivision = 0xF;
+ 630              		.loc 1 407 0
+ 631 0058 816B     		ldr	r1, [r0, #56]
+ 632 005a 0A61     		str	r2, [r1, #16]
+ 408:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_DataLatency = 0xF;
+ 633              		.loc 1 408 0
+ 634 005c 816B     		ldr	r1, [r0, #56]
+ 635 005e 4A61     		str	r2, [r1, #20]
+ 409:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NORSRAMInitStruct->FSMC_WriteTimingStruct->FSMC_AccessMode = FSMC_AccessMode_A;
+ 636              		.loc 1 409 0
+ 637 0060 826B     		ldr	r2, [r0, #56]
+ 638 0062 9361     		str	r3, [r2, #24]
+ 410:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 639              		.loc 1 410 0
+ 640 0064 10BC     		pop	{r4}
+ 641              	.LCFI9:
+ 642              		.cfi_restore 4
+ 643              		.cfi_def_cfa_offset 0
+ 644 0066 7047     		bx	lr
+ 645              		.cfi_endproc
+ 646              	.LFE35:
+ 648              		.section	.text.FSMC_NANDStructInit,"ax",%progbits
+ 649              		.align	1
+ 650              		.global	FSMC_NANDStructInit
+ 651              		.syntax unified
+ 652              		.thumb
+ 653              		.thumb_func
+ 654              		.fpu softvfp
+ 656              	FSMC_NANDStructInit:
+ 657              	.LFB36:
+ 411:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 412:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 413:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Fills each FSMC_NANDInitStruct member with its default value.
+ 414:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_NANDInitStruct: pointer to a FSMC_NANDInitTypeDef 
+ 415:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *         structure which will be initialized.
+ 416:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval None
+ 417:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 418:Libraries/FWlib/src/stm32f10x_fsmc.c **** void FSMC_NANDStructInit(FSMC_NANDInitTypeDef* FSMC_NANDInitStruct)
+ 419:Libraries/FWlib/src/stm32f10x_fsmc.c **** { 
+ 658              		.loc 1 419 0
+ 659              		.cfi_startproc
+ 660              		@ args = 0, pretend = 0, frame = 0
+ 661              		@ frame_needed = 0, uses_anonymous_args = 0
+ 662              		@ link register save eliminated.
+ 663              	.LVL17:
+ 420:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Reset NAND Init structure parameters values */
+ 421:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NANDInitStruct->FSMC_Bank = FSMC_Bank2_NAND;
+ 664              		.loc 1 421 0
+ 665 0000 1023     		movs	r3, #16
+ 666 0002 0360     		str	r3, [r0]
+ARM GAS  /tmp/ccIYPtT2.s 			page 21
+
+
+ 422:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NANDInitStruct->FSMC_Waitfeature = FSMC_Waitfeature_Disable;
+ 667              		.loc 1 422 0
+ 668 0004 0023     		movs	r3, #0
+ 669 0006 4360     		str	r3, [r0, #4]
+ 423:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NANDInitStruct->FSMC_MemoryDataWidth = FSMC_MemoryDataWidth_8b;
+ 670              		.loc 1 423 0
+ 671 0008 8360     		str	r3, [r0, #8]
+ 424:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NANDInitStruct->FSMC_ECC = FSMC_ECC_Disable;
+ 672              		.loc 1 424 0
+ 673 000a C360     		str	r3, [r0, #12]
+ 425:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NANDInitStruct->FSMC_ECCPageSize = FSMC_ECCPageSize_256Bytes;
+ 674              		.loc 1 425 0
+ 675 000c 0361     		str	r3, [r0, #16]
+ 426:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NANDInitStruct->FSMC_TCLRSetupTime = 0x0;
+ 676              		.loc 1 426 0
+ 677 000e 4361     		str	r3, [r0, #20]
+ 427:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NANDInitStruct->FSMC_TARSetupTime = 0x0;
+ 678              		.loc 1 427 0
+ 679 0010 8361     		str	r3, [r0, #24]
+ 428:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_SetupTime = 0xFC;
+ 680              		.loc 1 428 0
+ 681 0012 C269     		ldr	r2, [r0, #28]
+ 682 0014 FC23     		movs	r3, #252
+ 683 0016 1360     		str	r3, [r2]
+ 429:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_WaitSetupTime = 0xFC;
+ 684              		.loc 1 429 0
+ 685 0018 C269     		ldr	r2, [r0, #28]
+ 686 001a 5360     		str	r3, [r2, #4]
+ 430:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_HoldSetupTime = 0xFC;
+ 687              		.loc 1 430 0
+ 688 001c C269     		ldr	r2, [r0, #28]
+ 689 001e 9360     		str	r3, [r2, #8]
+ 431:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NANDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_HiZSetupTime = 0xFC;
+ 690              		.loc 1 431 0
+ 691 0020 C269     		ldr	r2, [r0, #28]
+ 692 0022 D360     		str	r3, [r2, #12]
+ 432:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_SetupTime = 0xFC;
+ 693              		.loc 1 432 0
+ 694 0024 026A     		ldr	r2, [r0, #32]
+ 695 0026 1360     		str	r3, [r2]
+ 433:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_WaitSetupTime = 0xFC;
+ 696              		.loc 1 433 0
+ 697 0028 026A     		ldr	r2, [r0, #32]
+ 698 002a 5360     		str	r3, [r2, #4]
+ 434:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_HoldSetupTime = 0xFC;
+ 699              		.loc 1 434 0
+ 700 002c 026A     		ldr	r2, [r0, #32]
+ 701 002e 9360     		str	r3, [r2, #8]
+ 435:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_NANDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_HiZSetupTime = 0xFC;	  
+ 702              		.loc 1 435 0
+ 703 0030 026A     		ldr	r2, [r0, #32]
+ 704 0032 D360     		str	r3, [r2, #12]
+ 705 0034 7047     		bx	lr
+ 706              		.cfi_endproc
+ 707              	.LFE36:
+ 709              		.section	.text.FSMC_PCCARDStructInit,"ax",%progbits
+ 710              		.align	1
+ARM GAS  /tmp/ccIYPtT2.s 			page 22
+
+
+ 711              		.global	FSMC_PCCARDStructInit
+ 712              		.syntax unified
+ 713              		.thumb
+ 714              		.thumb_func
+ 715              		.fpu softvfp
+ 717              	FSMC_PCCARDStructInit:
+ 718              	.LFB37:
+ 436:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 437:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 438:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 439:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Fills each FSMC_PCCARDInitStruct member with its default value.
+ 440:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_PCCARDInitStruct: pointer to a FSMC_PCCARDInitTypeDef 
+ 441:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *         structure which will be initialized.
+ 442:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval None
+ 443:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 444:Libraries/FWlib/src/stm32f10x_fsmc.c **** void FSMC_PCCARDStructInit(FSMC_PCCARDInitTypeDef* FSMC_PCCARDInitStruct)
+ 445:Libraries/FWlib/src/stm32f10x_fsmc.c **** {
+ 719              		.loc 1 445 0
+ 720              		.cfi_startproc
+ 721              		@ args = 0, pretend = 0, frame = 0
+ 722              		@ frame_needed = 0, uses_anonymous_args = 0
+ 723              		@ link register save eliminated.
+ 724              	.LVL18:
+ 446:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Reset PCCARD Init structure parameters values */
+ 447:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_PCCARDInitStruct->FSMC_Waitfeature = FSMC_Waitfeature_Disable;
+ 725              		.loc 1 447 0
+ 726 0000 0023     		movs	r3, #0
+ 727 0002 0360     		str	r3, [r0]
+ 448:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_PCCARDInitStruct->FSMC_TCLRSetupTime = 0x0;
+ 728              		.loc 1 448 0
+ 729 0004 4360     		str	r3, [r0, #4]
+ 449:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_PCCARDInitStruct->FSMC_TARSetupTime = 0x0;
+ 730              		.loc 1 449 0
+ 731 0006 8360     		str	r3, [r0, #8]
+ 450:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_SetupTime = 0xFC;
+ 732              		.loc 1 450 0
+ 733 0008 C268     		ldr	r2, [r0, #12]
+ 734 000a FC23     		movs	r3, #252
+ 735 000c 1360     		str	r3, [r2]
+ 451:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_WaitSetupTime = 0xFC;
+ 736              		.loc 1 451 0
+ 737 000e C268     		ldr	r2, [r0, #12]
+ 738 0010 5360     		str	r3, [r2, #4]
+ 452:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_HoldSetupTime = 0xFC;
+ 739              		.loc 1 452 0
+ 740 0012 C268     		ldr	r2, [r0, #12]
+ 741 0014 9360     		str	r3, [r2, #8]
+ 453:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_PCCARDInitStruct->FSMC_CommonSpaceTimingStruct->FSMC_HiZSetupTime = 0xFC;
+ 742              		.loc 1 453 0
+ 743 0016 C268     		ldr	r2, [r0, #12]
+ 744 0018 D360     		str	r3, [r2, #12]
+ 454:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_SetupTime = 0xFC;
+ 745              		.loc 1 454 0
+ 746 001a 0269     		ldr	r2, [r0, #16]
+ 747 001c 1360     		str	r3, [r2]
+ 455:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_WaitSetupTime = 0xFC;
+ 748              		.loc 1 455 0
+ARM GAS  /tmp/ccIYPtT2.s 			page 23
+
+
+ 749 001e 0269     		ldr	r2, [r0, #16]
+ 750 0020 5360     		str	r3, [r2, #4]
+ 456:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_HoldSetupTime = 0xFC;
+ 751              		.loc 1 456 0
+ 752 0022 0269     		ldr	r2, [r0, #16]
+ 753 0024 9360     		str	r3, [r2, #8]
+ 457:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_PCCARDInitStruct->FSMC_AttributeSpaceTimingStruct->FSMC_HiZSetupTime = 0xFC;	
+ 754              		.loc 1 457 0
+ 755 0026 0269     		ldr	r2, [r0, #16]
+ 756 0028 D360     		str	r3, [r2, #12]
+ 458:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_SetupTime = 0xFC;
+ 757              		.loc 1 458 0
+ 758 002a 4269     		ldr	r2, [r0, #20]
+ 759 002c 1360     		str	r3, [r2]
+ 459:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_WaitSetupTime = 0xFC;
+ 760              		.loc 1 459 0
+ 761 002e 4269     		ldr	r2, [r0, #20]
+ 762 0030 5360     		str	r3, [r2, #4]
+ 460:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_HoldSetupTime = 0xFC;
+ 763              		.loc 1 460 0
+ 764 0032 4269     		ldr	r2, [r0, #20]
+ 765 0034 9360     		str	r3, [r2, #8]
+ 461:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FSMC_PCCARDInitStruct->FSMC_IOSpaceTimingStruct->FSMC_HiZSetupTime = 0xFC;
+ 766              		.loc 1 461 0
+ 767 0036 4269     		ldr	r2, [r0, #20]
+ 768 0038 D360     		str	r3, [r2, #12]
+ 769 003a 7047     		bx	lr
+ 770              		.cfi_endproc
+ 771              	.LFE37:
+ 773              		.section	.text.FSMC_NORSRAMCmd,"ax",%progbits
+ 774              		.align	1
+ 775              		.global	FSMC_NORSRAMCmd
+ 776              		.syntax unified
+ 777              		.thumb
+ 778              		.thumb_func
+ 779              		.fpu softvfp
+ 781              	FSMC_NORSRAMCmd:
+ 782              	.LFB38:
+ 462:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 463:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 464:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 465:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Enables or disables the specified NOR/SRAM Memory Bank.
+ 466:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_Bank: specifies the FSMC Bank to be used
+ 467:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be one of the following values:
+ 468:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank1_NORSRAM1: FSMC Bank1 NOR/SRAM1  
+ 469:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank1_NORSRAM2: FSMC Bank1 NOR/SRAM2 
+ 470:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank1_NORSRAM3: FSMC Bank1 NOR/SRAM3 
+ 471:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank1_NORSRAM4: FSMC Bank1 NOR/SRAM4 
+ 472:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  NewState: new state of the FSMC_Bank. This parameter can be: ENABLE or DISABLE.
+ 473:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval None
+ 474:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 475:Libraries/FWlib/src/stm32f10x_fsmc.c **** void FSMC_NORSRAMCmd(uint32_t FSMC_Bank, FunctionalState NewState)
+ 476:Libraries/FWlib/src/stm32f10x_fsmc.c **** {
+ 783              		.loc 1 476 0
+ 784              		.cfi_startproc
+ 785              		@ args = 0, pretend = 0, frame = 0
+ 786              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccIYPtT2.s 			page 24
+
+
+ 787              		@ link register save eliminated.
+ 788              	.LVL19:
+ 477:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_NORSRAM_BANK(FSMC_Bank));
+ 478:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 479:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 480:Libraries/FWlib/src/stm32f10x_fsmc.c ****   if (NewState != DISABLE)
+ 789              		.loc 1 480 0
+ 790 0000 41B9     		cbnz	r1, .L41
+ 481:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 482:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Enable the selected NOR/SRAM Bank by setting the PBKEN bit in the BCRx register */
+ 483:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank1->BTCR[FSMC_Bank] |= BCR_MBKEN_Set;
+ 484:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 485:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else
+ 486:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 487:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Disable the selected NOR/SRAM Bank by clearing the PBKEN bit in the BCRx register */
+ 488:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank1->BTCR[FSMC_Bank] &= BCR_MBKEN_Reset;
+ 791              		.loc 1 488 0
+ 792 0002 4FF02042 		mov	r2, #-1610612736
+ 793 0006 52F82010 		ldr	r1, [r2, r0, lsl #2]
+ 794              	.LVL20:
+ 795 000a 074B     		ldr	r3, .L42
+ 796 000c 0B40     		ands	r3, r3, r1
+ 797 000e 42F82030 		str	r3, [r2, r0, lsl #2]
+ 798 0012 7047     		bx	lr
+ 799              	.LVL21:
+ 800              	.L41:
+ 483:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 801              		.loc 1 483 0
+ 802 0014 4FF02042 		mov	r2, #-1610612736
+ 803 0018 52F82030 		ldr	r3, [r2, r0, lsl #2]
+ 804 001c 43F00103 		orr	r3, r3, #1
+ 805 0020 42F82030 		str	r3, [r2, r0, lsl #2]
+ 806 0024 7047     		bx	lr
+ 807              	.L43:
+ 808 0026 00BF     		.align	2
+ 809              	.L42:
+ 810 0028 FEFF0F00 		.word	1048574
+ 811              		.cfi_endproc
+ 812              	.LFE38:
+ 814              		.section	.text.FSMC_NANDCmd,"ax",%progbits
+ 815              		.align	1
+ 816              		.global	FSMC_NANDCmd
+ 817              		.syntax unified
+ 818              		.thumb
+ 819              		.thumb_func
+ 820              		.fpu softvfp
+ 822              	FSMC_NANDCmd:
+ 823              	.LFB39:
+ 489:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 490:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 491:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 492:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 493:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Enables or disables the specified NAND Memory Bank.
+ 494:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_Bank: specifies the FSMC Bank to be used
+ 495:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be one of the following values:
+ 496:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank2_NAND: FSMC Bank2 NAND 
+ 497:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank3_NAND: FSMC Bank3 NAND
+ARM GAS  /tmp/ccIYPtT2.s 			page 25
+
+
+ 498:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  NewState: new state of the FSMC_Bank. This parameter can be: ENABLE or DISABLE.
+ 499:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval None
+ 500:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 501:Libraries/FWlib/src/stm32f10x_fsmc.c **** void FSMC_NANDCmd(uint32_t FSMC_Bank, FunctionalState NewState)
+ 502:Libraries/FWlib/src/stm32f10x_fsmc.c **** {
+ 824              		.loc 1 502 0
+ 825              		.cfi_startproc
+ 826              		@ args = 0, pretend = 0, frame = 0
+ 827              		@ frame_needed = 0, uses_anonymous_args = 0
+ 828              		@ link register save eliminated.
+ 829              	.LVL22:
+ 503:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_NAND_BANK(FSMC_Bank));
+ 504:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 505:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 506:Libraries/FWlib/src/stm32f10x_fsmc.c ****   if (NewState != DISABLE)
+ 830              		.loc 1 506 0
+ 831 0000 69B1     		cbz	r1, .L45
+ 507:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 508:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Enable the selected NAND Bank by setting the PBKEN bit in the PCRx register */
+ 509:Libraries/FWlib/src/stm32f10x_fsmc.c ****     if(FSMC_Bank == FSMC_Bank2_NAND)
+ 832              		.loc 1 509 0
+ 833 0002 1028     		cmp	r0, #16
+ 834 0004 05D0     		beq	.L49
+ 510:Libraries/FWlib/src/stm32f10x_fsmc.c ****     {
+ 511:Libraries/FWlib/src/stm32f10x_fsmc.c ****       FSMC_Bank2->PCR2 |= PCR_PBKEN_Set;
+ 512:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 513:Libraries/FWlib/src/stm32f10x_fsmc.c ****     else
+ 514:Libraries/FWlib/src/stm32f10x_fsmc.c ****     {
+ 515:Libraries/FWlib/src/stm32f10x_fsmc.c ****       FSMC_Bank3->PCR3 |= PCR_PBKEN_Set;
+ 835              		.loc 1 515 0
+ 836 0006 0D4A     		ldr	r2, .L51
+ 837 0008 1368     		ldr	r3, [r2]
+ 838 000a 43F00403 		orr	r3, r3, #4
+ 839 000e 1360     		str	r3, [r2]
+ 840 0010 7047     		bx	lr
+ 841              	.L49:
+ 511:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 842              		.loc 1 511 0
+ 843 0012 0B4A     		ldr	r2, .L51+4
+ 844 0014 1368     		ldr	r3, [r2]
+ 845 0016 43F00403 		orr	r3, r3, #4
+ 846 001a 1360     		str	r3, [r2]
+ 847 001c 7047     		bx	lr
+ 848              	.L45:
+ 516:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 517:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 518:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else
+ 519:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 520:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Disable the selected NAND Bank by clearing the PBKEN bit in the PCRx register */
+ 521:Libraries/FWlib/src/stm32f10x_fsmc.c ****     if(FSMC_Bank == FSMC_Bank2_NAND)
+ 849              		.loc 1 521 0
+ 850 001e 1028     		cmp	r0, #16
+ 851 0020 05D0     		beq	.L50
+ 522:Libraries/FWlib/src/stm32f10x_fsmc.c ****     {
+ 523:Libraries/FWlib/src/stm32f10x_fsmc.c ****       FSMC_Bank2->PCR2 &= PCR_PBKEN_Reset;
+ 524:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 525:Libraries/FWlib/src/stm32f10x_fsmc.c ****     else
+ARM GAS  /tmp/ccIYPtT2.s 			page 26
+
+
+ 526:Libraries/FWlib/src/stm32f10x_fsmc.c ****     {
+ 527:Libraries/FWlib/src/stm32f10x_fsmc.c ****       FSMC_Bank3->PCR3 &= PCR_PBKEN_Reset;
+ 852              		.loc 1 527 0
+ 853 0022 064A     		ldr	r2, .L51
+ 854 0024 1168     		ldr	r1, [r2]
+ 855              	.LVL23:
+ 856 0026 074B     		ldr	r3, .L51+8
+ 857 0028 0B40     		ands	r3, r3, r1
+ 858 002a 1360     		str	r3, [r2]
+ 859 002c 7047     		bx	lr
+ 860              	.LVL24:
+ 861              	.L50:
+ 523:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 862              		.loc 1 523 0
+ 863 002e 044A     		ldr	r2, .L51+4
+ 864 0030 1168     		ldr	r1, [r2]
+ 865              	.LVL25:
+ 866 0032 044B     		ldr	r3, .L51+8
+ 867 0034 0B40     		ands	r3, r3, r1
+ 868 0036 1360     		str	r3, [r2]
+ 869 0038 7047     		bx	lr
+ 870              	.L52:
+ 871 003a 00BF     		.align	2
+ 872              	.L51:
+ 873 003c 800000A0 		.word	-1610612608
+ 874 0040 600000A0 		.word	-1610612640
+ 875 0044 FBFF0F00 		.word	1048571
+ 876              		.cfi_endproc
+ 877              	.LFE39:
+ 879              		.section	.text.FSMC_PCCARDCmd,"ax",%progbits
+ 880              		.align	1
+ 881              		.global	FSMC_PCCARDCmd
+ 882              		.syntax unified
+ 883              		.thumb
+ 884              		.thumb_func
+ 885              		.fpu softvfp
+ 887              	FSMC_PCCARDCmd:
+ 888              	.LFB40:
+ 528:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 529:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 530:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 531:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 532:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 533:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Enables or disables the PCCARD Memory Bank.
+ 534:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  NewState: new state of the PCCARD Memory Bank.  
+ 535:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 536:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval None
+ 537:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 538:Libraries/FWlib/src/stm32f10x_fsmc.c **** void FSMC_PCCARDCmd(FunctionalState NewState)
+ 539:Libraries/FWlib/src/stm32f10x_fsmc.c **** {
+ 889              		.loc 1 539 0
+ 890              		.cfi_startproc
+ 891              		@ args = 0, pretend = 0, frame = 0
+ 892              		@ frame_needed = 0, uses_anonymous_args = 0
+ 893              		@ link register save eliminated.
+ 894              	.LVL26:
+ 540:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ARM GAS  /tmp/ccIYPtT2.s 			page 27
+
+
+ 541:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 542:Libraries/FWlib/src/stm32f10x_fsmc.c ****   if (NewState != DISABLE)
+ 895              		.loc 1 542 0
+ 896 0000 28B9     		cbnz	r0, .L56
+ 543:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 544:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Enable the PCCARD Bank by setting the PBKEN bit in the PCR4 register */
+ 545:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank4->PCR4 |= PCR_PBKEN_Set;
+ 546:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 547:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else
+ 548:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 549:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Disable the PCCARD Bank by clearing the PBKEN bit in the PCR4 register */
+ 550:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank4->PCR4 &= PCR_PBKEN_Reset;
+ 897              		.loc 1 550 0
+ 898 0002 064A     		ldr	r2, .L57
+ 899 0004 1168     		ldr	r1, [r2]
+ 900 0006 064B     		ldr	r3, .L57+4
+ 901 0008 0B40     		ands	r3, r3, r1
+ 902 000a 1360     		str	r3, [r2]
+ 903 000c 7047     		bx	lr
+ 904              	.L56:
+ 545:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 905              		.loc 1 545 0
+ 906 000e 034A     		ldr	r2, .L57
+ 907 0010 1368     		ldr	r3, [r2]
+ 908 0012 43F00403 		orr	r3, r3, #4
+ 909 0016 1360     		str	r3, [r2]
+ 910 0018 7047     		bx	lr
+ 911              	.L58:
+ 912 001a 00BF     		.align	2
+ 913              	.L57:
+ 914 001c A00000A0 		.word	-1610612576
+ 915 0020 FBFF0F00 		.word	1048571
+ 916              		.cfi_endproc
+ 917              	.LFE40:
+ 919              		.section	.text.FSMC_NANDECCCmd,"ax",%progbits
+ 920              		.align	1
+ 921              		.global	FSMC_NANDECCCmd
+ 922              		.syntax unified
+ 923              		.thumb
+ 924              		.thumb_func
+ 925              		.fpu softvfp
+ 927              	FSMC_NANDECCCmd:
+ 928              	.LFB41:
+ 551:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 552:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 553:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 554:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 555:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Enables or disables the FSMC NAND ECC feature.
+ 556:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_Bank: specifies the FSMC Bank to be used
+ 557:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be one of the following values:
+ 558:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank2_NAND: FSMC Bank2 NAND 
+ 559:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank3_NAND: FSMC Bank3 NAND
+ 560:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  NewState: new state of the FSMC NAND ECC feature.  
+ 561:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 562:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval None
+ 563:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 564:Libraries/FWlib/src/stm32f10x_fsmc.c **** void FSMC_NANDECCCmd(uint32_t FSMC_Bank, FunctionalState NewState)
+ARM GAS  /tmp/ccIYPtT2.s 			page 28
+
+
+ 565:Libraries/FWlib/src/stm32f10x_fsmc.c **** {
+ 929              		.loc 1 565 0
+ 930              		.cfi_startproc
+ 931              		@ args = 0, pretend = 0, frame = 0
+ 932              		@ frame_needed = 0, uses_anonymous_args = 0
+ 933              		@ link register save eliminated.
+ 934              	.LVL27:
+ 566:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_NAND_BANK(FSMC_Bank));
+ 567:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 568:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 569:Libraries/FWlib/src/stm32f10x_fsmc.c ****   if (NewState != DISABLE)
+ 935              		.loc 1 569 0
+ 936 0000 69B1     		cbz	r1, .L60
+ 570:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 571:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Enable the selected NAND Bank ECC function by setting the ECCEN bit in the PCRx register */
+ 572:Libraries/FWlib/src/stm32f10x_fsmc.c ****     if(FSMC_Bank == FSMC_Bank2_NAND)
+ 937              		.loc 1 572 0
+ 938 0002 1028     		cmp	r0, #16
+ 939 0004 05D0     		beq	.L64
+ 573:Libraries/FWlib/src/stm32f10x_fsmc.c ****     {
+ 574:Libraries/FWlib/src/stm32f10x_fsmc.c ****       FSMC_Bank2->PCR2 |= PCR_ECCEN_Set;
+ 575:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 576:Libraries/FWlib/src/stm32f10x_fsmc.c ****     else
+ 577:Libraries/FWlib/src/stm32f10x_fsmc.c ****     {
+ 578:Libraries/FWlib/src/stm32f10x_fsmc.c ****       FSMC_Bank3->PCR3 |= PCR_ECCEN_Set;
+ 940              		.loc 1 578 0
+ 941 0006 0D4A     		ldr	r2, .L66
+ 942 0008 1368     		ldr	r3, [r2]
+ 943 000a 43F04003 		orr	r3, r3, #64
+ 944 000e 1360     		str	r3, [r2]
+ 945 0010 7047     		bx	lr
+ 946              	.L64:
+ 574:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 947              		.loc 1 574 0
+ 948 0012 0B4A     		ldr	r2, .L66+4
+ 949 0014 1368     		ldr	r3, [r2]
+ 950 0016 43F04003 		orr	r3, r3, #64
+ 951 001a 1360     		str	r3, [r2]
+ 952 001c 7047     		bx	lr
+ 953              	.L60:
+ 579:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 580:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 581:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else
+ 582:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 583:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Disable the selected NAND Bank ECC function by clearing the ECCEN bit in the PCRx register *
+ 584:Libraries/FWlib/src/stm32f10x_fsmc.c ****     if(FSMC_Bank == FSMC_Bank2_NAND)
+ 954              		.loc 1 584 0
+ 955 001e 1028     		cmp	r0, #16
+ 956 0020 05D0     		beq	.L65
+ 585:Libraries/FWlib/src/stm32f10x_fsmc.c ****     {
+ 586:Libraries/FWlib/src/stm32f10x_fsmc.c ****       FSMC_Bank2->PCR2 &= PCR_ECCEN_Reset;
+ 587:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 588:Libraries/FWlib/src/stm32f10x_fsmc.c ****     else
+ 589:Libraries/FWlib/src/stm32f10x_fsmc.c ****     {
+ 590:Libraries/FWlib/src/stm32f10x_fsmc.c ****       FSMC_Bank3->PCR3 &= PCR_ECCEN_Reset;
+ 957              		.loc 1 590 0
+ 958 0022 064A     		ldr	r2, .L66
+ARM GAS  /tmp/ccIYPtT2.s 			page 29
+
+
+ 959 0024 1168     		ldr	r1, [r2]
+ 960              	.LVL28:
+ 961 0026 074B     		ldr	r3, .L66+8
+ 962 0028 0B40     		ands	r3, r3, r1
+ 963 002a 1360     		str	r3, [r2]
+ 964 002c 7047     		bx	lr
+ 965              	.LVL29:
+ 966              	.L65:
+ 586:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 967              		.loc 1 586 0
+ 968 002e 044A     		ldr	r2, .L66+4
+ 969 0030 1168     		ldr	r1, [r2]
+ 970              	.LVL30:
+ 971 0032 044B     		ldr	r3, .L66+8
+ 972 0034 0B40     		ands	r3, r3, r1
+ 973 0036 1360     		str	r3, [r2]
+ 974 0038 7047     		bx	lr
+ 975              	.L67:
+ 976 003a 00BF     		.align	2
+ 977              	.L66:
+ 978 003c 800000A0 		.word	-1610612608
+ 979 0040 600000A0 		.word	-1610612640
+ 980 0044 BFFF0F00 		.word	1048511
+ 981              		.cfi_endproc
+ 982              	.LFE41:
+ 984              		.section	.text.FSMC_GetECC,"ax",%progbits
+ 985              		.align	1
+ 986              		.global	FSMC_GetECC
+ 987              		.syntax unified
+ 988              		.thumb
+ 989              		.thumb_func
+ 990              		.fpu softvfp
+ 992              	FSMC_GetECC:
+ 993              	.LFB42:
+ 591:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 592:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 593:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 594:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 595:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 596:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Returns the error correction code register value.
+ 597:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_Bank: specifies the FSMC Bank to be used
+ 598:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be one of the following values:
+ 599:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank2_NAND: FSMC Bank2 NAND 
+ 600:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank3_NAND: FSMC Bank3 NAND
+ 601:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval The Error Correction Code (ECC) value.
+ 602:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 603:Libraries/FWlib/src/stm32f10x_fsmc.c **** uint32_t FSMC_GetECC(uint32_t FSMC_Bank)
+ 604:Libraries/FWlib/src/stm32f10x_fsmc.c **** {
+ 994              		.loc 1 604 0
+ 995              		.cfi_startproc
+ 996              		@ args = 0, pretend = 0, frame = 0
+ 997              		@ frame_needed = 0, uses_anonymous_args = 0
+ 998              		@ link register save eliminated.
+ 999              	.LVL31:
+ 605:Libraries/FWlib/src/stm32f10x_fsmc.c ****   uint32_t eccval = 0x00000000;
+ 606:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 607:Libraries/FWlib/src/stm32f10x_fsmc.c ****   if(FSMC_Bank == FSMC_Bank2_NAND)
+ARM GAS  /tmp/ccIYPtT2.s 			page 30
+
+
+ 1000              		.loc 1 607 0
+ 1001 0000 1028     		cmp	r0, #16
+ 1002 0002 02D0     		beq	.L71
+ 608:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 609:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Get the ECCR2 register value */
+ 610:Libraries/FWlib/src/stm32f10x_fsmc.c ****     eccval = FSMC_Bank2->ECCR2;
+ 611:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 612:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else
+ 613:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 614:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Get the ECCR3 register value */
+ 615:Libraries/FWlib/src/stm32f10x_fsmc.c ****     eccval = FSMC_Bank3->ECCR3;
+ 1003              		.loc 1 615 0
+ 1004 0004 024B     		ldr	r3, .L72
+ 1005 0006 5869     		ldr	r0, [r3, #20]
+ 1006              	.LVL32:
+ 616:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 617:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Return the error correction code value */
+ 618:Libraries/FWlib/src/stm32f10x_fsmc.c ****   return(eccval);
+ 619:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 1007              		.loc 1 619 0
+ 1008 0008 7047     		bx	lr
+ 1009              	.LVL33:
+ 1010              	.L71:
+ 610:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 1011              		.loc 1 610 0
+ 1012 000a 024B     		ldr	r3, .L72+4
+ 1013 000c 5869     		ldr	r0, [r3, #20]
+ 1014              	.LVL34:
+ 1015 000e 7047     		bx	lr
+ 1016              	.L73:
+ 1017              		.align	2
+ 1018              	.L72:
+ 1019 0010 800000A0 		.word	-1610612608
+ 1020 0014 600000A0 		.word	-1610612640
+ 1021              		.cfi_endproc
+ 1022              	.LFE42:
+ 1024              		.section	.text.FSMC_ITConfig,"ax",%progbits
+ 1025              		.align	1
+ 1026              		.global	FSMC_ITConfig
+ 1027              		.syntax unified
+ 1028              		.thumb
+ 1029              		.thumb_func
+ 1030              		.fpu softvfp
+ 1032              	FSMC_ITConfig:
+ 1033              	.LFB43:
+ 620:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 621:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 622:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Enables or disables the specified FSMC interrupts.
+ 623:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_Bank: specifies the FSMC Bank to be used
+ 624:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be one of the following values:
+ 625:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank2_NAND: FSMC Bank2 NAND 
+ 626:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank3_NAND: FSMC Bank3 NAND
+ 627:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank4_PCCARD: FSMC Bank4 PCCARD
+ 628:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_IT: specifies the FSMC interrupt sources to be enabled or disabled.
+ 629:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be any combination of the following values:
+ 630:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_IT_RisingEdge: Rising edge detection interrupt. 
+ 631:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_IT_Level: Level edge detection interrupt.
+ARM GAS  /tmp/ccIYPtT2.s 			page 31
+
+
+ 632:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_IT_FallingEdge: Falling edge detection interrupt.
+ 633:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  NewState: new state of the specified FSMC interrupts.
+ 634:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 635:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval None
+ 636:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 637:Libraries/FWlib/src/stm32f10x_fsmc.c **** void FSMC_ITConfig(uint32_t FSMC_Bank, uint32_t FSMC_IT, FunctionalState NewState)
+ 638:Libraries/FWlib/src/stm32f10x_fsmc.c **** {
+ 1034              		.loc 1 638 0
+ 1035              		.cfi_startproc
+ 1036              		@ args = 0, pretend = 0, frame = 0
+ 1037              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1038              		@ link register save eliminated.
+ 1039              	.LVL35:
+ 639:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_IT_BANK(FSMC_Bank));
+ 640:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_IT(FSMC_IT));	
+ 641:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 642:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 643:Libraries/FWlib/src/stm32f10x_fsmc.c ****   if (NewState != DISABLE)
+ 1040              		.loc 1 643 0
+ 1041 0000 9AB1     		cbz	r2, .L75
+ 644:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 645:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Enable the selected FSMC_Bank2 interrupts */
+ 646:Libraries/FWlib/src/stm32f10x_fsmc.c ****     if(FSMC_Bank == FSMC_Bank2_NAND)
+ 1042              		.loc 1 646 0
+ 1043 0002 1028     		cmp	r0, #16
+ 1044 0004 07D0     		beq	.L81
+ 647:Libraries/FWlib/src/stm32f10x_fsmc.c ****     {
+ 648:Libraries/FWlib/src/stm32f10x_fsmc.c ****       FSMC_Bank2->SR2 |= FSMC_IT;
+ 649:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 650:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Enable the selected FSMC_Bank3 interrupts */
+ 651:Libraries/FWlib/src/stm32f10x_fsmc.c ****     else if (FSMC_Bank == FSMC_Bank3_NAND)
+ 1045              		.loc 1 651 0
+ 1046 0006 B0F5807F 		cmp	r0, #256
+ 1047 000a 09D0     		beq	.L82
+ 652:Libraries/FWlib/src/stm32f10x_fsmc.c ****     {
+ 653:Libraries/FWlib/src/stm32f10x_fsmc.c ****       FSMC_Bank3->SR3 |= FSMC_IT;
+ 654:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 655:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Enable the selected FSMC_Bank4 interrupts */
+ 656:Libraries/FWlib/src/stm32f10x_fsmc.c ****     else
+ 657:Libraries/FWlib/src/stm32f10x_fsmc.c ****     {
+ 658:Libraries/FWlib/src/stm32f10x_fsmc.c ****       FSMC_Bank4->SR4 |= FSMC_IT;    
+ 1048              		.loc 1 658 0
+ 1049 000c 124A     		ldr	r2, .L85
+ 1050              	.LVL36:
+ 1051 000e 5368     		ldr	r3, [r2, #4]
+ 1052 0010 1943     		orrs	r1, r1, r3
+ 1053              	.LVL37:
+ 1054 0012 5160     		str	r1, [r2, #4]
+ 1055 0014 7047     		bx	lr
+ 1056              	.LVL38:
+ 1057              	.L81:
+ 648:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 1058              		.loc 1 648 0
+ 1059 0016 114A     		ldr	r2, .L85+4
+ 1060              	.LVL39:
+ 1061 0018 5368     		ldr	r3, [r2, #4]
+ 1062 001a 1943     		orrs	r1, r1, r3
+ARM GAS  /tmp/ccIYPtT2.s 			page 32
+
+
+ 1063              	.LVL40:
+ 1064 001c 5160     		str	r1, [r2, #4]
+ 1065 001e 7047     		bx	lr
+ 1066              	.LVL41:
+ 1067              	.L82:
+ 653:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 1068              		.loc 1 653 0
+ 1069 0020 0F4A     		ldr	r2, .L85+8
+ 1070              	.LVL42:
+ 1071 0022 5368     		ldr	r3, [r2, #4]
+ 1072 0024 1943     		orrs	r1, r1, r3
+ 1073              	.LVL43:
+ 1074 0026 5160     		str	r1, [r2, #4]
+ 1075 0028 7047     		bx	lr
+ 1076              	.LVL44:
+ 1077              	.L75:
+ 659:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 660:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 661:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else
+ 662:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 663:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Disable the selected FSMC_Bank2 interrupts */
+ 664:Libraries/FWlib/src/stm32f10x_fsmc.c ****     if(FSMC_Bank == FSMC_Bank2_NAND)
+ 1078              		.loc 1 664 0
+ 1079 002a 1028     		cmp	r0, #16
+ 1080 002c 08D0     		beq	.L83
+ 665:Libraries/FWlib/src/stm32f10x_fsmc.c ****     {
+ 666:Libraries/FWlib/src/stm32f10x_fsmc.c ****       
+ 667:Libraries/FWlib/src/stm32f10x_fsmc.c ****       FSMC_Bank2->SR2 &= (uint32_t)~FSMC_IT;
+ 668:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 669:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Disable the selected FSMC_Bank3 interrupts */
+ 670:Libraries/FWlib/src/stm32f10x_fsmc.c ****     else if (FSMC_Bank == FSMC_Bank3_NAND)
+ 1081              		.loc 1 670 0
+ 1082 002e B0F5807F 		cmp	r0, #256
+ 1083 0032 0BD0     		beq	.L84
+ 671:Libraries/FWlib/src/stm32f10x_fsmc.c ****     {
+ 672:Libraries/FWlib/src/stm32f10x_fsmc.c ****       FSMC_Bank3->SR3 &= (uint32_t)~FSMC_IT;
+ 673:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 674:Libraries/FWlib/src/stm32f10x_fsmc.c ****     /* Disable the selected FSMC_Bank4 interrupts */
+ 675:Libraries/FWlib/src/stm32f10x_fsmc.c ****     else
+ 676:Libraries/FWlib/src/stm32f10x_fsmc.c ****     {
+ 677:Libraries/FWlib/src/stm32f10x_fsmc.c ****       FSMC_Bank4->SR4 &= (uint32_t)~FSMC_IT;    
+ 1084              		.loc 1 677 0
+ 1085 0034 084A     		ldr	r2, .L85
+ 1086              	.LVL45:
+ 1087 0036 5368     		ldr	r3, [r2, #4]
+ 1088 0038 23EA0101 		bic	r1, r3, r1
+ 1089              	.LVL46:
+ 1090 003c 5160     		str	r1, [r2, #4]
+ 1091 003e 7047     		bx	lr
+ 1092              	.LVL47:
+ 1093              	.L83:
+ 667:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 1094              		.loc 1 667 0
+ 1095 0040 064A     		ldr	r2, .L85+4
+ 1096              	.LVL48:
+ 1097 0042 5368     		ldr	r3, [r2, #4]
+ 1098 0044 23EA0101 		bic	r1, r3, r1
+ARM GAS  /tmp/ccIYPtT2.s 			page 33
+
+
+ 1099              	.LVL49:
+ 1100 0048 5160     		str	r1, [r2, #4]
+ 1101 004a 7047     		bx	lr
+ 1102              	.LVL50:
+ 1103              	.L84:
+ 672:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 1104              		.loc 1 672 0
+ 1105 004c 044A     		ldr	r2, .L85+8
+ 1106              	.LVL51:
+ 1107 004e 5368     		ldr	r3, [r2, #4]
+ 1108 0050 23EA0101 		bic	r1, r3, r1
+ 1109              	.LVL52:
+ 1110 0054 5160     		str	r1, [r2, #4]
+ 1111 0056 7047     		bx	lr
+ 1112              	.L86:
+ 1113              		.align	2
+ 1114              	.L85:
+ 1115 0058 A00000A0 		.word	-1610612576
+ 1116 005c 600000A0 		.word	-1610612640
+ 1117 0060 800000A0 		.word	-1610612608
+ 1118              		.cfi_endproc
+ 1119              	.LFE43:
+ 1121              		.section	.text.FSMC_GetFlagStatus,"ax",%progbits
+ 1122              		.align	1
+ 1123              		.global	FSMC_GetFlagStatus
+ 1124              		.syntax unified
+ 1125              		.thumb
+ 1126              		.thumb_func
+ 1127              		.fpu softvfp
+ 1129              	FSMC_GetFlagStatus:
+ 1130              	.LFB44:
+ 678:Libraries/FWlib/src/stm32f10x_fsmc.c ****     }
+ 679:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 680:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 681:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 682:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 683:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Checks whether the specified FSMC flag is set or not.
+ 684:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_Bank: specifies the FSMC Bank to be used
+ 685:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be one of the following values:
+ 686:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank2_NAND: FSMC Bank2 NAND 
+ 687:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank3_NAND: FSMC Bank3 NAND
+ 688:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank4_PCCARD: FSMC Bank4 PCCARD
+ 689:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_FLAG: specifies the flag to check.
+ 690:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be one of the following values:
+ 691:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_FLAG_RisingEdge: Rising egde detection Flag.
+ 692:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_FLAG_Level: Level detection Flag.
+ 693:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_FLAG_FallingEdge: Falling egde detection Flag.
+ 694:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_FLAG_FEMPT: Fifo empty Flag. 
+ 695:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval The new state of FSMC_FLAG (SET or RESET).
+ 696:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 697:Libraries/FWlib/src/stm32f10x_fsmc.c **** FlagStatus FSMC_GetFlagStatus(uint32_t FSMC_Bank, uint32_t FSMC_FLAG)
+ 698:Libraries/FWlib/src/stm32f10x_fsmc.c **** {
+ 1131              		.loc 1 698 0
+ 1132              		.cfi_startproc
+ 1133              		@ args = 0, pretend = 0, frame = 0
+ 1134              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1135              		@ link register save eliminated.
+ARM GAS  /tmp/ccIYPtT2.s 			page 34
+
+
+ 1136              	.LVL53:
+ 699:Libraries/FWlib/src/stm32f10x_fsmc.c ****   FlagStatus bitstatus = RESET;
+ 700:Libraries/FWlib/src/stm32f10x_fsmc.c ****   uint32_t tmpsr = 0x00000000;
+ 701:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 702:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Check the parameters */
+ 703:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_GETFLAG_BANK(FSMC_Bank));
+ 704:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_GET_FLAG(FSMC_FLAG));
+ 705:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 706:Libraries/FWlib/src/stm32f10x_fsmc.c ****   if(FSMC_Bank == FSMC_Bank2_NAND)
+ 1137              		.loc 1 706 0
+ 1138 0000 1028     		cmp	r0, #16
+ 1139 0002 08D0     		beq	.L93
+ 707:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 708:Libraries/FWlib/src/stm32f10x_fsmc.c ****     tmpsr = FSMC_Bank2->SR2;
+ 709:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }  
+ 710:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else if(FSMC_Bank == FSMC_Bank3_NAND)
+ 1140              		.loc 1 710 0
+ 1141 0004 B0F5807F 		cmp	r0, #256
+ 1142 0008 08D0     		beq	.L94
+ 711:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 712:Libraries/FWlib/src/stm32f10x_fsmc.c ****     tmpsr = FSMC_Bank3->SR3;
+ 713:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 714:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* FSMC_Bank4_PCCARD*/
+ 715:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else
+ 716:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 717:Libraries/FWlib/src/stm32f10x_fsmc.c ****     tmpsr = FSMC_Bank4->SR4;
+ 1143              		.loc 1 717 0
+ 1144 000a 074B     		ldr	r3, .L96
+ 1145 000c 5B68     		ldr	r3, [r3, #4]
+ 1146              	.LVL54:
+ 1147              	.L89:
+ 718:Libraries/FWlib/src/stm32f10x_fsmc.c ****   } 
+ 719:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 720:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Get the flag status */
+ 721:Libraries/FWlib/src/stm32f10x_fsmc.c ****   if ((tmpsr & FSMC_FLAG) != (uint16_t)RESET )
+ 1148              		.loc 1 721 0
+ 1149 000e 0B42     		tst	r3, r1
+ 1150 0010 07D1     		bne	.L95
+ 722:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 723:Libraries/FWlib/src/stm32f10x_fsmc.c ****     bitstatus = SET;
+ 724:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 725:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else
+ 726:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 727:Libraries/FWlib/src/stm32f10x_fsmc.c ****     bitstatus = RESET;
+ 1151              		.loc 1 727 0
+ 1152 0012 0020     		movs	r0, #0
+ 1153              	.LVL55:
+ 728:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 729:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Return the flag status */
+ 730:Libraries/FWlib/src/stm32f10x_fsmc.c ****   return bitstatus;
+ 731:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 1154              		.loc 1 731 0
+ 1155 0014 7047     		bx	lr
+ 1156              	.LVL56:
+ 1157              	.L93:
+ 708:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }  
+ 1158              		.loc 1 708 0
+ARM GAS  /tmp/ccIYPtT2.s 			page 35
+
+
+ 1159 0016 054B     		ldr	r3, .L96+4
+ 1160 0018 5B68     		ldr	r3, [r3, #4]
+ 1161              	.LVL57:
+ 1162 001a F8E7     		b	.L89
+ 1163              	.LVL58:
+ 1164              	.L94:
+ 712:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 1165              		.loc 1 712 0
+ 1166 001c 044B     		ldr	r3, .L96+8
+ 1167 001e 5B68     		ldr	r3, [r3, #4]
+ 1168              	.LVL59:
+ 1169 0020 F5E7     		b	.L89
+ 1170              	.L95:
+ 723:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 1171              		.loc 1 723 0
+ 1172 0022 0120     		movs	r0, #1
+ 1173              	.LVL60:
+ 1174 0024 7047     		bx	lr
+ 1175              	.L97:
+ 1176 0026 00BF     		.align	2
+ 1177              	.L96:
+ 1178 0028 A00000A0 		.word	-1610612576
+ 1179 002c 600000A0 		.word	-1610612640
+ 1180 0030 800000A0 		.word	-1610612608
+ 1181              		.cfi_endproc
+ 1182              	.LFE44:
+ 1184              		.section	.text.FSMC_ClearFlag,"ax",%progbits
+ 1185              		.align	1
+ 1186              		.global	FSMC_ClearFlag
+ 1187              		.syntax unified
+ 1188              		.thumb
+ 1189              		.thumb_func
+ 1190              		.fpu softvfp
+ 1192              	FSMC_ClearFlag:
+ 1193              	.LFB45:
+ 732:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 733:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 734:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Clears the FSMC's pending flags.
+ 735:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_Bank: specifies the FSMC Bank to be used
+ 736:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be one of the following values:
+ 737:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank2_NAND: FSMC Bank2 NAND 
+ 738:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank3_NAND: FSMC Bank3 NAND
+ 739:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank4_PCCARD: FSMC Bank4 PCCARD
+ 740:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_FLAG: specifies the flag to clear.
+ 741:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be any combination of the following values:
+ 742:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_FLAG_RisingEdge: Rising egde detection Flag.
+ 743:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_FLAG_Level: Level detection Flag.
+ 744:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_FLAG_FallingEdge: Falling egde detection Flag.
+ 745:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval None
+ 746:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 747:Libraries/FWlib/src/stm32f10x_fsmc.c **** void FSMC_ClearFlag(uint32_t FSMC_Bank, uint32_t FSMC_FLAG)
+ 748:Libraries/FWlib/src/stm32f10x_fsmc.c **** {
+ 1194              		.loc 1 748 0
+ 1195              		.cfi_startproc
+ 1196              		@ args = 0, pretend = 0, frame = 0
+ 1197              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1198              		@ link register save eliminated.
+ARM GAS  /tmp/ccIYPtT2.s 			page 36
+
+
+ 1199              	.LVL61:
+ 749:Libraries/FWlib/src/stm32f10x_fsmc.c ****  /* Check the parameters */
+ 750:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_GETFLAG_BANK(FSMC_Bank));
+ 751:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_CLEAR_FLAG(FSMC_FLAG)) ;
+ 752:Libraries/FWlib/src/stm32f10x_fsmc.c ****     
+ 753:Libraries/FWlib/src/stm32f10x_fsmc.c ****   if(FSMC_Bank == FSMC_Bank2_NAND)
+ 1200              		.loc 1 753 0
+ 1201 0000 1028     		cmp	r0, #16
+ 1202 0002 08D0     		beq	.L102
+ 754:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 755:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank2->SR2 &= ~FSMC_FLAG; 
+ 756:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }  
+ 757:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else if(FSMC_Bank == FSMC_Bank3_NAND)
+ 1203              		.loc 1 757 0
+ 1204 0004 B0F5807F 		cmp	r0, #256
+ 1205 0008 0BD0     		beq	.L103
+ 758:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 759:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank3->SR3 &= ~FSMC_FLAG;
+ 760:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 761:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* FSMC_Bank4_PCCARD*/
+ 762:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else
+ 763:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 764:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank4->SR4 &= ~FSMC_FLAG;
+ 1206              		.loc 1 764 0
+ 1207 000a 094A     		ldr	r2, .L104
+ 1208 000c 5368     		ldr	r3, [r2, #4]
+ 1209 000e 23EA0101 		bic	r1, r3, r1
+ 1210              	.LVL62:
+ 1211 0012 5160     		str	r1, [r2, #4]
+ 1212 0014 7047     		bx	lr
+ 1213              	.LVL63:
+ 1214              	.L102:
+ 755:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }  
+ 1215              		.loc 1 755 0
+ 1216 0016 074A     		ldr	r2, .L104+4
+ 1217 0018 5368     		ldr	r3, [r2, #4]
+ 1218 001a 23EA0101 		bic	r1, r3, r1
+ 1219              	.LVL64:
+ 1220 001e 5160     		str	r1, [r2, #4]
+ 1221 0020 7047     		bx	lr
+ 1222              	.LVL65:
+ 1223              	.L103:
+ 759:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 1224              		.loc 1 759 0
+ 1225 0022 054A     		ldr	r2, .L104+8
+ 1226 0024 5368     		ldr	r3, [r2, #4]
+ 1227 0026 23EA0101 		bic	r1, r3, r1
+ 1228              	.LVL66:
+ 1229 002a 5160     		str	r1, [r2, #4]
+ 1230 002c 7047     		bx	lr
+ 1231              	.L105:
+ 1232 002e 00BF     		.align	2
+ 1233              	.L104:
+ 1234 0030 A00000A0 		.word	-1610612576
+ 1235 0034 600000A0 		.word	-1610612640
+ 1236 0038 800000A0 		.word	-1610612608
+ 1237              		.cfi_endproc
+ARM GAS  /tmp/ccIYPtT2.s 			page 37
+
+
+ 1238              	.LFE45:
+ 1240              		.section	.text.FSMC_GetITStatus,"ax",%progbits
+ 1241              		.align	1
+ 1242              		.global	FSMC_GetITStatus
+ 1243              		.syntax unified
+ 1244              		.thumb
+ 1245              		.thumb_func
+ 1246              		.fpu softvfp
+ 1248              	FSMC_GetITStatus:
+ 1249              	.LFB46:
+ 765:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 766:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 767:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 768:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 769:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Checks whether the specified FSMC interrupt has occurred or not.
+ 770:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_Bank: specifies the FSMC Bank to be used
+ 771:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be one of the following values:
+ 772:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank2_NAND: FSMC Bank2 NAND 
+ 773:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank3_NAND: FSMC Bank3 NAND
+ 774:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank4_PCCARD: FSMC Bank4 PCCARD
+ 775:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_IT: specifies the FSMC interrupt source to check.
+ 776:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be one of the following values:
+ 777:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_IT_RisingEdge: Rising edge detection interrupt. 
+ 778:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_IT_Level: Level edge detection interrupt.
+ 779:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_IT_FallingEdge: Falling edge detection interrupt. 
+ 780:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval The new state of FSMC_IT (SET or RESET).
+ 781:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 782:Libraries/FWlib/src/stm32f10x_fsmc.c **** ITStatus FSMC_GetITStatus(uint32_t FSMC_Bank, uint32_t FSMC_IT)
+ 783:Libraries/FWlib/src/stm32f10x_fsmc.c **** {
+ 1250              		.loc 1 783 0
+ 1251              		.cfi_startproc
+ 1252              		@ args = 0, pretend = 0, frame = 0
+ 1253              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1254              		@ link register save eliminated.
+ 1255              	.LVL67:
+ 784:Libraries/FWlib/src/stm32f10x_fsmc.c ****   ITStatus bitstatus = RESET;
+ 785:Libraries/FWlib/src/stm32f10x_fsmc.c ****   uint32_t tmpsr = 0x0, itstatus = 0x0, itenable = 0x0; 
+ 786:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 787:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Check the parameters */
+ 788:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_IT_BANK(FSMC_Bank));
+ 789:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_GET_IT(FSMC_IT));
+ 790:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 791:Libraries/FWlib/src/stm32f10x_fsmc.c ****   if(FSMC_Bank == FSMC_Bank2_NAND)
+ 1256              		.loc 1 791 0
+ 1257 0000 1028     		cmp	r0, #16
+ 1258 0002 0BD0     		beq	.L113
+ 792:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 793:Libraries/FWlib/src/stm32f10x_fsmc.c ****     tmpsr = FSMC_Bank2->SR2;
+ 794:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }  
+ 795:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else if(FSMC_Bank == FSMC_Bank3_NAND)
+ 1259              		.loc 1 795 0
+ 1260 0004 B0F5807F 		cmp	r0, #256
+ 1261 0008 0BD0     		beq	.L114
+ 796:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 797:Libraries/FWlib/src/stm32f10x_fsmc.c ****     tmpsr = FSMC_Bank3->SR3;
+ 798:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 799:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* FSMC_Bank4_PCCARD*/
+ARM GAS  /tmp/ccIYPtT2.s 			page 38
+
+
+ 800:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else
+ 801:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 802:Libraries/FWlib/src/stm32f10x_fsmc.c ****     tmpsr = FSMC_Bank4->SR4;
+ 1262              		.loc 1 802 0
+ 1263 000a 094B     		ldr	r3, .L115
+ 1264 000c 5B68     		ldr	r3, [r3, #4]
+ 1265              	.LVL68:
+ 1266              	.L108:
+ 803:Libraries/FWlib/src/stm32f10x_fsmc.c ****   } 
+ 804:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 805:Libraries/FWlib/src/stm32f10x_fsmc.c ****   itstatus = tmpsr & FSMC_IT;
+ 806:Libraries/FWlib/src/stm32f10x_fsmc.c ****   
+ 807:Libraries/FWlib/src/stm32f10x_fsmc.c ****   itenable = tmpsr & (FSMC_IT >> 3);
+ 1267              		.loc 1 807 0
+ 1268 000e 03EAD102 		and	r2, r3, r1, lsr #3
+ 1269              	.LVL69:
+ 808:Libraries/FWlib/src/stm32f10x_fsmc.c ****   if ((itstatus != (uint32_t)RESET)  && (itenable != (uint32_t)RESET))
+ 1270              		.loc 1 808 0
+ 1271 0012 0B42     		tst	r3, r1
+ 1272 0014 08D0     		beq	.L111
+ 1273              		.loc 1 808 0 is_stmt 0 discriminator 1
+ 1274 0016 4AB9     		cbnz	r2, .L112
+ 809:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 810:Libraries/FWlib/src/stm32f10x_fsmc.c ****     bitstatus = SET;
+ 811:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 812:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else
+ 813:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 814:Libraries/FWlib/src/stm32f10x_fsmc.c ****     bitstatus = RESET;
+ 1275              		.loc 1 814 0 is_stmt 1
+ 1276 0018 0020     		movs	r0, #0
+ 1277              	.LVL70:
+ 1278 001a 7047     		bx	lr
+ 1279              	.LVL71:
+ 1280              	.L113:
+ 793:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }  
+ 1281              		.loc 1 793 0
+ 1282 001c 054B     		ldr	r3, .L115+4
+ 1283 001e 5B68     		ldr	r3, [r3, #4]
+ 1284              	.LVL72:
+ 1285 0020 F5E7     		b	.L108
+ 1286              	.LVL73:
+ 1287              	.L114:
+ 797:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 1288              		.loc 1 797 0
+ 1289 0022 054B     		ldr	r3, .L115+8
+ 1290 0024 5B68     		ldr	r3, [r3, #4]
+ 1291              	.LVL74:
+ 1292 0026 F2E7     		b	.L108
+ 1293              	.LVL75:
+ 1294              	.L111:
+ 1295              		.loc 1 814 0
+ 1296 0028 0020     		movs	r0, #0
+ 1297              	.LVL76:
+ 1298 002a 7047     		bx	lr
+ 1299              	.LVL77:
+ 1300              	.L112:
+ 810:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ARM GAS  /tmp/ccIYPtT2.s 			page 39
+
+
+ 1301              		.loc 1 810 0
+ 1302 002c 0120     		movs	r0, #1
+ 1303              	.LVL78:
+ 815:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 816:Libraries/FWlib/src/stm32f10x_fsmc.c ****   return bitstatus; 
+ 817:Libraries/FWlib/src/stm32f10x_fsmc.c **** }
+ 1304              		.loc 1 817 0
+ 1305 002e 7047     		bx	lr
+ 1306              	.L116:
+ 1307              		.align	2
+ 1308              	.L115:
+ 1309 0030 A00000A0 		.word	-1610612576
+ 1310 0034 600000A0 		.word	-1610612640
+ 1311 0038 800000A0 		.word	-1610612608
+ 1312              		.cfi_endproc
+ 1313              	.LFE46:
+ 1315              		.section	.text.FSMC_ClearITPendingBit,"ax",%progbits
+ 1316              		.align	1
+ 1317              		.global	FSMC_ClearITPendingBit
+ 1318              		.syntax unified
+ 1319              		.thumb
+ 1320              		.thumb_func
+ 1321              		.fpu softvfp
+ 1323              	FSMC_ClearITPendingBit:
+ 1324              	.LFB47:
+ 818:Libraries/FWlib/src/stm32f10x_fsmc.c **** 
+ 819:Libraries/FWlib/src/stm32f10x_fsmc.c **** /**
+ 820:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @brief  Clears the FSMC's interrupt pending bits.
+ 821:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_Bank: specifies the FSMC Bank to be used
+ 822:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be one of the following values:
+ 823:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank2_NAND: FSMC Bank2 NAND 
+ 824:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank3_NAND: FSMC Bank3 NAND
+ 825:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_Bank4_PCCARD: FSMC Bank4 PCCARD
+ 826:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @param  FSMC_IT: specifies the interrupt pending bit to clear.
+ 827:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *   This parameter can be any combination of the following values:
+ 828:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_IT_RisingEdge: Rising edge detection interrupt. 
+ 829:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_IT_Level: Level edge detection interrupt.
+ 830:Libraries/FWlib/src/stm32f10x_fsmc.c ****   *     @arg FSMC_IT_FallingEdge: Falling edge detection interrupt.
+ 831:Libraries/FWlib/src/stm32f10x_fsmc.c ****   * @retval None
+ 832:Libraries/FWlib/src/stm32f10x_fsmc.c ****   */
+ 833:Libraries/FWlib/src/stm32f10x_fsmc.c **** void FSMC_ClearITPendingBit(uint32_t FSMC_Bank, uint32_t FSMC_IT)
+ 834:Libraries/FWlib/src/stm32f10x_fsmc.c **** {
+ 1325              		.loc 1 834 0
+ 1326              		.cfi_startproc
+ 1327              		@ args = 0, pretend = 0, frame = 0
+ 1328              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1329              		@ link register save eliminated.
+ 1330              	.LVL79:
+ 835:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* Check the parameters */
+ 836:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_IT_BANK(FSMC_Bank));
+ 837:Libraries/FWlib/src/stm32f10x_fsmc.c ****   assert_param(IS_FSMC_IT(FSMC_IT));
+ 838:Libraries/FWlib/src/stm32f10x_fsmc.c ****     
+ 839:Libraries/FWlib/src/stm32f10x_fsmc.c ****   if(FSMC_Bank == FSMC_Bank2_NAND)
+ 1331              		.loc 1 839 0
+ 1332 0000 1028     		cmp	r0, #16
+ 1333 0002 08D0     		beq	.L121
+ 840:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ARM GAS  /tmp/ccIYPtT2.s 			page 40
+
+
+ 841:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank2->SR2 &= ~(FSMC_IT >> 3); 
+ 842:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }  
+ 843:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else if(FSMC_Bank == FSMC_Bank3_NAND)
+ 1334              		.loc 1 843 0
+ 1335 0004 B0F5807F 		cmp	r0, #256
+ 1336 0008 0BD0     		beq	.L122
+ 844:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 845:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank3->SR3 &= ~(FSMC_IT >> 3);
+ 846:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 847:Libraries/FWlib/src/stm32f10x_fsmc.c ****   /* FSMC_Bank4_PCCARD*/
+ 848:Libraries/FWlib/src/stm32f10x_fsmc.c ****   else
+ 849:Libraries/FWlib/src/stm32f10x_fsmc.c ****   {
+ 850:Libraries/FWlib/src/stm32f10x_fsmc.c ****     FSMC_Bank4->SR4 &= ~(FSMC_IT >> 3);
+ 1337              		.loc 1 850 0
+ 1338 000a 094A     		ldr	r2, .L123
+ 1339 000c 5368     		ldr	r3, [r2, #4]
+ 1340 000e 23EAD101 		bic	r1, r3, r1, lsr #3
+ 1341              	.LVL80:
+ 1342 0012 5160     		str	r1, [r2, #4]
+ 1343 0014 7047     		bx	lr
+ 1344              	.LVL81:
+ 1345              	.L121:
+ 841:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }  
+ 1346              		.loc 1 841 0
+ 1347 0016 074A     		ldr	r2, .L123+4
+ 1348 0018 5368     		ldr	r3, [r2, #4]
+ 1349 001a 23EAD101 		bic	r1, r3, r1, lsr #3
+ 1350              	.LVL82:
+ 1351 001e 5160     		str	r1, [r2, #4]
+ 1352 0020 7047     		bx	lr
+ 1353              	.LVL83:
+ 1354              	.L122:
+ 845:Libraries/FWlib/src/stm32f10x_fsmc.c ****   }
+ 1355              		.loc 1 845 0
+ 1356 0022 054A     		ldr	r2, .L123+8
+ 1357 0024 5368     		ldr	r3, [r2, #4]
+ 1358 0026 23EAD101 		bic	r1, r3, r1, lsr #3
+ 1359              	.LVL84:
+ 1360 002a 5160     		str	r1, [r2, #4]
+ 1361 002c 7047     		bx	lr
+ 1362              	.L124:
+ 1363 002e 00BF     		.align	2
+ 1364              	.L123:
+ 1365 0030 A00000A0 		.word	-1610612576
+ 1366 0034 600000A0 		.word	-1610612640
+ 1367 0038 800000A0 		.word	-1610612608
+ 1368              		.cfi_endproc
+ 1369              	.LFE47:
+ 1371              		.text
+ 1372              	.Letext0:
+ 1373              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 1374              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 1375              		.file 4 "Libraries/CMSIS/core_cm3.h"
+ 1376              		.file 5 "Libraries/CMSIS/system_stm32f10x.h"
+ 1377              		.file 6 "Libraries/CMSIS/stm32f10x.h"
+ 1378              		.file 7 "Libraries/FWlib/inc/stm32f10x_fsmc.h"
+ARM GAS  /tmp/ccIYPtT2.s 			page 41
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f10x_fsmc.c
+     /tmp/ccIYPtT2.s:16     .text.FSMC_NORSRAMDeInit:0000000000000000 $t
+     /tmp/ccIYPtT2.s:23     .text.FSMC_NORSRAMDeInit:0000000000000000 FSMC_NORSRAMDeInit
+     /tmp/ccIYPtT2.s:61     .text.FSMC_NANDDeInit:0000000000000000 $t
+     /tmp/ccIYPtT2.s:68     .text.FSMC_NANDDeInit:0000000000000000 FSMC_NANDDeInit
+     /tmp/ccIYPtT2.s:109    .text.FSMC_NANDDeInit:000000000000002c $d
+     /tmp/ccIYPtT2.s:115    .text.FSMC_PCCARDDeInit:0000000000000000 $t
+     /tmp/ccIYPtT2.s:122    .text.FSMC_PCCARDDeInit:0000000000000000 FSMC_PCCARDDeInit
+     /tmp/ccIYPtT2.s:147    .text.FSMC_PCCARDDeInit:0000000000000018 $d
+     /tmp/ccIYPtT2.s:152    .text.FSMC_NORSRAMInit:0000000000000000 $t
+     /tmp/ccIYPtT2.s:159    .text.FSMC_NORSRAMInit:0000000000000000 FSMC_NORSRAMInit
+     /tmp/ccIYPtT2.s:323    .text.FSMC_NORSRAMInit:00000000000000c8 $d
+     /tmp/ccIYPtT2.s:328    .text.FSMC_NANDInit:0000000000000000 $t
+     /tmp/ccIYPtT2.s:335    .text.FSMC_NANDInit:0000000000000000 FSMC_NANDInit
+     /tmp/ccIYPtT2.s:441    .text.FSMC_NANDInit:0000000000000068 $d
+     /tmp/ccIYPtT2.s:447    .text.FSMC_PCCARDInit:0000000000000000 $t
+     /tmp/ccIYPtT2.s:454    .text.FSMC_PCCARDInit:0000000000000000 FSMC_PCCARDInit
+     /tmp/ccIYPtT2.s:541    .text.FSMC_PCCARDInit:0000000000000064 $d
+     /tmp/ccIYPtT2.s:546    .text.FSMC_NORSRAMStructInit:0000000000000000 $t
+     /tmp/ccIYPtT2.s:553    .text.FSMC_NORSRAMStructInit:0000000000000000 FSMC_NORSRAMStructInit
+     /tmp/ccIYPtT2.s:649    .text.FSMC_NANDStructInit:0000000000000000 $t
+     /tmp/ccIYPtT2.s:656    .text.FSMC_NANDStructInit:0000000000000000 FSMC_NANDStructInit
+     /tmp/ccIYPtT2.s:710    .text.FSMC_PCCARDStructInit:0000000000000000 $t
+     /tmp/ccIYPtT2.s:717    .text.FSMC_PCCARDStructInit:0000000000000000 FSMC_PCCARDStructInit
+     /tmp/ccIYPtT2.s:774    .text.FSMC_NORSRAMCmd:0000000000000000 $t
+     /tmp/ccIYPtT2.s:781    .text.FSMC_NORSRAMCmd:0000000000000000 FSMC_NORSRAMCmd
+     /tmp/ccIYPtT2.s:810    .text.FSMC_NORSRAMCmd:0000000000000028 $d
+     /tmp/ccIYPtT2.s:815    .text.FSMC_NANDCmd:0000000000000000 $t
+     /tmp/ccIYPtT2.s:822    .text.FSMC_NANDCmd:0000000000000000 FSMC_NANDCmd
+     /tmp/ccIYPtT2.s:873    .text.FSMC_NANDCmd:000000000000003c $d
+     /tmp/ccIYPtT2.s:880    .text.FSMC_PCCARDCmd:0000000000000000 $t
+     /tmp/ccIYPtT2.s:887    .text.FSMC_PCCARDCmd:0000000000000000 FSMC_PCCARDCmd
+     /tmp/ccIYPtT2.s:914    .text.FSMC_PCCARDCmd:000000000000001c $d
+     /tmp/ccIYPtT2.s:920    .text.FSMC_NANDECCCmd:0000000000000000 $t
+     /tmp/ccIYPtT2.s:927    .text.FSMC_NANDECCCmd:0000000000000000 FSMC_NANDECCCmd
+     /tmp/ccIYPtT2.s:978    .text.FSMC_NANDECCCmd:000000000000003c $d
+     /tmp/ccIYPtT2.s:985    .text.FSMC_GetECC:0000000000000000 $t
+     /tmp/ccIYPtT2.s:992    .text.FSMC_GetECC:0000000000000000 FSMC_GetECC
+     /tmp/ccIYPtT2.s:1019   .text.FSMC_GetECC:0000000000000010 $d
+     /tmp/ccIYPtT2.s:1025   .text.FSMC_ITConfig:0000000000000000 $t
+     /tmp/ccIYPtT2.s:1032   .text.FSMC_ITConfig:0000000000000000 FSMC_ITConfig
+     /tmp/ccIYPtT2.s:1115   .text.FSMC_ITConfig:0000000000000058 $d
+     /tmp/ccIYPtT2.s:1122   .text.FSMC_GetFlagStatus:0000000000000000 $t
+     /tmp/ccIYPtT2.s:1129   .text.FSMC_GetFlagStatus:0000000000000000 FSMC_GetFlagStatus
+     /tmp/ccIYPtT2.s:1178   .text.FSMC_GetFlagStatus:0000000000000028 $d
+     /tmp/ccIYPtT2.s:1185   .text.FSMC_ClearFlag:0000000000000000 $t
+     /tmp/ccIYPtT2.s:1192   .text.FSMC_ClearFlag:0000000000000000 FSMC_ClearFlag
+     /tmp/ccIYPtT2.s:1234   .text.FSMC_ClearFlag:0000000000000030 $d
+     /tmp/ccIYPtT2.s:1241   .text.FSMC_GetITStatus:0000000000000000 $t
+     /tmp/ccIYPtT2.s:1248   .text.FSMC_GetITStatus:0000000000000000 FSMC_GetITStatus
+     /tmp/ccIYPtT2.s:1309   .text.FSMC_GetITStatus:0000000000000030 $d
+     /tmp/ccIYPtT2.s:1316   .text.FSMC_ClearITPendingBit:0000000000000000 $t
+     /tmp/ccIYPtT2.s:1323   .text.FSMC_ClearITPendingBit:0000000000000000 FSMC_ClearITPendingBit
+     /tmp/ccIYPtT2.s:1365   .text.FSMC_ClearITPendingBit:0000000000000030 $d
+                     .debug_frame:0000000000000010 $d
+
+ARM GAS  /tmp/ccIYPtT2.s 			page 42
+
+
+NO UNDEFINED SYMBOLS

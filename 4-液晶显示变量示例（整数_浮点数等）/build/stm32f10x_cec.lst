@@ -1,0 +1,1000 @@
+ARM GAS  /tmp/ccwHg1QV.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"stm32f10x_cec.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.CEC_DeInit,"ax",%progbits
+  16              		.align	1
+  17              		.global	CEC_DeInit
+  18              		.syntax unified
+  19              		.thumb
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	CEC_DeInit:
+  24              	.LFB29:
+  25              		.file 1 "Libraries/FWlib/src/stm32f10x_cec.c"
+   1:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+   2:Libraries/FWlib/src/stm32f10x_cec.c ****   ******************************************************************************
+   3:Libraries/FWlib/src/stm32f10x_cec.c ****   * @file    stm32f10x_cec.c
+   4:Libraries/FWlib/src/stm32f10x_cec.c ****   * @author  MCD Application Team
+   5:Libraries/FWlib/src/stm32f10x_cec.c ****   * @version V3.5.0
+   6:Libraries/FWlib/src/stm32f10x_cec.c ****   * @date    11-March-2011
+   7:Libraries/FWlib/src/stm32f10x_cec.c ****   * @brief   This file provides all the CEC firmware functions.
+   8:Libraries/FWlib/src/stm32f10x_cec.c ****   ******************************************************************************
+   9:Libraries/FWlib/src/stm32f10x_cec.c ****   * @attention
+  10:Libraries/FWlib/src/stm32f10x_cec.c ****   *
+  11:Libraries/FWlib/src/stm32f10x_cec.c ****   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  12:Libraries/FWlib/src/stm32f10x_cec.c ****   * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  13:Libraries/FWlib/src/stm32f10x_cec.c ****   * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  14:Libraries/FWlib/src/stm32f10x_cec.c ****   * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  15:Libraries/FWlib/src/stm32f10x_cec.c ****   * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  16:Libraries/FWlib/src/stm32f10x_cec.c ****   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  17:Libraries/FWlib/src/stm32f10x_cec.c ****   *
+  18:Libraries/FWlib/src/stm32f10x_cec.c ****   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  19:Libraries/FWlib/src/stm32f10x_cec.c ****   ******************************************************************************
+  20:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+  21:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  22:Libraries/FWlib/src/stm32f10x_cec.c **** /* Includes ------------------------------------------------------------------*/
+  23:Libraries/FWlib/src/stm32f10x_cec.c **** #include "stm32f10x_cec.h"
+  24:Libraries/FWlib/src/stm32f10x_cec.c **** #include "stm32f10x_rcc.h"
+  25:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  26:Libraries/FWlib/src/stm32f10x_cec.c **** /** @addtogroup STM32F10x_StdPeriph_Driver
+  27:Libraries/FWlib/src/stm32f10x_cec.c ****   * @{
+  28:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+  29:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  30:Libraries/FWlib/src/stm32f10x_cec.c **** /** @defgroup CEC 
+  31:Libraries/FWlib/src/stm32f10x_cec.c ****   * @brief CEC driver modules
+  32:Libraries/FWlib/src/stm32f10x_cec.c ****   * @{
+  33:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+ARM GAS  /tmp/ccwHg1QV.s 			page 2
+
+
+  34:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  35:Libraries/FWlib/src/stm32f10x_cec.c **** /** @defgroup CEC_Private_TypesDefinitions
+  36:Libraries/FWlib/src/stm32f10x_cec.c ****   * @{
+  37:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+  38:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  39:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+  40:Libraries/FWlib/src/stm32f10x_cec.c ****   * @}
+  41:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+  42:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  43:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  44:Libraries/FWlib/src/stm32f10x_cec.c **** /** @defgroup CEC_Private_Defines
+  45:Libraries/FWlib/src/stm32f10x_cec.c ****   * @{
+  46:Libraries/FWlib/src/stm32f10x_cec.c ****   */ 
+  47:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  48:Libraries/FWlib/src/stm32f10x_cec.c **** /* ------------ CEC registers bit address in the alias region ----------- */
+  49:Libraries/FWlib/src/stm32f10x_cec.c **** #define CEC_OFFSET                (CEC_BASE - PERIPH_BASE)
+  50:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  51:Libraries/FWlib/src/stm32f10x_cec.c **** /* --- CFGR Register ---*/
+  52:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  53:Libraries/FWlib/src/stm32f10x_cec.c **** /* Alias word address of PE bit */
+  54:Libraries/FWlib/src/stm32f10x_cec.c **** #define CFGR_OFFSET                 (CEC_OFFSET + 0x00)
+  55:Libraries/FWlib/src/stm32f10x_cec.c **** #define PE_BitNumber                0x00
+  56:Libraries/FWlib/src/stm32f10x_cec.c **** #define CFGR_PE_BB                  (PERIPH_BB_BASE + (CFGR_OFFSET * 32) + (PE_BitNumber * 4))
+  57:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  58:Libraries/FWlib/src/stm32f10x_cec.c **** /* Alias word address of IE bit */
+  59:Libraries/FWlib/src/stm32f10x_cec.c **** #define IE_BitNumber                0x01
+  60:Libraries/FWlib/src/stm32f10x_cec.c **** #define CFGR_IE_BB                  (PERIPH_BB_BASE + (CFGR_OFFSET * 32) + (IE_BitNumber * 4))
+  61:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  62:Libraries/FWlib/src/stm32f10x_cec.c **** /* --- CSR Register ---*/
+  63:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  64:Libraries/FWlib/src/stm32f10x_cec.c **** /* Alias word address of TSOM bit */
+  65:Libraries/FWlib/src/stm32f10x_cec.c **** #define CSR_OFFSET                  (CEC_OFFSET + 0x10)
+  66:Libraries/FWlib/src/stm32f10x_cec.c **** #define TSOM_BitNumber              0x00
+  67:Libraries/FWlib/src/stm32f10x_cec.c **** #define CSR_TSOM_BB                 (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (TSOM_BitNumber * 4))
+  68:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  69:Libraries/FWlib/src/stm32f10x_cec.c **** /* Alias word address of TEOM bit */
+  70:Libraries/FWlib/src/stm32f10x_cec.c **** #define TEOM_BitNumber              0x01
+  71:Libraries/FWlib/src/stm32f10x_cec.c **** #define CSR_TEOM_BB                 (PERIPH_BB_BASE + (CSR_OFFSET * 32) + (TEOM_BitNumber * 4))
+  72:Libraries/FWlib/src/stm32f10x_cec.c ****   
+  73:Libraries/FWlib/src/stm32f10x_cec.c **** #define CFGR_CLEAR_Mask            (uint8_t)(0xF3)        /* CFGR register Mask */
+  74:Libraries/FWlib/src/stm32f10x_cec.c **** #define FLAG_Mask                  ((uint32_t)0x00FFFFFF) /* CEC FLAG mask */
+  75:Libraries/FWlib/src/stm32f10x_cec.c ****  
+  76:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+  77:Libraries/FWlib/src/stm32f10x_cec.c ****   * @}
+  78:Libraries/FWlib/src/stm32f10x_cec.c ****   */ 
+  79:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  80:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  81:Libraries/FWlib/src/stm32f10x_cec.c **** /** @defgroup CEC_Private_Macros
+  82:Libraries/FWlib/src/stm32f10x_cec.c ****   * @{
+  83:Libraries/FWlib/src/stm32f10x_cec.c ****   */ 
+  84:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  85:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+  86:Libraries/FWlib/src/stm32f10x_cec.c ****   * @}
+  87:Libraries/FWlib/src/stm32f10x_cec.c ****   */ 
+  88:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  89:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  90:Libraries/FWlib/src/stm32f10x_cec.c **** /** @defgroup CEC_Private_Variables
+ARM GAS  /tmp/ccwHg1QV.s 			page 3
+
+
+  91:Libraries/FWlib/src/stm32f10x_cec.c ****   * @{
+  92:Libraries/FWlib/src/stm32f10x_cec.c ****   */ 
+  93:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  94:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+  95:Libraries/FWlib/src/stm32f10x_cec.c ****   * @}
+  96:Libraries/FWlib/src/stm32f10x_cec.c ****   */ 
+  97:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  98:Libraries/FWlib/src/stm32f10x_cec.c **** 
+  99:Libraries/FWlib/src/stm32f10x_cec.c **** /** @defgroup CEC_Private_FunctionPrototypes
+ 100:Libraries/FWlib/src/stm32f10x_cec.c ****   * @{
+ 101:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+ 102:Libraries/FWlib/src/stm32f10x_cec.c ****  
+ 103:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+ 104:Libraries/FWlib/src/stm32f10x_cec.c ****   * @}
+ 105:Libraries/FWlib/src/stm32f10x_cec.c ****   */ 
+ 106:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 107:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 108:Libraries/FWlib/src/stm32f10x_cec.c **** /** @defgroup CEC_Private_Functions
+ 109:Libraries/FWlib/src/stm32f10x_cec.c ****   * @{
+ 110:Libraries/FWlib/src/stm32f10x_cec.c ****   */ 
+ 111:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 112:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+ 113:Libraries/FWlib/src/stm32f10x_cec.c ****   * @brief  Deinitializes the CEC peripheral registers to their default reset 
+ 114:Libraries/FWlib/src/stm32f10x_cec.c ****   *         values.
+ 115:Libraries/FWlib/src/stm32f10x_cec.c ****   * @param  None
+ 116:Libraries/FWlib/src/stm32f10x_cec.c ****   * @retval None
+ 117:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+ 118:Libraries/FWlib/src/stm32f10x_cec.c **** void CEC_DeInit(void)
+ 119:Libraries/FWlib/src/stm32f10x_cec.c **** {
+  26              		.loc 1 119 0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30 0000 08B5     		push	{r3, lr}
+  31              	.LCFI0:
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 3, -8
+  34              		.cfi_offset 14, -4
+ 120:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Enable CEC reset state */
+ 121:Libraries/FWlib/src/stm32f10x_cec.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_CEC, ENABLE);  
+  35              		.loc 1 121 0
+  36 0002 0121     		movs	r1, #1
+  37 0004 4FF08040 		mov	r0, #1073741824
+  38 0008 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  39              	.LVL0:
+ 122:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Release CEC from reset state */
+ 123:Libraries/FWlib/src/stm32f10x_cec.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_CEC, DISABLE); 
+  40              		.loc 1 123 0
+  41 000c 0021     		movs	r1, #0
+  42 000e 4FF08040 		mov	r0, #1073741824
+  43 0012 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+  44              	.LVL1:
+  45 0016 08BD     		pop	{r3, pc}
+  46              		.cfi_endproc
+  47              	.LFE29:
+  49              		.section	.text.CEC_Init,"ax",%progbits
+  50              		.align	1
+ARM GAS  /tmp/ccwHg1QV.s 			page 4
+
+
+  51              		.global	CEC_Init
+  52              		.syntax unified
+  53              		.thumb
+  54              		.thumb_func
+  55              		.fpu softvfp
+  57              	CEC_Init:
+  58              	.LFB30:
+ 124:Libraries/FWlib/src/stm32f10x_cec.c **** }
+ 125:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 126:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 127:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+ 128:Libraries/FWlib/src/stm32f10x_cec.c ****   * @brief  Initializes the CEC peripheral according to the specified 
+ 129:Libraries/FWlib/src/stm32f10x_cec.c ****   *         parameters in the CEC_InitStruct.
+ 130:Libraries/FWlib/src/stm32f10x_cec.c ****   * @param  CEC_InitStruct: pointer to an CEC_InitTypeDef structure that
+ 131:Libraries/FWlib/src/stm32f10x_cec.c ****   *         contains the configuration information for the specified
+ 132:Libraries/FWlib/src/stm32f10x_cec.c ****   *         CEC peripheral.
+ 133:Libraries/FWlib/src/stm32f10x_cec.c ****   * @retval None
+ 134:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+ 135:Libraries/FWlib/src/stm32f10x_cec.c **** void CEC_Init(CEC_InitTypeDef* CEC_InitStruct)
+ 136:Libraries/FWlib/src/stm32f10x_cec.c **** {
+  59              		.loc 1 136 0
+  60              		.cfi_startproc
+  61              		@ args = 0, pretend = 0, frame = 0
+  62              		@ frame_needed = 0, uses_anonymous_args = 0
+  63              		@ link register save eliminated.
+  64              	.LVL2:
+ 137:Libraries/FWlib/src/stm32f10x_cec.c ****   uint16_t tmpreg = 0;
+ 138:Libraries/FWlib/src/stm32f10x_cec.c ****  
+ 139:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Check the parameters */
+ 140:Libraries/FWlib/src/stm32f10x_cec.c ****   assert_param(IS_CEC_BIT_TIMING_ERROR_MODE(CEC_InitStruct->CEC_BitTimingMode)); 
+ 141:Libraries/FWlib/src/stm32f10x_cec.c ****   assert_param(IS_CEC_BIT_PERIOD_ERROR_MODE(CEC_InitStruct->CEC_BitPeriodMode));
+ 142:Libraries/FWlib/src/stm32f10x_cec.c ****      
+ 143:Libraries/FWlib/src/stm32f10x_cec.c ****   /*---------------------------- CEC CFGR Configuration -----------------*/
+ 144:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Get the CEC CFGR value */
+ 145:Libraries/FWlib/src/stm32f10x_cec.c ****   tmpreg = CEC->CFGR;
+  65              		.loc 1 145 0
+  66 0000 0449     		ldr	r1, .L4
+  67 0002 0B68     		ldr	r3, [r1]
+  68              	.LVL3:
+ 146:Libraries/FWlib/src/stm32f10x_cec.c ****   
+ 147:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Clear BTEM and BPEM bits */
+ 148:Libraries/FWlib/src/stm32f10x_cec.c ****   tmpreg &= CFGR_CLEAR_Mask;
+  69              		.loc 1 148 0
+  70 0004 03F0F303 		and	r3, r3, #243
+  71              	.LVL4:
+ 149:Libraries/FWlib/src/stm32f10x_cec.c ****   
+ 150:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Configure CEC: Bit Timing Error and Bit Period Error */
+ 151:Libraries/FWlib/src/stm32f10x_cec.c ****   tmpreg |= (uint16_t)(CEC_InitStruct->CEC_BitTimingMode | CEC_InitStruct->CEC_BitPeriodMode);
+  72              		.loc 1 151 0
+  73 0008 0288     		ldrh	r2, [r0]
+  74 000a 4088     		ldrh	r0, [r0, #2]
+  75              	.LVL5:
+  76 000c 0243     		orrs	r2, r2, r0
+  77 000e 1343     		orrs	r3, r3, r2
+  78              	.LVL6:
+ 152:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 153:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Write to CEC CFGR  register*/
+ARM GAS  /tmp/ccwHg1QV.s 			page 5
+
+
+ 154:Libraries/FWlib/src/stm32f10x_cec.c ****   CEC->CFGR = tmpreg;
+  79              		.loc 1 154 0
+  80 0010 0B60     		str	r3, [r1]
+  81 0012 7047     		bx	lr
+  82              	.L5:
+  83              		.align	2
+  84              	.L4:
+  85 0014 00780040 		.word	1073772544
+  86              		.cfi_endproc
+  87              	.LFE30:
+  89              		.section	.text.CEC_Cmd,"ax",%progbits
+  90              		.align	1
+  91              		.global	CEC_Cmd
+  92              		.syntax unified
+  93              		.thumb
+  94              		.thumb_func
+  95              		.fpu softvfp
+  97              	CEC_Cmd:
+  98              	.LFB31:
+ 155:Libraries/FWlib/src/stm32f10x_cec.c ****   
+ 156:Libraries/FWlib/src/stm32f10x_cec.c **** }
+ 157:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 158:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+ 159:Libraries/FWlib/src/stm32f10x_cec.c ****   * @brief  Enables or disables the specified CEC peripheral.
+ 160:Libraries/FWlib/src/stm32f10x_cec.c ****   * @param  NewState: new state of the CEC peripheral. 
+ 161:Libraries/FWlib/src/stm32f10x_cec.c ****   *     This parameter can be: ENABLE or DISABLE.
+ 162:Libraries/FWlib/src/stm32f10x_cec.c ****   * @retval None
+ 163:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+ 164:Libraries/FWlib/src/stm32f10x_cec.c **** void CEC_Cmd(FunctionalState NewState)
+ 165:Libraries/FWlib/src/stm32f10x_cec.c **** {
+  99              		.loc 1 165 0
+ 100              		.cfi_startproc
+ 101              		@ args = 0, pretend = 0, frame = 0
+ 102              		@ frame_needed = 0, uses_anonymous_args = 0
+ 103              		@ link register save eliminated.
+ 104              	.LVL7:
+ 166:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Check the parameters */
+ 167:Libraries/FWlib/src/stm32f10x_cec.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 168:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 169:Libraries/FWlib/src/stm32f10x_cec.c ****   *(__IO uint32_t *) CFGR_PE_BB = (uint32_t)NewState;
+ 105              		.loc 1 169 0
+ 106 0000 044B     		ldr	r3, .L9
+ 107 0002 1860     		str	r0, [r3]
+ 170:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 171:Libraries/FWlib/src/stm32f10x_cec.c ****   if(NewState == DISABLE)
+ 108              		.loc 1 171 0
+ 109 0004 20B9     		cbnz	r0, .L6
+ 110              	.L8:
+ 172:Libraries/FWlib/src/stm32f10x_cec.c ****   {
+ 173:Libraries/FWlib/src/stm32f10x_cec.c ****     /* Wait until the PE bit is cleared by hardware (Idle Line detected) */
+ 174:Libraries/FWlib/src/stm32f10x_cec.c ****     while((CEC->CFGR & CEC_CFGR_PE) != (uint32_t)RESET)
+ 111              		.loc 1 174 0 discriminator 1
+ 112 0006 044B     		ldr	r3, .L9+4
+ 113 0008 1B68     		ldr	r3, [r3]
+ 114 000a 13F0010F 		tst	r3, #1
+ 115 000e FAD1     		bne	.L8
+ 116              	.L6:
+ARM GAS  /tmp/ccwHg1QV.s 			page 6
+
+
+ 117 0010 7047     		bx	lr
+ 118              	.L10:
+ 119 0012 00BF     		.align	2
+ 120              	.L9:
+ 121 0014 00000F42 		.word	1108279296
+ 122 0018 00780040 		.word	1073772544
+ 123              		.cfi_endproc
+ 124              	.LFE31:
+ 126              		.section	.text.CEC_ITConfig,"ax",%progbits
+ 127              		.align	1
+ 128              		.global	CEC_ITConfig
+ 129              		.syntax unified
+ 130              		.thumb
+ 131              		.thumb_func
+ 132              		.fpu softvfp
+ 134              	CEC_ITConfig:
+ 135              	.LFB32:
+ 175:Libraries/FWlib/src/stm32f10x_cec.c ****     {
+ 176:Libraries/FWlib/src/stm32f10x_cec.c ****     }  
+ 177:Libraries/FWlib/src/stm32f10x_cec.c ****   }  
+ 178:Libraries/FWlib/src/stm32f10x_cec.c **** }
+ 179:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 180:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+ 181:Libraries/FWlib/src/stm32f10x_cec.c ****   * @brief  Enables or disables the CEC interrupt.
+ 182:Libraries/FWlib/src/stm32f10x_cec.c ****   * @param  NewState: new state of the CEC interrupt.
+ 183:Libraries/FWlib/src/stm32f10x_cec.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 184:Libraries/FWlib/src/stm32f10x_cec.c ****   * @retval None
+ 185:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+ 186:Libraries/FWlib/src/stm32f10x_cec.c **** void CEC_ITConfig(FunctionalState NewState)
+ 187:Libraries/FWlib/src/stm32f10x_cec.c **** {
+ 136              		.loc 1 187 0
+ 137              		.cfi_startproc
+ 138              		@ args = 0, pretend = 0, frame = 0
+ 139              		@ frame_needed = 0, uses_anonymous_args = 0
+ 140              		@ link register save eliminated.
+ 141              	.LVL8:
+ 188:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Check the parameters */
+ 189:Libraries/FWlib/src/stm32f10x_cec.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 190:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 191:Libraries/FWlib/src/stm32f10x_cec.c ****   *(__IO uint32_t *) CFGR_IE_BB = (uint32_t)NewState;
+ 142              		.loc 1 191 0
+ 143 0000 014B     		ldr	r3, .L12
+ 144 0002 1860     		str	r0, [r3]
+ 145 0004 7047     		bx	lr
+ 146              	.L13:
+ 147 0006 00BF     		.align	2
+ 148              	.L12:
+ 149 0008 04000F42 		.word	1108279300
+ 150              		.cfi_endproc
+ 151              	.LFE32:
+ 153              		.section	.text.CEC_OwnAddressConfig,"ax",%progbits
+ 154              		.align	1
+ 155              		.global	CEC_OwnAddressConfig
+ 156              		.syntax unified
+ 157              		.thumb
+ 158              		.thumb_func
+ 159              		.fpu softvfp
+ARM GAS  /tmp/ccwHg1QV.s 			page 7
+
+
+ 161              	CEC_OwnAddressConfig:
+ 162              	.LFB33:
+ 192:Libraries/FWlib/src/stm32f10x_cec.c **** }
+ 193:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 194:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+ 195:Libraries/FWlib/src/stm32f10x_cec.c ****   * @brief  Defines the Own Address of the CEC device.
+ 196:Libraries/FWlib/src/stm32f10x_cec.c ****   * @param  CEC_OwnAddress: The CEC own address
+ 197:Libraries/FWlib/src/stm32f10x_cec.c ****   * @retval None
+ 198:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+ 199:Libraries/FWlib/src/stm32f10x_cec.c **** void CEC_OwnAddressConfig(uint8_t CEC_OwnAddress)
+ 200:Libraries/FWlib/src/stm32f10x_cec.c **** {
+ 163              		.loc 1 200 0
+ 164              		.cfi_startproc
+ 165              		@ args = 0, pretend = 0, frame = 0
+ 166              		@ frame_needed = 0, uses_anonymous_args = 0
+ 167              		@ link register save eliminated.
+ 168              	.LVL9:
+ 201:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Check the parameters */
+ 202:Libraries/FWlib/src/stm32f10x_cec.c ****   assert_param(IS_CEC_ADDRESS(CEC_OwnAddress));
+ 203:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 204:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Set the CEC own address */
+ 205:Libraries/FWlib/src/stm32f10x_cec.c ****   CEC->OAR = CEC_OwnAddress;
+ 169              		.loc 1 205 0
+ 170 0000 014B     		ldr	r3, .L15
+ 171 0002 5860     		str	r0, [r3, #4]
+ 172 0004 7047     		bx	lr
+ 173              	.L16:
+ 174 0006 00BF     		.align	2
+ 175              	.L15:
+ 176 0008 00780040 		.word	1073772544
+ 177              		.cfi_endproc
+ 178              	.LFE33:
+ 180              		.section	.text.CEC_SetPrescaler,"ax",%progbits
+ 181              		.align	1
+ 182              		.global	CEC_SetPrescaler
+ 183              		.syntax unified
+ 184              		.thumb
+ 185              		.thumb_func
+ 186              		.fpu softvfp
+ 188              	CEC_SetPrescaler:
+ 189              	.LFB34:
+ 206:Libraries/FWlib/src/stm32f10x_cec.c **** }
+ 207:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 208:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+ 209:Libraries/FWlib/src/stm32f10x_cec.c ****   * @brief  Sets the CEC prescaler value.
+ 210:Libraries/FWlib/src/stm32f10x_cec.c ****   * @param  CEC_Prescaler: CEC prescaler new value
+ 211:Libraries/FWlib/src/stm32f10x_cec.c ****   * @retval None
+ 212:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+ 213:Libraries/FWlib/src/stm32f10x_cec.c **** void CEC_SetPrescaler(uint16_t CEC_Prescaler)
+ 214:Libraries/FWlib/src/stm32f10x_cec.c **** {
+ 190              		.loc 1 214 0
+ 191              		.cfi_startproc
+ 192              		@ args = 0, pretend = 0, frame = 0
+ 193              		@ frame_needed = 0, uses_anonymous_args = 0
+ 194              		@ link register save eliminated.
+ 195              	.LVL10:
+ 215:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Check the parameters */
+ARM GAS  /tmp/ccwHg1QV.s 			page 8
+
+
+ 216:Libraries/FWlib/src/stm32f10x_cec.c ****   assert_param(IS_CEC_PRESCALER(CEC_Prescaler));
+ 217:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 218:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Set the  Prescaler value*/
+ 219:Libraries/FWlib/src/stm32f10x_cec.c ****   CEC->PRES = CEC_Prescaler;
+ 196              		.loc 1 219 0
+ 197 0000 014B     		ldr	r3, .L18
+ 198 0002 9860     		str	r0, [r3, #8]
+ 199 0004 7047     		bx	lr
+ 200              	.L19:
+ 201 0006 00BF     		.align	2
+ 202              	.L18:
+ 203 0008 00780040 		.word	1073772544
+ 204              		.cfi_endproc
+ 205              	.LFE34:
+ 207              		.section	.text.CEC_SendDataByte,"ax",%progbits
+ 208              		.align	1
+ 209              		.global	CEC_SendDataByte
+ 210              		.syntax unified
+ 211              		.thumb
+ 212              		.thumb_func
+ 213              		.fpu softvfp
+ 215              	CEC_SendDataByte:
+ 216              	.LFB35:
+ 220:Libraries/FWlib/src/stm32f10x_cec.c **** }
+ 221:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 222:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+ 223:Libraries/FWlib/src/stm32f10x_cec.c ****   * @brief  Transmits single data through the CEC peripheral.
+ 224:Libraries/FWlib/src/stm32f10x_cec.c ****   * @param  Data: the data to transmit.
+ 225:Libraries/FWlib/src/stm32f10x_cec.c ****   * @retval None
+ 226:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+ 227:Libraries/FWlib/src/stm32f10x_cec.c **** void CEC_SendDataByte(uint8_t Data)
+ 228:Libraries/FWlib/src/stm32f10x_cec.c **** {  
+ 217              		.loc 1 228 0
+ 218              		.cfi_startproc
+ 219              		@ args = 0, pretend = 0, frame = 0
+ 220              		@ frame_needed = 0, uses_anonymous_args = 0
+ 221              		@ link register save eliminated.
+ 222              	.LVL11:
+ 229:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Transmit Data */
+ 230:Libraries/FWlib/src/stm32f10x_cec.c ****   CEC->TXD = Data ;
+ 223              		.loc 1 230 0
+ 224 0000 014B     		ldr	r3, .L21
+ 225 0002 5861     		str	r0, [r3, #20]
+ 226 0004 7047     		bx	lr
+ 227              	.L22:
+ 228 0006 00BF     		.align	2
+ 229              	.L21:
+ 230 0008 00780040 		.word	1073772544
+ 231              		.cfi_endproc
+ 232              	.LFE35:
+ 234              		.section	.text.CEC_ReceiveDataByte,"ax",%progbits
+ 235              		.align	1
+ 236              		.global	CEC_ReceiveDataByte
+ 237              		.syntax unified
+ 238              		.thumb
+ 239              		.thumb_func
+ 240              		.fpu softvfp
+ARM GAS  /tmp/ccwHg1QV.s 			page 9
+
+
+ 242              	CEC_ReceiveDataByte:
+ 243              	.LFB36:
+ 231:Libraries/FWlib/src/stm32f10x_cec.c **** }
+ 232:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 233:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 234:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+ 235:Libraries/FWlib/src/stm32f10x_cec.c ****   * @brief  Returns the most recent received data by the CEC peripheral.
+ 236:Libraries/FWlib/src/stm32f10x_cec.c ****   * @param  None
+ 237:Libraries/FWlib/src/stm32f10x_cec.c ****   * @retval The received data.
+ 238:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+ 239:Libraries/FWlib/src/stm32f10x_cec.c **** uint8_t CEC_ReceiveDataByte(void)
+ 240:Libraries/FWlib/src/stm32f10x_cec.c **** {
+ 244              		.loc 1 240 0
+ 245              		.cfi_startproc
+ 246              		@ args = 0, pretend = 0, frame = 0
+ 247              		@ frame_needed = 0, uses_anonymous_args = 0
+ 248              		@ link register save eliminated.
+ 241:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Receive Data */
+ 242:Libraries/FWlib/src/stm32f10x_cec.c ****   return (uint8_t)(CEC->RXD);
+ 249              		.loc 1 242 0
+ 250 0000 014B     		ldr	r3, .L24
+ 251 0002 9869     		ldr	r0, [r3, #24]
+ 243:Libraries/FWlib/src/stm32f10x_cec.c **** }
+ 252              		.loc 1 243 0
+ 253 0004 C0B2     		uxtb	r0, r0
+ 254 0006 7047     		bx	lr
+ 255              	.L25:
+ 256              		.align	2
+ 257              	.L24:
+ 258 0008 00780040 		.word	1073772544
+ 259              		.cfi_endproc
+ 260              	.LFE36:
+ 262              		.section	.text.CEC_StartOfMessage,"ax",%progbits
+ 263              		.align	1
+ 264              		.global	CEC_StartOfMessage
+ 265              		.syntax unified
+ 266              		.thumb
+ 267              		.thumb_func
+ 268              		.fpu softvfp
+ 270              	CEC_StartOfMessage:
+ 271              	.LFB37:
+ 244:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 245:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+ 246:Libraries/FWlib/src/stm32f10x_cec.c ****   * @brief  Starts a new message.
+ 247:Libraries/FWlib/src/stm32f10x_cec.c ****   * @param  None
+ 248:Libraries/FWlib/src/stm32f10x_cec.c ****   * @retval None
+ 249:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+ 250:Libraries/FWlib/src/stm32f10x_cec.c **** void CEC_StartOfMessage(void)
+ 251:Libraries/FWlib/src/stm32f10x_cec.c **** {  
+ 272              		.loc 1 251 0
+ 273              		.cfi_startproc
+ 274              		@ args = 0, pretend = 0, frame = 0
+ 275              		@ frame_needed = 0, uses_anonymous_args = 0
+ 276              		@ link register save eliminated.
+ 252:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Starts of new message */
+ 253:Libraries/FWlib/src/stm32f10x_cec.c ****   *(__IO uint32_t *) CSR_TSOM_BB = (uint32_t)0x1;
+ 277              		.loc 1 253 0
+ARM GAS  /tmp/ccwHg1QV.s 			page 10
+
+
+ 278 0000 0122     		movs	r2, #1
+ 279 0002 014B     		ldr	r3, .L27
+ 280 0004 1A60     		str	r2, [r3]
+ 281 0006 7047     		bx	lr
+ 282              	.L28:
+ 283              		.align	2
+ 284              	.L27:
+ 285 0008 00020F42 		.word	1108279808
+ 286              		.cfi_endproc
+ 287              	.LFE37:
+ 289              		.section	.text.CEC_EndOfMessageCmd,"ax",%progbits
+ 290              		.align	1
+ 291              		.global	CEC_EndOfMessageCmd
+ 292              		.syntax unified
+ 293              		.thumb
+ 294              		.thumb_func
+ 295              		.fpu softvfp
+ 297              	CEC_EndOfMessageCmd:
+ 298              	.LFB38:
+ 254:Libraries/FWlib/src/stm32f10x_cec.c **** }
+ 255:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 256:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+ 257:Libraries/FWlib/src/stm32f10x_cec.c ****   * @brief  Transmits message with or without an EOM bit.
+ 258:Libraries/FWlib/src/stm32f10x_cec.c ****   * @param  NewState: new state of the CEC Tx End Of Message. 
+ 259:Libraries/FWlib/src/stm32f10x_cec.c ****   *     This parameter can be: ENABLE or DISABLE.
+ 260:Libraries/FWlib/src/stm32f10x_cec.c ****   * @retval None
+ 261:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+ 262:Libraries/FWlib/src/stm32f10x_cec.c **** void CEC_EndOfMessageCmd(FunctionalState NewState)
+ 263:Libraries/FWlib/src/stm32f10x_cec.c **** {   
+ 299              		.loc 1 263 0
+ 300              		.cfi_startproc
+ 301              		@ args = 0, pretend = 0, frame = 0
+ 302              		@ frame_needed = 0, uses_anonymous_args = 0
+ 303              		@ link register save eliminated.
+ 304              	.LVL12:
+ 264:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Check the parameters */
+ 265:Libraries/FWlib/src/stm32f10x_cec.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 266:Libraries/FWlib/src/stm32f10x_cec.c ****   
+ 267:Libraries/FWlib/src/stm32f10x_cec.c ****   /* The data byte will be transmitted with or without an EOM bit*/
+ 268:Libraries/FWlib/src/stm32f10x_cec.c ****   *(__IO uint32_t *) CSR_TEOM_BB = (uint32_t)NewState;
+ 305              		.loc 1 268 0
+ 306 0000 014B     		ldr	r3, .L30
+ 307 0002 1860     		str	r0, [r3]
+ 308 0004 7047     		bx	lr
+ 309              	.L31:
+ 310 0006 00BF     		.align	2
+ 311              	.L30:
+ 312 0008 04020F42 		.word	1108279812
+ 313              		.cfi_endproc
+ 314              	.LFE38:
+ 316              		.section	.text.CEC_GetFlagStatus,"ax",%progbits
+ 317              		.align	1
+ 318              		.global	CEC_GetFlagStatus
+ 319              		.syntax unified
+ 320              		.thumb
+ 321              		.thumb_func
+ 322              		.fpu softvfp
+ARM GAS  /tmp/ccwHg1QV.s 			page 11
+
+
+ 324              	CEC_GetFlagStatus:
+ 325              	.LFB39:
+ 269:Libraries/FWlib/src/stm32f10x_cec.c **** }
+ 270:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 271:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+ 272:Libraries/FWlib/src/stm32f10x_cec.c ****   * @brief  Gets the CEC flag status
+ 273:Libraries/FWlib/src/stm32f10x_cec.c ****   * @param  CEC_FLAG: specifies the CEC flag to check. 
+ 274:Libraries/FWlib/src/stm32f10x_cec.c ****   *   This parameter can be one of the following values:
+ 275:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_BTE: Bit Timing Error
+ 276:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_BPE: Bit Period Error
+ 277:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_RBTFE: Rx Block Transfer Finished Error
+ 278:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_SBE: Start Bit Error
+ 279:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_ACKE: Block Acknowledge Error
+ 280:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_LINE: Line Error
+ 281:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_TBTFE: Tx Block Transfer Finished Error
+ 282:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_TEOM: Tx End Of Message 
+ 283:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_TERR: Tx Error
+ 284:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_TBTRF: Tx Byte Transfer Request or Block Transfer Finished
+ 285:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_RSOM: Rx Start Of Message
+ 286:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_REOM: Rx End Of Message
+ 287:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_RERR: Rx Error
+ 288:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_RBTF: Rx Byte/Block Transfer Finished
+ 289:Libraries/FWlib/src/stm32f10x_cec.c ****   * @retval The new state of CEC_FLAG (SET or RESET)
+ 290:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+ 291:Libraries/FWlib/src/stm32f10x_cec.c **** FlagStatus CEC_GetFlagStatus(uint32_t CEC_FLAG) 
+ 292:Libraries/FWlib/src/stm32f10x_cec.c **** {
+ 326              		.loc 1 292 0
+ 327              		.cfi_startproc
+ 328              		@ args = 0, pretend = 0, frame = 0
+ 329              		@ frame_needed = 0, uses_anonymous_args = 0
+ 330              		@ link register save eliminated.
+ 331              	.LVL13:
+ 293:Libraries/FWlib/src/stm32f10x_cec.c ****   FlagStatus bitstatus = RESET;
+ 294:Libraries/FWlib/src/stm32f10x_cec.c ****   uint32_t cecreg = 0, cecbase = 0;
+ 295:Libraries/FWlib/src/stm32f10x_cec.c ****   
+ 296:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Check the parameters */
+ 297:Libraries/FWlib/src/stm32f10x_cec.c ****   assert_param(IS_CEC_GET_FLAG(CEC_FLAG));
+ 298:Libraries/FWlib/src/stm32f10x_cec.c ****  
+ 299:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Get the CEC peripheral base address */
+ 300:Libraries/FWlib/src/stm32f10x_cec.c ****   cecbase = (uint32_t)(CEC_BASE);
+ 301:Libraries/FWlib/src/stm32f10x_cec.c ****   
+ 302:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Read flag register index */
+ 303:Libraries/FWlib/src/stm32f10x_cec.c ****   cecreg = CEC_FLAG >> 28;
+ 304:Libraries/FWlib/src/stm32f10x_cec.c ****   
+ 305:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Get bit[23:0] of the flag */
+ 306:Libraries/FWlib/src/stm32f10x_cec.c ****   CEC_FLAG &= FLAG_Mask;
+ 332              		.loc 1 306 0
+ 333 0000 20F07F43 		bic	r3, r0, #-16777216
+ 334              	.LVL14:
+ 307:Libraries/FWlib/src/stm32f10x_cec.c ****   
+ 308:Libraries/FWlib/src/stm32f10x_cec.c ****   if(cecreg != 0)
+ 335              		.loc 1 308 0
+ 336 0004 020F     		lsrs	r2, r0, #28
+ 337 0006 06D0     		beq	.L35
+ 309:Libraries/FWlib/src/stm32f10x_cec.c ****   {
+ 310:Libraries/FWlib/src/stm32f10x_cec.c ****     /* Flag in CEC ESR Register */
+ 311:Libraries/FWlib/src/stm32f10x_cec.c ****     CEC_FLAG = (uint32_t)(CEC_FLAG >> 16);
+ARM GAS  /tmp/ccwHg1QV.s 			page 12
+
+
+ 338              		.loc 1 311 0
+ 339 0008 1B0C     		lsrs	r3, r3, #16
+ 340              	.LVL15:
+ 312:Libraries/FWlib/src/stm32f10x_cec.c ****     
+ 313:Libraries/FWlib/src/stm32f10x_cec.c ****     /* Get the CEC ESR register address */
+ 314:Libraries/FWlib/src/stm32f10x_cec.c ****     cecbase += 0xC;
+ 341              		.loc 1 314 0
+ 342 000a 054A     		ldr	r2, .L38
+ 343              	.LVL16:
+ 344              	.L33:
+ 315:Libraries/FWlib/src/stm32f10x_cec.c ****   }
+ 316:Libraries/FWlib/src/stm32f10x_cec.c ****   else
+ 317:Libraries/FWlib/src/stm32f10x_cec.c ****   {
+ 318:Libraries/FWlib/src/stm32f10x_cec.c ****     /* Get the CEC CSR register address */
+ 319:Libraries/FWlib/src/stm32f10x_cec.c ****     cecbase += 0x10;
+ 320:Libraries/FWlib/src/stm32f10x_cec.c ****   }
+ 321:Libraries/FWlib/src/stm32f10x_cec.c ****   
+ 322:Libraries/FWlib/src/stm32f10x_cec.c ****   if(((*(__IO uint32_t *)cecbase) & CEC_FLAG) != (uint32_t)RESET)
+ 345              		.loc 1 322 0
+ 346 000c 1268     		ldr	r2, [r2]
+ 347              	.LVL17:
+ 348 000e 1342     		tst	r3, r2
+ 349 0010 03D1     		bne	.L37
+ 323:Libraries/FWlib/src/stm32f10x_cec.c ****   {
+ 324:Libraries/FWlib/src/stm32f10x_cec.c ****     /* CEC_FLAG is set */
+ 325:Libraries/FWlib/src/stm32f10x_cec.c ****     bitstatus = SET;
+ 326:Libraries/FWlib/src/stm32f10x_cec.c ****   }
+ 327:Libraries/FWlib/src/stm32f10x_cec.c ****   else
+ 328:Libraries/FWlib/src/stm32f10x_cec.c ****   {
+ 329:Libraries/FWlib/src/stm32f10x_cec.c ****     /* CEC_FLAG is reset */
+ 330:Libraries/FWlib/src/stm32f10x_cec.c ****     bitstatus = RESET;
+ 350              		.loc 1 330 0
+ 351 0012 0020     		movs	r0, #0
+ 352              	.LVL18:
+ 331:Libraries/FWlib/src/stm32f10x_cec.c ****   }
+ 332:Libraries/FWlib/src/stm32f10x_cec.c ****   
+ 333:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Return the CEC_FLAG status */
+ 334:Libraries/FWlib/src/stm32f10x_cec.c ****   return  bitstatus;
+ 335:Libraries/FWlib/src/stm32f10x_cec.c **** }
+ 353              		.loc 1 335 0
+ 354 0014 7047     		bx	lr
+ 355              	.LVL19:
+ 356              	.L35:
+ 319:Libraries/FWlib/src/stm32f10x_cec.c ****   }
+ 357              		.loc 1 319 0
+ 358 0016 034A     		ldr	r2, .L38+4
+ 359 0018 F8E7     		b	.L33
+ 360              	.LVL20:
+ 361              	.L37:
+ 325:Libraries/FWlib/src/stm32f10x_cec.c ****   }
+ 362              		.loc 1 325 0
+ 363 001a 0120     		movs	r0, #1
+ 364              	.LVL21:
+ 365 001c 7047     		bx	lr
+ 366              	.L39:
+ 367 001e 00BF     		.align	2
+ 368              	.L38:
+ARM GAS  /tmp/ccwHg1QV.s 			page 13
+
+
+ 369 0020 0C780040 		.word	1073772556
+ 370 0024 10780040 		.word	1073772560
+ 371              		.cfi_endproc
+ 372              	.LFE39:
+ 374              		.section	.text.CEC_ClearFlag,"ax",%progbits
+ 375              		.align	1
+ 376              		.global	CEC_ClearFlag
+ 377              		.syntax unified
+ 378              		.thumb
+ 379              		.thumb_func
+ 380              		.fpu softvfp
+ 382              	CEC_ClearFlag:
+ 383              	.LFB40:
+ 336:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 337:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+ 338:Libraries/FWlib/src/stm32f10x_cec.c ****   * @brief  Clears the CEC's pending flags.
+ 339:Libraries/FWlib/src/stm32f10x_cec.c ****   * @param  CEC_FLAG: specifies the flag to clear. 
+ 340:Libraries/FWlib/src/stm32f10x_cec.c ****   *   This parameter can be any combination of the following values:
+ 341:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_TERR: Tx Error
+ 342:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_TBTRF: Tx Byte Transfer Request or Block Transfer Finished
+ 343:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_RSOM: Rx Start Of Message
+ 344:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_REOM: Rx End Of Message
+ 345:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_RERR: Rx Error
+ 346:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_FLAG_RBTF: Rx Byte/Block Transfer Finished
+ 347:Libraries/FWlib/src/stm32f10x_cec.c ****   * @retval None
+ 348:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+ 349:Libraries/FWlib/src/stm32f10x_cec.c **** void CEC_ClearFlag(uint32_t CEC_FLAG)
+ 350:Libraries/FWlib/src/stm32f10x_cec.c **** { 
+ 384              		.loc 1 350 0
+ 385              		.cfi_startproc
+ 386              		@ args = 0, pretend = 0, frame = 0
+ 387              		@ frame_needed = 0, uses_anonymous_args = 0
+ 388              		@ link register save eliminated.
+ 389              	.LVL22:
+ 351:Libraries/FWlib/src/stm32f10x_cec.c ****   uint32_t tmp = 0x0;
+ 352:Libraries/FWlib/src/stm32f10x_cec.c ****   
+ 353:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Check the parameters */
+ 354:Libraries/FWlib/src/stm32f10x_cec.c ****   assert_param(IS_CEC_CLEAR_FLAG(CEC_FLAG));
+ 355:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 356:Libraries/FWlib/src/stm32f10x_cec.c ****   tmp = CEC->CSR & 0x2;
+ 390              		.loc 1 356 0
+ 391 0000 054A     		ldr	r2, .L41
+ 392 0002 1369     		ldr	r3, [r2, #16]
+ 393 0004 03F00203 		and	r3, r3, #2
+ 394              	.LVL23:
+ 357:Libraries/FWlib/src/stm32f10x_cec.c ****        
+ 358:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Clear the selected CEC flags */
+ 359:Libraries/FWlib/src/stm32f10x_cec.c ****   CEC->CSR &= (uint32_t)(((~(uint32_t)CEC_FLAG) & 0xFFFFFFFC) | tmp);
+ 395              		.loc 1 359 0
+ 396 0008 1169     		ldr	r1, [r2, #16]
+ 397 000a C043     		mvns	r0, r0
+ 398              	.LVL24:
+ 399 000c 20F00300 		bic	r0, r0, #3
+ 400              	.LVL25:
+ 401 0010 0343     		orrs	r3, r3, r0
+ 402              	.LVL26:
+ 403 0012 0B40     		ands	r3, r3, r1
+ARM GAS  /tmp/ccwHg1QV.s 			page 14
+
+
+ 404 0014 1361     		str	r3, [r2, #16]
+ 405 0016 7047     		bx	lr
+ 406              	.L42:
+ 407              		.align	2
+ 408              	.L41:
+ 409 0018 00780040 		.word	1073772544
+ 410              		.cfi_endproc
+ 411              	.LFE40:
+ 413              		.section	.text.CEC_GetITStatus,"ax",%progbits
+ 414              		.align	1
+ 415              		.global	CEC_GetITStatus
+ 416              		.syntax unified
+ 417              		.thumb
+ 418              		.thumb_func
+ 419              		.fpu softvfp
+ 421              	CEC_GetITStatus:
+ 422              	.LFB41:
+ 360:Libraries/FWlib/src/stm32f10x_cec.c **** }
+ 361:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 362:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+ 363:Libraries/FWlib/src/stm32f10x_cec.c ****   * @brief  Checks whether the specified CEC interrupt has occurred or not.
+ 364:Libraries/FWlib/src/stm32f10x_cec.c ****   * @param  CEC_IT: specifies the CEC interrupt source to check. 
+ 365:Libraries/FWlib/src/stm32f10x_cec.c ****   *   This parameter can be one of the following values:
+ 366:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_IT_TERR: Tx Error
+ 367:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_IT_TBTF: Tx Block Transfer Finished
+ 368:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_IT_RERR: Rx Error
+ 369:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_IT_RBTF: Rx Block Transfer Finished
+ 370:Libraries/FWlib/src/stm32f10x_cec.c ****   * @retval The new state of CEC_IT (SET or RESET).
+ 371:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+ 372:Libraries/FWlib/src/stm32f10x_cec.c **** ITStatus CEC_GetITStatus(uint8_t CEC_IT)
+ 373:Libraries/FWlib/src/stm32f10x_cec.c **** {
+ 423              		.loc 1 373 0
+ 424              		.cfi_startproc
+ 425              		@ args = 0, pretend = 0, frame = 0
+ 426              		@ frame_needed = 0, uses_anonymous_args = 0
+ 427              		@ link register save eliminated.
+ 428              	.LVL27:
+ 374:Libraries/FWlib/src/stm32f10x_cec.c ****   ITStatus bitstatus = RESET;
+ 375:Libraries/FWlib/src/stm32f10x_cec.c ****   uint32_t enablestatus = 0;
+ 376:Libraries/FWlib/src/stm32f10x_cec.c ****   
+ 377:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Check the parameters */
+ 378:Libraries/FWlib/src/stm32f10x_cec.c ****    assert_param(IS_CEC_GET_IT(CEC_IT));
+ 379:Libraries/FWlib/src/stm32f10x_cec.c ****    
+ 380:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Get the CEC IT enable bit status */
+ 381:Libraries/FWlib/src/stm32f10x_cec.c ****   enablestatus = (CEC->CFGR & (uint8_t)CEC_CFGR_IE) ;
+ 429              		.loc 1 381 0
+ 430 0000 064A     		ldr	r2, .L47
+ 431 0002 1368     		ldr	r3, [r2]
+ 432 0004 03F00203 		and	r3, r3, #2
+ 433              	.LVL28:
+ 382:Libraries/FWlib/src/stm32f10x_cec.c ****   
+ 383:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Check the status of the specified CEC interrupt */
+ 384:Libraries/FWlib/src/stm32f10x_cec.c ****   if (((CEC->CSR & CEC_IT) != (uint32_t)RESET) && enablestatus)
+ 434              		.loc 1 384 0
+ 435 0008 1269     		ldr	r2, [r2, #16]
+ 436 000a 1042     		tst	r0, r2
+ 437 000c 02D0     		beq	.L45
+ARM GAS  /tmp/ccwHg1QV.s 			page 15
+
+
+ 438              		.loc 1 384 0 is_stmt 0 discriminator 1
+ 439 000e 1BB9     		cbnz	r3, .L46
+ 385:Libraries/FWlib/src/stm32f10x_cec.c ****   {
+ 386:Libraries/FWlib/src/stm32f10x_cec.c ****     /* CEC_IT is set */
+ 387:Libraries/FWlib/src/stm32f10x_cec.c ****     bitstatus = SET;
+ 388:Libraries/FWlib/src/stm32f10x_cec.c ****   }
+ 389:Libraries/FWlib/src/stm32f10x_cec.c ****   else
+ 390:Libraries/FWlib/src/stm32f10x_cec.c ****   {
+ 391:Libraries/FWlib/src/stm32f10x_cec.c ****     /* CEC_IT is reset */
+ 392:Libraries/FWlib/src/stm32f10x_cec.c ****     bitstatus = RESET;
+ 440              		.loc 1 392 0 is_stmt 1
+ 441 0010 0020     		movs	r0, #0
+ 442              	.LVL29:
+ 443 0012 7047     		bx	lr
+ 444              	.LVL30:
+ 445              	.L45:
+ 446 0014 0020     		movs	r0, #0
+ 447              	.LVL31:
+ 448 0016 7047     		bx	lr
+ 449              	.LVL32:
+ 450              	.L46:
+ 387:Libraries/FWlib/src/stm32f10x_cec.c ****   }
+ 451              		.loc 1 387 0
+ 452 0018 0120     		movs	r0, #1
+ 453              	.LVL33:
+ 393:Libraries/FWlib/src/stm32f10x_cec.c ****   }
+ 394:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Return the CEC_IT status */
+ 395:Libraries/FWlib/src/stm32f10x_cec.c ****   return  bitstatus;
+ 396:Libraries/FWlib/src/stm32f10x_cec.c **** }
+ 454              		.loc 1 396 0
+ 455 001a 7047     		bx	lr
+ 456              	.L48:
+ 457              		.align	2
+ 458              	.L47:
+ 459 001c 00780040 		.word	1073772544
+ 460              		.cfi_endproc
+ 461              	.LFE41:
+ 463              		.section	.text.CEC_ClearITPendingBit,"ax",%progbits
+ 464              		.align	1
+ 465              		.global	CEC_ClearITPendingBit
+ 466              		.syntax unified
+ 467              		.thumb
+ 468              		.thumb_func
+ 469              		.fpu softvfp
+ 471              	CEC_ClearITPendingBit:
+ 472              	.LFB42:
+ 397:Libraries/FWlib/src/stm32f10x_cec.c **** 
+ 398:Libraries/FWlib/src/stm32f10x_cec.c **** /**
+ 399:Libraries/FWlib/src/stm32f10x_cec.c ****   * @brief  Clears the CEC's interrupt pending bits.
+ 400:Libraries/FWlib/src/stm32f10x_cec.c ****   * @param  CEC_IT: specifies the CEC interrupt pending bit to clear.
+ 401:Libraries/FWlib/src/stm32f10x_cec.c ****   *   This parameter can be any combination of the following values:
+ 402:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_IT_TERR: Tx Error
+ 403:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_IT_TBTF: Tx Block Transfer Finished
+ 404:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_IT_RERR: Rx Error
+ 405:Libraries/FWlib/src/stm32f10x_cec.c ****   *     @arg CEC_IT_RBTF: Rx Block Transfer Finished
+ 406:Libraries/FWlib/src/stm32f10x_cec.c ****   * @retval None
+ 407:Libraries/FWlib/src/stm32f10x_cec.c ****   */
+ARM GAS  /tmp/ccwHg1QV.s 			page 16
+
+
+ 408:Libraries/FWlib/src/stm32f10x_cec.c **** void CEC_ClearITPendingBit(uint16_t CEC_IT)
+ 409:Libraries/FWlib/src/stm32f10x_cec.c **** {
+ 473              		.loc 1 409 0
+ 474              		.cfi_startproc
+ 475              		@ args = 0, pretend = 0, frame = 0
+ 476              		@ frame_needed = 0, uses_anonymous_args = 0
+ 477              		@ link register save eliminated.
+ 478              	.LVL34:
+ 410:Libraries/FWlib/src/stm32f10x_cec.c ****   uint32_t tmp = 0x0;
+ 411:Libraries/FWlib/src/stm32f10x_cec.c ****   
+ 412:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Check the parameters */
+ 413:Libraries/FWlib/src/stm32f10x_cec.c ****   assert_param(IS_CEC_GET_IT(CEC_IT));
+ 414:Libraries/FWlib/src/stm32f10x_cec.c ****   
+ 415:Libraries/FWlib/src/stm32f10x_cec.c ****   tmp = CEC->CSR & 0x2;
+ 479              		.loc 1 415 0
+ 480 0000 054A     		ldr	r2, .L50
+ 481 0002 1369     		ldr	r3, [r2, #16]
+ 482 0004 03F00203 		and	r3, r3, #2
+ 483              	.LVL35:
+ 416:Libraries/FWlib/src/stm32f10x_cec.c ****   
+ 417:Libraries/FWlib/src/stm32f10x_cec.c ****   /* Clear the selected CEC interrupt pending bits */
+ 418:Libraries/FWlib/src/stm32f10x_cec.c ****   CEC->CSR &= (uint32_t)(((~(uint32_t)CEC_IT) & 0xFFFFFFFC) | tmp);
+ 484              		.loc 1 418 0
+ 485 0008 1169     		ldr	r1, [r2, #16]
+ 486 000a C043     		mvns	r0, r0
+ 487              	.LVL36:
+ 488 000c 20F00300 		bic	r0, r0, #3
+ 489 0010 0343     		orrs	r3, r3, r0
+ 490              	.LVL37:
+ 491 0012 0B40     		ands	r3, r3, r1
+ 492 0014 1361     		str	r3, [r2, #16]
+ 493 0016 7047     		bx	lr
+ 494              	.L51:
+ 495              		.align	2
+ 496              	.L50:
+ 497 0018 00780040 		.word	1073772544
+ 498              		.cfi_endproc
+ 499              	.LFE42:
+ 501              		.text
+ 502              	.Letext0:
+ 503              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 504              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 505              		.file 4 "Libraries/CMSIS/core_cm3.h"
+ 506              		.file 5 "Libraries/CMSIS/system_stm32f10x.h"
+ 507              		.file 6 "Libraries/CMSIS/stm32f10x.h"
+ 508              		.file 7 "Libraries/FWlib/inc/stm32f10x_cec.h"
+ 509              		.file 8 "Libraries/FWlib/inc/stm32f10x_rcc.h"
+ARM GAS  /tmp/ccwHg1QV.s 			page 17
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f10x_cec.c
+     /tmp/ccwHg1QV.s:16     .text.CEC_DeInit:0000000000000000 $t
+     /tmp/ccwHg1QV.s:23     .text.CEC_DeInit:0000000000000000 CEC_DeInit
+     /tmp/ccwHg1QV.s:50     .text.CEC_Init:0000000000000000 $t
+     /tmp/ccwHg1QV.s:57     .text.CEC_Init:0000000000000000 CEC_Init
+     /tmp/ccwHg1QV.s:85     .text.CEC_Init:0000000000000014 $d
+     /tmp/ccwHg1QV.s:90     .text.CEC_Cmd:0000000000000000 $t
+     /tmp/ccwHg1QV.s:97     .text.CEC_Cmd:0000000000000000 CEC_Cmd
+     /tmp/ccwHg1QV.s:121    .text.CEC_Cmd:0000000000000014 $d
+     /tmp/ccwHg1QV.s:127    .text.CEC_ITConfig:0000000000000000 $t
+     /tmp/ccwHg1QV.s:134    .text.CEC_ITConfig:0000000000000000 CEC_ITConfig
+     /tmp/ccwHg1QV.s:149    .text.CEC_ITConfig:0000000000000008 $d
+     /tmp/ccwHg1QV.s:154    .text.CEC_OwnAddressConfig:0000000000000000 $t
+     /tmp/ccwHg1QV.s:161    .text.CEC_OwnAddressConfig:0000000000000000 CEC_OwnAddressConfig
+     /tmp/ccwHg1QV.s:176    .text.CEC_OwnAddressConfig:0000000000000008 $d
+     /tmp/ccwHg1QV.s:181    .text.CEC_SetPrescaler:0000000000000000 $t
+     /tmp/ccwHg1QV.s:188    .text.CEC_SetPrescaler:0000000000000000 CEC_SetPrescaler
+     /tmp/ccwHg1QV.s:203    .text.CEC_SetPrescaler:0000000000000008 $d
+     /tmp/ccwHg1QV.s:208    .text.CEC_SendDataByte:0000000000000000 $t
+     /tmp/ccwHg1QV.s:215    .text.CEC_SendDataByte:0000000000000000 CEC_SendDataByte
+     /tmp/ccwHg1QV.s:230    .text.CEC_SendDataByte:0000000000000008 $d
+     /tmp/ccwHg1QV.s:235    .text.CEC_ReceiveDataByte:0000000000000000 $t
+     /tmp/ccwHg1QV.s:242    .text.CEC_ReceiveDataByte:0000000000000000 CEC_ReceiveDataByte
+     /tmp/ccwHg1QV.s:258    .text.CEC_ReceiveDataByte:0000000000000008 $d
+     /tmp/ccwHg1QV.s:263    .text.CEC_StartOfMessage:0000000000000000 $t
+     /tmp/ccwHg1QV.s:270    .text.CEC_StartOfMessage:0000000000000000 CEC_StartOfMessage
+     /tmp/ccwHg1QV.s:285    .text.CEC_StartOfMessage:0000000000000008 $d
+     /tmp/ccwHg1QV.s:290    .text.CEC_EndOfMessageCmd:0000000000000000 $t
+     /tmp/ccwHg1QV.s:297    .text.CEC_EndOfMessageCmd:0000000000000000 CEC_EndOfMessageCmd
+     /tmp/ccwHg1QV.s:312    .text.CEC_EndOfMessageCmd:0000000000000008 $d
+     /tmp/ccwHg1QV.s:317    .text.CEC_GetFlagStatus:0000000000000000 $t
+     /tmp/ccwHg1QV.s:324    .text.CEC_GetFlagStatus:0000000000000000 CEC_GetFlagStatus
+     /tmp/ccwHg1QV.s:369    .text.CEC_GetFlagStatus:0000000000000020 $d
+     /tmp/ccwHg1QV.s:375    .text.CEC_ClearFlag:0000000000000000 $t
+     /tmp/ccwHg1QV.s:382    .text.CEC_ClearFlag:0000000000000000 CEC_ClearFlag
+     /tmp/ccwHg1QV.s:409    .text.CEC_ClearFlag:0000000000000018 $d
+     /tmp/ccwHg1QV.s:414    .text.CEC_GetITStatus:0000000000000000 $t
+     /tmp/ccwHg1QV.s:421    .text.CEC_GetITStatus:0000000000000000 CEC_GetITStatus
+     /tmp/ccwHg1QV.s:459    .text.CEC_GetITStatus:000000000000001c $d
+     /tmp/ccwHg1QV.s:464    .text.CEC_ClearITPendingBit:0000000000000000 $t
+     /tmp/ccwHg1QV.s:471    .text.CEC_ClearITPendingBit:0000000000000000 CEC_ClearITPendingBit
+     /tmp/ccwHg1QV.s:497    .text.CEC_ClearITPendingBit:0000000000000018 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB1PeriphResetCmd

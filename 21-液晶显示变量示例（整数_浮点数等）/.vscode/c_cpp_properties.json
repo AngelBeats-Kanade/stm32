@@ -1,0 +1,48 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/**",
+                    "${workspaceFolder}/Libraries/CMSIS",
+                    "${workspaceFolder}/Libraries/STM32F1xx_HAL_Driver/inc",
+                    "${workspaceFolder}/Libraries/STM32F1xx_HAL_Driver/src",
+                    "${workspaceFolder}/User/flash",
+                    "${workspaceFolder}/User/font",
+                    "${workspaceFolder}/User/lcd",
+                    "${workspaceFolder}/User/led",
+                    "${workspaceFolder}/User/usart",
+                    "${workspaceFolder}/User",
+                    "/usr/lib/arm-none-eabi/include"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/Libraries/CMSIS",
+                "${workspaceFolder}/Libraries/STM32F1xx_HAL_Driver/inc",
+                "${workspaceFolder}/Libraries/STM32F1xx_HAL_Driver/src",
+                "${workspaceFolder}/User/flash",
+                "${workspaceFolder}/User/font",
+                "${workspaceFolder}/User/lcd",
+                "${workspaceFolder}/User/led",
+                "${workspaceFolder}/User/usart",
+                "${workspaceFolder}/User",
+                "/usr/lib/arm-none-eabi/include"
+            ],
+            "defines": [
+                "UNICODE",
+                "DEBUG",
+                "USE_HAL_DRIVER",
+                "STM32F103xE"
+            ],
+            "compilerPath": "/usr/bin/arm-none-eabi-gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64",
+            "compilerArgs": []
+        }
+    ],
+    "version": 4
+}

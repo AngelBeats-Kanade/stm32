@@ -1,0 +1,54 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}/**",
+                    "${workspaceFolder}/User",
+                    "${workspaceFolder}/User/delay",
+                    "${workspaceFolder}/User/fonts",
+                    "${workspaceFolder}/User/lcd",
+                    "${workspaceFolder}/User/led",
+                    "${workspaceFolder}/User/mpu",
+                    "${workspaceFolder}/User/sdram",
+                    "${workspaceFolder}/User/usart",
+                    "${workspaceFolder}/Libraries/STM32H7xx_HAL_Driver/Inc",
+                    "${workspaceFolder}/Libraries/STM32H7xx_HAL_Driver/Inc/Legacy",
+                    "${workspaceFolder}/Libraries/CMSIS/Include",
+                    "${workspaceFolder}/Libraries/CMSIS/Device/ST/STM32H7xx/Include",
+                    "/usr/lib/arm-none-eabi/include"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/User",
+                "${workspaceFolder}/User/delay",
+                "${workspaceFolder}/User/fonts",
+                "${workspaceFolder}/User/lcd",
+                "${workspaceFolder}/User/led",
+                "${workspaceFolder}/User/mpu",
+                "${workspaceFolder}/User/sdram",
+                "${workspaceFolder}/User/usart",
+                "${workspaceFolder}/Libraries/STM32H7xx_HAL_Driver/Inc",
+                "${workspaceFolder}/Libraries/STM32H7xx_HAL_Driver/Inc/Legacy",
+                "${workspaceFolder}/Libraries/CMSIS/Include",
+                "${workspaceFolder}/Libraries/CMSIS/Device/ST/STM32H7xx/Include",
+                "/usr/lib/arm-none-eabi/include"
+            ],
+            "defines": [
+                "UNICODE",
+                "DEBUG",
+                "USE_HAL_DRIVER",
+                "STM32H743xx"
+            ],
+            "compilerPath": "/usr/bin/arm-none-eabi-gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64",
+            "compilerArgs": []
+        }
+    ],
+    "version": 4
+}

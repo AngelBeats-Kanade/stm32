@@ -1,0 +1,340 @@
+ARM GAS  /tmp/ccTgPxTV.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"bsp_usart.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.USART_Config,"ax",%progbits
+  16              		.align	1
+  17              		.global	USART_Config
+  18              		.syntax unified
+  19              		.thumb
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	USART_Config:
+  24              	.LFB30:
+  25              		.file 1 "User/usart/bsp_usart.c"
+   1:User/usart/bsp_usart.c **** /**
+   2:User/usart/bsp_usart.c ****   ******************************************************************************
+   3:User/usart/bsp_usart.c ****   * @file    bsp_usart.c
+   4:User/usart/bsp_usart.c ****   * @version V1.0
+   5:User/usart/bsp_usart.c ****   * @date    2013-xx-xx
+   6:User/usart/bsp_usart.c ****   * @brief   调试用的printf串口，重定向printf到串口
+   7:User/usart/bsp_usart.c ****   ******************************************************************************
+   8:User/usart/bsp_usart.c ****   * @attention
+   9:User/usart/bsp_usart.c ****   *
+  10:User/usart/bsp_usart.c ****   * 实验平台:野火 F103-MINI STM32 开发板 
+  11:User/usart/bsp_usart.c ****   * 论坛    :http://www.firebbs.cn
+  12:User/usart/bsp_usart.c ****   * 淘宝    :https://fire-stm32.taobao.com
+  13:User/usart/bsp_usart.c ****   *
+  14:User/usart/bsp_usart.c ****   ******************************************************************************
+  15:User/usart/bsp_usart.c ****   */ 
+  16:User/usart/bsp_usart.c **** 
+  17:User/usart/bsp_usart.c **** 
+  18:User/usart/bsp_usart.c **** #include "./usart/bsp_usart.h"
+  19:User/usart/bsp_usart.c **** 
+  20:User/usart/bsp_usart.c **** 
+  21:User/usart/bsp_usart.c ****  /**
+  22:User/usart/bsp_usart.c ****   * @brief  USART GPIO 配置,工作参数配置
+  23:User/usart/bsp_usart.c ****   * @param  无
+  24:User/usart/bsp_usart.c ****   * @retval 无
+  25:User/usart/bsp_usart.c ****   */
+  26:User/usart/bsp_usart.c **** void USART_Config(void)
+  27:User/usart/bsp_usart.c **** {
+  26              		.loc 1 27 0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 24
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30 0000 10B5     		push	{r4, lr}
+  31              	.LCFI0:
+ARM GAS  /tmp/ccTgPxTV.s 			page 2
+
+
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 4, -8
+  34              		.cfi_offset 14, -4
+  35 0002 86B0     		sub	sp, sp, #24
+  36              	.LCFI1:
+  37              		.cfi_def_cfa_offset 32
+  28:User/usart/bsp_usart.c **** 	GPIO_InitTypeDef GPIO_InitStructure;
+  29:User/usart/bsp_usart.c **** 	USART_InitTypeDef USART_InitStructure;
+  30:User/usart/bsp_usart.c **** 
+  31:User/usart/bsp_usart.c **** 	// 打开串口GPIO的时钟
+  32:User/usart/bsp_usart.c **** 	DEBUG_USART_GPIO_APBxClkCmd(DEBUG_USART_GPIO_CLK, ENABLE);
+  38              		.loc 1 32 0
+  39 0004 0121     		movs	r1, #1
+  40 0006 0420     		movs	r0, #4
+  41 0008 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  42              	.LVL0:
+  33:User/usart/bsp_usart.c **** 	
+  34:User/usart/bsp_usart.c **** 	// 打开串口外设的时钟
+  35:User/usart/bsp_usart.c **** 	DEBUG_USART_APBxClkCmd(DEBUG_USART_CLK, ENABLE);
+  43              		.loc 1 35 0
+  44 000c 0121     		movs	r1, #1
+  45 000e 4FF48040 		mov	r0, #16384
+  46 0012 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  47              	.LVL1:
+  36:User/usart/bsp_usart.c **** 
+  37:User/usart/bsp_usart.c **** 	// 将USART Tx的GPIO配置为推挽复用模式
+  38:User/usart/bsp_usart.c **** 	GPIO_InitStructure.GPIO_Pin = DEBUG_USART_TX_GPIO_PIN;
+  48              		.loc 1 38 0
+  49 0016 4FF40073 		mov	r3, #512
+  50 001a ADF81430 		strh	r3, [sp, #20]	@ movhi
+  39:User/usart/bsp_usart.c **** 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+  51              		.loc 1 39 0
+  52 001e 1823     		movs	r3, #24
+  53 0020 8DF81730 		strb	r3, [sp, #23]
+  40:User/usart/bsp_usart.c **** 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  54              		.loc 1 40 0
+  55 0024 0323     		movs	r3, #3
+  56 0026 8DF81630 		strb	r3, [sp, #22]
+  41:User/usart/bsp_usart.c **** 	GPIO_Init(DEBUG_USART_TX_GPIO_PORT, &GPIO_InitStructure);
+  57              		.loc 1 41 0
+  58 002a 154C     		ldr	r4, .L3
+  59 002c 05A9     		add	r1, sp, #20
+  60 002e 2046     		mov	r0, r4
+  61 0030 FFF7FEFF 		bl	GPIO_Init
+  62              	.LVL2:
+  42:User/usart/bsp_usart.c **** 
+  43:User/usart/bsp_usart.c ****   // 将USART Rx的GPIO配置为浮空输入模式
+  44:User/usart/bsp_usart.c **** 	GPIO_InitStructure.GPIO_Pin = DEBUG_USART_RX_GPIO_PIN;
+  63              		.loc 1 44 0
+  64 0034 4FF48063 		mov	r3, #1024
+  65 0038 ADF81430 		strh	r3, [sp, #20]	@ movhi
+  45:User/usart/bsp_usart.c **** 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+  66              		.loc 1 45 0
+  67 003c 0423     		movs	r3, #4
+  68 003e 8DF81730 		strb	r3, [sp, #23]
+  46:User/usart/bsp_usart.c **** 	GPIO_Init(DEBUG_USART_RX_GPIO_PORT, &GPIO_InitStructure);
+  69              		.loc 1 46 0
+ARM GAS  /tmp/ccTgPxTV.s 			page 3
+
+
+  70 0042 05A9     		add	r1, sp, #20
+  71 0044 2046     		mov	r0, r4
+  72 0046 FFF7FEFF 		bl	GPIO_Init
+  73              	.LVL3:
+  47:User/usart/bsp_usart.c **** 	
+  48:User/usart/bsp_usart.c **** 	// 配置串口的工作参数
+  49:User/usart/bsp_usart.c **** 	// 配置波特率
+  50:User/usart/bsp_usart.c **** 	USART_InitStructure.USART_BaudRate = DEBUG_USART_BAUDRATE;
+  74              		.loc 1 50 0
+  75 004a 4FF4E133 		mov	r3, #115200
+  76 004e 0193     		str	r3, [sp, #4]
+  51:User/usart/bsp_usart.c **** 	// 配置 针数据字长
+  52:User/usart/bsp_usart.c **** 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+  77              		.loc 1 52 0
+  78 0050 0023     		movs	r3, #0
+  79 0052 ADF80830 		strh	r3, [sp, #8]	@ movhi
+  53:User/usart/bsp_usart.c **** 	// 配置停止位
+  54:User/usart/bsp_usart.c **** 	USART_InitStructure.USART_StopBits = USART_StopBits_1;
+  80              		.loc 1 54 0
+  81 0056 ADF80A30 		strh	r3, [sp, #10]	@ movhi
+  55:User/usart/bsp_usart.c **** 	// 配置校验位
+  56:User/usart/bsp_usart.c **** 	USART_InitStructure.USART_Parity = USART_Parity_No ;
+  82              		.loc 1 56 0
+  83 005a ADF80C30 		strh	r3, [sp, #12]	@ movhi
+  57:User/usart/bsp_usart.c **** 	// 配置硬件流控制
+  58:User/usart/bsp_usart.c **** 	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+  84              		.loc 1 58 0
+  85 005e ADF81030 		strh	r3, [sp, #16]	@ movhi
+  59:User/usart/bsp_usart.c **** 	// 配置工作模式，收发一起
+  60:User/usart/bsp_usart.c **** 	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+  86              		.loc 1 60 0
+  87 0062 0C23     		movs	r3, #12
+  88 0064 ADF80E30 		strh	r3, [sp, #14]	@ movhi
+  61:User/usart/bsp_usart.c **** 	// 完成串口的初始化配置
+  62:User/usart/bsp_usart.c **** 	USART_Init(DEBUG_USARTx, &USART_InitStructure);
+  89              		.loc 1 62 0
+  90 0068 04F54054 		add	r4, r4, #12288
+  91 006c 01A9     		add	r1, sp, #4
+  92 006e 2046     		mov	r0, r4
+  93 0070 FFF7FEFF 		bl	USART_Init
+  94              	.LVL4:
+  63:User/usart/bsp_usart.c **** 
+  64:User/usart/bsp_usart.c **** 	// 使能串口
+  65:User/usart/bsp_usart.c **** 	USART_Cmd(DEBUG_USARTx, ENABLE);	    
+  95              		.loc 1 65 0
+  96 0074 0121     		movs	r1, #1
+  97 0076 2046     		mov	r0, r4
+  98 0078 FFF7FEFF 		bl	USART_Cmd
+  99              	.LVL5:
+  66:User/usart/bsp_usart.c **** }
+ 100              		.loc 1 66 0
+ 101 007c 06B0     		add	sp, sp, #24
+ 102              	.LCFI2:
+ 103              		.cfi_def_cfa_offset 8
+ 104              		@ sp needed
+ 105 007e 10BD     		pop	{r4, pc}
+ 106              	.L4:
+ARM GAS  /tmp/ccTgPxTV.s 			page 4
+
+
+ 107              		.align	2
+ 108              	.L3:
+ 109 0080 00080140 		.word	1073809408
+ 110              		.cfi_endproc
+ 111              	.LFE30:
+ 113              		.section	.text.fputc,"ax",%progbits
+ 114              		.align	1
+ 115              		.global	fputc
+ 116              		.syntax unified
+ 117              		.thumb
+ 118              		.thumb_func
+ 119              		.fpu softvfp
+ 121              	fputc:
+ 122              	.LFB31:
+  67:User/usart/bsp_usart.c **** 
+  68:User/usart/bsp_usart.c **** 
+  69:User/usart/bsp_usart.c **** ///重定向c库函数printf到串口，重定向后可使用printf函数
+  70:User/usart/bsp_usart.c **** int fputc(int ch, FILE *f)
+  71:User/usart/bsp_usart.c **** {
+ 123              		.loc 1 71 0
+ 124              		.cfi_startproc
+ 125              		@ args = 0, pretend = 0, frame = 0
+ 126              		@ frame_needed = 0, uses_anonymous_args = 0
+ 127              	.LVL6:
+ 128 0000 10B5     		push	{r4, lr}
+ 129              	.LCFI3:
+ 130              		.cfi_def_cfa_offset 8
+ 131              		.cfi_offset 4, -8
+ 132              		.cfi_offset 14, -4
+ 133 0002 0446     		mov	r4, r0
+  72:User/usart/bsp_usart.c **** 		/* 发送一个字节数据到串口 */
+  73:User/usart/bsp_usart.c **** 		USART_SendData(DEBUG_USARTx, (uint8_t) ch);
+ 134              		.loc 1 73 0
+ 135 0004 C1B2     		uxtb	r1, r0
+ 136              	.LVL7:
+ 137 0006 0548     		ldr	r0, .L8
+ 138              	.LVL8:
+ 139 0008 FFF7FEFF 		bl	USART_SendData
+ 140              	.LVL9:
+ 141              	.L6:
+  74:User/usart/bsp_usart.c **** 		
+  75:User/usart/bsp_usart.c **** 		/* 等待发送完毕 */
+  76:User/usart/bsp_usart.c **** 		while (USART_GetFlagStatus(DEBUG_USARTx, USART_FLAG_TXE) == RESET);		
+ 142              		.loc 1 76 0 discriminator 1
+ 143 000c 8021     		movs	r1, #128
+ 144 000e 0348     		ldr	r0, .L8
+ 145 0010 FFF7FEFF 		bl	USART_GetFlagStatus
+ 146              	.LVL10:
+ 147 0014 0028     		cmp	r0, #0
+ 148 0016 F9D0     		beq	.L6
+  77:User/usart/bsp_usart.c **** 	
+  78:User/usart/bsp_usart.c **** 		return (ch);
+  79:User/usart/bsp_usart.c **** }
+ 149              		.loc 1 79 0
+ 150 0018 2046     		mov	r0, r4
+ 151 001a 10BD     		pop	{r4, pc}
+ 152              	.LVL11:
+ARM GAS  /tmp/ccTgPxTV.s 			page 5
+
+
+ 153              	.L9:
+ 154              		.align	2
+ 155              	.L8:
+ 156 001c 00380140 		.word	1073821696
+ 157              		.cfi_endproc
+ 158              	.LFE31:
+ 160              		.section	.text.fgetc,"ax",%progbits
+ 161              		.align	1
+ 162              		.global	fgetc
+ 163              		.syntax unified
+ 164              		.thumb
+ 165              		.thumb_func
+ 166              		.fpu softvfp
+ 168              	fgetc:
+ 169              	.LFB32:
+  80:User/usart/bsp_usart.c **** 
+  81:User/usart/bsp_usart.c **** ///重定向c库函数scanf到串口，重写向后可使用scanf、getchar等函数
+  82:User/usart/bsp_usart.c **** int fgetc(FILE *f)
+  83:User/usart/bsp_usart.c **** {
+ 170              		.loc 1 83 0
+ 171              		.cfi_startproc
+ 172              		@ args = 0, pretend = 0, frame = 0
+ 173              		@ frame_needed = 0, uses_anonymous_args = 0
+ 174              	.LVL12:
+ 175 0000 08B5     		push	{r3, lr}
+ 176              	.LCFI4:
+ 177              		.cfi_def_cfa_offset 8
+ 178              		.cfi_offset 3, -8
+ 179              		.cfi_offset 14, -4
+ 180              	.LVL13:
+ 181              	.L11:
+  84:User/usart/bsp_usart.c **** 		/* 等待串口输入数据 */
+  85:User/usart/bsp_usart.c **** 		while (USART_GetFlagStatus(DEBUG_USARTx, USART_FLAG_RXNE) == RESET);
+ 182              		.loc 1 85 0 discriminator 1
+ 183 0002 2021     		movs	r1, #32
+ 184 0004 0448     		ldr	r0, .L13
+ 185 0006 FFF7FEFF 		bl	USART_GetFlagStatus
+ 186              	.LVL14:
+ 187 000a 0028     		cmp	r0, #0
+ 188 000c F9D0     		beq	.L11
+  86:User/usart/bsp_usart.c **** 
+  87:User/usart/bsp_usart.c **** 		return (int)USART_ReceiveData(DEBUG_USARTx);
+ 189              		.loc 1 87 0
+ 190 000e 0248     		ldr	r0, .L13
+ 191 0010 FFF7FEFF 		bl	USART_ReceiveData
+ 192              	.LVL15:
+  88:User/usart/bsp_usart.c **** }
+ 193              		.loc 1 88 0
+ 194 0014 08BD     		pop	{r3, pc}
+ 195              	.L14:
+ 196 0016 00BF     		.align	2
+ 197              	.L13:
+ 198 0018 00380140 		.word	1073821696
+ 199              		.cfi_endproc
+ 200              	.LFE32:
+ 202              		.text
+ 203              	.Letext0:
+ARM GAS  /tmp/ccTgPxTV.s 			page 6
+
+
+ 204              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 205              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 206              		.file 4 "Libraries/CMSIS/core_cm3.h"
+ 207              		.file 5 "Libraries/CMSIS/system_stm32f10x.h"
+ 208              		.file 6 "Libraries/CMSIS/stm32f10x.h"
+ 209              		.file 7 "Libraries/FWlib/inc/stm32f10x_gpio.h"
+ 210              		.file 8 "Libraries/FWlib/inc/stm32f10x_usart.h"
+ 211              		.file 9 "/usr/include/newlib/sys/lock.h"
+ 212              		.file 10 "/usr/include/newlib/sys/_types.h"
+ 213              		.file 11 "/usr/lib/gcc/arm-none-eabi/6.3.1/include/stddef.h"
+ 214              		.file 12 "/usr/include/newlib/sys/reent.h"
+ 215              		.file 13 "/usr/include/newlib/stdio.h"
+ 216              		.file 14 "Libraries/FWlib/inc/stm32f10x_rcc.h"
+ARM GAS  /tmp/ccTgPxTV.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 bsp_usart.c
+     /tmp/ccTgPxTV.s:16     .text.USART_Config:0000000000000000 $t
+     /tmp/ccTgPxTV.s:23     .text.USART_Config:0000000000000000 USART_Config
+     /tmp/ccTgPxTV.s:109    .text.USART_Config:0000000000000080 $d
+     /tmp/ccTgPxTV.s:114    .text.fputc:0000000000000000 $t
+     /tmp/ccTgPxTV.s:121    .text.fputc:0000000000000000 fputc
+     /tmp/ccTgPxTV.s:156    .text.fputc:000000000000001c $d
+     /tmp/ccTgPxTV.s:161    .text.fgetc:0000000000000000 $t
+     /tmp/ccTgPxTV.s:168    .text.fgetc:0000000000000000 fgetc
+     /tmp/ccTgPxTV.s:198    .text.fgetc:0000000000000018 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB2PeriphClockCmd
+GPIO_Init
+USART_Init
+USART_Cmd
+USART_SendData
+USART_GetFlagStatus
+USART_ReceiveData

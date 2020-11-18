@@ -1,0 +1,1509 @@
+ARM GAS  /tmp/ccv0RocU.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"ad9959.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.delay1,"ax",%progbits
+  16              		.align	1
+  17              		.global	delay1
+  18              		.syntax unified
+  19              		.thumb
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	delay1:
+  24              	.LFB113:
+  25              		.file 1 "HARDWARE/AD9959/ad9959.c"
+   1:HARDWARE/AD9959/ad9959.c **** #include "ad9959.h"
+   2:HARDWARE/AD9959/ad9959.c **** 
+   3:HARDWARE/AD9959/ad9959.c **** u8 CSR_DATA0[1] = {0x10}; //  CH0
+   4:HARDWARE/AD9959/ad9959.c **** u8 CSR_DATA1[1] = {0x20}; //  CH1
+   5:HARDWARE/AD9959/ad9959.c **** u8 CSR_DATA2[1] = {0x40}; //  CH2
+   6:HARDWARE/AD9959/ad9959.c **** u8 CSR_DATA3[1] = {0x80}; //  CH3
+   7:HARDWARE/AD9959/ad9959.c **** u32 SinFre[5] = {50, 50, 50, 50};
+   8:HARDWARE/AD9959/ad9959.c **** u32 SinAmp[5] = {1023, 1023, 1023, 1023};
+   9:HARDWARE/AD9959/ad9959.c **** u32 SinPhr[5] = {0, 4095, 4095 * 3, 4095 * 2};
+  10:HARDWARE/AD9959/ad9959.c **** 
+  11:HARDWARE/AD9959/ad9959.c **** u8 FR2_DATA[2] = {0x00, 0x00};       // default Value = 0x0000
+  12:HARDWARE/AD9959/ad9959.c **** u8 CFR_DATA[3] = {0x00, 0x03, 0x02}; // default Value = 0x000302
+  13:HARDWARE/AD9959/ad9959.c **** 
+  14:HARDWARE/AD9959/ad9959.c **** u8 CPOW0_DATA[2] = {0x00, 0x00}; // default Value = 0x0000
+  15:HARDWARE/AD9959/ad9959.c **** 
+  16:HARDWARE/AD9959/ad9959.c **** u8 LSRR_DATA[2] = {0x00, 0x00};
+  17:HARDWARE/AD9959/ad9959.c **** 
+  18:HARDWARE/AD9959/ad9959.c **** u8 RDW_DATA[4] = {0x00, 0x00, 0x00, 0x00};
+  19:HARDWARE/AD9959/ad9959.c **** 
+  20:HARDWARE/AD9959/ad9959.c **** u8 FDW_DATA[4] = {0x00, 0x00, 0x00, 0x00};
+  21:HARDWARE/AD9959/ad9959.c **** 
+  22:HARDWARE/AD9959/ad9959.c **** void Init_AD9959(void)
+  23:HARDWARE/AD9959/ad9959.c **** {
+  24:HARDWARE/AD9959/ad9959.c ****   GPIO_InitTypeDef GPIO_InitStructure;
+  25:HARDWARE/AD9959/ad9959.c ****   u8 FR1_DATA[3] = {0xD0, 0x00, 0x00};
+  26:HARDWARE/AD9959/ad9959.c ****   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOG, ENABLE);
+  27:HARDWARE/AD9959/ad9959.c ****   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
+  28:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | G
+  29:HARDWARE/AD9959/ad9959.c ****                                 GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_12 | 
+  30:HARDWARE/AD9959/ad9959.c ****                                 GPIO_Pin_14;
+  31:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  32:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+  33:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ARM GAS  /tmp/ccv0RocU.s 			page 2
+
+
+  34:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  35:HARDWARE/AD9959/ad9959.c ****   GPIO_Init(GPIOG, &GPIO_InitStructure);
+  36:HARDWARE/AD9959/ad9959.c **** 
+  37:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13;
+  38:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  39:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+  40:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  41:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+  42:HARDWARE/AD9959/ad9959.c ****   GPIO_Init(GPIOB, &GPIO_InitStructure);
+  43:HARDWARE/AD9959/ad9959.c ****   //	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_10;
+  44:HARDWARE/AD9959/ad9959.c ****   //	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  45:HARDWARE/AD9959/ad9959.c ****   //	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  46:HARDWARE/AD9959/ad9959.c ****   //	GPIO_Init(GPIOG, &GPIO_InitStructure);
+  47:HARDWARE/AD9959/ad9959.c **** 
+  48:HARDWARE/AD9959/ad9959.c ****   //	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+  49:HARDWARE/AD9959/ad9959.c ****   //	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+  50:HARDWARE/AD9959/ad9959.c ****   //	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  51:HARDWARE/AD9959/ad9959.c ****   //	GPIO_Init(GPIOG, &GPIO_InitStructure);
+  52:HARDWARE/AD9959/ad9959.c **** 
+  53:HARDWARE/AD9959/ad9959.c ****   Intserve();
+  54:HARDWARE/AD9959/ad9959.c ****   IntReset();
+  55:HARDWARE/AD9959/ad9959.c **** 
+  56:HARDWARE/AD9959/ad9959.c ****   WriteData_AD9959(FR1_ADD, 3, FR1_DATA, 1);
+  57:HARDWARE/AD9959/ad9959.c ****   //  WriteData_AD9959(FR2_ADD,2,FR2_DATA,0);
+  58:HARDWARE/AD9959/ad9959.c ****   //  WriteData_AD9959(CFR_ADD,3,CFR_DATA,1);
+  59:HARDWARE/AD9959/ad9959.c ****   //  WriteData_AD9959(CPOW0_ADD,2,CPOW0_DATA,0);
+  60:HARDWARE/AD9959/ad9959.c ****   //  WriteData_AD9959(ACR_ADD,3,ACR_DATA,0);
+  61:HARDWARE/AD9959/ad9959.c ****   //  WriteData_AD9959(LSRR_ADD,2,LSRR_DATA,0);
+  62:HARDWARE/AD9959/ad9959.c ****   //  WriteData_AD9959(RDW_ADD,2,RDW_DATA,0);
+  63:HARDWARE/AD9959/ad9959.c ****   //  WriteData_AD9959(FDW_ADD,4,FDW_DATA,1);
+  64:HARDWARE/AD9959/ad9959.c **** 
+  65:HARDWARE/AD9959/ad9959.c ****   Write_frequence(3, SinFre[3]);
+  66:HARDWARE/AD9959/ad9959.c ****   Write_frequence(0, SinFre[0]);
+  67:HARDWARE/AD9959/ad9959.c ****   Write_frequence(1, SinFre[1]);
+  68:HARDWARE/AD9959/ad9959.c ****   Write_frequence(2, SinFre[2]);
+  69:HARDWARE/AD9959/ad9959.c **** 
+  70:HARDWARE/AD9959/ad9959.c ****   ////	Write_frequence(3,50);
+  71:HARDWARE/AD9959/ad9959.c ****   ////	Write_frequence(0,50);
+  72:HARDWARE/AD9959/ad9959.c ****   ////	Write_frequence(1,50);
+  73:HARDWARE/AD9959/ad9959.c ****   ////	Write_frequence(2,50);
+  74:HARDWARE/AD9959/ad9959.c **** 
+  75:HARDWARE/AD9959/ad9959.c ****   Write_Phase(3, SinPhr[3]);
+  76:HARDWARE/AD9959/ad9959.c ****   Write_Phase(0, SinPhr[0]);
+  77:HARDWARE/AD9959/ad9959.c ****   Write_Phase(1, SinPhr[1]);
+  78:HARDWARE/AD9959/ad9959.c ****   Write_Phase(2, SinPhr[2]);
+  79:HARDWARE/AD9959/ad9959.c **** 
+  80:HARDWARE/AD9959/ad9959.c ****   Write_Amplitude(3, SinAmp[3]);
+  81:HARDWARE/AD9959/ad9959.c ****   Write_Amplitude(0, SinAmp[0]);
+  82:HARDWARE/AD9959/ad9959.c ****   Write_Amplitude(1, SinAmp[1]);
+  83:HARDWARE/AD9959/ad9959.c ****   Write_Amplitude(2, SinAmp[2]);
+  84:HARDWARE/AD9959/ad9959.c **** }
+  85:HARDWARE/AD9959/ad9959.c **** 
+  86:HARDWARE/AD9959/ad9959.c **** void delay1(u32 length)
+  87:HARDWARE/AD9959/ad9959.c **** {
+  26              		.loc 1 87 0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccv0RocU.s 			page 3
+
+
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30              		@ link register save eliminated.
+  31              	.LVL0:
+  88:HARDWARE/AD9959/ad9959.c ****   length = length * 12;
+  32              		.loc 1 88 0
+  33 0000 00EB4000 		add	r0, r0, r0, lsl #1
+  34              	.LVL1:
+  35 0004 8300     		lsls	r3, r0, #2
+  36              	.LVL2:
+  89:HARDWARE/AD9959/ad9959.c ****   while (length--)
+  37              		.loc 1 89 0
+  38 0006 00E0     		b	.L2
+  39              	.LVL3:
+  40              	.L3:
+  41 0008 1346     		mov	r3, r2
+  42              	.LVL4:
+  43              	.L2:
+  44              		.loc 1 89 0 is_stmt 0 discriminator 1
+  45 000a 5A1E     		subs	r2, r3, #1
+  46              	.LVL5:
+  47 000c 002B     		cmp	r3, #0
+  48 000e FBD1     		bne	.L3
+  90:HARDWARE/AD9959/ad9959.c ****     ;
+  91:HARDWARE/AD9959/ad9959.c **** }
+  49              		.loc 1 91 0 is_stmt 1
+  50 0010 7047     		bx	lr
+  51              		.cfi_endproc
+  52              	.LFE113:
+  54              		.section	.text.Intserve,"ax",%progbits
+  55              		.align	1
+  56              		.global	Intserve
+  57              		.syntax unified
+  58              		.thumb
+  59              		.thumb_func
+  60              		.fpu softvfp
+  62              	Intserve:
+  63              	.LFB114:
+  92:HARDWARE/AD9959/ad9959.c **** 
+  93:HARDWARE/AD9959/ad9959.c **** void Intserve(void)
+  94:HARDWARE/AD9959/ad9959.c **** {
+  64              		.loc 1 94 0
+  65              		.cfi_startproc
+  66              		@ args = 0, pretend = 0, frame = 0
+  67              		@ frame_needed = 0, uses_anonymous_args = 0
+  68              		@ link register save eliminated.
+  95:HARDWARE/AD9959/ad9959.c ****   AD9959_PWR = 0;
+  69              		.loc 1 95 0
+  70 0000 0023     		movs	r3, #0
+  71 0002 0D4A     		ldr	r2, .L5
+  72 0004 1360     		str	r3, [r2]
+  96:HARDWARE/AD9959/ad9959.c ****   CS = 1;
+  73              		.loc 1 96 0
+  74 0006 0121     		movs	r1, #1
+  75 0008 0C32     		adds	r2, r2, #12
+  76 000a 1160     		str	r1, [r2]
+  97:HARDWARE/AD9959/ad9959.c ****   SCLK = 0;
+  77              		.loc 1 97 0
+ARM GAS  /tmp/ccv0RocU.s 			page 4
+
+
+  78 000c 0432     		adds	r2, r2, #4
+  79 000e 1360     		str	r3, [r2]
+  98:HARDWARE/AD9959/ad9959.c ****   UPDATE = 0;
+  80              		.loc 1 98 0
+  81 0010 083A     		subs	r2, r2, #8
+  82 0012 1360     		str	r3, [r2]
+  99:HARDWARE/AD9959/ad9959.c ****   PS0 = 0;
+  83              		.loc 1 99 0
+  84 0014 243A     		subs	r2, r2, #36
+  85 0016 1360     		str	r3, [r2]
+ 100:HARDWARE/AD9959/ad9959.c ****   PS1 = 0;
+  86              		.loc 1 100 0
+  87 0018 0432     		adds	r2, r2, #4
+  88 001a 1360     		str	r3, [r2]
+ 101:HARDWARE/AD9959/ad9959.c ****   PS2 = 0;
+  89              		.loc 1 101 0
+  90 001c 0432     		adds	r2, r2, #4
+  91 001e 1360     		str	r3, [r2]
+ 102:HARDWARE/AD9959/ad9959.c ****   PS3 = 0;
+  92              		.loc 1 102 0
+  93 0020 0432     		adds	r2, r2, #4
+  94 0022 1360     		str	r3, [r2]
+ 103:HARDWARE/AD9959/ad9959.c ****   SDIO0 = 0;
+  95              		.loc 1 103 0
+  96 0024 0432     		adds	r2, r2, #4
+  97 0026 1360     		str	r3, [r2]
+ 104:HARDWARE/AD9959/ad9959.c ****   SDIO1 = 0;
+  98              		.loc 1 104 0
+  99 0028 0432     		adds	r2, r2, #4
+ 100 002a 1360     		str	r3, [r2]
+ 105:HARDWARE/AD9959/ad9959.c ****   SDIO2 = 0;
+ 101              		.loc 1 105 0
+ 102 002c 0432     		adds	r2, r2, #4
+ 103 002e 1360     		str	r3, [r2]
+ 106:HARDWARE/AD9959/ad9959.c ****   SDIO3 = 0;
+ 104              		.loc 1 106 0
+ 105 0030 1832     		adds	r2, r2, #24
+ 106 0032 1360     		str	r3, [r2]
+ 107 0034 7047     		bx	lr
+ 108              	.L6:
+ 109 0036 00BF     		.align	2
+ 110              	.L5:
+ 111 0038 A4024342 		.word	1111687844
+ 112              		.cfi_endproc
+ 113              	.LFE114:
+ 115              		.section	.text.IntReset,"ax",%progbits
+ 116              		.align	1
+ 117              		.global	IntReset
+ 118              		.syntax unified
+ 119              		.thumb
+ 120              		.thumb_func
+ 121              		.fpu softvfp
+ 123              	IntReset:
+ 124              	.LFB115:
+ 107:HARDWARE/AD9959/ad9959.c **** }
+ 108:HARDWARE/AD9959/ad9959.c **** 
+ 109:HARDWARE/AD9959/ad9959.c **** void IntReset(void)
+ARM GAS  /tmp/ccv0RocU.s 			page 5
+
+
+ 110:HARDWARE/AD9959/ad9959.c **** {
+ 125              		.loc 1 110 0
+ 126              		.cfi_startproc
+ 127              		@ args = 0, pretend = 0, frame = 0
+ 128              		@ frame_needed = 0, uses_anonymous_args = 0
+ 129              		@ link register save eliminated.
+ 111:HARDWARE/AD9959/ad9959.c ****   Reset = 0;
+ 130              		.loc 1 111 0
+ 131 0000 034B     		ldr	r3, .L8
+ 132 0002 0022     		movs	r2, #0
+ 133 0004 1A60     		str	r2, [r3]
+ 112:HARDWARE/AD9959/ad9959.c ****   delay1(1);
+ 113:HARDWARE/AD9959/ad9959.c ****   Reset = 1;
+ 134              		.loc 1 113 0
+ 135 0006 0121     		movs	r1, #1
+ 136 0008 1960     		str	r1, [r3]
+ 114:HARDWARE/AD9959/ad9959.c ****   delay1(30);
+ 115:HARDWARE/AD9959/ad9959.c ****   Reset = 0;
+ 137              		.loc 1 115 0
+ 138 000a 1A60     		str	r2, [r3]
+ 139 000c 7047     		bx	lr
+ 140              	.L9:
+ 141 000e 00BF     		.align	2
+ 142              	.L8:
+ 143 0010 A8024342 		.word	1111687848
+ 144              		.cfi_endproc
+ 145              	.LFE115:
+ 147              		.section	.text.IO_Update,"ax",%progbits
+ 148              		.align	1
+ 149              		.global	IO_Update
+ 150              		.syntax unified
+ 151              		.thumb
+ 152              		.thumb_func
+ 153              		.fpu softvfp
+ 155              	IO_Update:
+ 156              	.LFB116:
+ 116:HARDWARE/AD9959/ad9959.c **** }
+ 117:HARDWARE/AD9959/ad9959.c **** 
+ 118:HARDWARE/AD9959/ad9959.c **** void IO_Update(void)
+ 119:HARDWARE/AD9959/ad9959.c **** {
+ 157              		.loc 1 119 0
+ 158              		.cfi_startproc
+ 159              		@ args = 0, pretend = 0, frame = 0
+ 160              		@ frame_needed = 0, uses_anonymous_args = 0
+ 161              		@ link register save eliminated.
+ 120:HARDWARE/AD9959/ad9959.c ****   UPDATE = 0;
+ 162              		.loc 1 120 0
+ 163 0000 034B     		ldr	r3, .L11
+ 164 0002 0022     		movs	r2, #0
+ 165 0004 1A60     		str	r2, [r3]
+ 121:HARDWARE/AD9959/ad9959.c ****   delay1(2);
+ 122:HARDWARE/AD9959/ad9959.c ****   UPDATE = 1;
+ 166              		.loc 1 122 0
+ 167 0006 0121     		movs	r1, #1
+ 168 0008 1960     		str	r1, [r3]
+ 123:HARDWARE/AD9959/ad9959.c ****   delay1(4);
+ 124:HARDWARE/AD9959/ad9959.c ****   UPDATE = 0;
+ARM GAS  /tmp/ccv0RocU.s 			page 6
+
+
+ 169              		.loc 1 124 0
+ 170 000a 1A60     		str	r2, [r3]
+ 171 000c 7047     		bx	lr
+ 172              	.L12:
+ 173 000e 00BF     		.align	2
+ 174              	.L11:
+ 175 0010 AC024342 		.word	1111687852
+ 176              		.cfi_endproc
+ 177              	.LFE116:
+ 179              		.section	.text.WriteData_AD9959,"ax",%progbits
+ 180              		.align	1
+ 181              		.global	WriteData_AD9959
+ 182              		.syntax unified
+ 183              		.thumb
+ 184              		.thumb_func
+ 185              		.fpu softvfp
+ 187              	WriteData_AD9959:
+ 188              	.LFB117:
+ 125:HARDWARE/AD9959/ad9959.c **** }
+ 126:HARDWARE/AD9959/ad9959.c **** 
+ 127:HARDWARE/AD9959/ad9959.c **** void WriteData_AD9959(u8 RegisterAddress, u8 NumberofRegisters, u8 *RegisterData, u8 temp)
+ 128:HARDWARE/AD9959/ad9959.c **** {
+ 189              		.loc 1 128 0
+ 190              		.cfi_startproc
+ 191              		@ args = 0, pretend = 0, frame = 0
+ 192              		@ frame_needed = 0, uses_anonymous_args = 0
+ 193              	.LVL6:
+ 194 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 195              	.LCFI0:
+ 196              		.cfi_def_cfa_offset 24
+ 197              		.cfi_offset 3, -24
+ 198              		.cfi_offset 4, -20
+ 199              		.cfi_offset 5, -16
+ 200              		.cfi_offset 6, -12
+ 201              		.cfi_offset 7, -8
+ 202              		.cfi_offset 14, -4
+ 203              	.LVL7:
+ 129:HARDWARE/AD9959/ad9959.c ****   u8 ControlValue = 0;
+ 130:HARDWARE/AD9959/ad9959.c ****   u8 ValueToWrite = 0;
+ 131:HARDWARE/AD9959/ad9959.c ****   u8 RegisterIndex = 0;
+ 132:HARDWARE/AD9959/ad9959.c ****   u8 i = 0;
+ 133:HARDWARE/AD9959/ad9959.c **** 
+ 134:HARDWARE/AD9959/ad9959.c ****   ControlValue = RegisterAddress;
+ 135:HARDWARE/AD9959/ad9959.c **** 
+ 136:HARDWARE/AD9959/ad9959.c ****   SCLK = 0;
+ 204              		.loc 1 136 0
+ 205 0002 0024     		movs	r4, #0
+ 206 0004 234D     		ldr	r5, .L32
+ 207 0006 2C60     		str	r4, [r5]
+ 137:HARDWARE/AD9959/ad9959.c ****   CS = 0;
+ 208              		.loc 1 137 0
+ 209 0008 043D     		subs	r5, r5, #4
+ 210 000a 2C60     		str	r4, [r5]
+ 138:HARDWARE/AD9959/ad9959.c ****   for (i = 0; i < 8; i++)
+ 211              		.loc 1 138 0
+ 212 000c 09E0     		b	.L14
+ 213              	.LVL8:
+ARM GAS  /tmp/ccv0RocU.s 			page 7
+
+
+ 214              	.L27:
+ 139:HARDWARE/AD9959/ad9959.c ****   {
+ 140:HARDWARE/AD9959/ad9959.c ****     SCLK = 0;
+ 141:HARDWARE/AD9959/ad9959.c ****     if (0x80 == (ControlValue & 0x80))
+ 142:HARDWARE/AD9959/ad9959.c ****       SDIO0 = 1;
+ 215              		.loc 1 142 0
+ 216 000e 0126     		movs	r6, #1
+ 217 0010 1C3D     		subs	r5, r5, #28
+ 218 0012 2E60     		str	r6, [r5]
+ 219              	.L16:
+ 143:HARDWARE/AD9959/ad9959.c ****     else
+ 144:HARDWARE/AD9959/ad9959.c ****       SDIO0 = 0;
+ 145:HARDWARE/AD9959/ad9959.c ****     SCLK = 1;
+ 220              		.loc 1 145 0 discriminator 2
+ 221 0014 0126     		movs	r6, #1
+ 222 0016 1F4D     		ldr	r5, .L32
+ 223 0018 2E60     		str	r6, [r5]
+ 146:HARDWARE/AD9959/ad9959.c ****     ControlValue <<= 1;
+ 224              		.loc 1 146 0 discriminator 2
+ 225 001a B040     		lsls	r0, r0, r6
+ 226              	.LVL9:
+ 227 001c C0B2     		uxtb	r0, r0
+ 228              	.LVL10:
+ 138:HARDWARE/AD9959/ad9959.c ****   {
+ 229              		.loc 1 138 0 discriminator 2
+ 230 001e 3444     		add	r4, r4, r6
+ 231              	.LVL11:
+ 232 0020 E4B2     		uxtb	r4, r4
+ 233              	.LVL12:
+ 234              	.L14:
+ 138:HARDWARE/AD9959/ad9959.c ****   {
+ 235              		.loc 1 138 0 is_stmt 0 discriminator 1
+ 236 0022 072C     		cmp	r4, #7
+ 237 0024 09D8     		bhi	.L26
+ 140:HARDWARE/AD9959/ad9959.c ****     if (0x80 == (ControlValue & 0x80))
+ 238              		.loc 1 140 0 is_stmt 1
+ 239 0026 0026     		movs	r6, #0
+ 240 0028 1A4D     		ldr	r5, .L32
+ 241 002a 2E60     		str	r6, [r5]
+ 141:HARDWARE/AD9959/ad9959.c ****       SDIO0 = 1;
+ 242              		.loc 1 141 0
+ 243 002c 10F0800F 		tst	r0, #128
+ 244 0030 EDD1     		bne	.L27
+ 144:HARDWARE/AD9959/ad9959.c ****     SCLK = 1;
+ 245              		.loc 1 144 0
+ 246 0032 0026     		movs	r6, #0
+ 247 0034 184D     		ldr	r5, .L32+4
+ 248 0036 2E60     		str	r6, [r5]
+ 249 0038 ECE7     		b	.L16
+ 250              	.L26:
+ 147:HARDWARE/AD9959/ad9959.c ****   }
+ 148:HARDWARE/AD9959/ad9959.c ****   SCLK = 0;
+ 251              		.loc 1 148 0
+ 252 003a 0027     		movs	r7, #0
+ 253 003c 1548     		ldr	r0, .L32
+ 254              	.LVL13:
+ 255 003e 0760     		str	r7, [r0]
+ARM GAS  /tmp/ccv0RocU.s 			page 8
+
+
+ 149:HARDWARE/AD9959/ad9959.c **** 
+ 150:HARDWARE/AD9959/ad9959.c ****   for (RegisterIndex = 0; RegisterIndex < NumberofRegisters; RegisterIndex++)
+ 256              		.loc 1 150 0
+ 257 0040 1AE0     		b	.L18
+ 258              	.LVL14:
+ 259              	.L29:
+ 151:HARDWARE/AD9959/ad9959.c ****   {
+ 152:HARDWARE/AD9959/ad9959.c ****     ValueToWrite = RegisterData[RegisterIndex];
+ 153:HARDWARE/AD9959/ad9959.c ****     for (i = 0; i < 8; i++)
+ 154:HARDWARE/AD9959/ad9959.c ****     {
+ 155:HARDWARE/AD9959/ad9959.c ****       SCLK = 0;
+ 156:HARDWARE/AD9959/ad9959.c ****       if (0x80 == (ValueToWrite & 0x80))
+ 157:HARDWARE/AD9959/ad9959.c ****         SDIO0 = 1;
+ 260              		.loc 1 157 0
+ 261 0042 0126     		movs	r6, #1
+ 262 0044 1C3D     		subs	r5, r5, #28
+ 263 0046 2E60     		str	r6, [r5]
+ 264              	.L21:
+ 158:HARDWARE/AD9959/ad9959.c ****       else
+ 159:HARDWARE/AD9959/ad9959.c ****         SDIO0 = 0;
+ 160:HARDWARE/AD9959/ad9959.c ****       SCLK = 1;
+ 265              		.loc 1 160 0 discriminator 2
+ 266 0048 0126     		movs	r6, #1
+ 267 004a 124D     		ldr	r5, .L32
+ 268 004c 2E60     		str	r6, [r5]
+ 161:HARDWARE/AD9959/ad9959.c ****       ValueToWrite <<= 1;
+ 269              		.loc 1 161 0 discriminator 2
+ 270 004e B440     		lsls	r4, r4, r6
+ 271              	.LVL15:
+ 272 0050 E4B2     		uxtb	r4, r4
+ 273              	.LVL16:
+ 153:HARDWARE/AD9959/ad9959.c ****     {
+ 274              		.loc 1 153 0 discriminator 2
+ 275 0052 3044     		add	r0, r0, r6
+ 276              	.LVL17:
+ 277 0054 C0B2     		uxtb	r0, r0
+ 278              	.LVL18:
+ 279              	.L19:
+ 153:HARDWARE/AD9959/ad9959.c ****     {
+ 280              		.loc 1 153 0 is_stmt 0 discriminator 1
+ 281 0056 0728     		cmp	r0, #7
+ 282 0058 09D8     		bhi	.L28
+ 155:HARDWARE/AD9959/ad9959.c ****       if (0x80 == (ValueToWrite & 0x80))
+ 283              		.loc 1 155 0 is_stmt 1
+ 284 005a 0026     		movs	r6, #0
+ 285 005c 0D4D     		ldr	r5, .L32
+ 286 005e 2E60     		str	r6, [r5]
+ 156:HARDWARE/AD9959/ad9959.c ****         SDIO0 = 1;
+ 287              		.loc 1 156 0
+ 288 0060 14F0800F 		tst	r4, #128
+ 289 0064 EDD1     		bne	.L29
+ 159:HARDWARE/AD9959/ad9959.c ****       SCLK = 1;
+ 290              		.loc 1 159 0
+ 291 0066 0026     		movs	r6, #0
+ 292 0068 0B4D     		ldr	r5, .L32+4
+ 293 006a 2E60     		str	r6, [r5]
+ 294 006c ECE7     		b	.L21
+ARM GAS  /tmp/ccv0RocU.s 			page 9
+
+
+ 295              	.L28:
+ 162:HARDWARE/AD9959/ad9959.c ****     }
+ 163:HARDWARE/AD9959/ad9959.c ****     SCLK = 0;
+ 296              		.loc 1 163 0 discriminator 2
+ 297 006e 0024     		movs	r4, #0
+ 298              	.LVL19:
+ 299 0070 0848     		ldr	r0, .L32
+ 300              	.LVL20:
+ 301 0072 0460     		str	r4, [r0]
+ 150:HARDWARE/AD9959/ad9959.c ****   {
+ 302              		.loc 1 150 0 discriminator 2
+ 303 0074 0137     		adds	r7, r7, #1
+ 304              	.LVL21:
+ 305 0076 FFB2     		uxtb	r7, r7
+ 306              	.LVL22:
+ 307              	.L18:
+ 150:HARDWARE/AD9959/ad9959.c ****   {
+ 308              		.loc 1 150 0 is_stmt 0 discriminator 1
+ 309 0078 8F42     		cmp	r7, r1
+ 310 007a 02D2     		bcs	.L30
+ 152:HARDWARE/AD9959/ad9959.c ****     for (i = 0; i < 8; i++)
+ 311              		.loc 1 152 0 is_stmt 1
+ 312 007c D45D     		ldrb	r4, [r2, r7]	@ zero_extendqisi2
+ 313              	.LVL23:
+ 153:HARDWARE/AD9959/ad9959.c ****     {
+ 314              		.loc 1 153 0
+ 315 007e 0020     		movs	r0, #0
+ 316 0080 E9E7     		b	.L19
+ 317              	.LVL24:
+ 318              	.L30:
+ 164:HARDWARE/AD9959/ad9959.c ****   }
+ 165:HARDWARE/AD9959/ad9959.c ****   if (temp == 1)
+ 319              		.loc 1 165 0
+ 320 0082 012B     		cmp	r3, #1
+ 321 0084 03D0     		beq	.L31
+ 322              	.LVL25:
+ 323              	.L24:
+ 166:HARDWARE/AD9959/ad9959.c ****     IO_Update();
+ 167:HARDWARE/AD9959/ad9959.c ****   CS = 1;
+ 324              		.loc 1 167 0
+ 325 0086 0122     		movs	r2, #1
+ 326 0088 044B     		ldr	r3, .L32+8
+ 327 008a 1A60     		str	r2, [r3]
+ 328 008c F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 329              	.LVL26:
+ 330              	.L31:
+ 166:HARDWARE/AD9959/ad9959.c ****     IO_Update();
+ 331              		.loc 1 166 0
+ 332 008e FFF7FEFF 		bl	IO_Update
+ 333              	.LVL27:
+ 334 0092 F8E7     		b	.L24
+ 335              	.L33:
+ 336              		.align	2
+ 337              	.L32:
+ 338 0094 B4024342 		.word	1111687860
+ 339 0098 98024342 		.word	1111687832
+ 340 009c B0024342 		.word	1111687856
+ARM GAS  /tmp/ccv0RocU.s 			page 10
+
+
+ 341              		.cfi_endproc
+ 342              	.LFE117:
+ 344              		.global	__aeabi_ui2d
+ 345              		.global	__aeabi_dmul
+ 346              		.global	__aeabi_d2uiz
+ 347              		.section	.text.Write_frequence,"ax",%progbits
+ 348              		.align	1
+ 349              		.global	Write_frequence
+ 350              		.syntax unified
+ 351              		.thumb
+ 352              		.thumb_func
+ 353              		.fpu softvfp
+ 355              	Write_frequence:
+ 356              	.LFB118:
+ 168:HARDWARE/AD9959/ad9959.c **** }
+ 169:HARDWARE/AD9959/ad9959.c **** 
+ 170:HARDWARE/AD9959/ad9959.c **** void Write_frequence(u8 Channel, u32 Freq)
+ 171:HARDWARE/AD9959/ad9959.c **** {
+ 357              		.loc 1 171 0
+ 358              		.cfi_startproc
+ 359              		@ args = 0, pretend = 0, frame = 8
+ 360              		@ frame_needed = 0, uses_anonymous_args = 0
+ 361              	.LVL28:
+ 362 0000 10B5     		push	{r4, lr}
+ 363              	.LCFI1:
+ 364              		.cfi_def_cfa_offset 8
+ 365              		.cfi_offset 4, -8
+ 366              		.cfi_offset 14, -4
+ 367 0002 82B0     		sub	sp, sp, #8
+ 368              	.LCFI2:
+ 369              		.cfi_def_cfa_offset 16
+ 370 0004 0446     		mov	r4, r0
+ 172:HARDWARE/AD9959/ad9959.c ****   u8 CFTW0_DATA[4] = {0x00, 0x00, 0x00, 0x00};
+ 173:HARDWARE/AD9959/ad9959.c ****   u32 Temp;
+ 174:HARDWARE/AD9959/ad9959.c ****   Temp = (u32)Freq * 8.589934592;
+ 371              		.loc 1 174 0
+ 372 0006 0846     		mov	r0, r1
+ 373              	.LVL29:
+ 374 0008 FFF7FEFF 		bl	__aeabi_ui2d
+ 375              	.LVL30:
+ 376 000c 28A3     		adr	r3, .L44
+ 377 000e D3E90023 		ldrd	r2, [r3]
+ 378 0012 FFF7FEFF 		bl	__aeabi_dmul
+ 379              	.LVL31:
+ 380 0016 FFF7FEFF 		bl	__aeabi_d2uiz
+ 381              	.LVL32:
+ 175:HARDWARE/AD9959/ad9959.c ****   CFTW0_DATA[3] = (u8)Temp;
+ 382              		.loc 1 175 0
+ 383 001a 8DF80700 		strb	r0, [sp, #7]
+ 176:HARDWARE/AD9959/ad9959.c ****   CFTW0_DATA[2] = (u8)(Temp >> 8);
+ 384              		.loc 1 176 0
+ 385 001e C0F30723 		ubfx	r3, r0, #8, #8
+ 386 0022 8DF80630 		strb	r3, [sp, #6]
+ 177:HARDWARE/AD9959/ad9959.c ****   CFTW0_DATA[1] = (u8)(Temp >> 16);
+ 387              		.loc 1 177 0
+ 388 0026 C0F30743 		ubfx	r3, r0, #16, #8
+ 389 002a 8DF80530 		strb	r3, [sp, #5]
+ARM GAS  /tmp/ccv0RocU.s 			page 11
+
+
+ 178:HARDWARE/AD9959/ad9959.c ****   CFTW0_DATA[0] = (u8)(Temp >> 24);
+ 390              		.loc 1 178 0
+ 391 002e 000E     		lsrs	r0, r0, #24
+ 392              	.LVL33:
+ 393 0030 8DF80400 		strb	r0, [sp, #4]
+ 179:HARDWARE/AD9959/ad9959.c ****   if (Channel == 0)
+ 394              		.loc 1 179 0
+ 395 0034 3CB1     		cbz	r4, .L40
+ 180:HARDWARE/AD9959/ad9959.c ****   {
+ 181:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CSR_ADD, 1, CSR_DATA0, 1);
+ 182:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CFTW0_ADD, 4, CFTW0_DATA, 1);
+ 183:HARDWARE/AD9959/ad9959.c ****   }
+ 184:HARDWARE/AD9959/ad9959.c ****   else if (Channel == 1)
+ 396              		.loc 1 184 0
+ 397 0036 012C     		cmp	r4, #1
+ 398 0038 12D0     		beq	.L41
+ 185:HARDWARE/AD9959/ad9959.c ****   {
+ 186:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CSR_ADD, 1, CSR_DATA1, 1);
+ 187:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CFTW0_ADD, 4, CFTW0_DATA, 1);
+ 188:HARDWARE/AD9959/ad9959.c ****   }
+ 189:HARDWARE/AD9959/ad9959.c ****   else if (Channel == 2)
+ 399              		.loc 1 189 0
+ 400 003a 022C     		cmp	r4, #2
+ 401 003c 1DD0     		beq	.L42
+ 190:HARDWARE/AD9959/ad9959.c ****   {
+ 191:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CSR_ADD, 1, CSR_DATA2, 1);
+ 192:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CFTW0_ADD, 4, CFTW0_DATA, 1);
+ 193:HARDWARE/AD9959/ad9959.c ****   }
+ 194:HARDWARE/AD9959/ad9959.c ****   else if (Channel == 3)
+ 402              		.loc 1 194 0
+ 403 003e 032C     		cmp	r4, #3
+ 404 0040 28D0     		beq	.L43
+ 405              	.L34:
+ 195:HARDWARE/AD9959/ad9959.c ****   {
+ 196:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CSR_ADD, 1, CSR_DATA3, 1);
+ 197:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CFTW0_ADD, 4, CFTW0_DATA, 3);
+ 198:HARDWARE/AD9959/ad9959.c ****   }
+ 199:HARDWARE/AD9959/ad9959.c **** }
+ 406              		.loc 1 199 0
+ 407 0042 02B0     		add	sp, sp, #8
+ 408              	.LCFI3:
+ 409              		.cfi_remember_state
+ 410              		.cfi_def_cfa_offset 8
+ 411              		@ sp needed
+ 412 0044 10BD     		pop	{r4, pc}
+ 413              	.L40:
+ 414              	.LCFI4:
+ 415              		.cfi_restore_state
+ 181:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CFTW0_ADD, 4, CFTW0_DATA, 1);
+ 416              		.loc 1 181 0
+ 417 0046 0123     		movs	r3, #1
+ 418 0048 1B4A     		ldr	r2, .L44+8
+ 419 004a 1946     		mov	r1, r3
+ 420 004c 0020     		movs	r0, #0
+ 421 004e FFF7FEFF 		bl	WriteData_AD9959
+ 422              	.LVL34:
+ 182:HARDWARE/AD9959/ad9959.c ****   }
+ARM GAS  /tmp/ccv0RocU.s 			page 12
+
+
+ 423              		.loc 1 182 0
+ 424 0052 0123     		movs	r3, #1
+ 425 0054 01AA     		add	r2, sp, #4
+ 426 0056 0421     		movs	r1, #4
+ 427 0058 0846     		mov	r0, r1
+ 428 005a FFF7FEFF 		bl	WriteData_AD9959
+ 429              	.LVL35:
+ 430 005e F0E7     		b	.L34
+ 431              	.L41:
+ 186:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CFTW0_ADD, 4, CFTW0_DATA, 1);
+ 432              		.loc 1 186 0
+ 433 0060 0123     		movs	r3, #1
+ 434 0062 164A     		ldr	r2, .L44+12
+ 435 0064 1946     		mov	r1, r3
+ 436 0066 0020     		movs	r0, #0
+ 437 0068 FFF7FEFF 		bl	WriteData_AD9959
+ 438              	.LVL36:
+ 187:HARDWARE/AD9959/ad9959.c ****   }
+ 439              		.loc 1 187 0
+ 440 006c 0123     		movs	r3, #1
+ 441 006e 01AA     		add	r2, sp, #4
+ 442 0070 0421     		movs	r1, #4
+ 443 0072 0846     		mov	r0, r1
+ 444 0074 FFF7FEFF 		bl	WriteData_AD9959
+ 445              	.LVL37:
+ 446 0078 E3E7     		b	.L34
+ 447              	.L42:
+ 191:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CFTW0_ADD, 4, CFTW0_DATA, 1);
+ 448              		.loc 1 191 0
+ 449 007a 0123     		movs	r3, #1
+ 450 007c 104A     		ldr	r2, .L44+16
+ 451 007e 1946     		mov	r1, r3
+ 452 0080 0020     		movs	r0, #0
+ 453 0082 FFF7FEFF 		bl	WriteData_AD9959
+ 454              	.LVL38:
+ 192:HARDWARE/AD9959/ad9959.c ****   }
+ 455              		.loc 1 192 0
+ 456 0086 0123     		movs	r3, #1
+ 457 0088 01AA     		add	r2, sp, #4
+ 458 008a 0421     		movs	r1, #4
+ 459 008c 0846     		mov	r0, r1
+ 460 008e FFF7FEFF 		bl	WriteData_AD9959
+ 461              	.LVL39:
+ 462 0092 D6E7     		b	.L34
+ 463              	.L43:
+ 196:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CFTW0_ADD, 4, CFTW0_DATA, 3);
+ 464              		.loc 1 196 0
+ 465 0094 0123     		movs	r3, #1
+ 466 0096 0B4A     		ldr	r2, .L44+20
+ 467 0098 1946     		mov	r1, r3
+ 468 009a 0020     		movs	r0, #0
+ 469 009c FFF7FEFF 		bl	WriteData_AD9959
+ 470              	.LVL40:
+ 197:HARDWARE/AD9959/ad9959.c ****   }
+ 471              		.loc 1 197 0
+ 472 00a0 0323     		movs	r3, #3
+ 473 00a2 01AA     		add	r2, sp, #4
+ARM GAS  /tmp/ccv0RocU.s 			page 13
+
+
+ 474 00a4 0421     		movs	r1, #4
+ 475 00a6 0846     		mov	r0, r1
+ 476 00a8 FFF7FEFF 		bl	WriteData_AD9959
+ 477              	.LVL41:
+ 478              		.loc 1 199 0
+ 479 00ac C9E7     		b	.L34
+ 480              	.L45:
+ 481 00ae 00BF     		.align	3
+ 482              	.L44:
+ 483 00b0 95D626E8 		.word	3894859413
+ 484 00b4 0B2E2140 		.word	1075916299
+ 485 00b8 00000000 		.word	.LANCHOR0
+ 486 00bc 00000000 		.word	.LANCHOR1
+ 487 00c0 00000000 		.word	.LANCHOR2
+ 488 00c4 00000000 		.word	.LANCHOR3
+ 489              		.cfi_endproc
+ 490              	.LFE118:
+ 492              		.section	.text.Write_Amplitude,"ax",%progbits
+ 493              		.align	1
+ 494              		.global	Write_Amplitude
+ 495              		.syntax unified
+ 496              		.thumb
+ 497              		.thumb_func
+ 498              		.fpu softvfp
+ 500              	Write_Amplitude:
+ 501              	.LFB119:
+ 200:HARDWARE/AD9959/ad9959.c **** 
+ 201:HARDWARE/AD9959/ad9959.c **** void Write_Amplitude(u8 Channel, u16 Ampli)
+ 202:HARDWARE/AD9959/ad9959.c **** {
+ 502              		.loc 1 202 0
+ 503              		.cfi_startproc
+ 504              		@ args = 0, pretend = 0, frame = 8
+ 505              		@ frame_needed = 0, uses_anonymous_args = 0
+ 506              	.LVL42:
+ 507 0000 00B5     		push	{lr}
+ 508              	.LCFI5:
+ 509              		.cfi_def_cfa_offset 4
+ 510              		.cfi_offset 14, -4
+ 511 0002 83B0     		sub	sp, sp, #12
+ 512              	.LCFI6:
+ 513              		.cfi_def_cfa_offset 16
+ 203:HARDWARE/AD9959/ad9959.c ****   u16 A_temp;
+ 204:HARDWARE/AD9959/ad9959.c ****   u8 ACR_DATA[3] = {0x00, 0x00, 0x00};
+ 514              		.loc 1 204 0
+ 515 0004 0023     		movs	r3, #0
+ 516 0006 8DF80430 		strb	r3, [sp, #4]
+ 205:HARDWARE/AD9959/ad9959.c **** 
+ 206:HARDWARE/AD9959/ad9959.c ****   A_temp = Ampli | 0x1000;
+ 517              		.loc 1 206 0
+ 518 000a 41F48051 		orr	r1, r1, #4096
+ 519              	.LVL43:
+ 207:HARDWARE/AD9959/ad9959.c ****   ACR_DATA[2] = (u8)A_temp;
+ 520              		.loc 1 207 0
+ 521 000e 8DF80610 		strb	r1, [sp, #6]
+ 208:HARDWARE/AD9959/ad9959.c ****   ACR_DATA[1] = (u8)(A_temp >> 8);
+ 522              		.loc 1 208 0
+ 523 0012 090A     		lsrs	r1, r1, #8
+ARM GAS  /tmp/ccv0RocU.s 			page 14
+
+
+ 524              	.LVL44:
+ 525 0014 8DF80510 		strb	r1, [sp, #5]
+ 209:HARDWARE/AD9959/ad9959.c ****   if (Channel == 0)
+ 526              		.loc 1 209 0
+ 527 0018 48B1     		cbz	r0, .L52
+ 528 001a 0346     		mov	r3, r0
+ 210:HARDWARE/AD9959/ad9959.c ****   {
+ 211:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CSR_ADD, 1, CSR_DATA0, 1);
+ 212:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(ACR_ADD, 3, ACR_DATA, 1);
+ 213:HARDWARE/AD9959/ad9959.c ****   }
+ 214:HARDWARE/AD9959/ad9959.c ****   else if (Channel == 1)
+ 529              		.loc 1 214 0
+ 530 001c 0128     		cmp	r0, #1
+ 531 001e 12D0     		beq	.L53
+ 215:HARDWARE/AD9959/ad9959.c ****   {
+ 216:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CSR_ADD, 1, CSR_DATA1, 1);
+ 217:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(ACR_ADD, 3, ACR_DATA, 1);
+ 218:HARDWARE/AD9959/ad9959.c ****   }
+ 219:HARDWARE/AD9959/ad9959.c ****   else if (Channel == 2)
+ 532              		.loc 1 219 0
+ 533 0020 0228     		cmp	r0, #2
+ 534 0022 1CD0     		beq	.L54
+ 220:HARDWARE/AD9959/ad9959.c ****   {
+ 221:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CSR_ADD, 1, CSR_DATA2, 1);
+ 222:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(ACR_ADD, 3, ACR_DATA, 1);
+ 223:HARDWARE/AD9959/ad9959.c ****   }
+ 224:HARDWARE/AD9959/ad9959.c ****   else if (Channel == 3)
+ 535              		.loc 1 224 0
+ 536 0024 0328     		cmp	r0, #3
+ 537 0026 27D0     		beq	.L55
+ 538              	.LVL45:
+ 539              	.L46:
+ 225:HARDWARE/AD9959/ad9959.c ****   {
+ 226:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CSR_ADD, 1, CSR_DATA3, 1);
+ 227:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(ACR_ADD, 3, ACR_DATA, 1);
+ 228:HARDWARE/AD9959/ad9959.c ****   }
+ 229:HARDWARE/AD9959/ad9959.c **** }
+ 540              		.loc 1 229 0
+ 541 0028 03B0     		add	sp, sp, #12
+ 542              	.LCFI7:
+ 543              		.cfi_remember_state
+ 544              		.cfi_def_cfa_offset 4
+ 545              		@ sp needed
+ 546 002a 5DF804FB 		ldr	pc, [sp], #4
+ 547              	.LVL46:
+ 548              	.L52:
+ 549              	.LCFI8:
+ 550              		.cfi_restore_state
+ 211:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(ACR_ADD, 3, ACR_DATA, 1);
+ 551              		.loc 1 211 0
+ 552 002e 0123     		movs	r3, #1
+ 553 0030 184A     		ldr	r2, .L56
+ 554 0032 1946     		mov	r1, r3
+ 555 0034 FFF7FEFF 		bl	WriteData_AD9959
+ 556              	.LVL47:
+ 212:HARDWARE/AD9959/ad9959.c ****   }
+ 557              		.loc 1 212 0
+ARM GAS  /tmp/ccv0RocU.s 			page 15
+
+
+ 558 0038 0123     		movs	r3, #1
+ 559 003a 01AA     		add	r2, sp, #4
+ 560 003c 0321     		movs	r1, #3
+ 561 003e 0620     		movs	r0, #6
+ 562 0040 FFF7FEFF 		bl	WriteData_AD9959
+ 563              	.LVL48:
+ 564 0044 F0E7     		b	.L46
+ 565              	.LVL49:
+ 566              	.L53:
+ 216:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(ACR_ADD, 3, ACR_DATA, 1);
+ 567              		.loc 1 216 0
+ 568 0046 144A     		ldr	r2, .L56+4
+ 569 0048 0146     		mov	r1, r0
+ 570 004a 0020     		movs	r0, #0
+ 571              	.LVL50:
+ 572 004c FFF7FEFF 		bl	WriteData_AD9959
+ 573              	.LVL51:
+ 217:HARDWARE/AD9959/ad9959.c ****   }
+ 574              		.loc 1 217 0
+ 575 0050 0123     		movs	r3, #1
+ 576 0052 01AA     		add	r2, sp, #4
+ 577 0054 0321     		movs	r1, #3
+ 578 0056 0620     		movs	r0, #6
+ 579 0058 FFF7FEFF 		bl	WriteData_AD9959
+ 580              	.LVL52:
+ 581 005c E4E7     		b	.L46
+ 582              	.LVL53:
+ 583              	.L54:
+ 221:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(ACR_ADD, 3, ACR_DATA, 1);
+ 584              		.loc 1 221 0
+ 585 005e 0123     		movs	r3, #1
+ 586 0060 0E4A     		ldr	r2, .L56+8
+ 587 0062 1946     		mov	r1, r3
+ 588 0064 0020     		movs	r0, #0
+ 589              	.LVL54:
+ 590 0066 FFF7FEFF 		bl	WriteData_AD9959
+ 591              	.LVL55:
+ 222:HARDWARE/AD9959/ad9959.c ****   }
+ 592              		.loc 1 222 0
+ 593 006a 0123     		movs	r3, #1
+ 594 006c 01AA     		add	r2, sp, #4
+ 595 006e 0321     		movs	r1, #3
+ 596 0070 0620     		movs	r0, #6
+ 597 0072 FFF7FEFF 		bl	WriteData_AD9959
+ 598              	.LVL56:
+ 599 0076 D7E7     		b	.L46
+ 600              	.LVL57:
+ 601              	.L55:
+ 226:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(ACR_ADD, 3, ACR_DATA, 1);
+ 602              		.loc 1 226 0
+ 603 0078 0123     		movs	r3, #1
+ 604 007a 094A     		ldr	r2, .L56+12
+ 605 007c 1946     		mov	r1, r3
+ 606 007e 0020     		movs	r0, #0
+ 607              	.LVL58:
+ 608 0080 FFF7FEFF 		bl	WriteData_AD9959
+ 609              	.LVL59:
+ARM GAS  /tmp/ccv0RocU.s 			page 16
+
+
+ 227:HARDWARE/AD9959/ad9959.c ****   }
+ 610              		.loc 1 227 0
+ 611 0084 0123     		movs	r3, #1
+ 612 0086 01AA     		add	r2, sp, #4
+ 613 0088 0321     		movs	r1, #3
+ 614 008a 0620     		movs	r0, #6
+ 615 008c FFF7FEFF 		bl	WriteData_AD9959
+ 616              	.LVL60:
+ 617              		.loc 1 229 0
+ 618 0090 CAE7     		b	.L46
+ 619              	.L57:
+ 620 0092 00BF     		.align	2
+ 621              	.L56:
+ 622 0094 00000000 		.word	.LANCHOR0
+ 623 0098 00000000 		.word	.LANCHOR1
+ 624 009c 00000000 		.word	.LANCHOR2
+ 625 00a0 00000000 		.word	.LANCHOR3
+ 626              		.cfi_endproc
+ 627              	.LFE119:
+ 629              		.section	.text.Write_Phase,"ax",%progbits
+ 630              		.align	1
+ 631              		.global	Write_Phase
+ 632              		.syntax unified
+ 633              		.thumb
+ 634              		.thumb_func
+ 635              		.fpu softvfp
+ 637              	Write_Phase:
+ 638              	.LFB120:
+ 230:HARDWARE/AD9959/ad9959.c **** 
+ 231:HARDWARE/AD9959/ad9959.c **** void Write_Phase(u8 Channel, u16 Phase)
+ 232:HARDWARE/AD9959/ad9959.c **** {
+ 639              		.loc 1 232 0
+ 640              		.cfi_startproc
+ 641              		@ args = 0, pretend = 0, frame = 0
+ 642              		@ frame_needed = 0, uses_anonymous_args = 0
+ 643              	.LVL61:
+ 644 0000 08B5     		push	{r3, lr}
+ 645              	.LCFI9:
+ 646              		.cfi_def_cfa_offset 8
+ 647              		.cfi_offset 3, -8
+ 648              		.cfi_offset 14, -4
+ 649              	.LVL62:
+ 233:HARDWARE/AD9959/ad9959.c ****   u16 P_temp = 0;
+ 234:HARDWARE/AD9959/ad9959.c ****   P_temp = (u16)Phase;
+ 235:HARDWARE/AD9959/ad9959.c ****   CPOW0_DATA[1] = (u8)P_temp;
+ 650              		.loc 1 235 0
+ 651 0002 204B     		ldr	r3, .L68
+ 652 0004 5970     		strb	r1, [r3, #1]
+ 236:HARDWARE/AD9959/ad9959.c ****   CPOW0_DATA[0] = (u8)(P_temp >> 8);
+ 653              		.loc 1 236 0
+ 654 0006 090A     		lsrs	r1, r1, #8
+ 655              	.LVL63:
+ 656 0008 1970     		strb	r1, [r3]
+ 237:HARDWARE/AD9959/ad9959.c ****   if (Channel == 0)
+ 657              		.loc 1 237 0
+ 658 000a 30B1     		cbz	r0, .L64
+ 238:HARDWARE/AD9959/ad9959.c ****   {
+ARM GAS  /tmp/ccv0RocU.s 			page 17
+
+
+ 239:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CSR_ADD, 1, CSR_DATA0, 0);
+ 240:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CPOW0_ADD, 2, CPOW0_DATA, 0);
+ 241:HARDWARE/AD9959/ad9959.c ****   }
+ 242:HARDWARE/AD9959/ad9959.c ****   else if (Channel == 1)
+ 659              		.loc 1 242 0
+ 660 000c 0128     		cmp	r0, #1
+ 661 000e 11D0     		beq	.L65
+ 243:HARDWARE/AD9959/ad9959.c ****   {
+ 244:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CSR_ADD, 1, CSR_DATA1, 0);
+ 245:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CPOW0_ADD, 2, CPOW0_DATA, 0);
+ 246:HARDWARE/AD9959/ad9959.c ****   }
+ 247:HARDWARE/AD9959/ad9959.c ****   else if (Channel == 2)
+ 662              		.loc 1 247 0
+ 663 0010 0228     		cmp	r0, #2
+ 664 0012 1CD0     		beq	.L66
+ 248:HARDWARE/AD9959/ad9959.c ****   {
+ 249:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CSR_ADD, 1, CSR_DATA2, 0);
+ 250:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CPOW0_ADD, 2, CPOW0_DATA, 0);
+ 251:HARDWARE/AD9959/ad9959.c ****   }
+ 252:HARDWARE/AD9959/ad9959.c ****   else if (Channel == 3)
+ 665              		.loc 1 252 0
+ 666 0014 0328     		cmp	r0, #3
+ 667 0016 27D0     		beq	.L67
+ 668              	.LVL64:
+ 669              	.L58:
+ 670 0018 08BD     		pop	{r3, pc}
+ 671              	.LVL65:
+ 672              	.L64:
+ 239:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CPOW0_ADD, 2, CPOW0_DATA, 0);
+ 673              		.loc 1 239 0
+ 674 001a 0023     		movs	r3, #0
+ 675 001c 1A4A     		ldr	r2, .L68+4
+ 676 001e 0121     		movs	r1, #1
+ 677 0020 1846     		mov	r0, r3
+ 678              	.LVL66:
+ 679 0022 FFF7FEFF 		bl	WriteData_AD9959
+ 680              	.LVL67:
+ 240:HARDWARE/AD9959/ad9959.c ****   }
+ 681              		.loc 1 240 0
+ 682 0026 0023     		movs	r3, #0
+ 683 0028 164A     		ldr	r2, .L68
+ 684 002a 0221     		movs	r1, #2
+ 685 002c 0520     		movs	r0, #5
+ 686 002e FFF7FEFF 		bl	WriteData_AD9959
+ 687              	.LVL68:
+ 688 0032 08BD     		pop	{r3, pc}
+ 689              	.LVL69:
+ 690              	.L65:
+ 244:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CPOW0_ADD, 2, CPOW0_DATA, 0);
+ 691              		.loc 1 244 0
+ 692 0034 0023     		movs	r3, #0
+ 693 0036 154A     		ldr	r2, .L68+8
+ 694 0038 0121     		movs	r1, #1
+ 695 003a 1846     		mov	r0, r3
+ 696              	.LVL70:
+ 697 003c FFF7FEFF 		bl	WriteData_AD9959
+ 698              	.LVL71:
+ARM GAS  /tmp/ccv0RocU.s 			page 18
+
+
+ 245:HARDWARE/AD9959/ad9959.c ****   }
+ 699              		.loc 1 245 0
+ 700 0040 0023     		movs	r3, #0
+ 701 0042 104A     		ldr	r2, .L68
+ 702 0044 0221     		movs	r1, #2
+ 703 0046 0520     		movs	r0, #5
+ 704 0048 FFF7FEFF 		bl	WriteData_AD9959
+ 705              	.LVL72:
+ 706 004c 08BD     		pop	{r3, pc}
+ 707              	.LVL73:
+ 708              	.L66:
+ 249:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CPOW0_ADD, 2, CPOW0_DATA, 0);
+ 709              		.loc 1 249 0
+ 710 004e 0023     		movs	r3, #0
+ 711 0050 0F4A     		ldr	r2, .L68+12
+ 712 0052 0121     		movs	r1, #1
+ 713 0054 1846     		mov	r0, r3
+ 714              	.LVL74:
+ 715 0056 FFF7FEFF 		bl	WriteData_AD9959
+ 716              	.LVL75:
+ 250:HARDWARE/AD9959/ad9959.c ****   }
+ 717              		.loc 1 250 0
+ 718 005a 0023     		movs	r3, #0
+ 719 005c 094A     		ldr	r2, .L68
+ 720 005e 0221     		movs	r1, #2
+ 721 0060 0520     		movs	r0, #5
+ 722 0062 FFF7FEFF 		bl	WriteData_AD9959
+ 723              	.LVL76:
+ 724 0066 08BD     		pop	{r3, pc}
+ 725              	.LVL77:
+ 726              	.L67:
+ 253:HARDWARE/AD9959/ad9959.c ****   {
+ 254:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CSR_ADD, 1, CSR_DATA3, 0);
+ 727              		.loc 1 254 0
+ 728 0068 0023     		movs	r3, #0
+ 729 006a 0A4A     		ldr	r2, .L68+16
+ 730 006c 0121     		movs	r1, #1
+ 731 006e 1846     		mov	r0, r3
+ 732              	.LVL78:
+ 733 0070 FFF7FEFF 		bl	WriteData_AD9959
+ 734              	.LVL79:
+ 255:HARDWARE/AD9959/ad9959.c ****     WriteData_AD9959(CPOW0_ADD, 2, CPOW0_DATA, 0);
+ 735              		.loc 1 255 0
+ 736 0074 0023     		movs	r3, #0
+ 737 0076 034A     		ldr	r2, .L68
+ 738 0078 0221     		movs	r1, #2
+ 739 007a 0520     		movs	r0, #5
+ 740 007c FFF7FEFF 		bl	WriteData_AD9959
+ 741              	.LVL80:
+ 256:HARDWARE/AD9959/ad9959.c ****   }
+ 257:HARDWARE/AD9959/ad9959.c **** }
+ 742              		.loc 1 257 0
+ 743 0080 CAE7     		b	.L58
+ 744              	.L69:
+ 745 0082 00BF     		.align	2
+ 746              	.L68:
+ 747 0084 00000000 		.word	.LANCHOR4
+ARM GAS  /tmp/ccv0RocU.s 			page 19
+
+
+ 748 0088 00000000 		.word	.LANCHOR0
+ 749 008c 00000000 		.word	.LANCHOR1
+ 750 0090 00000000 		.word	.LANCHOR2
+ 751 0094 00000000 		.word	.LANCHOR3
+ 752              		.cfi_endproc
+ 753              	.LFE120:
+ 755              		.section	.text.Init_AD9959,"ax",%progbits
+ 756              		.align	1
+ 757              		.global	Init_AD9959
+ 758              		.syntax unified
+ 759              		.thumb
+ 760              		.thumb_func
+ 761              		.fpu softvfp
+ 763              	Init_AD9959:
+ 764              	.LFB112:
+  23:HARDWARE/AD9959/ad9959.c ****   GPIO_InitTypeDef GPIO_InitStructure;
+ 765              		.loc 1 23 0
+ 766              		.cfi_startproc
+ 767              		@ args = 0, pretend = 0, frame = 16
+ 768              		@ frame_needed = 0, uses_anonymous_args = 0
+ 769 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 770              	.LCFI10:
+ 771              		.cfi_def_cfa_offset 20
+ 772              		.cfi_offset 4, -20
+ 773              		.cfi_offset 5, -16
+ 774              		.cfi_offset 6, -12
+ 775              		.cfi_offset 7, -8
+ 776              		.cfi_offset 14, -4
+ 777 0002 85B0     		sub	sp, sp, #20
+ 778              	.LCFI11:
+ 779              		.cfi_def_cfa_offset 40
+  25:HARDWARE/AD9959/ad9959.c ****   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOG, ENABLE);
+ 780              		.loc 1 25 0
+ 781 0004 D023     		movs	r3, #208
+ 782 0006 8DF80430 		strb	r3, [sp, #4]
+ 783 000a 0025     		movs	r5, #0
+ 784 000c 8DF80550 		strb	r5, [sp, #5]
+ 785 0010 8DF80650 		strb	r5, [sp, #6]
+  26:HARDWARE/AD9959/ad9959.c ****   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
+ 786              		.loc 1 26 0
+ 787 0014 0121     		movs	r1, #1
+ 788 0016 4020     		movs	r0, #64
+ 789 0018 FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
+ 790              	.LVL81:
+  27:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11 | GPIO_Pin_2 | GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | G
+ 791              		.loc 1 27 0
+ 792 001c 0121     		movs	r1, #1
+ 793 001e 0220     		movs	r0, #2
+ 794 0020 FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
+ 795              	.LVL82:
+  28:HARDWARE/AD9959/ad9959.c ****                                 GPIO_Pin_7 | GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_12 | 
+ 796              		.loc 1 28 0
+ 797 0024 47F6FC73 		movw	r3, #32764
+ 798 0028 0293     		str	r3, [sp, #8]
+  31:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+ 799              		.loc 1 31 0
+ 800 002a 0124     		movs	r4, #1
+ARM GAS  /tmp/ccv0RocU.s 			page 20
+
+
+ 801 002c 8DF80C40 		strb	r4, [sp, #12]
+  32:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 802              		.loc 1 32 0
+ 803 0030 8DF80F40 		strb	r4, [sp, #15]
+  33:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 804              		.loc 1 33 0
+ 805 0034 8DF80E50 		strb	r5, [sp, #14]
+  34:HARDWARE/AD9959/ad9959.c ****   GPIO_Init(GPIOG, &GPIO_InitStructure);
+ 806              		.loc 1 34 0
+ 807 0038 0226     		movs	r6, #2
+ 808 003a 8DF80D60 		strb	r6, [sp, #13]
+  35:HARDWARE/AD9959/ad9959.c **** 
+ 809              		.loc 1 35 0
+ 810 003e 02A9     		add	r1, sp, #8
+ 811 0040 2848     		ldr	r0, .L72
+ 812 0042 FFF7FEFF 		bl	GPIO_Init
+ 813              	.LVL83:
+  37:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+ 814              		.loc 1 37 0
+ 815 0046 4FF47253 		mov	r3, #15488
+ 816 004a 0293     		str	r3, [sp, #8]
+  38:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 817              		.loc 1 38 0
+ 818 004c 8DF80C40 		strb	r4, [sp, #12]
+  39:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 819              		.loc 1 39 0
+ 820 0050 8DF80E50 		strb	r5, [sp, #14]
+  40:HARDWARE/AD9959/ad9959.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+ 821              		.loc 1 40 0
+ 822 0054 8DF80D60 		strb	r6, [sp, #13]
+  41:HARDWARE/AD9959/ad9959.c ****   GPIO_Init(GPIOB, &GPIO_InitStructure);
+ 823              		.loc 1 41 0
+ 824 0058 8DF80F40 		strb	r4, [sp, #15]
+  42:HARDWARE/AD9959/ad9959.c ****   //	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_10;
+ 825              		.loc 1 42 0
+ 826 005c 02A9     		add	r1, sp, #8
+ 827 005e 2248     		ldr	r0, .L72+4
+ 828 0060 FFF7FEFF 		bl	GPIO_Init
+ 829              	.LVL84:
+  53:HARDWARE/AD9959/ad9959.c ****   IntReset();
+ 830              		.loc 1 53 0
+ 831 0064 FFF7FEFF 		bl	Intserve
+ 832              	.LVL85:
+  54:HARDWARE/AD9959/ad9959.c **** 
+ 833              		.loc 1 54 0
+ 834 0068 FFF7FEFF 		bl	IntReset
+ 835              	.LVL86:
+  56:HARDWARE/AD9959/ad9959.c ****   //  WriteData_AD9959(FR2_ADD,2,FR2_DATA,0);
+ 836              		.loc 1 56 0
+ 837 006c 2346     		mov	r3, r4
+ 838 006e 01AA     		add	r2, sp, #4
+ 839 0070 0321     		movs	r1, #3
+ 840 0072 2046     		mov	r0, r4
+ 841 0074 FFF7FEFF 		bl	WriteData_AD9959
+ 842              	.LVL87:
+  65:HARDWARE/AD9959/ad9959.c ****   Write_frequence(0, SinFre[0]);
+ 843              		.loc 1 65 0
+ARM GAS  /tmp/ccv0RocU.s 			page 21
+
+
+ 844 0078 1C4F     		ldr	r7, .L72+8
+ 845 007a F968     		ldr	r1, [r7, #12]
+ 846 007c 0320     		movs	r0, #3
+ 847 007e FFF7FEFF 		bl	Write_frequence
+ 848              	.LVL88:
+  66:HARDWARE/AD9959/ad9959.c ****   Write_frequence(1, SinFre[1]);
+ 849              		.loc 1 66 0
+ 850 0082 3968     		ldr	r1, [r7]
+ 851 0084 2846     		mov	r0, r5
+ 852 0086 FFF7FEFF 		bl	Write_frequence
+ 853              	.LVL89:
+  67:HARDWARE/AD9959/ad9959.c ****   Write_frequence(2, SinFre[2]);
+ 854              		.loc 1 67 0
+ 855 008a 7968     		ldr	r1, [r7, #4]
+ 856 008c 2046     		mov	r0, r4
+ 857 008e FFF7FEFF 		bl	Write_frequence
+ 858              	.LVL90:
+  68:HARDWARE/AD9959/ad9959.c **** 
+ 859              		.loc 1 68 0
+ 860 0092 B968     		ldr	r1, [r7, #8]
+ 861 0094 3046     		mov	r0, r6
+ 862 0096 FFF7FEFF 		bl	Write_frequence
+ 863              	.LVL91:
+  75:HARDWARE/AD9959/ad9959.c ****   Write_Phase(0, SinPhr[0]);
+ 864              		.loc 1 75 0
+ 865 009a 154F     		ldr	r7, .L72+12
+ 866 009c B989     		ldrh	r1, [r7, #12]
+ 867 009e 0320     		movs	r0, #3
+ 868 00a0 FFF7FEFF 		bl	Write_Phase
+ 869              	.LVL92:
+  76:HARDWARE/AD9959/ad9959.c ****   Write_Phase(1, SinPhr[1]);
+ 870              		.loc 1 76 0
+ 871 00a4 3988     		ldrh	r1, [r7]
+ 872 00a6 2846     		mov	r0, r5
+ 873 00a8 FFF7FEFF 		bl	Write_Phase
+ 874              	.LVL93:
+  77:HARDWARE/AD9959/ad9959.c ****   Write_Phase(2, SinPhr[2]);
+ 875              		.loc 1 77 0
+ 876 00ac B988     		ldrh	r1, [r7, #4]
+ 877 00ae 2046     		mov	r0, r4
+ 878 00b0 FFF7FEFF 		bl	Write_Phase
+ 879              	.LVL94:
+  78:HARDWARE/AD9959/ad9959.c **** 
+ 880              		.loc 1 78 0
+ 881 00b4 3989     		ldrh	r1, [r7, #8]
+ 882 00b6 3046     		mov	r0, r6
+ 883 00b8 FFF7FEFF 		bl	Write_Phase
+ 884              	.LVL95:
+  80:HARDWARE/AD9959/ad9959.c ****   Write_Amplitude(0, SinAmp[0]);
+ 885              		.loc 1 80 0
+ 886 00bc 0D4F     		ldr	r7, .L72+16
+ 887 00be B989     		ldrh	r1, [r7, #12]
+ 888 00c0 0320     		movs	r0, #3
+ 889 00c2 FFF7FEFF 		bl	Write_Amplitude
+ 890              	.LVL96:
+  81:HARDWARE/AD9959/ad9959.c ****   Write_Amplitude(1, SinAmp[1]);
+ 891              		.loc 1 81 0
+ARM GAS  /tmp/ccv0RocU.s 			page 22
+
+
+ 892 00c6 3988     		ldrh	r1, [r7]
+ 893 00c8 2846     		mov	r0, r5
+ 894 00ca FFF7FEFF 		bl	Write_Amplitude
+ 895              	.LVL97:
+  82:HARDWARE/AD9959/ad9959.c ****   Write_Amplitude(2, SinAmp[2]);
+ 896              		.loc 1 82 0
+ 897 00ce B988     		ldrh	r1, [r7, #4]
+ 898 00d0 2046     		mov	r0, r4
+ 899 00d2 FFF7FEFF 		bl	Write_Amplitude
+ 900              	.LVL98:
+  83:HARDWARE/AD9959/ad9959.c **** }
+ 901              		.loc 1 83 0
+ 902 00d6 3989     		ldrh	r1, [r7, #8]
+ 903 00d8 3046     		mov	r0, r6
+ 904 00da FFF7FEFF 		bl	Write_Amplitude
+ 905              	.LVL99:
+  84:HARDWARE/AD9959/ad9959.c **** 
+ 906              		.loc 1 84 0
+ 907 00de 05B0     		add	sp, sp, #20
+ 908              	.LCFI12:
+ 909              		.cfi_def_cfa_offset 20
+ 910              		@ sp needed
+ 911 00e0 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 912              	.L73:
+ 913 00e2 00BF     		.align	2
+ 914              	.L72:
+ 915 00e4 00180240 		.word	1073879040
+ 916 00e8 00040240 		.word	1073873920
+ 917 00ec 00000000 		.word	.LANCHOR5
+ 918 00f0 00000000 		.word	.LANCHOR6
+ 919 00f4 00000000 		.word	.LANCHOR7
+ 920              		.cfi_endproc
+ 921              	.LFE112:
+ 923              		.section	.text.fabsq,"ax",%progbits
+ 924              		.align	1
+ 925              		.global	fabsq
+ 926              		.syntax unified
+ 927              		.thumb
+ 928              		.thumb_func
+ 929              		.fpu softvfp
+ 931              	fabsq:
+ 932              	.LFB121:
+ 258:HARDWARE/AD9959/ad9959.c **** u32 fabsq(u32 a, u32 b)
+ 259:HARDWARE/AD9959/ad9959.c **** {
+ 933              		.loc 1 259 0
+ 934              		.cfi_startproc
+ 935              		@ args = 0, pretend = 0, frame = 0
+ 936              		@ frame_needed = 0, uses_anonymous_args = 0
+ 937              		@ link register save eliminated.
+ 938              	.LVL100:
+ 260:HARDWARE/AD9959/ad9959.c ****   int x = 0;
+ 261:HARDWARE/AD9959/ad9959.c ****   x = a - b;
+ 262:HARDWARE/AD9959/ad9959.c ****   if (x >= 0)
+ 939              		.loc 1 262 0
+ 940 0000 401A     		subs	r0, r0, r1
+ 941              	.LVL101:
+ 942 0002 00D4     		bmi	.L76
+ARM GAS  /tmp/ccv0RocU.s 			page 23
+
+
+ 943              	.LVL102:
+ 944              	.L74:
+ 263:HARDWARE/AD9959/ad9959.c ****     return x;
+ 264:HARDWARE/AD9959/ad9959.c ****   if (x < 0)
+ 265:HARDWARE/AD9959/ad9959.c ****     return -x;
+ 266:HARDWARE/AD9959/ad9959.c **** }...
+ 945              		.loc 1 266 0
+ 946 0004 7047     		bx	lr
+ 947              	.LVL103:
+ 948              	.L76:
+ 265:HARDWARE/AD9959/ad9959.c ****     return -x;
+ 949              		.loc 1 265 0
+ 950 0006 4042     		negs	r0, r0
+ 951              	.LVL104:
+ 952 0008 FCE7     		b	.L74
+ 953              		.cfi_endproc
+ 954              	.LFE121:
+ 956              		.global	FDW_DATA
+ 957              		.global	RDW_DATA
+ 958              		.global	LSRR_DATA
+ 959              		.global	CPOW0_DATA
+ 960              		.global	CFR_DATA
+ 961              		.global	FR2_DATA
+ 962              		.global	SinPhr
+ 963              		.global	SinAmp
+ 964              		.global	SinFre
+ 965              		.global	CSR_DATA3
+ 966              		.global	CSR_DATA2
+ 967              		.global	CSR_DATA1
+ 968              		.global	CSR_DATA0
+ 969              		.section	.bss.CPOW0_DATA,"aw",%nobits
+ 970              		.align	2
+ 971              		.set	.LANCHOR4,. + 0
+ 974              	CPOW0_DATA:
+ 975 0000 0000     		.space	2
+ 976              		.section	.bss.FDW_DATA,"aw",%nobits
+ 977              		.align	2
+ 980              	FDW_DATA:
+ 981 0000 00000000 		.space	4
+ 982              		.section	.bss.FR2_DATA,"aw",%nobits
+ 983              		.align	2
+ 986              	FR2_DATA:
+ 987 0000 0000     		.space	2
+ 988              		.section	.bss.LSRR_DATA,"aw",%nobits
+ 989              		.align	2
+ 992              	LSRR_DATA:
+ 993 0000 0000     		.space	2
+ 994              		.section	.bss.RDW_DATA,"aw",%nobits
+ 995              		.align	2
+ 998              	RDW_DATA:
+ 999 0000 00000000 		.space	4
+ 1000              		.section	.data.CFR_DATA,"aw",%progbits
+ 1001              		.align	2
+ 1004              	CFR_DATA:
+ 1005 0000 00       		.byte	0
+ 1006 0001 03       		.byte	3
+ 1007 0002 02       		.byte	2
+ARM GAS  /tmp/ccv0RocU.s 			page 24
+
+
+ 1008              		.section	.data.CSR_DATA0,"aw",%progbits
+ 1009              		.align	2
+ 1010              		.set	.LANCHOR0,. + 0
+ 1013              	CSR_DATA0:
+ 1014 0000 10       		.byte	16
+ 1015              		.section	.data.CSR_DATA1,"aw",%progbits
+ 1016              		.align	2
+ 1017              		.set	.LANCHOR1,. + 0
+ 1020              	CSR_DATA1:
+ 1021 0000 20       		.byte	32
+ 1022              		.section	.data.CSR_DATA2,"aw",%progbits
+ 1023              		.align	2
+ 1024              		.set	.LANCHOR2,. + 0
+ 1027              	CSR_DATA2:
+ 1028 0000 40       		.byte	64
+ 1029              		.section	.data.CSR_DATA3,"aw",%progbits
+ 1030              		.align	2
+ 1031              		.set	.LANCHOR3,. + 0
+ 1034              	CSR_DATA3:
+ 1035 0000 80       		.byte	-128
+ 1036              		.section	.data.SinAmp,"aw",%progbits
+ 1037              		.align	2
+ 1038              		.set	.LANCHOR7,. + 0
+ 1041              	SinAmp:
+ 1042 0000 FF030000 		.word	1023
+ 1043 0004 FF030000 		.word	1023
+ 1044 0008 FF030000 		.word	1023
+ 1045 000c FF030000 		.word	1023
+ 1046 0010 00000000 		.space	4
+ 1047              		.section	.data.SinFre,"aw",%progbits
+ 1048              		.align	2
+ 1049              		.set	.LANCHOR5,. + 0
+ 1052              	SinFre:
+ 1053 0000 32000000 		.word	50
+ 1054 0004 32000000 		.word	50
+ 1055 0008 32000000 		.word	50
+ 1056 000c 32000000 		.word	50
+ 1057 0010 00000000 		.space	4
+ 1058              		.section	.data.SinPhr,"aw",%progbits
+ 1059              		.align	2
+ 1060              		.set	.LANCHOR6,. + 0
+ 1063              	SinPhr:
+ 1064 0000 00000000 		.word	0
+ 1065 0004 FF0F0000 		.word	4095
+ 1066 0008 FD2F0000 		.word	12285
+ 1067 000c FE1F0000 		.word	8190
+ 1068 0010 00000000 		.space	4
+ 1069              		.text
+ 1070              	.Letext0:
+ 1071              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 1072              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 1073              		.file 4 "CORE/core_cm4.h"
+ 1074              		.file 5 "USER/system_stm32f4xx.h"
+ 1075              		.file 6 "USER/stm32f4xx.h"
+ 1076              		.file 7 "FWLIB/inc/stm32f4xx_gpio.h"
+ 1077              		.file 8 "FWLIB/inc/stm32f4xx_rcc.h"
+ARM GAS  /tmp/ccv0RocU.s 			page 25
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 ad9959.c
+     /tmp/ccv0RocU.s:16     .text.delay1:0000000000000000 $t
+     /tmp/ccv0RocU.s:23     .text.delay1:0000000000000000 delay1
+     /tmp/ccv0RocU.s:55     .text.Intserve:0000000000000000 $t
+     /tmp/ccv0RocU.s:62     .text.Intserve:0000000000000000 Intserve
+     /tmp/ccv0RocU.s:111    .text.Intserve:0000000000000038 $d
+     /tmp/ccv0RocU.s:116    .text.IntReset:0000000000000000 $t
+     /tmp/ccv0RocU.s:123    .text.IntReset:0000000000000000 IntReset
+     /tmp/ccv0RocU.s:143    .text.IntReset:0000000000000010 $d
+     /tmp/ccv0RocU.s:148    .text.IO_Update:0000000000000000 $t
+     /tmp/ccv0RocU.s:155    .text.IO_Update:0000000000000000 IO_Update
+     /tmp/ccv0RocU.s:175    .text.IO_Update:0000000000000010 $d
+     /tmp/ccv0RocU.s:180    .text.WriteData_AD9959:0000000000000000 $t
+     /tmp/ccv0RocU.s:187    .text.WriteData_AD9959:0000000000000000 WriteData_AD9959
+     /tmp/ccv0RocU.s:338    .text.WriteData_AD9959:0000000000000094 $d
+     /tmp/ccv0RocU.s:348    .text.Write_frequence:0000000000000000 $t
+     /tmp/ccv0RocU.s:355    .text.Write_frequence:0000000000000000 Write_frequence
+     /tmp/ccv0RocU.s:483    .text.Write_frequence:00000000000000b0 $d
+     /tmp/ccv0RocU.s:493    .text.Write_Amplitude:0000000000000000 $t
+     /tmp/ccv0RocU.s:500    .text.Write_Amplitude:0000000000000000 Write_Amplitude
+     /tmp/ccv0RocU.s:622    .text.Write_Amplitude:0000000000000094 $d
+     /tmp/ccv0RocU.s:630    .text.Write_Phase:0000000000000000 $t
+     /tmp/ccv0RocU.s:637    .text.Write_Phase:0000000000000000 Write_Phase
+     /tmp/ccv0RocU.s:747    .text.Write_Phase:0000000000000084 $d
+     /tmp/ccv0RocU.s:756    .text.Init_AD9959:0000000000000000 $t
+     /tmp/ccv0RocU.s:763    .text.Init_AD9959:0000000000000000 Init_AD9959
+     /tmp/ccv0RocU.s:915    .text.Init_AD9959:00000000000000e4 $d
+     /tmp/ccv0RocU.s:924    .text.fabsq:0000000000000000 $t
+     /tmp/ccv0RocU.s:931    .text.fabsq:0000000000000000 fabsq
+     /tmp/ccv0RocU.s:980    .bss.FDW_DATA:0000000000000000 FDW_DATA
+     /tmp/ccv0RocU.s:998    .bss.RDW_DATA:0000000000000000 RDW_DATA
+     /tmp/ccv0RocU.s:992    .bss.LSRR_DATA:0000000000000000 LSRR_DATA
+     /tmp/ccv0RocU.s:974    .bss.CPOW0_DATA:0000000000000000 CPOW0_DATA
+     /tmp/ccv0RocU.s:1004   .data.CFR_DATA:0000000000000000 CFR_DATA
+     /tmp/ccv0RocU.s:986    .bss.FR2_DATA:0000000000000000 FR2_DATA
+     /tmp/ccv0RocU.s:1063   .data.SinPhr:0000000000000000 SinPhr
+     /tmp/ccv0RocU.s:1041   .data.SinAmp:0000000000000000 SinAmp
+     /tmp/ccv0RocU.s:1052   .data.SinFre:0000000000000000 SinFre
+     /tmp/ccv0RocU.s:1034   .data.CSR_DATA3:0000000000000000 CSR_DATA3
+     /tmp/ccv0RocU.s:1027   .data.CSR_DATA2:0000000000000000 CSR_DATA2
+     /tmp/ccv0RocU.s:1020   .data.CSR_DATA1:0000000000000000 CSR_DATA1
+     /tmp/ccv0RocU.s:1013   .data.CSR_DATA0:0000000000000000 CSR_DATA0
+     /tmp/ccv0RocU.s:970    .bss.CPOW0_DATA:0000000000000000 $d
+     /tmp/ccv0RocU.s:977    .bss.FDW_DATA:0000000000000000 $d
+     /tmp/ccv0RocU.s:983    .bss.FR2_DATA:0000000000000000 $d
+     /tmp/ccv0RocU.s:989    .bss.LSRR_DATA:0000000000000000 $d
+     /tmp/ccv0RocU.s:995    .bss.RDW_DATA:0000000000000000 $d
+     /tmp/ccv0RocU.s:1001   .data.CFR_DATA:0000000000000000 $d
+     /tmp/ccv0RocU.s:1009   .data.CSR_DATA0:0000000000000000 $d
+     /tmp/ccv0RocU.s:1016   .data.CSR_DATA1:0000000000000000 $d
+     /tmp/ccv0RocU.s:1023   .data.CSR_DATA2:0000000000000000 $d
+     /tmp/ccv0RocU.s:1030   .data.CSR_DATA3:0000000000000000 $d
+     /tmp/ccv0RocU.s:1037   .data.SinAmp:0000000000000000 $d
+     /tmp/ccv0RocU.s:1048   .data.SinFre:0000000000000000 $d
+     /tmp/ccv0RocU.s:1059   .data.SinPhr:0000000000000000 $d
+                     .debug_frame:0000000000000010 $d
+ARM GAS  /tmp/ccv0RocU.s 			page 26
+
+
+
+UNDEFINED SYMBOLS
+__aeabi_ui2d
+__aeabi_dmul
+__aeabi_d2uiz
+RCC_AHB1PeriphClockCmd
+GPIO_Init

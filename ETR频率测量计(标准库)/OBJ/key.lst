@@ -1,0 +1,236 @@
+ARM GAS  /tmp/ccPocUFY.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"key.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.KEY_Init,"ax",%progbits
+  16              		.align	1
+  17              		.global	KEY_Init
+  18              		.syntax unified
+  19              		.thumb
+  20              		.thumb_func
+  21              		.fpu softvfp
+  23              	KEY_Init:
+  24              	.LFB112:
+  25              		.file 1 "HARDWARE/key/key.c"
+   1:HARDWARE/key/key.c **** #include "key.h"
+   2:HARDWARE/key/key.c **** #include "delay.h"
+   3:HARDWARE/key/key.c **** 
+   4:HARDWARE/key/key.c **** //按键初始化函数
+   5:HARDWARE/key/key.c **** void KEY_Init(void) {
+  26              		.loc 1 5 0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 8
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30 0000 00B5     		push	{lr}
+  31              	.LCFI0:
+  32              		.cfi_def_cfa_offset 4
+  33              		.cfi_offset 14, -4
+  34 0002 83B0     		sub	sp, sp, #12
+  35              	.LCFI1:
+  36              		.cfi_def_cfa_offset 16
+   6:HARDWARE/key/key.c **** 	GPIO_InitTypeDef GPIO_InitStructure;
+   7:HARDWARE/key/key.c **** 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC,ENABLE);//使能时钟
+  37              		.loc 1 7 0
+  38 0004 0121     		movs	r1, #1
+  39 0006 0420     		movs	r0, #4
+  40 0008 FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
+  41              	.LVL0:
+   8:HARDWARE/key/key.c **** 	GPIO_InitStructure.GPIO_Pin=GPIO_Pin_13;//GPIOC_0
+  42              		.loc 1 8 0
+  43 000c 4FF40053 		mov	r3, #8192
+  44 0010 0093     		str	r3, [sp]
+   9:HARDWARE/key/key.c **** 	GPIO_InitStructure.GPIO_Mode=GPIO_Mode_IN;//模拟输入模式
+  45              		.loc 1 9 0
+  46 0012 0023     		movs	r3, #0
+  47 0014 8DF80430 		strb	r3, [sp, #4]
+  10:HARDWARE/key/key.c **** 	GPIO_InitStructure.GPIO_Speed=GPIO_Speed_100MHz;
+  48              		.loc 1 10 0
+ARM GAS  /tmp/ccPocUFY.s 			page 2
+
+
+  49 0018 0323     		movs	r3, #3
+  50 001a 8DF80530 		strb	r3, [sp, #5]
+  11:HARDWARE/key/key.c **** 	GPIO_InitStructure.GPIO_PuPd=GPIO_PuPd_UP;//上拉
+  51              		.loc 1 11 0
+  52 001e 0123     		movs	r3, #1
+  53 0020 8DF80730 		strb	r3, [sp, #7]
+  12:HARDWARE/key/key.c **** 
+  13:HARDWARE/key/key.c **** 	GPIO_Init(GPIOC,&GPIO_InitStructure);
+  54              		.loc 1 13 0
+  55 0024 6946     		mov	r1, sp
+  56 0026 0348     		ldr	r0, .L3
+  57 0028 FFF7FEFF 		bl	GPIO_Init
+  58              	.LVL1:
+  14:HARDWARE/key/key.c **** 	
+  15:HARDWARE/key/key.c **** 	
+  16:HARDWARE/key/key.c **** }
+  59              		.loc 1 16 0
+  60 002c 03B0     		add	sp, sp, #12
+  61              	.LCFI2:
+  62              		.cfi_def_cfa_offset 4
+  63              		@ sp needed
+  64 002e 5DF804FB 		ldr	pc, [sp], #4
+  65              	.L4:
+  66 0032 00BF     		.align	2
+  67              	.L3:
+  68 0034 00080240 		.word	1073874944
+  69              		.cfi_endproc
+  70              	.LFE112:
+  72              		.section	.text.KEY_Scan,"ax",%progbits
+  73              		.align	1
+  74              		.global	KEY_Scan
+  75              		.syntax unified
+  76              		.thumb
+  77              		.thumb_func
+  78              		.fpu softvfp
+  80              	KEY_Scan:
+  81              	.LFB113:
+  17:HARDWARE/key/key.c **** 	//mode:0不可连续按；1可连续按
+  18:HARDWARE/key/key.c **** 	//0 没有按键按下
+  19:HARDWARE/key/key.c **** 	//1 WK UP按下；2 key0按下
+  20:HARDWARE/key/key.c **** 	u8 KEY_Scan(u8 mode){ 
+  82              		.loc 1 20 0
+  83              		.cfi_startproc
+  84              		@ args = 0, pretend = 0, frame = 0
+  85              		@ frame_needed = 0, uses_anonymous_args = 0
+  86              	.LVL2:
+  87 0000 08B5     		push	{r3, lr}
+  88              	.LCFI3:
+  89              		.cfi_def_cfa_offset 8
+  90              		.cfi_offset 3, -8
+  91              		.cfi_offset 14, -4
+  21:HARDWARE/key/key.c **** 		static u8 key_up=1;//按键松开标志
+  22:HARDWARE/key/key.c **** 		if(mode)key_up=1;//支持连续按
+  92              		.loc 1 22 0
+  93 0002 10B1     		cbz	r0, .L6
+  94              		.loc 1 22 0 is_stmt 0 discriminator 1
+  95 0004 0122     		movs	r2, #1
+ARM GAS  /tmp/ccPocUFY.s 			page 3
+
+
+  96 0006 144B     		ldr	r3, .L14
+  97 0008 1A70     		strb	r2, [r3]
+  98              	.L6:
+  23:HARDWARE/key/key.c **** 		if(key_up&&(WK_UP==0)) {
+  99              		.loc 1 23 0 is_stmt 1
+ 100 000a 134B     		ldr	r3, .L14
+ 101 000c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 102 000e 2BB1     		cbz	r3, .L7
+ 103              		.loc 1 23 0 is_stmt 0 discriminator 1
+ 104 0010 4FF40051 		mov	r1, #8192
+ 105 0014 1148     		ldr	r0, .L14+4
+ 106              	.LVL3:
+ 107 0016 FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 108              	.LVL4:
+ 109 001a 40B1     		cbz	r0, .L12
+ 110              	.L7:
+  24:HARDWARE/key/key.c **** 			delay_ms(10);//去抖动
+  25:HARDWARE/key/key.c **** 			key_up=0;
+  26:HARDWARE/key/key.c **** 			if(WK_UP==0)return 1;
+  27:HARDWARE/key/key.c **** 		}
+  28:HARDWARE/key/key.c **** 		else if(WK_UP==1)key_up=1;
+ 111              		.loc 1 28 0 is_stmt 1
+ 112 001c 4FF40051 		mov	r1, #8192
+ 113 0020 0E48     		ldr	r0, .L14+4
+ 114 0022 FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 115              	.LVL5:
+ 116 0026 0128     		cmp	r0, #1
+ 117 0028 0FD0     		beq	.L13
+  29:HARDWARE/key/key.c **** 		return 0;//无按键按下
+ 118              		.loc 1 29 0
+ 119 002a 0020     		movs	r0, #0
+  30:HARDWARE/key/key.c **** 		
+  31:HARDWARE/key/key.c **** 	}
+ 120              		.loc 1 31 0
+ 121 002c 08BD     		pop	{r3, pc}
+ 122              	.L12:
+  24:HARDWARE/key/key.c **** 			key_up=0;
+ 123              		.loc 1 24 0
+ 124 002e 0A20     		movs	r0, #10
+ 125 0030 FFF7FEFF 		bl	delay_ms
+ 126              	.LVL6:
+  25:HARDWARE/key/key.c **** 			if(WK_UP==0)return 1;
+ 127              		.loc 1 25 0
+ 128 0034 0022     		movs	r2, #0
+ 129 0036 084B     		ldr	r3, .L14
+ 130 0038 1A70     		strb	r2, [r3]
+  26:HARDWARE/key/key.c **** 		}
+ 131              		.loc 1 26 0
+ 132 003a 4FF40051 		mov	r1, #8192
+ 133 003e 0748     		ldr	r0, .L14+4
+ 134 0040 FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 135              	.LVL7:
+ 136 0044 30B9     		cbnz	r0, .L9
+ 137 0046 0120     		movs	r0, #1
+ 138 0048 08BD     		pop	{r3, pc}
+ 139              	.L13:
+  28:HARDWARE/key/key.c **** 		return 0;//无按键按下
+ARM GAS  /tmp/ccPocUFY.s 			page 4
+
+
+ 140              		.loc 1 28 0 discriminator 1
+ 141 004a 0122     		movs	r2, #1
+ 142 004c 024B     		ldr	r3, .L14
+ 143 004e 1A70     		strb	r2, [r3]
+  29:HARDWARE/key/key.c **** 		
+ 144              		.loc 1 29 0 discriminator 1
+ 145 0050 0020     		movs	r0, #0
+ 146 0052 08BD     		pop	{r3, pc}
+ 147              	.L9:
+  29:HARDWARE/key/key.c **** 		
+ 148              		.loc 1 29 0 is_stmt 0
+ 149 0054 0020     		movs	r0, #0
+ 150 0056 08BD     		pop	{r3, pc}
+ 151              	.L15:
+ 152              		.align	2
+ 153              	.L14:
+ 154 0058 00000000 		.word	.LANCHOR0
+ 155 005c 00080240 		.word	1073874944
+ 156              		.cfi_endproc
+ 157              	.LFE113:
+ 159              		.section	.data.key_up.7667,"aw",%progbits
+ 160              		.set	.LANCHOR0,. + 0
+ 163              	key_up.7667:
+ 164 0000 01       		.byte	1
+ 165              		.text
+ 166              	.Letext0:
+ 167              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 168              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 169              		.file 4 "CORE/core_cm4.h"
+ 170              		.file 5 "USER/system_stm32f4xx.h"
+ 171              		.file 6 "USER/stm32f4xx.h"
+ 172              		.file 7 "FWLIB/inc/stm32f4xx_gpio.h"
+ 173              		.file 8 "SYSTEM/delay/delay.h"
+ 174              		.file 9 "FWLIB/inc/stm32f4xx_rcc.h"
+ARM GAS  /tmp/ccPocUFY.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 key.c
+     /tmp/ccPocUFY.s:16     .text.KEY_Init:0000000000000000 $t
+     /tmp/ccPocUFY.s:23     .text.KEY_Init:0000000000000000 KEY_Init
+     /tmp/ccPocUFY.s:68     .text.KEY_Init:0000000000000034 $d
+     /tmp/ccPocUFY.s:73     .text.KEY_Scan:0000000000000000 $t
+     /tmp/ccPocUFY.s:80     .text.KEY_Scan:0000000000000000 KEY_Scan
+     /tmp/ccPocUFY.s:154    .text.KEY_Scan:0000000000000058 $d
+     /tmp/ccPocUFY.s:163    .data.key_up.7667:0000000000000000 key_up.7667
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_AHB1PeriphClockCmd
+GPIO_Init
+GPIO_ReadInputDataBit
+delay_ms

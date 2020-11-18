@@ -1,0 +1,1238 @@
+ARM GAS  /tmp/ccdBeNBv.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"main.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.Delay,"ax",%progbits
+  16              		.align	1
+  17              		.syntax unified
+  18              		.thumb
+  19              		.thumb_func
+  20              		.fpu softvfp
+  22              	Delay:
+  23              	.LFB66:
+  24              		.file 1 "User/main.c"
+   1:User/main.c   **** /**
+   2:User/main.c   ****  ******************************************************************************
+   3:User/main.c   ****  * @file    main.c
+   4:User/main.c   ****  * @author  fire
+   5:User/main.c   ****  * @version V1.0
+   6:User/main.c   ****  * @date    2013-xx-xx
+   7:User/main.c   ****  * @brief   测试led
+   8:User/main.c   ****  ******************************************************************************
+   9:User/main.c   ****  * @attention
+  10:User/main.c   ****  *
+  11:User/main.c   ****  * 实验平台:野火 F103 STM32 开发板
+  12:User/main.c   ****  * 论坛    :http://www.firebbs.cn
+  13:User/main.c   ****  * 淘宝    :https://fire-stm32.taobao.com
+  14:User/main.c   ****  *
+  15:User/main.c   ****  ******************************************************************************
+  16:User/main.c   ****  */
+  17:User/main.c   **** 
+  18:User/main.c   **** /* Includes ------------------------------------------------------------------*/
+  19:User/main.c   **** #include "main.h"
+  20:User/main.c   **** #include "./flash/bsp_spi_flash.h"
+  21:User/main.c   **** #include "./lcd/bsp_ili9341_lcd.h"
+  22:User/main.c   **** #include "./led/bsp_led.h"
+  23:User/main.c   **** #include "./usart/bsp_debug_usart.h"
+  24:User/main.c   **** #include "stm32f1xx.h"
+  25:User/main.c   **** #include <stdio.h>
+  26:User/main.c   **** #include <string.h>
+  27:User/main.c   **** 
+  28:User/main.c   **** static void LCD_Test(void);
+  29:User/main.c   **** static void Delay(__IO uint32_t nCount);
+  30:User/main.c   **** 
+  31:User/main.c   **** void Printf_Charater(void);
+  32:User/main.c   **** 
+  33:User/main.c   **** /**
+  34:User/main.c   ****  * @brief  主函数
+ARM GAS  /tmp/ccdBeNBv.s 			page 2
+
+
+  35:User/main.c   ****  * @param  无
+  36:User/main.c   ****  * @retval 无
+  37:User/main.c   ****  */
+  38:User/main.c   **** int main(void)
+  39:User/main.c   **** {
+  40:User/main.c   ****   /* 系统时钟初始化成72 MHz */
+  41:User/main.c   ****   SystemClock_Config();
+  42:User/main.c   ****   /* LED 端口初始化 */
+  43:User/main.c   ****   LED_GPIO_Config();
+  44:User/main.c   ****   /* 初始化串口 */
+  45:User/main.c   ****   DEBUG_USART_Config();
+  46:User/main.c   **** 
+  47:User/main.c   ****   // LCD 初始化
+  48:User/main.c   ****   ILI9341_Init();
+  49:User/main.c   **** 
+  50:User/main.c   ****   printf("\r\n ********** 液晶显示变量示例（整数_浮点数等）*********** \r\n");
+  51:User/main.c   ****   printf("\r\n 若汉字显示不正常，请阅读工程中的readme.txt文件说明，根据要求给FLASH重刷字模数据\r\n"
+  52:User/main.c   **** 
+  53:User/main.c   ****   //其中0、3、5、6 模式适合从左至右显示文字，
+  54:User/main.c   ****   //不推荐使用其它模式显示文字	其它模式显示文字会有镜像效果
+  55:User/main.c   ****   //其中 6 模式为大部分液晶例程的默认显示方向
+  56:User/main.c   ****   ILI9341_GramScan(6);
+  57:User/main.c   **** 
+  58:User/main.c   ****   Printf_Charater();
+  59:User/main.c   **** 
+  60:User/main.c   ****   while (1)
+  61:User/main.c   ****   {
+  62:User/main.c   ****     LCD_Test();
+  63:User/main.c   ****   }
+  64:User/main.c   **** }
+  65:User/main.c   **** 
+  66:User/main.c   **** /*用于测试各种液晶的函数*/
+  67:User/main.c   **** void LCD_Test(void)
+  68:User/main.c   **** {
+  69:User/main.c   ****   /*演示显示变量*/
+  70:User/main.c   ****   static uint8_t testIntCNT = 0;
+  71:User/main.c   ****   static float testFloatCNT = 0;
+  72:User/main.c   ****   char dispBuff[100];
+  73:User/main.c   ****   char *pStr = 0;
+  74:User/main.c   **** 
+  75:User/main.c   ****   testIntCNT++;
+  76:User/main.c   ****   testFloatCNT += 0.1;
+  77:User/main.c   **** 
+  78:User/main.c   ****   LCD_SetFont(&Font8x16);
+  79:User/main.c   ****   LCD_SetColors(RED, BLACK);
+  80:User/main.c   **** 
+  81:User/main.c   ****   ILI9341_Clear(0, 0, LCD_X_LENGTH, LCD_Y_LENGTH); /* 清屏，显示全黑 */
+  82:User/main.c   **** 
+  83:User/main.c   ****   /********显示变量示例*******/
+  84:User/main.c   ****   /*使用c标准库把变量转化成字符串*/
+  85:User/main.c   ****   sprintf(dispBuff, "显示整型变量： %d ", testIntCNT);
+  86:User/main.c   ****   LCD_ClearLine(LINE(5)); /* 清除单行文字 */
+  87:User/main.c   **** 
+  88:User/main.c   ****   /*然后显示该字符串即可，其它变量也是这样处理*/
+  89:User/main.c   ****   ILI9341_DispStringLine_EN_CH(LINE(5), dispBuff);
+  90:User/main.c   **** 
+  91:User/main.c   ****   /*使用c标准库把变量转化成字符串*/
+ARM GAS  /tmp/ccdBeNBv.s 			page 3
+
+
+  92:User/main.c   ****   sprintf(dispBuff, "显示浮点型变量： %f ", testFloatCNT);
+  93:User/main.c   ****   LCD_ClearLine(LINE(6)); /* 清除单行文字 */
+  94:User/main.c   **** 
+  95:User/main.c   ****   /*然后显示该字符串即可，其它变量也是这样处理*/
+  96:User/main.c   ****   ILI9341_DispStringLine_EN_CH(LINE(6), dispBuff);
+  97:User/main.c   **** 
+  98:User/main.c   ****   /*使用c标准库把变量转化成字符串*/
+  99:User/main.c   ****   sprintf(dispBuff, "浮点型(保留2位小数)： %.2f ", testFloatCNT);
+ 100:User/main.c   ****   LCD_ClearLine(LINE(7)); /* 清除单行文字 */
+ 101:User/main.c   **** 
+ 102:User/main.c   ****   /*然后显示该字符串即可，其它变量也是这样处理*/
+ 103:User/main.c   ****   ILI9341_DispStringLine_EN_CH(LINE(7), dispBuff);
+ 104:User/main.c   **** 
+ 105:User/main.c   ****   /********居中显示示例*******/
+ 106:User/main.c   ****   LCD_SetTextColor(GREEN);
+ 107:User/main.c   **** 
+ 108:User/main.c   ****   pStr = "插入2个英文空格示例";
+ 109:User/main.c   ****   //使用 %*c 在字符串前插入指定个数的英文空格
+ 110:User/main.c   ****   sprintf(dispBuff, "%*c%s", 2, ' ', pStr);
+ 111:User/main.c   **** 
+ 112:User/main.c   ****   LCD_ClearLine(LINE(9));                          // 清除单行文字
+ 113:User/main.c   ****   ILI9341_DispStringLine_EN_CH(LINE(9), dispBuff); //显示格式化后的字符串
+ 114:User/main.c   **** 
+ 115:User/main.c   ****   ILI9341_DispStringLine_EN_CH(LINE(11), "纯英文24x32居中示例：");
+ 116:User/main.c   ****   LCD_SetFont(&Font24x32);
+ 117:User/main.c   ****   pStr = "ABCDEF";
+ 118:User/main.c   ****   //居中时，要插入的空格个数 = (液晶宽度/单个字体宽度 - 字符串长度)/2
+ 119:User/main.c   ****   sprintf(dispBuff, "%*c%s", ((LCD_X_LENGTH / (((sFONT *)LCD_GetFont())->Width)) - strlen(pStr)) / 
+ 120:User/main.c   **** 
+ 121:User/main.c   ****   LCD_ClearLine(LINE(6));                          // 清除单行文字
+ 122:User/main.c   ****   ILI9341_DispStringLine_EN_CH(LINE(6), dispBuff); //显示格式化后的字符串
+ 123:User/main.c   **** 
+ 124:User/main.c   ****   LCD_SetFont(&Font8x16);
+ 125:User/main.c   ****   pStr = "中文居中示例";
+ 126:User/main.c   ****   //居中时，要插入的空格个数 = (液晶宽度/字体宽度 - 字符串长度)/2
+ 127:User/main.c   ****   // strlen计算长度时，一个中文等于2个字节，即2个英文字符，而且插入的是英文空格
+ 128:User/main.c   ****   //所以用(WIDTH_CH_CHAR/2)来计算字体宽度
+ 129:User/main.c   ****   sprintf(dispBuff, "%*c%s", (LCD_X_LENGTH / (WIDTH_CH_CHAR / 2) - strlen(pStr)) / 2, ' ', pStr);
+ 130:User/main.c   **** 
+ 131:User/main.c   ****   LCD_ClearLine(LINE(15));                          // 清除单行文字
+ 132:User/main.c   ****   ILI9341_DispStringLine_EN_CH(LINE(15), dispBuff); //显示格式化后的字符串
+ 133:User/main.c   **** 
+ 134:User/main.c   ****   pStr = "含英文居中示例ABCDEFG";
+ 135:User/main.c   ****   //居中时，要插入的空格个数 = (液晶宽度/字体宽度 - 字符串长度)/2
+ 136:User/main.c   ****   // strlen计算长度时，一个中文等于2个字节，即2个英文字符，而且插入的是英文空格
+ 137:User/main.c   ****   //所以用(WIDTH_CH_CHAR/2)来计算字体宽度
+ 138:User/main.c   ****   sprintf(dispBuff, "%*c%s", (LCD_X_LENGTH / (WIDTH_CH_CHAR / 2) - strlen(pStr)) / 2, ' ', pStr);
+ 139:User/main.c   **** 
+ 140:User/main.c   ****   LCD_ClearLine(LINE(16));                          // 清除单行文字
+ 141:User/main.c   ****   ILI9341_DispStringLine_EN_CH(LINE(16), dispBuff); //显示格式化后的字符串
+ 142:User/main.c   **** 
+ 143:User/main.c   ****   Delay(0xffffff);
+ 144:User/main.c   **** }
+ 145:User/main.c   **** 
+ 146:User/main.c   **** /**
+ 147:User/main.c   ****  * @brief  简单延时函数
+ 148:User/main.c   ****  * @param  nCount ：延时计数值
+ARM GAS  /tmp/ccdBeNBv.s 			page 4
+
+
+ 149:User/main.c   ****  * @retval 无
+ 150:User/main.c   ****  */
+ 151:User/main.c   **** static void Delay(__IO uint32_t nCount)
+ 152:User/main.c   **** {
+  25              		.loc 1 152 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 8
+  28              		@ frame_needed = 0, uses_anonymous_args = 0
+  29              		@ link register save eliminated.
+  30              	.LVL0:
+  31 0000 82B0     		sub	sp, sp, #8
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34 0002 0190     		str	r0, [sp, #4]
+ 153:User/main.c   ****   for (; nCount != 0; nCount--)
+  35              		.loc 1 153 0
+  36 0004 02E0     		b	.L2
+  37              	.L3:
+  38              		.loc 1 153 0 is_stmt 0 discriminator 2
+  39 0006 019B     		ldr	r3, [sp, #4]
+  40 0008 013B     		subs	r3, r3, #1
+  41 000a 0193     		str	r3, [sp, #4]
+  42              	.L2:
+  43              		.loc 1 153 0 discriminator 1
+  44 000c 019B     		ldr	r3, [sp, #4]
+  45 000e 002B     		cmp	r3, #0
+  46 0010 F9D1     		bne	.L3
+ 154:User/main.c   ****     ;
+ 155:User/main.c   **** }
+  47              		.loc 1 155 0 is_stmt 1
+  48 0012 02B0     		add	sp, sp, #8
+  49              	.LCFI1:
+  50              		.cfi_def_cfa_offset 0
+  51              		@ sp needed
+  52 0014 7047     		bx	lr
+  53              		.cfi_endproc
+  54              	.LFE66:
+  56              		.section	.text.SystemClock_Config,"ax",%progbits
+  57              		.align	1
+  58              		.syntax unified
+  59              		.thumb
+  60              		.thumb_func
+  61              		.fpu softvfp
+  63              	SystemClock_Config:
+  64              	.LFB68:
+ 156:User/main.c   **** 
+ 157:User/main.c   **** /*"当"字符的字模16x16 */
+ 158:User/main.c   **** unsigned char charater_matrix[] = {
+ 159:User/main.c   ****     /*"当",0*/
+ 160:User/main.c   ****     0x01, 0x00, 0x21, 0x08, 0x11, 0x08, 0x09, 0x10, 0x09, 0x20, 0x01, 0x00, 0x7F, 0xF8, 0x00, 0x08,
+ 161:User/main.c   ****     0x00, 0x08, 0x00, 0x08, 0x3F, 0xF8, 0x00, 0x08, 0x00, 0x08, 0x00, 0x08, 0x7F, 0xF8, 0x00, 0x08,
+ 162:User/main.c   **** 
+ 163:User/main.c   **** };
+ 164:User/main.c   **** 
+ 165:User/main.c   **** /**
+ 166:User/main.c   ****  * @brief  使用串口在上位机打印字模
+ 167:User/main.c   ****  *					演示字模显示原理
+ARM GAS  /tmp/ccdBeNBv.s 			page 5
+
+
+ 168:User/main.c   ****  * @retval 无
+ 169:User/main.c   ****  */
+ 170:User/main.c   **** void Printf_Charater(void)
+ 171:User/main.c   **** {
+ 172:User/main.c   ****   int i, j;
+ 173:User/main.c   ****   unsigned char kk;
+ 174:User/main.c   **** 
+ 175:User/main.c   ****   /*i用作行计数*/
+ 176:User/main.c   ****   for (i = 0; i < 16; i++)
+ 177:User/main.c   ****   {
+ 178:User/main.c   ****     /*j用作一字节内数据的移位计数*/
+ 179:User/main.c   ****     /*一行像素的第一个字节*/
+ 180:User/main.c   ****     for (j = 0; j < 8; j++)
+ 181:User/main.c   ****     {
+ 182:User/main.c   ****       /*一个数据位一个数据位地处理*/
+ 183:User/main.c   ****       kk = charater_matrix[2 * i] << j; //左移J位
+ 184:User/main.c   ****       if (kk & 0x80)
+ 185:User/main.c   ****       {
+ 186:User/main.c   ****         printf("*"); //如果最高位为1，输出*号，表示笔迹
+ 187:User/main.c   ****       }
+ 188:User/main.c   ****       else
+ 189:User/main.c   ****       {
+ 190:User/main.c   ****         printf(" "); //如果最高位为0，输出空格，表示空白
+ 191:User/main.c   ****       }
+ 192:User/main.c   ****     }
+ 193:User/main.c   ****     /*一行像素的第二个字节*/
+ 194:User/main.c   ****     for (j = 0; j < 8; j++)
+ 195:User/main.c   ****     {
+ 196:User/main.c   ****       kk = charater_matrix[2 * i + 1] << j; //左移J位
+ 197:User/main.c   **** 
+ 198:User/main.c   ****       if (kk & 0x80)
+ 199:User/main.c   ****       {
+ 200:User/main.c   ****         printf("*"); //如果最高位为1，输出*号，表示笔迹
+ 201:User/main.c   ****       }
+ 202:User/main.c   ****       else
+ 203:User/main.c   ****       {
+ 204:User/main.c   ****         printf(" "); //如果最高位为0，输出空格，表示空白
+ 205:User/main.c   ****       }
+ 206:User/main.c   ****     }
+ 207:User/main.c   ****     printf("\n"); //输出完一行像素，换行
+ 208:User/main.c   ****   }
+ 209:User/main.c   ****   printf("\n\n"); //一个字输出完毕
+ 210:User/main.c   **** }
+ 211:User/main.c   **** 
+ 212:User/main.c   **** /**
+ 213:User/main.c   ****  * @brief  System Clock Configuration
+ 214:User/main.c   ****  *         The system Clock is configured as follow :
+ 215:User/main.c   ****  *            System Clock source            = PLL (HSE)
+ 216:User/main.c   ****  *            SYSCLK(Hz)                     = 72000000
+ 217:User/main.c   ****  *            HCLK(Hz)                       = 72000000
+ 218:User/main.c   ****  *            AHB Prescaler                  = 1
+ 219:User/main.c   ****  *            APB1 Prescaler                 = 2
+ 220:User/main.c   ****  *            APB2 Prescaler                 = 1
+ 221:User/main.c   ****  *            HSE Frequency(Hz)              = 8000000
+ 222:User/main.c   ****  *            HSE PREDIV1                    = 1
+ 223:User/main.c   ****  *            PLLMUL                         = 9
+ 224:User/main.c   ****  *            Flash Latency(WS)              = 2
+ARM GAS  /tmp/ccdBeNBv.s 			page 6
+
+
+ 225:User/main.c   ****  * @param  None
+ 226:User/main.c   ****  * @retval None
+ 227:User/main.c   ****  */
+ 228:User/main.c   **** void SystemClock_Config(void)
+ 229:User/main.c   **** {
+  65              		.loc 1 229 0
+  66              		.cfi_startproc
+  67              		@ args = 0, pretend = 0, frame = 64
+  68              		@ frame_needed = 0, uses_anonymous_args = 0
+  69 0000 00B5     		push	{lr}
+  70              	.LCFI2:
+  71              		.cfi_def_cfa_offset 4
+  72              		.cfi_offset 14, -4
+  73 0002 91B0     		sub	sp, sp, #68
+  74              	.LCFI3:
+  75              		.cfi_def_cfa_offset 72
+ 230:User/main.c   ****   RCC_ClkInitTypeDef clkinitstruct = {0};
+  76              		.loc 1 230 0
+  77 0004 0021     		movs	r1, #0
+  78 0006 0B91     		str	r1, [sp, #44]
+  79 0008 0C91     		str	r1, [sp, #48]
+  80 000a 0D91     		str	r1, [sp, #52]
+  81 000c 0E91     		str	r1, [sp, #56]
+  82 000e 0F91     		str	r1, [sp, #60]
+ 231:User/main.c   ****   RCC_OscInitTypeDef oscinitstruct = {0};
+  83              		.loc 1 231 0
+  84 0010 2822     		movs	r2, #40
+  85 0012 01A8     		add	r0, sp, #4
+  86 0014 FFF7FEFF 		bl	memset
+  87              	.LVL1:
+ 232:User/main.c   **** 
+ 233:User/main.c   ****   /* Enable HSE Oscillator and activate PLL with HSE as source */
+ 234:User/main.c   ****   oscinitstruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  88              		.loc 1 234 0
+  89 0018 0123     		movs	r3, #1
+  90 001a 0193     		str	r3, [sp, #4]
+ 235:User/main.c   ****   oscinitstruct.HSEState = RCC_HSE_ON;
+  91              		.loc 1 235 0
+  92 001c 4FF48033 		mov	r3, #65536
+  93 0020 0293     		str	r3, [sp, #8]
+ 236:User/main.c   ****   oscinitstruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+ 237:User/main.c   ****   oscinitstruct.PLL.PLLState = RCC_PLL_ON;
+  94              		.loc 1 237 0
+  95 0022 0222     		movs	r2, #2
+  96 0024 0892     		str	r2, [sp, #32]
+ 238:User/main.c   ****   oscinitstruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  97              		.loc 1 238 0
+  98 0026 0993     		str	r3, [sp, #36]
+ 239:User/main.c   ****   oscinitstruct.PLL.PLLMUL = RCC_PLL_MUL9;
+  99              		.loc 1 239 0
+ 100 0028 4FF4E013 		mov	r3, #1835008
+ 101 002c 0A93     		str	r3, [sp, #40]
+ 240:User/main.c   ****   if (HAL_RCC_OscConfig(&oscinitstruct) != HAL_OK)
+ 102              		.loc 1 240 0
+ 103 002e 01A8     		add	r0, sp, #4
+ 104 0030 FFF7FEFF 		bl	HAL_RCC_OscConfig
+ 105              	.LVL2:
+ARM GAS  /tmp/ccdBeNBv.s 			page 7
+
+
+ 106 0034 00B1     		cbz	r0, .L6
+ 107              	.L7:
+ 108 0036 FEE7     		b	.L7
+ 109              	.L6:
+ 241:User/main.c   ****   {
+ 242:User/main.c   ****     /* Initialization Error */
+ 243:User/main.c   ****     while (1)
+ 244:User/main.c   ****       ;
+ 245:User/main.c   ****   }
+ 246:User/main.c   **** 
+ 247:User/main.c   ****   /* Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
+ 248:User/main.c   ****      clocks dividers */
+ 249:User/main.c   ****   clkinitstruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_
+ 110              		.loc 1 249 0
+ 111 0038 0F23     		movs	r3, #15
+ 112 003a 0B93     		str	r3, [sp, #44]
+ 250:User/main.c   ****   clkinitstruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+ 113              		.loc 1 250 0
+ 114 003c 0221     		movs	r1, #2
+ 115 003e 0C91     		str	r1, [sp, #48]
+ 251:User/main.c   ****   clkinitstruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+ 116              		.loc 1 251 0
+ 117 0040 0023     		movs	r3, #0
+ 118 0042 0D93     		str	r3, [sp, #52]
+ 252:User/main.c   ****   clkinitstruct.APB2CLKDivider = RCC_HCLK_DIV1;
+ 119              		.loc 1 252 0
+ 120 0044 0F93     		str	r3, [sp, #60]
+ 253:User/main.c   ****   clkinitstruct.APB1CLKDivider = RCC_HCLK_DIV2;
+ 121              		.loc 1 253 0
+ 122 0046 4FF48063 		mov	r3, #1024
+ 123 004a 0E93     		str	r3, [sp, #56]
+ 254:User/main.c   ****   if (HAL_RCC_ClockConfig(&clkinitstruct, FLASH_LATENCY_2) != HAL_OK)
+ 124              		.loc 1 254 0
+ 125 004c 0BA8     		add	r0, sp, #44
+ 126 004e FFF7FEFF 		bl	HAL_RCC_ClockConfig
+ 127              	.LVL3:
+ 128 0052 00B1     		cbz	r0, .L5
+ 129              	.L9:
+ 130 0054 FEE7     		b	.L9
+ 131              	.L5:
+ 255:User/main.c   ****   {
+ 256:User/main.c   ****     /* Initialization Error */
+ 257:User/main.c   ****     while (1)
+ 258:User/main.c   ****       ;
+ 259:User/main.c   ****   }
+ 260:User/main.c   **** }
+ 132              		.loc 1 260 0
+ 133 0056 11B0     		add	sp, sp, #68
+ 134              	.LCFI4:
+ 135              		.cfi_def_cfa_offset 4
+ 136              		@ sp needed
+ 137 0058 5DF804FB 		ldr	pc, [sp], #4
+ 138              		.cfi_endproc
+ 139              	.LFE68:
+ 141              		.global	__aeabi_f2d
+ 142              		.global	__aeabi_dadd
+ 143              		.global	__aeabi_d2f
+ARM GAS  /tmp/ccdBeNBv.s 			page 8
+
+
+ 144              		.section	.text.LCD_Test,"ax",%progbits
+ 145              		.align	1
+ 146              		.syntax unified
+ 147              		.thumb
+ 148              		.thumb_func
+ 149              		.fpu softvfp
+ 151              	LCD_Test:
+ 152              	.LFB65:
+  68:User/main.c   ****   /*演示显示变量*/
+ 153              		.loc 1 68 0
+ 154              		.cfi_startproc
+ 155              		@ args = 0, pretend = 0, frame = 104
+ 156              		@ frame_needed = 0, uses_anonymous_args = 0
+ 157 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 158              	.LCFI5:
+ 159              		.cfi_def_cfa_offset 20
+ 160              		.cfi_offset 4, -20
+ 161              		.cfi_offset 5, -16
+ 162              		.cfi_offset 6, -12
+ 163              		.cfi_offset 7, -8
+ 164              		.cfi_offset 14, -4
+ 165 0002 9DB0     		sub	sp, sp, #116
+ 166              	.LCFI6:
+ 167              		.cfi_def_cfa_offset 136
+ 168              	.LVL4:
+  75:User/main.c   ****   testFloatCNT += 0.1;
+ 169              		.loc 1 75 0
+ 170 0004 7E4E     		ldr	r6, .L13+8
+ 171 0006 3378     		ldrb	r3, [r6]	@ zero_extendqisi2
+ 172 0008 0133     		adds	r3, r3, #1
+ 173 000a 3370     		strb	r3, [r6]
+  76:User/main.c   **** 
+ 174              		.loc 1 76 0
+ 175 000c 7D4C     		ldr	r4, .L13+12
+ 176 000e 2068     		ldr	r0, [r4]	@ float
+ 177 0010 FFF7FEFF 		bl	__aeabi_f2d
+ 178              	.LVL5:
+ 179 0014 78A3     		adr	r3, .L13
+ 180 0016 D3E90023 		ldrd	r2, [r3]
+ 181 001a FFF7FEFF 		bl	__aeabi_dadd
+ 182              	.LVL6:
+ 183 001e FFF7FEFF 		bl	__aeabi_d2f
+ 184              	.LVL7:
+ 185 0022 2060     		str	r0, [r4]	@ float
+  78:User/main.c   ****   LCD_SetColors(RED, BLACK);
+ 186              		.loc 1 78 0
+ 187 0024 784F     		ldr	r7, .L13+16
+ 188 0026 3846     		mov	r0, r7
+ 189 0028 FFF7FEFF 		bl	LCD_SetFont
+ 190              	.LVL8:
+  79:User/main.c   **** 
+ 191              		.loc 1 79 0
+ 192 002c 0021     		movs	r1, #0
+ 193 002e 4FF47840 		mov	r0, #63488
+ 194 0032 FFF7FEFF 		bl	LCD_SetColors
+ 195              	.LVL9:
+  81:User/main.c   **** 
+ARM GAS  /tmp/ccdBeNBv.s 			page 9
+
+
+ 196              		.loc 1 81 0
+ 197 0036 754D     		ldr	r5, .L13+20
+ 198 0038 754B     		ldr	r3, .L13+24
+ 199 003a 1B88     		ldrh	r3, [r3]
+ 200 003c 2A88     		ldrh	r2, [r5]
+ 201 003e 0021     		movs	r1, #0
+ 202 0040 0846     		mov	r0, r1
+ 203 0042 FFF7FEFF 		bl	ILI9341_Clear
+ 204              	.LVL10:
+  85:User/main.c   ****   LCD_ClearLine(LINE(5)); /* 清除单行文字 */
+ 205              		.loc 1 85 0
+ 206 0046 3278     		ldrb	r2, [r6]	@ zero_extendqisi2
+ 207 0048 7249     		ldr	r1, .L13+28
+ 208 004a 03A8     		add	r0, sp, #12
+ 209 004c FFF7FEFF 		bl	sprintf
+ 210              	.LVL11:
+  86:User/main.c   **** 
+ 211              		.loc 1 86 0
+ 212 0050 FFF7FEFF 		bl	LCD_GetFont
+ 213              	.LVL12:
+ 214 0054 C088     		ldrh	r0, [r0, #6]
+ 215 0056 00EB8000 		add	r0, r0, r0, lsl #2
+ 216 005a 80B2     		uxth	r0, r0
+ 217 005c FFF7FEFF 		bl	LCD_ClearLine
+ 218              	.LVL13:
+  89:User/main.c   **** 
+ 219              		.loc 1 89 0
+ 220 0060 FFF7FEFF 		bl	LCD_GetFont
+ 221              	.LVL14:
+ 222 0064 C088     		ldrh	r0, [r0, #6]
+ 223 0066 00EB8000 		add	r0, r0, r0, lsl #2
+ 224 006a 03A9     		add	r1, sp, #12
+ 225 006c 80B2     		uxth	r0, r0
+ 226 006e FFF7FEFF 		bl	ILI9341_DispStringLine_EN_CH
+ 227              	.LVL15:
+  92:User/main.c   ****   LCD_ClearLine(LINE(6)); /* 清除单行文字 */
+ 228              		.loc 1 92 0
+ 229 0072 2068     		ldr	r0, [r4]	@ float
+ 230 0074 FFF7FEFF 		bl	__aeabi_f2d
+ 231              	.LVL16:
+ 232 0078 0246     		mov	r2, r0
+ 233 007a 0B46     		mov	r3, r1
+ 234 007c 6649     		ldr	r1, .L13+32
+ 235 007e 03A8     		add	r0, sp, #12
+ 236 0080 FFF7FEFF 		bl	sprintf
+ 237              	.LVL17:
+  93:User/main.c   **** 
+ 238              		.loc 1 93 0
+ 239 0084 FFF7FEFF 		bl	LCD_GetFont
+ 240              	.LVL18:
+ 241 0088 C388     		ldrh	r3, [r0, #6]
+ 242 008a 03EB4303 		add	r3, r3, r3, lsl #1
+ 243 008e 5800     		lsls	r0, r3, #1
+ 244 0090 80B2     		uxth	r0, r0
+ 245 0092 FFF7FEFF 		bl	LCD_ClearLine
+ 246              	.LVL19:
+  96:User/main.c   **** 
+ARM GAS  /tmp/ccdBeNBv.s 			page 10
+
+
+ 247              		.loc 1 96 0
+ 248 0096 FFF7FEFF 		bl	LCD_GetFont
+ 249              	.LVL20:
+ 250 009a C388     		ldrh	r3, [r0, #6]
+ 251 009c 03EB4303 		add	r3, r3, r3, lsl #1
+ 252 00a0 5800     		lsls	r0, r3, #1
+ 253 00a2 80B2     		uxth	r0, r0
+ 254 00a4 03A9     		add	r1, sp, #12
+ 255 00a6 FFF7FEFF 		bl	ILI9341_DispStringLine_EN_CH
+ 256              	.LVL21:
+  99:User/main.c   ****   LCD_ClearLine(LINE(7)); /* 清除单行文字 */
+ 257              		.loc 1 99 0
+ 258 00aa 2068     		ldr	r0, [r4]	@ float
+ 259 00ac FFF7FEFF 		bl	__aeabi_f2d
+ 260              	.LVL22:
+ 261 00b0 0246     		mov	r2, r0
+ 262 00b2 0B46     		mov	r3, r1
+ 263 00b4 5949     		ldr	r1, .L13+36
+ 264 00b6 03A8     		add	r0, sp, #12
+ 265 00b8 FFF7FEFF 		bl	sprintf
+ 266              	.LVL23:
+ 100:User/main.c   **** 
+ 267              		.loc 1 100 0
+ 268 00bc FFF7FEFF 		bl	LCD_GetFont
+ 269              	.LVL24:
+ 270 00c0 C088     		ldrh	r0, [r0, #6]
+ 271 00c2 C0EBC000 		rsb	r0, r0, r0, lsl #3
+ 272 00c6 80B2     		uxth	r0, r0
+ 273 00c8 FFF7FEFF 		bl	LCD_ClearLine
+ 274              	.LVL25:
+ 103:User/main.c   **** 
+ 275              		.loc 1 103 0
+ 276 00cc FFF7FEFF 		bl	LCD_GetFont
+ 277              	.LVL26:
+ 278 00d0 C088     		ldrh	r0, [r0, #6]
+ 279 00d2 C0EBC000 		rsb	r0, r0, r0, lsl #3
+ 280 00d6 03A9     		add	r1, sp, #12
+ 281 00d8 80B2     		uxth	r0, r0
+ 282 00da FFF7FEFF 		bl	ILI9341_DispStringLine_EN_CH
+ 283              	.LVL27:
+ 106:User/main.c   **** 
+ 284              		.loc 1 106 0
+ 285 00de 4FF4FC60 		mov	r0, #2016
+ 286 00e2 FFF7FEFF 		bl	LCD_SetTextColor
+ 287              	.LVL28:
+ 110:User/main.c   **** 
+ 288              		.loc 1 110 0
+ 289 00e6 4E4C     		ldr	r4, .L13+40
+ 290 00e8 4E4B     		ldr	r3, .L13+44
+ 291 00ea 0093     		str	r3, [sp]
+ 292 00ec 2023     		movs	r3, #32
+ 293 00ee 0222     		movs	r2, #2
+ 294 00f0 2146     		mov	r1, r4
+ 295 00f2 03A8     		add	r0, sp, #12
+ 296 00f4 FFF7FEFF 		bl	sprintf
+ 297              	.LVL29:
+ 112:User/main.c   ****   ILI9341_DispStringLine_EN_CH(LINE(9), dispBuff); //显示格式化后的字符串
+ARM GAS  /tmp/ccdBeNBv.s 			page 11
+
+
+ 298              		.loc 1 112 0
+ 299 00f8 FFF7FEFF 		bl	LCD_GetFont
+ 300              	.LVL30:
+ 301 00fc C088     		ldrh	r0, [r0, #6]
+ 302 00fe 00EBC000 		add	r0, r0, r0, lsl #3
+ 303 0102 80B2     		uxth	r0, r0
+ 304 0104 FFF7FEFF 		bl	LCD_ClearLine
+ 305              	.LVL31:
+ 113:User/main.c   **** 
+ 306              		.loc 1 113 0
+ 307 0108 FFF7FEFF 		bl	LCD_GetFont
+ 308              	.LVL32:
+ 309 010c C088     		ldrh	r0, [r0, #6]
+ 310 010e 00EBC000 		add	r0, r0, r0, lsl #3
+ 311 0112 03A9     		add	r1, sp, #12
+ 312 0114 80B2     		uxth	r0, r0
+ 313 0116 FFF7FEFF 		bl	ILI9341_DispStringLine_EN_CH
+ 314              	.LVL33:
+ 115:User/main.c   ****   LCD_SetFont(&Font24x32);
+ 315              		.loc 1 115 0
+ 316 011a FFF7FEFF 		bl	LCD_GetFont
+ 317              	.LVL34:
+ 318 011e C088     		ldrh	r0, [r0, #6]
+ 319 0120 00EB8003 		add	r3, r0, r0, lsl #2
+ 320 0124 00EB4300 		add	r0, r0, r3, lsl #1
+ 321 0128 3F49     		ldr	r1, .L13+48
+ 322 012a 80B2     		uxth	r0, r0
+ 323 012c FFF7FEFF 		bl	ILI9341_DispStringLine_EN_CH
+ 324              	.LVL35:
+ 116:User/main.c   ****   pStr = "ABCDEF";
+ 325              		.loc 1 116 0
+ 326 0130 3E48     		ldr	r0, .L13+52
+ 327 0132 FFF7FEFF 		bl	LCD_SetFont
+ 328              	.LVL36:
+ 119:User/main.c   **** 
+ 329              		.loc 1 119 0
+ 330 0136 2E88     		ldrh	r6, [r5]
+ 331 0138 FFF7FEFF 		bl	LCD_GetFont
+ 332              	.LVL37:
+ 333 013c 8288     		ldrh	r2, [r0, #4]
+ 334 013e B6FBF2F2 		udiv	r2, r6, r2
+ 335 0142 063A     		subs	r2, r2, #6
+ 336 0144 3A4B     		ldr	r3, .L13+56
+ 337 0146 0093     		str	r3, [sp]
+ 338 0148 2023     		movs	r3, #32
+ 339 014a 5208     		lsrs	r2, r2, #1
+ 340 014c 2146     		mov	r1, r4
+ 341 014e 03A8     		add	r0, sp, #12
+ 342 0150 FFF7FEFF 		bl	sprintf
+ 343              	.LVL38:
+ 121:User/main.c   ****   ILI9341_DispStringLine_EN_CH(LINE(6), dispBuff); //显示格式化后的字符串
+ 344              		.loc 1 121 0
+ 345 0154 FFF7FEFF 		bl	LCD_GetFont
+ 346              	.LVL39:
+ 347 0158 C388     		ldrh	r3, [r0, #6]
+ 348 015a 03EB4303 		add	r3, r3, r3, lsl #1
+ 349 015e 5800     		lsls	r0, r3, #1
+ARM GAS  /tmp/ccdBeNBv.s 			page 12
+
+
+ 350 0160 80B2     		uxth	r0, r0
+ 351 0162 FFF7FEFF 		bl	LCD_ClearLine
+ 352              	.LVL40:
+ 122:User/main.c   **** 
+ 353              		.loc 1 122 0
+ 354 0166 FFF7FEFF 		bl	LCD_GetFont
+ 355              	.LVL41:
+ 356 016a C388     		ldrh	r3, [r0, #6]
+ 357 016c 03EB4303 		add	r3, r3, r3, lsl #1
+ 358 0170 5800     		lsls	r0, r3, #1
+ 359 0172 80B2     		uxth	r0, r0
+ 360 0174 03A9     		add	r1, sp, #12
+ 361 0176 FFF7FEFF 		bl	ILI9341_DispStringLine_EN_CH
+ 362              	.LVL42:
+ 124:User/main.c   ****   pStr = "中文居中示例";
+ 363              		.loc 1 124 0
+ 364 017a 3846     		mov	r0, r7
+ 365 017c FFF7FEFF 		bl	LCD_SetFont
+ 366              	.LVL43:
+ 129:User/main.c   **** 
+ 367              		.loc 1 129 0
+ 368 0180 2A88     		ldrh	r2, [r5]
+ 369 0182 D208     		lsrs	r2, r2, #3
+ 370 0184 0C3A     		subs	r2, r2, #12
+ 371 0186 2B4B     		ldr	r3, .L13+60
+ 372 0188 0093     		str	r3, [sp]
+ 373 018a 2023     		movs	r3, #32
+ 374 018c 5208     		lsrs	r2, r2, #1
+ 375 018e 2146     		mov	r1, r4
+ 376 0190 03A8     		add	r0, sp, #12
+ 377 0192 FFF7FEFF 		bl	sprintf
+ 378              	.LVL44:
+ 131:User/main.c   ****   ILI9341_DispStringLine_EN_CH(LINE(15), dispBuff); //显示格式化后的字符串
+ 379              		.loc 1 131 0
+ 380 0196 FFF7FEFF 		bl	LCD_GetFont
+ 381              	.LVL45:
+ 382 019a C088     		ldrh	r0, [r0, #6]
+ 383 019c C0EB0010 		rsb	r0, r0, r0, lsl #4
+ 384 01a0 80B2     		uxth	r0, r0
+ 385 01a2 FFF7FEFF 		bl	LCD_ClearLine
+ 386              	.LVL46:
+ 132:User/main.c   **** 
+ 387              		.loc 1 132 0
+ 388 01a6 FFF7FEFF 		bl	LCD_GetFont
+ 389              	.LVL47:
+ 390 01aa C088     		ldrh	r0, [r0, #6]
+ 391 01ac C0EB0010 		rsb	r0, r0, r0, lsl #4
+ 392 01b0 03A9     		add	r1, sp, #12
+ 393 01b2 80B2     		uxth	r0, r0
+ 394 01b4 FFF7FEFF 		bl	ILI9341_DispStringLine_EN_CH
+ 395              	.LVL48:
+ 138:User/main.c   **** 
+ 396              		.loc 1 138 0
+ 397 01b8 2A88     		ldrh	r2, [r5]
+ 398 01ba D208     		lsrs	r2, r2, #3
+ 399 01bc 153A     		subs	r2, r2, #21
+ 400 01be 1E4B     		ldr	r3, .L13+64
+ARM GAS  /tmp/ccdBeNBv.s 			page 13
+
+
+ 401 01c0 0093     		str	r3, [sp]
+ 402 01c2 2023     		movs	r3, #32
+ 403 01c4 5208     		lsrs	r2, r2, #1
+ 404 01c6 2146     		mov	r1, r4
+ 405 01c8 03A8     		add	r0, sp, #12
+ 406 01ca FFF7FEFF 		bl	sprintf
+ 407              	.LVL49:
+ 140:User/main.c   ****   ILI9341_DispStringLine_EN_CH(LINE(16), dispBuff); //显示格式化后的字符串
+ 408              		.loc 1 140 0
+ 409 01ce FFF7FEFF 		bl	LCD_GetFont
+ 410              	.LVL50:
+ 411 01d2 C088     		ldrh	r0, [r0, #6]
+ 412 01d4 0001     		lsls	r0, r0, #4
+ 413 01d6 80B2     		uxth	r0, r0
+ 414 01d8 FFF7FEFF 		bl	LCD_ClearLine
+ 415              	.LVL51:
+ 141:User/main.c   **** 
+ 416              		.loc 1 141 0
+ 417 01dc FFF7FEFF 		bl	LCD_GetFont
+ 418              	.LVL52:
+ 419 01e0 C088     		ldrh	r0, [r0, #6]
+ 420 01e2 0001     		lsls	r0, r0, #4
+ 421 01e4 80B2     		uxth	r0, r0
+ 422 01e6 03A9     		add	r1, sp, #12
+ 423 01e8 FFF7FEFF 		bl	ILI9341_DispStringLine_EN_CH
+ 424              	.LVL53:
+ 143:User/main.c   **** }
+ 425              		.loc 1 143 0
+ 426 01ec 6FF07F40 		mvn	r0, #-16777216
+ 427 01f0 FFF7FEFF 		bl	Delay
+ 428              	.LVL54:
+ 144:User/main.c   **** 
+ 429              		.loc 1 144 0
+ 430 01f4 1DB0     		add	sp, sp, #116
+ 431              	.LCFI7:
+ 432              		.cfi_def_cfa_offset 20
+ 433              		@ sp needed
+ 434 01f6 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 435              	.L14:
+ 436              		.align	3
+ 437              	.L13:
+ 438 01f8 9A999999 		.word	2576980378
+ 439 01fc 9999B93F 		.word	1069128089
+ 440 0200 00000000 		.word	.LANCHOR0
+ 441 0204 00000000 		.word	.LANCHOR1
+ 442 0208 00000000 		.word	Font8x16
+ 443 020c 00000000 		.word	LCD_X_LENGTH
+ 444 0210 00000000 		.word	LCD_Y_LENGTH
+ 445 0214 00000000 		.word	.LC0
+ 446 0218 14000000 		.word	.LC1
+ 447 021c 2C000000 		.word	.LC2
+ 448 0220 48000000 		.word	.LC3
+ 449 0224 50000000 		.word	.LC4
+ 450 0228 64000000 		.word	.LC5
+ 451 022c 00000000 		.word	Font24x32
+ 452 0230 7C000000 		.word	.LC6
+ 453 0234 84000000 		.word	.LC7
+ARM GAS  /tmp/ccdBeNBv.s 			page 14
+
+
+ 454 0238 94000000 		.word	.LC8
+ 455              		.cfi_endproc
+ 456              	.LFE65:
+ 458              		.section	.text.Printf_Charater,"ax",%progbits
+ 459              		.align	1
+ 460              		.global	Printf_Charater
+ 461              		.syntax unified
+ 462              		.thumb
+ 463              		.thumb_func
+ 464              		.fpu softvfp
+ 466              	Printf_Charater:
+ 467              	.LFB67:
+ 171:User/main.c   ****   int i, j;
+ 468              		.loc 1 171 0
+ 469              		.cfi_startproc
+ 470              		@ args = 0, pretend = 0, frame = 0
+ 471              		@ frame_needed = 0, uses_anonymous_args = 0
+ 472 0000 38B5     		push	{r3, r4, r5, lr}
+ 473              	.LCFI8:
+ 474              		.cfi_def_cfa_offset 16
+ 475              		.cfi_offset 3, -16
+ 476              		.cfi_offset 4, -12
+ 477              		.cfi_offset 5, -8
+ 478              		.cfi_offset 14, -4
+ 479              	.LVL55:
+ 176:User/main.c   ****   {
+ 480              		.loc 1 176 0
+ 481 0002 0025     		movs	r5, #0
+ 482 0004 28E0     		b	.L16
+ 483              	.LVL56:
+ 484              	.L28:
+ 186:User/main.c   ****       }
+ 485              		.loc 1 186 0
+ 486 0006 2A20     		movs	r0, #42
+ 487 0008 FFF7FEFF 		bl	putchar
+ 488              	.LVL57:
+ 489              	.L18:
+ 180:User/main.c   ****     {
+ 490              		.loc 1 180 0 discriminator 2
+ 491 000c 0134     		adds	r4, r4, #1
+ 492              	.LVL58:
+ 493              	.L24:
+ 180:User/main.c   ****     {
+ 494              		.loc 1 180 0 is_stmt 0 discriminator 1
+ 495 000e 072C     		cmp	r4, #7
+ 496 0010 0ADC     		bgt	.L27
+ 183:User/main.c   ****       if (kk & 0x80)
+ 497              		.loc 1 183 0 is_stmt 1
+ 498 0012 154B     		ldr	r3, .L32
+ 499 0014 13F81530 		ldrb	r3, [r3, r5, lsl #1]	@ zero_extendqisi2
+ 500 0018 A340     		lsls	r3, r3, r4
+ 501              	.LVL59:
+ 184:User/main.c   ****       {
+ 502              		.loc 1 184 0
+ 503 001a 13F0800F 		tst	r3, #128
+ 504 001e F2D1     		bne	.L28
+ 190:User/main.c   ****       }
+ARM GAS  /tmp/ccdBeNBv.s 			page 15
+
+
+ 505              		.loc 1 190 0
+ 506 0020 2020     		movs	r0, #32
+ 507 0022 FFF7FEFF 		bl	putchar
+ 508              	.LVL60:
+ 509 0026 F1E7     		b	.L18
+ 510              	.L27:
+ 511 0028 0024     		movs	r4, #0
+ 512              	.LVL61:
+ 513 002a 03E0     		b	.L20
+ 514              	.LVL62:
+ 515              	.L30:
+ 200:User/main.c   ****       }
+ 516              		.loc 1 200 0
+ 517 002c 2A20     		movs	r0, #42
+ 518 002e FFF7FEFF 		bl	putchar
+ 519              	.LVL63:
+ 520              	.L22:
+ 194:User/main.c   ****     {
+ 521              		.loc 1 194 0 discriminator 2
+ 522 0032 0134     		adds	r4, r4, #1
+ 523              	.LVL64:
+ 524              	.L20:
+ 194:User/main.c   ****     {
+ 525              		.loc 1 194 0 is_stmt 0 discriminator 1
+ 526 0034 072C     		cmp	r4, #7
+ 527 0036 0BDC     		bgt	.L29
+ 196:User/main.c   **** 
+ 528              		.loc 1 196 0 is_stmt 1
+ 529 0038 6B00     		lsls	r3, r5, #1
+ 530 003a 0133     		adds	r3, r3, #1
+ 531 003c 0A4A     		ldr	r2, .L32
+ 532 003e D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 533 0040 A340     		lsls	r3, r3, r4
+ 534              	.LVL65:
+ 198:User/main.c   ****       {
+ 535              		.loc 1 198 0
+ 536 0042 13F0800F 		tst	r3, #128
+ 537 0046 F1D1     		bne	.L30
+ 204:User/main.c   ****       }
+ 538              		.loc 1 204 0
+ 539 0048 2020     		movs	r0, #32
+ 540 004a FFF7FEFF 		bl	putchar
+ 541              	.LVL66:
+ 542 004e F0E7     		b	.L22
+ 543              	.L29:
+ 207:User/main.c   ****   }
+ 544              		.loc 1 207 0 discriminator 2
+ 545 0050 0A20     		movs	r0, #10
+ 546 0052 FFF7FEFF 		bl	putchar
+ 547              	.LVL67:
+ 176:User/main.c   ****   {
+ 548              		.loc 1 176 0 discriminator 2
+ 549 0056 0135     		adds	r5, r5, #1
+ 550              	.LVL68:
+ 551              	.L16:
+ 176:User/main.c   ****   {
+ 552              		.loc 1 176 0 is_stmt 0 discriminator 1
+ARM GAS  /tmp/ccdBeNBv.s 			page 16
+
+
+ 553 0058 0F2D     		cmp	r5, #15
+ 554 005a 01DC     		bgt	.L31
+ 555 005c 0024     		movs	r4, #0
+ 556 005e D6E7     		b	.L24
+ 557              	.L31:
+ 209:User/main.c   **** }
+ 558              		.loc 1 209 0 is_stmt 1
+ 559 0060 0248     		ldr	r0, .L32+4
+ 560 0062 FFF7FEFF 		bl	puts
+ 561              	.LVL69:
+ 562 0066 38BD     		pop	{r3, r4, r5, pc}
+ 563              	.LVL70:
+ 564              	.L33:
+ 565              		.align	2
+ 566              	.L32:
+ 567 0068 00000000 		.word	.LANCHOR2
+ 568 006c 00000000 		.word	.LC9
+ 569              		.cfi_endproc
+ 570              	.LFE67:
+ 572              		.section	.text.main,"ax",%progbits
+ 573              		.align	1
+ 574              		.global	main
+ 575              		.syntax unified
+ 576              		.thumb
+ 577              		.thumb_func
+ 578              		.fpu softvfp
+ 580              	main:
+ 581              	.LFB64:
+  39:User/main.c   ****   /* 系统时钟初始化成72 MHz */
+ 582              		.loc 1 39 0
+ 583              		.cfi_startproc
+ 584              		@ Volatile: function does not return.
+ 585              		@ args = 0, pretend = 0, frame = 0
+ 586              		@ frame_needed = 0, uses_anonymous_args = 0
+ 587 0000 08B5     		push	{r3, lr}
+ 588              	.LCFI9:
+ 589              		.cfi_def_cfa_offset 8
+ 590              		.cfi_offset 3, -8
+ 591              		.cfi_offset 14, -4
+  41:User/main.c   ****   /* LED 端口初始化 */
+ 592              		.loc 1 41 0
+ 593 0002 FFF7FEFF 		bl	SystemClock_Config
+ 594              	.LVL71:
+  43:User/main.c   ****   /* 初始化串口 */
+ 595              		.loc 1 43 0
+ 596 0006 FFF7FEFF 		bl	LED_GPIO_Config
+ 597              	.LVL72:
+  45:User/main.c   **** 
+ 598              		.loc 1 45 0
+ 599 000a FFF7FEFF 		bl	DEBUG_USART_Config
+ 600              	.LVL73:
+  48:User/main.c   **** 
+ 601              		.loc 1 48 0
+ 602 000e FFF7FEFF 		bl	ILI9341_Init
+ 603              	.LVL74:
+  50:User/main.c   ****   printf("\r\n 若汉字显示不正常，请阅读工程中的readme.txt文件说明，根据要求给FLASH重刷字模数据\r\n"
+ 604              		.loc 1 50 0
+ARM GAS  /tmp/ccdBeNBv.s 			page 17
+
+
+ 605 0012 0748     		ldr	r0, .L37
+ 606 0014 FFF7FEFF 		bl	puts
+ 607              	.LVL75:
+  51:User/main.c   **** 
+ 608              		.loc 1 51 0
+ 609 0018 0648     		ldr	r0, .L37+4
+ 610 001a FFF7FEFF 		bl	puts
+ 611              	.LVL76:
+  56:User/main.c   **** 
+ 612              		.loc 1 56 0
+ 613 001e 0620     		movs	r0, #6
+ 614 0020 FFF7FEFF 		bl	ILI9341_GramScan
+ 615              	.LVL77:
+  58:User/main.c   **** 
+ 616              		.loc 1 58 0
+ 617 0024 FFF7FEFF 		bl	Printf_Charater
+ 618              	.LVL78:
+ 619              	.L35:
+  62:User/main.c   ****   }
+ 620              		.loc 1 62 0 discriminator 1
+ 621 0028 FFF7FEFF 		bl	LCD_Test
+ 622              	.LVL79:
+ 623 002c FCE7     		b	.L35
+ 624              	.L38:
+ 625 002e 00BF     		.align	2
+ 626              	.L37:
+ 627 0030 00000000 		.word	.LC10
+ 628 0034 40000000 		.word	.LC11
+ 629              		.cfi_endproc
+ 630              	.LFE64:
+ 632              		.global	charater_matrix
+ 633              		.section	.bss.testFloatCNT.9629,"aw",%nobits
+ 634              		.align	2
+ 635              		.set	.LANCHOR1,. + 0
+ 638              	testFloatCNT.9629:
+ 639 0000 00000000 		.space	4
+ 640              		.section	.bss.testIntCNT.9628,"aw",%nobits
+ 641              		.set	.LANCHOR0,. + 0
+ 644              	testIntCNT.9628:
+ 645 0000 00       		.space	1
+ 646              		.section	.data.charater_matrix,"aw",%progbits
+ 647              		.align	2
+ 648              		.set	.LANCHOR2,. + 0
+ 651              	charater_matrix:
+ 652 0000 01       		.byte	1
+ 653 0001 00       		.byte	0
+ 654 0002 21       		.byte	33
+ 655 0003 08       		.byte	8
+ 656 0004 11       		.byte	17
+ 657 0005 08       		.byte	8
+ 658 0006 09       		.byte	9
+ 659 0007 10       		.byte	16
+ 660 0008 09       		.byte	9
+ 661 0009 20       		.byte	32
+ 662 000a 01       		.byte	1
+ 663 000b 00       		.byte	0
+ 664 000c 7F       		.byte	127
+ARM GAS  /tmp/ccdBeNBv.s 			page 18
+
+
+ 665 000d F8       		.byte	-8
+ 666 000e 00       		.byte	0
+ 667 000f 08       		.byte	8
+ 668 0010 00       		.byte	0
+ 669 0011 08       		.byte	8
+ 670 0012 00       		.byte	0
+ 671 0013 08       		.byte	8
+ 672 0014 3F       		.byte	63
+ 673 0015 F8       		.byte	-8
+ 674 0016 00       		.byte	0
+ 675 0017 08       		.byte	8
+ 676 0018 00       		.byte	0
+ 677 0019 08       		.byte	8
+ 678 001a 00       		.byte	0
+ 679 001b 08       		.byte	8
+ 680 001c 7F       		.byte	127
+ 681 001d F8       		.byte	-8
+ 682 001e 00       		.byte	0
+ 683 001f 08       		.byte	8
+ 684              		.section	.rodata.LCD_Test.str1.4,"aMS",%progbits,1
+ 685              		.align	2
+ 686              	.LC0:
+ 687 0000 CFD4CABE 		.ascii	"\317\324\312\276\325\373\320\315\261\344\301\277\243"
+ 687      D5FBD0CD 
+ 687      B1E4C1BF 
+ 687      A3
+ 688 000d BA202564 		.ascii	"\272 %d \000"
+ 688      2000
+ 689 0013 00       		.space	1
+ 690              	.LC1:
+ 691 0014 CFD4CABE 		.ascii	"\317\324\312\276\270\241\265\343\320\315\261\344\301"
+ 691      B8A1B5E3 
+ 691      D0CDB1E4 
+ 691      C1
+ 692 0021 BFA3BA20 		.ascii	"\277\243\272 %f \000"
+ 692      25662000 
+ 693 0029 000000   		.space	3
+ 694              	.LC2:
+ 695 002c B8A1B5E3 		.ascii	"\270\241\265\343\320\315(\261\243\301\3642\316\273\320"
+ 695      D0CD28B1 
+ 695      A3C1F432 
+ 695      CEBBD0
+ 696 003b A1CAFD29 		.ascii	"\241\312\375)\243\272 %.2f \000"
+ 696      A3BA2025 
+ 696      2E326620 
+ 696      00
+ 697              	.LC3:
+ 698 0048 252A6325 		.ascii	"%*c%s\000"
+ 698      7300
+ 699 004e 0000     		.space	2
+ 700              	.LC4:
+ 701 0050 B2E5C8EB 		.ascii	"\262\345\310\3532\270\366\323\242\316\304\277\325\270"
+ 701      32B8F6D3 
+ 701      A2CEC4BF 
+ 701      D5B8
+ 702 005e F1CABEC0 		.ascii	"\361\312\276\300\375\000"
+ 702      FD00
+ARM GAS  /tmp/ccdBeNBv.s 			page 19
+
+
+ 703              	.LC5:
+ 704 0064 B4BFD3A2 		.ascii	"\264\277\323\242\316\30424x32\276\323\326\320\312\276"
+ 704      CEC43234 
+ 704      783332BE 
+ 704      D3D6D0CA 
+ 704      BE
+ 705 0075 C0FDA3BA 		.ascii	"\300\375\243\272\000"
+ 705      00
+ 706 007a 0000     		.space	2
+ 707              	.LC6:
+ 708 007c 41424344 		.ascii	"ABCDEF\000"
+ 708      454600
+ 709 0083 00       		.space	1
+ 710              	.LC7:
+ 711 0084 D6D0CEC4 		.ascii	"\326\320\316\304\276\323\326\320\312\276\300\375\000"
+ 711      BED3D6D0 
+ 711      CABEC0FD 
+ 711      00
+ 712 0091 000000   		.space	3
+ 713              	.LC8:
+ 714 0094 BAACD3A2 		.ascii	"\272\254\323\242\316\304\276\323\326\320\312\276\300"
+ 714      CEC4BED3 
+ 714      D6D0CABE 
+ 714      C0
+ 715 00a1 FD414243 		.ascii	"\375ABCDEFG\000"
+ 715      44454647 
+ 715      00
+ 716              		.section	.rodata.Printf_Charater.str1.4,"aMS",%progbits,1
+ 717              		.align	2
+ 718              	.LC9:
+ 719 0000 0A00     		.ascii	"\012\000"
+ 720              		.section	.rodata.main.str1.4,"aMS",%progbits,1
+ 721              		.align	2
+ 722              	.LC10:
+ 723 0000 0D0A202A 		.ascii	"\015\012 ********** \322\272\276\247\317\324\312\276"
+ 723      2A2A2A2A 
+ 723      2A2A2A2A 
+ 723      2A20D2BA 
+ 723      BEA7CFD4 
+ 724 0016 B1E4C1BF 		.ascii	"\261\344\301\277\312\276\300\375\243\250\325\373\312"
+ 724      CABEC0FD 
+ 724      A3A8D5FB 
+ 724      CA
+ 725 0023 FD5FB8A1 		.ascii	"\375_\270\241\265\343\312\375\265\310\243\251******"
+ 725      B5E3CAFD 
+ 725      B5C8A3A9 
+ 725      2A2A2A2A 
+ 725      2A2A
+ 726 0035 2A2A2A2A 		.ascii	"***** \015\000"
+ 726      2A200D00 
+ 727 003d 000000   		.space	3
+ 728              	.LC11:
+ 729 0040 0D0A20C8 		.ascii	"\015\012 \310\364\272\272\327\326\317\324\312\276\262"
+ 729      F4BABAD7 
+ 729      D6CFD4CA 
+ 729      BEB2
+ 730 004e BBD5FDB3 		.ascii	"\273\325\375\263\243\243\254\307\353\324\304\266\301"
+ARM GAS  /tmp/ccdBeNBv.s 			page 20
+
+
+ 730      A3A3ACC7 
+ 730      EBD4C4B6 
+ 730      C1
+ 731 005b B9A4B3CC 		.ascii	"\271\244\263\314\326\320\265\304readme.txt\316\304\274"
+ 731      D6D0B5C4 
+ 731      72656164 
+ 731      6D652E74 
+ 731      7874CEC4 
+ 732 0070 FECBB5C3 		.ascii	"\376\313\265\303\367\243\254\270\371\276\335\322\252"
+ 732      F7A3ACB8 
+ 732      F9BEDDD2 
+ 732      AA
+ 733 007d C7F3B8F8 		.ascii	"\307\363\270\370FLASH\326\330\313\242\327\326\304\243"
+ 733      464C4153 
+ 733      48D6D8CB 
+ 733      A2D7D6C4 
+ 733      A3
+ 734 008e CAFDBEDD 		.ascii	"\312\375\276\335\015\000"
+ 734      0D00
+ 735              		.text
+ 736              	.Letext0:
+ 737              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 738              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 739              		.file 4 "Libraries/CMSIS/Include/core_cm3.h"
+ 740              		.file 5 "Libraries/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h"
+ 741              		.file 6 "Libraries/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h"
+ 742              		.file 7 "/usr/include/newlib/sys/lock.h"
+ 743              		.file 8 "/usr/include/newlib/sys/_types.h"
+ 744              		.file 9 "/usr/lib/gcc/arm-none-eabi/6.3.1/include/stddef.h"
+ 745              		.file 10 "/usr/include/newlib/sys/reent.h"
+ 746              		.file 11 "Libraries/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 747              		.file 12 "Libraries/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h"
+ 748              		.file 13 "Libraries/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc_ex.h"
+ 749              		.file 14 "Libraries/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 750              		.file 15 "Libraries/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h"
+ 751              		.file 16 "User/./usart/bsp_debug_usart.h"
+ 752              		.file 17 "User/./font/fonts.h"
+ 753              		.file 18 "User/./lcd/bsp_ili9341_lcd.h"
+ 754              		.file 19 "<built-in>"
+ 755              		.file 20 "/usr/include/newlib/stdio.h"
+ 756              		.file 21 "User/./led/bsp_led.h"
+ARM GAS  /tmp/ccdBeNBv.s 			page 21
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+     /tmp/ccdBeNBv.s:16     .text.Delay:0000000000000000 $t
+     /tmp/ccdBeNBv.s:22     .text.Delay:0000000000000000 Delay
+     /tmp/ccdBeNBv.s:57     .text.SystemClock_Config:0000000000000000 $t
+     /tmp/ccdBeNBv.s:63     .text.SystemClock_Config:0000000000000000 SystemClock_Config
+     /tmp/ccdBeNBv.s:145    .text.LCD_Test:0000000000000000 $t
+     /tmp/ccdBeNBv.s:151    .text.LCD_Test:0000000000000000 LCD_Test
+     /tmp/ccdBeNBv.s:438    .text.LCD_Test:00000000000001f8 $d
+     /tmp/ccdBeNBv.s:459    .text.Printf_Charater:0000000000000000 $t
+     /tmp/ccdBeNBv.s:466    .text.Printf_Charater:0000000000000000 Printf_Charater
+     /tmp/ccdBeNBv.s:567    .text.Printf_Charater:0000000000000068 $d
+     /tmp/ccdBeNBv.s:573    .text.main:0000000000000000 $t
+     /tmp/ccdBeNBv.s:580    .text.main:0000000000000000 main
+     /tmp/ccdBeNBv.s:627    .text.main:0000000000000030 $d
+     /tmp/ccdBeNBv.s:651    .data.charater_matrix:0000000000000000 charater_matrix
+     /tmp/ccdBeNBv.s:634    .bss.testFloatCNT.9629:0000000000000000 $d
+     /tmp/ccdBeNBv.s:638    .bss.testFloatCNT.9629:0000000000000000 testFloatCNT.9629
+     /tmp/ccdBeNBv.s:644    .bss.testIntCNT.9628:0000000000000000 testIntCNT.9628
+     /tmp/ccdBeNBv.s:645    .bss.testIntCNT.9628:0000000000000000 $d
+     /tmp/ccdBeNBv.s:647    .data.charater_matrix:0000000000000000 $d
+     /tmp/ccdBeNBv.s:685    .rodata.LCD_Test.str1.4:0000000000000000 $d
+     /tmp/ccdBeNBv.s:717    .rodata.Printf_Charater.str1.4:0000000000000000 $d
+     /tmp/ccdBeNBv.s:721    .rodata.main.str1.4:0000000000000000 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+memset
+HAL_RCC_OscConfig
+HAL_RCC_ClockConfig
+__aeabi_f2d
+__aeabi_dadd
+__aeabi_d2f
+LCD_SetFont
+LCD_SetColors
+ILI9341_Clear
+sprintf
+LCD_GetFont
+LCD_ClearLine
+ILI9341_DispStringLine_EN_CH
+LCD_SetTextColor
+Font8x16
+LCD_X_LENGTH
+LCD_Y_LENGTH
+Font24x32
+putchar
+puts
+LED_GPIO_Config
+DEBUG_USART_Config
+ILI9341_Init
+ILI9341_GramScan

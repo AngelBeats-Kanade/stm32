@@ -1,0 +1,845 @@
+ARM GAS  /tmp/cc1l11kW.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.eabi_attribute 28, 1
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 1
+  10              		.eabi_attribute 34, 1
+  11              		.eabi_attribute 18, 4
+  12              		.file	"font8.c"
+  13              		.text
+  14              	.Ltext0:
+  15              		.cfi_sections	.debug_frame
+  16              		.global	Font8
+  17              		.global	Font8_Table
+  18              		.section	.data.Font8,"aw",%progbits
+  19              		.align	2
+  22              	Font8:
+  23 0000 00000000 		.word	Font8_Table
+  24 0004 0500     		.short	5
+  25 0006 0800     		.short	8
+  26              		.section	.rodata.Font8_Table,"a",%progbits
+  27              		.align	2
+  30              	Font8_Table:
+  31 0000 00       		.byte	0
+  32 0001 00       		.byte	0
+  33 0002 00       		.byte	0
+  34 0003 00       		.byte	0
+  35 0004 00       		.byte	0
+  36 0005 00       		.byte	0
+  37 0006 00       		.byte	0
+  38 0007 00       		.byte	0
+  39 0008 20       		.byte	32
+  40 0009 20       		.byte	32
+  41 000a 20       		.byte	32
+  42 000b 20       		.byte	32
+  43 000c 00       		.byte	0
+  44 000d 20       		.byte	32
+  45 000e 00       		.byte	0
+  46 000f 00       		.byte	0
+  47 0010 50       		.byte	80
+  48 0011 50       		.byte	80
+  49 0012 00       		.byte	0
+  50 0013 00       		.byte	0
+  51 0014 00       		.byte	0
+  52 0015 00       		.byte	0
+  53 0016 00       		.byte	0
+  54 0017 00       		.byte	0
+  55 0018 28       		.byte	40
+  56 0019 50       		.byte	80
+  57 001a F8       		.byte	-8
+  58 001b 50       		.byte	80
+  59 001c F8       		.byte	-8
+  60 001d 50       		.byte	80
+  61 001e A0       		.byte	-96
+ARM GAS  /tmp/cc1l11kW.s 			page 2
+
+
+  62 001f 00       		.byte	0
+  63 0020 20       		.byte	32
+  64 0021 30       		.byte	48
+  65 0022 60       		.byte	96
+  66 0023 30       		.byte	48
+  67 0024 10       		.byte	16
+  68 0025 60       		.byte	96
+  69 0026 20       		.byte	32
+  70 0027 00       		.byte	0
+  71 0028 20       		.byte	32
+  72 0029 20       		.byte	32
+  73 002a 18       		.byte	24
+  74 002b 60       		.byte	96
+  75 002c 10       		.byte	16
+  76 002d 10       		.byte	16
+  77 002e 00       		.byte	0
+  78 002f 00       		.byte	0
+  79 0030 00       		.byte	0
+  80 0031 38       		.byte	56
+  81 0032 20       		.byte	32
+  82 0033 60       		.byte	96
+  83 0034 50       		.byte	80
+  84 0035 78       		.byte	120
+  85 0036 00       		.byte	0
+  86 0037 00       		.byte	0
+  87 0038 20       		.byte	32
+  88 0039 20       		.byte	32
+  89 003a 20       		.byte	32
+  90 003b 00       		.byte	0
+  91 003c 00       		.byte	0
+  92 003d 00       		.byte	0
+  93 003e 00       		.byte	0
+  94 003f 00       		.byte	0
+  95 0040 10       		.byte	16
+  96 0041 20       		.byte	32
+  97 0042 20       		.byte	32
+  98 0043 20       		.byte	32
+  99 0044 20       		.byte	32
+ 100 0045 20       		.byte	32
+ 101 0046 10       		.byte	16
+ 102 0047 00       		.byte	0
+ 103 0048 40       		.byte	64
+ 104 0049 20       		.byte	32
+ 105 004a 20       		.byte	32
+ 106 004b 20       		.byte	32
+ 107 004c 20       		.byte	32
+ 108 004d 20       		.byte	32
+ 109 004e 40       		.byte	64
+ 110 004f 00       		.byte	0
+ 111 0050 20       		.byte	32
+ 112 0051 70       		.byte	112
+ 113 0052 20       		.byte	32
+ 114 0053 50       		.byte	80
+ 115 0054 00       		.byte	0
+ 116 0055 00       		.byte	0
+ 117 0056 00       		.byte	0
+ 118 0057 00       		.byte	0
+ARM GAS  /tmp/cc1l11kW.s 			page 3
+
+
+ 119 0058 00       		.byte	0
+ 120 0059 20       		.byte	32
+ 121 005a 20       		.byte	32
+ 122 005b F8       		.byte	-8
+ 123 005c 20       		.byte	32
+ 124 005d 20       		.byte	32
+ 125 005e 00       		.byte	0
+ 126 005f 00       		.byte	0
+ 127 0060 00       		.byte	0
+ 128 0061 00       		.byte	0
+ 129 0062 00       		.byte	0
+ 130 0063 00       		.byte	0
+ 131 0064 10       		.byte	16
+ 132 0065 20       		.byte	32
+ 133 0066 20       		.byte	32
+ 134 0067 00       		.byte	0
+ 135 0068 00       		.byte	0
+ 136 0069 00       		.byte	0
+ 137 006a 00       		.byte	0
+ 138 006b 70       		.byte	112
+ 139 006c 00       		.byte	0
+ 140 006d 00       		.byte	0
+ 141 006e 00       		.byte	0
+ 142 006f 00       		.byte	0
+ 143 0070 00       		.byte	0
+ 144 0071 00       		.byte	0
+ 145 0072 00       		.byte	0
+ 146 0073 00       		.byte	0
+ 147 0074 00       		.byte	0
+ 148 0075 20       		.byte	32
+ 149 0076 00       		.byte	0
+ 150 0077 00       		.byte	0
+ 151 0078 10       		.byte	16
+ 152 0079 20       		.byte	32
+ 153 007a 20       		.byte	32
+ 154 007b 20       		.byte	32
+ 155 007c 40       		.byte	64
+ 156 007d 40       		.byte	64
+ 157 007e 80       		.byte	-128
+ 158 007f 00       		.byte	0
+ 159 0080 20       		.byte	32
+ 160 0081 50       		.byte	80
+ 161 0082 50       		.byte	80
+ 162 0083 50       		.byte	80
+ 163 0084 50       		.byte	80
+ 164 0085 20       		.byte	32
+ 165 0086 00       		.byte	0
+ 166 0087 00       		.byte	0
+ 167 0088 60       		.byte	96
+ 168 0089 20       		.byte	32
+ 169 008a 20       		.byte	32
+ 170 008b 20       		.byte	32
+ 171 008c 20       		.byte	32
+ 172 008d F8       		.byte	-8
+ 173 008e 00       		.byte	0
+ 174 008f 00       		.byte	0
+ 175 0090 20       		.byte	32
+ARM GAS  /tmp/cc1l11kW.s 			page 4
+
+
+ 176 0091 50       		.byte	80
+ 177 0092 20       		.byte	32
+ 178 0093 20       		.byte	32
+ 179 0094 40       		.byte	64
+ 180 0095 70       		.byte	112
+ 181 0096 00       		.byte	0
+ 182 0097 00       		.byte	0
+ 183 0098 20       		.byte	32
+ 184 0099 50       		.byte	80
+ 185 009a 10       		.byte	16
+ 186 009b 20       		.byte	32
+ 187 009c 10       		.byte	16
+ 188 009d 60       		.byte	96
+ 189 009e 00       		.byte	0
+ 190 009f 00       		.byte	0
+ 191 00a0 10       		.byte	16
+ 192 00a1 30       		.byte	48
+ 193 00a2 50       		.byte	80
+ 194 00a3 78       		.byte	120
+ 195 00a4 10       		.byte	16
+ 196 00a5 38       		.byte	56
+ 197 00a6 00       		.byte	0
+ 198 00a7 00       		.byte	0
+ 199 00a8 70       		.byte	112
+ 200 00a9 40       		.byte	64
+ 201 00aa 60       		.byte	96
+ 202 00ab 10       		.byte	16
+ 203 00ac 50       		.byte	80
+ 204 00ad 20       		.byte	32
+ 205 00ae 00       		.byte	0
+ 206 00af 00       		.byte	0
+ 207 00b0 30       		.byte	48
+ 208 00b1 40       		.byte	64
+ 209 00b2 60       		.byte	96
+ 210 00b3 50       		.byte	80
+ 211 00b4 50       		.byte	80
+ 212 00b5 60       		.byte	96
+ 213 00b6 00       		.byte	0
+ 214 00b7 00       		.byte	0
+ 215 00b8 70       		.byte	112
+ 216 00b9 50       		.byte	80
+ 217 00ba 10       		.byte	16
+ 218 00bb 20       		.byte	32
+ 219 00bc 20       		.byte	32
+ 220 00bd 20       		.byte	32
+ 221 00be 00       		.byte	0
+ 222 00bf 00       		.byte	0
+ 223 00c0 20       		.byte	32
+ 224 00c1 50       		.byte	80
+ 225 00c2 20       		.byte	32
+ 226 00c3 50       		.byte	80
+ 227 00c4 50       		.byte	80
+ 228 00c5 20       		.byte	32
+ 229 00c6 00       		.byte	0
+ 230 00c7 00       		.byte	0
+ 231 00c8 30       		.byte	48
+ 232 00c9 50       		.byte	80
+ARM GAS  /tmp/cc1l11kW.s 			page 5
+
+
+ 233 00ca 50       		.byte	80
+ 234 00cb 30       		.byte	48
+ 235 00cc 10       		.byte	16
+ 236 00cd 60       		.byte	96
+ 237 00ce 00       		.byte	0
+ 238 00cf 00       		.byte	0
+ 239 00d0 00       		.byte	0
+ 240 00d1 00       		.byte	0
+ 241 00d2 20       		.byte	32
+ 242 00d3 00       		.byte	0
+ 243 00d4 00       		.byte	0
+ 244 00d5 20       		.byte	32
+ 245 00d6 00       		.byte	0
+ 246 00d7 00       		.byte	0
+ 247 00d8 00       		.byte	0
+ 248 00d9 00       		.byte	0
+ 249 00da 10       		.byte	16
+ 250 00db 00       		.byte	0
+ 251 00dc 10       		.byte	16
+ 252 00dd 20       		.byte	32
+ 253 00de 00       		.byte	0
+ 254 00df 00       		.byte	0
+ 255 00e0 00       		.byte	0
+ 256 00e1 10       		.byte	16
+ 257 00e2 20       		.byte	32
+ 258 00e3 C0       		.byte	-64
+ 259 00e4 20       		.byte	32
+ 260 00e5 10       		.byte	16
+ 261 00e6 00       		.byte	0
+ 262 00e7 00       		.byte	0
+ 263 00e8 00       		.byte	0
+ 264 00e9 70       		.byte	112
+ 265 00ea 00       		.byte	0
+ 266 00eb 70       		.byte	112
+ 267 00ec 00       		.byte	0
+ 268 00ed 00       		.byte	0
+ 269 00ee 00       		.byte	0
+ 270 00ef 00       		.byte	0
+ 271 00f0 00       		.byte	0
+ 272 00f1 40       		.byte	64
+ 273 00f2 20       		.byte	32
+ 274 00f3 18       		.byte	24
+ 275 00f4 20       		.byte	32
+ 276 00f5 40       		.byte	64
+ 277 00f6 00       		.byte	0
+ 278 00f7 00       		.byte	0
+ 279 00f8 20       		.byte	32
+ 280 00f9 50       		.byte	80
+ 281 00fa 10       		.byte	16
+ 282 00fb 20       		.byte	32
+ 283 00fc 00       		.byte	0
+ 284 00fd 20       		.byte	32
+ 285 00fe 00       		.byte	0
+ 286 00ff 00       		.byte	0
+ 287 0100 30       		.byte	48
+ 288 0101 48       		.byte	72
+ 289 0102 48       		.byte	72
+ARM GAS  /tmp/cc1l11kW.s 			page 6
+
+
+ 290 0103 58       		.byte	88
+ 291 0104 48       		.byte	72
+ 292 0105 40       		.byte	64
+ 293 0106 38       		.byte	56
+ 294 0107 00       		.byte	0
+ 295 0108 60       		.byte	96
+ 296 0109 20       		.byte	32
+ 297 010a 50       		.byte	80
+ 298 010b 70       		.byte	112
+ 299 010c 88       		.byte	-120
+ 300 010d D8       		.byte	-40
+ 301 010e 00       		.byte	0
+ 302 010f 00       		.byte	0
+ 303 0110 F0       		.byte	-16
+ 304 0111 48       		.byte	72
+ 305 0112 70       		.byte	112
+ 306 0113 48       		.byte	72
+ 307 0114 48       		.byte	72
+ 308 0115 F0       		.byte	-16
+ 309 0116 00       		.byte	0
+ 310 0117 00       		.byte	0
+ 311 0118 70       		.byte	112
+ 312 0119 50       		.byte	80
+ 313 011a 40       		.byte	64
+ 314 011b 40       		.byte	64
+ 315 011c 40       		.byte	64
+ 316 011d 30       		.byte	48
+ 317 011e 00       		.byte	0
+ 318 011f 00       		.byte	0
+ 319 0120 F0       		.byte	-16
+ 320 0121 48       		.byte	72
+ 321 0122 48       		.byte	72
+ 322 0123 48       		.byte	72
+ 323 0124 48       		.byte	72
+ 324 0125 F0       		.byte	-16
+ 325 0126 00       		.byte	0
+ 326 0127 00       		.byte	0
+ 327 0128 F8       		.byte	-8
+ 328 0129 48       		.byte	72
+ 329 012a 60       		.byte	96
+ 330 012b 40       		.byte	64
+ 331 012c 48       		.byte	72
+ 332 012d F8       		.byte	-8
+ 333 012e 00       		.byte	0
+ 334 012f 00       		.byte	0
+ 335 0130 F8       		.byte	-8
+ 336 0131 48       		.byte	72
+ 337 0132 60       		.byte	96
+ 338 0133 40       		.byte	64
+ 339 0134 40       		.byte	64
+ 340 0135 E0       		.byte	-32
+ 341 0136 00       		.byte	0
+ 342 0137 00       		.byte	0
+ 343 0138 70       		.byte	112
+ 344 0139 40       		.byte	64
+ 345 013a 40       		.byte	64
+ 346 013b 58       		.byte	88
+ARM GAS  /tmp/cc1l11kW.s 			page 7
+
+
+ 347 013c 50       		.byte	80
+ 348 013d 30       		.byte	48
+ 349 013e 00       		.byte	0
+ 350 013f 00       		.byte	0
+ 351 0140 E8       		.byte	-24
+ 352 0141 48       		.byte	72
+ 353 0142 78       		.byte	120
+ 354 0143 48       		.byte	72
+ 355 0144 48       		.byte	72
+ 356 0145 E8       		.byte	-24
+ 357 0146 00       		.byte	0
+ 358 0147 00       		.byte	0
+ 359 0148 70       		.byte	112
+ 360 0149 20       		.byte	32
+ 361 014a 20       		.byte	32
+ 362 014b 20       		.byte	32
+ 363 014c 20       		.byte	32
+ 364 014d 70       		.byte	112
+ 365 014e 00       		.byte	0
+ 366 014f 00       		.byte	0
+ 367 0150 38       		.byte	56
+ 368 0151 10       		.byte	16
+ 369 0152 10       		.byte	16
+ 370 0153 50       		.byte	80
+ 371 0154 50       		.byte	80
+ 372 0155 20       		.byte	32
+ 373 0156 00       		.byte	0
+ 374 0157 00       		.byte	0
+ 375 0158 D8       		.byte	-40
+ 376 0159 50       		.byte	80
+ 377 015a 60       		.byte	96
+ 378 015b 70       		.byte	112
+ 379 015c 50       		.byte	80
+ 380 015d D8       		.byte	-40
+ 381 015e 00       		.byte	0
+ 382 015f 00       		.byte	0
+ 383 0160 E0       		.byte	-32
+ 384 0161 40       		.byte	64
+ 385 0162 40       		.byte	64
+ 386 0163 40       		.byte	64
+ 387 0164 48       		.byte	72
+ 388 0165 F8       		.byte	-8
+ 389 0166 00       		.byte	0
+ 390 0167 00       		.byte	0
+ 391 0168 D8       		.byte	-40
+ 392 0169 D8       		.byte	-40
+ 393 016a D8       		.byte	-40
+ 394 016b A8       		.byte	-88
+ 395 016c 88       		.byte	-120
+ 396 016d D8       		.byte	-40
+ 397 016e 00       		.byte	0
+ 398 016f 00       		.byte	0
+ 399 0170 D8       		.byte	-40
+ 400 0171 68       		.byte	104
+ 401 0172 68       		.byte	104
+ 402 0173 58       		.byte	88
+ 403 0174 58       		.byte	88
+ARM GAS  /tmp/cc1l11kW.s 			page 8
+
+
+ 404 0175 E8       		.byte	-24
+ 405 0176 00       		.byte	0
+ 406 0177 00       		.byte	0
+ 407 0178 30       		.byte	48
+ 408 0179 48       		.byte	72
+ 409 017a 48       		.byte	72
+ 410 017b 48       		.byte	72
+ 411 017c 48       		.byte	72
+ 412 017d 30       		.byte	48
+ 413 017e 00       		.byte	0
+ 414 017f 00       		.byte	0
+ 415 0180 F0       		.byte	-16
+ 416 0181 48       		.byte	72
+ 417 0182 48       		.byte	72
+ 418 0183 70       		.byte	112
+ 419 0184 40       		.byte	64
+ 420 0185 E0       		.byte	-32
+ 421 0186 00       		.byte	0
+ 422 0187 00       		.byte	0
+ 423 0188 30       		.byte	48
+ 424 0189 48       		.byte	72
+ 425 018a 48       		.byte	72
+ 426 018b 48       		.byte	72
+ 427 018c 48       		.byte	72
+ 428 018d 30       		.byte	48
+ 429 018e 18       		.byte	24
+ 430 018f 00       		.byte	0
+ 431 0190 F0       		.byte	-16
+ 432 0191 48       		.byte	72
+ 433 0192 48       		.byte	72
+ 434 0193 70       		.byte	112
+ 435 0194 48       		.byte	72
+ 436 0195 E8       		.byte	-24
+ 437 0196 00       		.byte	0
+ 438 0197 00       		.byte	0
+ 439 0198 70       		.byte	112
+ 440 0199 50       		.byte	80
+ 441 019a 20       		.byte	32
+ 442 019b 10       		.byte	16
+ 443 019c 50       		.byte	80
+ 444 019d 70       		.byte	112
+ 445 019e 00       		.byte	0
+ 446 019f 00       		.byte	0
+ 447 01a0 F8       		.byte	-8
+ 448 01a1 A8       		.byte	-88
+ 449 01a2 20       		.byte	32
+ 450 01a3 20       		.byte	32
+ 451 01a4 20       		.byte	32
+ 452 01a5 70       		.byte	112
+ 453 01a6 00       		.byte	0
+ 454 01a7 00       		.byte	0
+ 455 01a8 D8       		.byte	-40
+ 456 01a9 48       		.byte	72
+ 457 01aa 48       		.byte	72
+ 458 01ab 48       		.byte	72
+ 459 01ac 48       		.byte	72
+ 460 01ad 30       		.byte	48
+ARM GAS  /tmp/cc1l11kW.s 			page 9
+
+
+ 461 01ae 00       		.byte	0
+ 462 01af 00       		.byte	0
+ 463 01b0 D8       		.byte	-40
+ 464 01b1 88       		.byte	-120
+ 465 01b2 48       		.byte	72
+ 466 01b3 50       		.byte	80
+ 467 01b4 50       		.byte	80
+ 468 01b5 30       		.byte	48
+ 469 01b6 00       		.byte	0
+ 470 01b7 00       		.byte	0
+ 471 01b8 D8       		.byte	-40
+ 472 01b9 88       		.byte	-120
+ 473 01ba A8       		.byte	-88
+ 474 01bb A8       		.byte	-88
+ 475 01bc A8       		.byte	-88
+ 476 01bd 50       		.byte	80
+ 477 01be 00       		.byte	0
+ 478 01bf 00       		.byte	0
+ 479 01c0 D8       		.byte	-40
+ 480 01c1 50       		.byte	80
+ 481 01c2 20       		.byte	32
+ 482 01c3 20       		.byte	32
+ 483 01c4 50       		.byte	80
+ 484 01c5 D8       		.byte	-40
+ 485 01c6 00       		.byte	0
+ 486 01c7 00       		.byte	0
+ 487 01c8 D8       		.byte	-40
+ 488 01c9 88       		.byte	-120
+ 489 01ca 50       		.byte	80
+ 490 01cb 20       		.byte	32
+ 491 01cc 20       		.byte	32
+ 492 01cd 70       		.byte	112
+ 493 01ce 00       		.byte	0
+ 494 01cf 00       		.byte	0
+ 495 01d0 78       		.byte	120
+ 496 01d1 48       		.byte	72
+ 497 01d2 10       		.byte	16
+ 498 01d3 20       		.byte	32
+ 499 01d4 48       		.byte	72
+ 500 01d5 78       		.byte	120
+ 501 01d6 00       		.byte	0
+ 502 01d7 00       		.byte	0
+ 503 01d8 30       		.byte	48
+ 504 01d9 20       		.byte	32
+ 505 01da 20       		.byte	32
+ 506 01db 20       		.byte	32
+ 507 01dc 20       		.byte	32
+ 508 01dd 20       		.byte	32
+ 509 01de 30       		.byte	48
+ 510 01df 00       		.byte	0
+ 511 01e0 80       		.byte	-128
+ 512 01e1 40       		.byte	64
+ 513 01e2 40       		.byte	64
+ 514 01e3 20       		.byte	32
+ 515 01e4 20       		.byte	32
+ 516 01e5 20       		.byte	32
+ 517 01e6 10       		.byte	16
+ARM GAS  /tmp/cc1l11kW.s 			page 10
+
+
+ 518 01e7 00       		.byte	0
+ 519 01e8 60       		.byte	96
+ 520 01e9 20       		.byte	32
+ 521 01ea 20       		.byte	32
+ 522 01eb 20       		.byte	32
+ 523 01ec 20       		.byte	32
+ 524 01ed 20       		.byte	32
+ 525 01ee 60       		.byte	96
+ 526 01ef 00       		.byte	0
+ 527 01f0 20       		.byte	32
+ 528 01f1 20       		.byte	32
+ 529 01f2 50       		.byte	80
+ 530 01f3 00       		.byte	0
+ 531 01f4 00       		.byte	0
+ 532 01f5 00       		.byte	0
+ 533 01f6 00       		.byte	0
+ 534 01f7 00       		.byte	0
+ 535 01f8 00       		.byte	0
+ 536 01f9 00       		.byte	0
+ 537 01fa 00       		.byte	0
+ 538 01fb 00       		.byte	0
+ 539 01fc 00       		.byte	0
+ 540 01fd 00       		.byte	0
+ 541 01fe 00       		.byte	0
+ 542 01ff F8       		.byte	-8
+ 543 0200 20       		.byte	32
+ 544 0201 10       		.byte	16
+ 545 0202 00       		.byte	0
+ 546 0203 00       		.byte	0
+ 547 0204 00       		.byte	0
+ 548 0205 00       		.byte	0
+ 549 0206 00       		.byte	0
+ 550 0207 00       		.byte	0
+ 551 0208 00       		.byte	0
+ 552 0209 00       		.byte	0
+ 553 020a 30       		.byte	48
+ 554 020b 10       		.byte	16
+ 555 020c 70       		.byte	112
+ 556 020d 78       		.byte	120
+ 557 020e 00       		.byte	0
+ 558 020f 00       		.byte	0
+ 559 0210 C0       		.byte	-64
+ 560 0211 40       		.byte	64
+ 561 0212 70       		.byte	112
+ 562 0213 48       		.byte	72
+ 563 0214 48       		.byte	72
+ 564 0215 F0       		.byte	-16
+ 565 0216 00       		.byte	0
+ 566 0217 00       		.byte	0
+ 567 0218 00       		.byte	0
+ 568 0219 00       		.byte	0
+ 569 021a 70       		.byte	112
+ 570 021b 40       		.byte	64
+ 571 021c 40       		.byte	64
+ 572 021d 70       		.byte	112
+ 573 021e 00       		.byte	0
+ 574 021f 00       		.byte	0
+ARM GAS  /tmp/cc1l11kW.s 			page 11
+
+
+ 575 0220 18       		.byte	24
+ 576 0221 08       		.byte	8
+ 577 0222 38       		.byte	56
+ 578 0223 48       		.byte	72
+ 579 0224 48       		.byte	72
+ 580 0225 38       		.byte	56
+ 581 0226 00       		.byte	0
+ 582 0227 00       		.byte	0
+ 583 0228 00       		.byte	0
+ 584 0229 00       		.byte	0
+ 585 022a 70       		.byte	112
+ 586 022b 70       		.byte	112
+ 587 022c 40       		.byte	64
+ 588 022d 30       		.byte	48
+ 589 022e 00       		.byte	0
+ 590 022f 00       		.byte	0
+ 591 0230 10       		.byte	16
+ 592 0231 20       		.byte	32
+ 593 0232 70       		.byte	112
+ 594 0233 20       		.byte	32
+ 595 0234 20       		.byte	32
+ 596 0235 70       		.byte	112
+ 597 0236 00       		.byte	0
+ 598 0237 00       		.byte	0
+ 599 0238 00       		.byte	0
+ 600 0239 00       		.byte	0
+ 601 023a 38       		.byte	56
+ 602 023b 48       		.byte	72
+ 603 023c 48       		.byte	72
+ 604 023d 38       		.byte	56
+ 605 023e 08       		.byte	8
+ 606 023f 30       		.byte	48
+ 607 0240 C0       		.byte	-64
+ 608 0241 40       		.byte	64
+ 609 0242 70       		.byte	112
+ 610 0243 48       		.byte	72
+ 611 0244 48       		.byte	72
+ 612 0245 E8       		.byte	-24
+ 613 0246 00       		.byte	0
+ 614 0247 00       		.byte	0
+ 615 0248 20       		.byte	32
+ 616 0249 00       		.byte	0
+ 617 024a 60       		.byte	96
+ 618 024b 20       		.byte	32
+ 619 024c 20       		.byte	32
+ 620 024d 70       		.byte	112
+ 621 024e 00       		.byte	0
+ 622 024f 00       		.byte	0
+ 623 0250 20       		.byte	32
+ 624 0251 00       		.byte	0
+ 625 0252 70       		.byte	112
+ 626 0253 10       		.byte	16
+ 627 0254 10       		.byte	16
+ 628 0255 10       		.byte	16
+ 629 0256 10       		.byte	16
+ 630 0257 70       		.byte	112
+ 631 0258 C0       		.byte	-64
+ARM GAS  /tmp/cc1l11kW.s 			page 12
+
+
+ 632 0259 40       		.byte	64
+ 633 025a 58       		.byte	88
+ 634 025b 70       		.byte	112
+ 635 025c 50       		.byte	80
+ 636 025d D8       		.byte	-40
+ 637 025e 00       		.byte	0
+ 638 025f 00       		.byte	0
+ 639 0260 60       		.byte	96
+ 640 0261 20       		.byte	32
+ 641 0262 20       		.byte	32
+ 642 0263 20       		.byte	32
+ 643 0264 20       		.byte	32
+ 644 0265 70       		.byte	112
+ 645 0266 00       		.byte	0
+ 646 0267 00       		.byte	0
+ 647 0268 00       		.byte	0
+ 648 0269 00       		.byte	0
+ 649 026a D0       		.byte	-48
+ 650 026b A8       		.byte	-88
+ 651 026c A8       		.byte	-88
+ 652 026d A8       		.byte	-88
+ 653 026e 00       		.byte	0
+ 654 026f 00       		.byte	0
+ 655 0270 00       		.byte	0
+ 656 0271 00       		.byte	0
+ 657 0272 F0       		.byte	-16
+ 658 0273 48       		.byte	72
+ 659 0274 48       		.byte	72
+ 660 0275 C8       		.byte	-56
+ 661 0276 00       		.byte	0
+ 662 0277 00       		.byte	0
+ 663 0278 00       		.byte	0
+ 664 0279 00       		.byte	0
+ 665 027a 30       		.byte	48
+ 666 027b 48       		.byte	72
+ 667 027c 48       		.byte	72
+ 668 027d 30       		.byte	48
+ 669 027e 00       		.byte	0
+ 670 027f 00       		.byte	0
+ 671 0280 00       		.byte	0
+ 672 0281 00       		.byte	0
+ 673 0282 F0       		.byte	-16
+ 674 0283 48       		.byte	72
+ 675 0284 48       		.byte	72
+ 676 0285 70       		.byte	112
+ 677 0286 40       		.byte	64
+ 678 0287 E0       		.byte	-32
+ 679 0288 00       		.byte	0
+ 680 0289 00       		.byte	0
+ 681 028a 38       		.byte	56
+ 682 028b 48       		.byte	72
+ 683 028c 48       		.byte	72
+ 684 028d 38       		.byte	56
+ 685 028e 08       		.byte	8
+ 686 028f 18       		.byte	24
+ 687 0290 00       		.byte	0
+ 688 0291 00       		.byte	0
+ARM GAS  /tmp/cc1l11kW.s 			page 13
+
+
+ 689 0292 78       		.byte	120
+ 690 0293 20       		.byte	32
+ 691 0294 20       		.byte	32
+ 692 0295 70       		.byte	112
+ 693 0296 00       		.byte	0
+ 694 0297 00       		.byte	0
+ 695 0298 00       		.byte	0
+ 696 0299 00       		.byte	0
+ 697 029a 30       		.byte	48
+ 698 029b 20       		.byte	32
+ 699 029c 10       		.byte	16
+ 700 029d 60       		.byte	96
+ 701 029e 00       		.byte	0
+ 702 029f 00       		.byte	0
+ 703 02a0 00       		.byte	0
+ 704 02a1 40       		.byte	64
+ 705 02a2 F0       		.byte	-16
+ 706 02a3 40       		.byte	64
+ 707 02a4 48       		.byte	72
+ 708 02a5 30       		.byte	48
+ 709 02a6 00       		.byte	0
+ 710 02a7 00       		.byte	0
+ 711 02a8 00       		.byte	0
+ 712 02a9 00       		.byte	0
+ 713 02aa D8       		.byte	-40
+ 714 02ab 48       		.byte	72
+ 715 02ac 48       		.byte	72
+ 716 02ad 38       		.byte	56
+ 717 02ae 00       		.byte	0
+ 718 02af 00       		.byte	0
+ 719 02b0 00       		.byte	0
+ 720 02b1 00       		.byte	0
+ 721 02b2 C8       		.byte	-56
+ 722 02b3 48       		.byte	72
+ 723 02b4 30       		.byte	48
+ 724 02b5 30       		.byte	48
+ 725 02b6 00       		.byte	0
+ 726 02b7 00       		.byte	0
+ 727 02b8 00       		.byte	0
+ 728 02b9 00       		.byte	0
+ 729 02ba D8       		.byte	-40
+ 730 02bb A8       		.byte	-88
+ 731 02bc A8       		.byte	-88
+ 732 02bd 50       		.byte	80
+ 733 02be 00       		.byte	0
+ 734 02bf 00       		.byte	0
+ 735 02c0 00       		.byte	0
+ 736 02c1 00       		.byte	0
+ 737 02c2 48       		.byte	72
+ 738 02c3 30       		.byte	48
+ 739 02c4 30       		.byte	48
+ 740 02c5 48       		.byte	72
+ 741 02c6 00       		.byte	0
+ 742 02c7 00       		.byte	0
+ 743 02c8 00       		.byte	0
+ 744 02c9 00       		.byte	0
+ 745 02ca D8       		.byte	-40
+ARM GAS  /tmp/cc1l11kW.s 			page 14
+
+
+ 746 02cb 50       		.byte	80
+ 747 02cc 50       		.byte	80
+ 748 02cd 20       		.byte	32
+ 749 02ce 20       		.byte	32
+ 750 02cf 60       		.byte	96
+ 751 02d0 00       		.byte	0
+ 752 02d1 00       		.byte	0
+ 753 02d2 78       		.byte	120
+ 754 02d3 50       		.byte	80
+ 755 02d4 28       		.byte	40
+ 756 02d5 78       		.byte	120
+ 757 02d6 00       		.byte	0
+ 758 02d7 00       		.byte	0
+ 759 02d8 10       		.byte	16
+ 760 02d9 20       		.byte	32
+ 761 02da 20       		.byte	32
+ 762 02db 60       		.byte	96
+ 763 02dc 20       		.byte	32
+ 764 02dd 20       		.byte	32
+ 765 02de 10       		.byte	16
+ 766 02df 00       		.byte	0
+ 767 02e0 20       		.byte	32
+ 768 02e1 20       		.byte	32
+ 769 02e2 20       		.byte	32
+ 770 02e3 20       		.byte	32
+ 771 02e4 20       		.byte	32
+ 772 02e5 20       		.byte	32
+ 773 02e6 20       		.byte	32
+ 774 02e7 00       		.byte	0
+ 775 02e8 40       		.byte	64
+ 776 02e9 20       		.byte	32
+ 777 02ea 20       		.byte	32
+ 778 02eb 30       		.byte	48
+ 779 02ec 20       		.byte	32
+ 780 02ed 20       		.byte	32
+ 781 02ee 40       		.byte	64
+ 782 02ef 00       		.byte	0
+ 783 02f0 00       		.byte	0
+ 784 02f1 00       		.byte	0
+ 785 02f2 00       		.byte	0
+ 786 02f3 28       		.byte	40
+ 787 02f4 50       		.byte	80
+ 788 02f5 00       		.byte	0
+ 789 02f6 00       		.byte	0
+ 790 02f7 00       		.byte	0
+ 791              		.text
+ 792              	.Letext0:
+ 793              		.file 1 "/usr/include/newlib/machine/_default_types.h"
+ 794              		.file 2 "/usr/include/newlib/sys/_stdint.h"
+ 795              		.file 3 "User/fonts/fonts.h"
+ 796              		.file 4 "User/fonts/font8.c"
+ARM GAS  /tmp/cc1l11kW.s 			page 15
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 font8.c
+     /tmp/cc1l11kW.s:22     .data.Font8:0000000000000000 Font8
+     /tmp/cc1l11kW.s:30     .rodata.Font8_Table:0000000000000000 Font8_Table
+     /tmp/cc1l11kW.s:19     .data.Font8:0000000000000000 $d
+     /tmp/cc1l11kW.s:27     .rodata.Font8_Table:0000000000000000 $d
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,2804 @@
+ARM GAS  /tmp/ccp4iYNx.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"stm32f1xx_hal_flash_ex.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.FLASH_MassErase,"ax",%progbits
+  16              		.align	1
+  17              		.syntax unified
+  18              		.thumb
+  19              		.thumb_func
+  20              		.fpu softvfp
+  22              	FLASH_MassErase:
+  23              	.LFB70:
+  24              		.file 1 "Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c"
+   1:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+   2:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   ******************************************************************************
+   3:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @file    stm32f1xx_hal_flash_ex.c
+   4:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @author  MCD Application Team
+   5:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @version V1.1.1
+   6:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @date    12-May-2017
+   7:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief   Extended FLASH HAL module driver.
+   8:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *    
+   9:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *          This file provides firmware functions to manage the following 
+  10:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *          functionalities of the FLASH peripheral:
+  11:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *           + Extended Initialization/de-initialization functions
+  12:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *           + Extended I/O operation functions
+  13:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *           + Extended Peripheral Control functions 
+  14:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         
+  15:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   @verbatim
+  16:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   ==============================================================================
+  17:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****                ##### Flash peripheral extended features  #####
+  18:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   ==============================================================================
+  19:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****            
+  20:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****                       ##### How to use this driver #####
+  21:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   ==============================================================================
+  22:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   [..] This driver provides functions to configure and program the FLASH memory 
+  23:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****        of all STM32F1xxx devices. It includes
+  24:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****        
+  25:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         (++) Set/Reset the write protection
+  26:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         (++) Program the user Option Bytes
+  27:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         (++) Get the Read protection Level
+  28:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+  29:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   @endverbatim
+  30:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   ******************************************************************************
+  31:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @attention
+  32:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *
+  33:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
+  34:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *
+ARM GAS  /tmp/ccp4iYNx.s 			page 2
+
+
+  35:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * Redistribution and use in source and binary forms, with or without modification,
+  36:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * are permitted provided that the following conditions are met:
+  37:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *   1. Redistributions of source code must retain the above copyright notice,
+  38:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *      this list of conditions and the following disclaimer.
+  39:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *   2. Redistributions in binary form must reproduce the above copyright notice,
+  40:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *      this list of conditions and the following disclaimer in the documentation
+  41:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *      and/or other materials provided with the distribution.
+  42:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *   3. Neither the name of STMicroelectronics nor the names of its contributors
+  43:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *      may be used to endorse or promote products derived from this software
+  44:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *      without specific prior written permission.
+  45:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *
+  46:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  47:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  48:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  49:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+  50:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+  51:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+  52:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+  53:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+  54:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+  55:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  56:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *
+  57:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   ******************************************************************************  
+  58:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+  59:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+  60:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /* Includes ------------------------------------------------------------------*/
+  61:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #include "stm32f1xx_hal.h"
+  62:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+  63:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /** @addtogroup STM32F1xx_HAL_Driver
+  64:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @{
+  65:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+  66:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #ifdef HAL_FLASH_MODULE_ENABLED
+  67:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+  68:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /** @addtogroup FLASH
+  69:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @{
+  70:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+  71:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /** @addtogroup FLASH_Private_Variables
+  72:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****  * @{
+  73:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****  */
+  74:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /* Variables used for Erase pages under interruption*/
+  75:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** extern FLASH_ProcessTypeDef pFlash;
+  76:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+  77:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @}
+  78:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+  79:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+  80:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+  81:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @}
+  82:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+  83:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+  84:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /** @defgroup FLASHEx FLASHEx
+  85:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief FLASH HAL Extension module driver
+  86:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @{
+  87:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+  88:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+  89:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /* Private typedef -----------------------------------------------------------*/
+  90:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /* Private define ------------------------------------------------------------*/
+  91:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /** @defgroup FLASHEx_Private_Constants FLASHEx Private Constants
+ARM GAS  /tmp/ccp4iYNx.s 			page 3
+
+
+  92:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****  * @{
+  93:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****  */
+  94:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #define FLASH_POSITION_IWDGSW_BIT        FLASH_OBR_IWDG_SW_Pos
+  95:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #define FLASH_POSITION_OB_USERDATA0_BIT  FLASH_OBR_DATA0_Pos
+  96:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #define FLASH_POSITION_OB_USERDATA1_BIT  FLASH_OBR_DATA1_Pos
+  97:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+  98:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @}
+  99:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 100:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 101:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /* Private macro -------------------------------------------------------------*/
+ 102:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /** @defgroup FLASHEx_Private_Macros FLASHEx Private Macros
+ 103:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @{
+ 104:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 105:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+ 106:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @}
+ 107:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */ 
+ 108:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 109:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /* Private variables ---------------------------------------------------------*/
+ 110:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /* Private function prototypes -----------------------------------------------*/
+ 111:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /** @defgroup FLASHEx_Private_Functions FLASHEx Private Functions
+ 112:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****  * @{
+ 113:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****  */
+ 114:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /* Erase operations */
+ 115:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static void              FLASH_MassErase(uint32_t Banks);
+ 116:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** void    FLASH_PageErase(uint32_t PageAddress);
+ 117:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 118:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /* Option bytes control */
+ 119:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static HAL_StatusTypeDef FLASH_OB_EnableWRP(uint32_t WriteProtectPage);
+ 120:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static HAL_StatusTypeDef FLASH_OB_DisableWRP(uint32_t WriteProtectPage);
+ 121:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static HAL_StatusTypeDef FLASH_OB_RDP_LevelConfig(uint8_t ReadProtectLevel);
+ 122:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static HAL_StatusTypeDef FLASH_OB_UserConfig(uint8_t UserConfig);
+ 123:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static HAL_StatusTypeDef FLASH_OB_ProgramData(uint32_t Address, uint8_t Data);
+ 124:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static uint32_t          FLASH_OB_GetWRP(void);
+ 125:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static uint32_t          FLASH_OB_GetRDP(void);
+ 126:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static uint8_t           FLASH_OB_GetUser(void);
+ 127:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 128:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+ 129:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @}
+ 130:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 131:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 132:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /* Exported functions ---------------------------------------------------------*/
+ 133:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /** @defgroup FLASHEx_Exported_Functions FLASHEx Exported Functions
+ 134:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @{
+ 135:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 136:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 137:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /** @defgroup FLASHEx_Exported_Functions_Group1 FLASHEx Memory Erasing functions
+ 138:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****  *  @brief   FLASH Memory Erasing functions
+ 139:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *
+ 140:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** @verbatim   
+ 141:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   ==============================================================================
+ 142:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****                 ##### FLASH Erasing Programming functions ##### 
+ 143:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   ==============================================================================
+ 144:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 145:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     [..] The FLASH Memory Erasing functions, includes the following functions:
+ 146:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     (+) @ref HAL_FLASHEx_Erase: return only when erase has been done
+ 147:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     (+) @ref HAL_FLASHEx_Erase_IT: end of erase is done when @ref HAL_FLASH_EndOfOperationCallback 
+ 148:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         is called with parameter 0xFFFFFFFF
+ARM GAS  /tmp/ccp4iYNx.s 			page 4
+
+
+ 149:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 150:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     [..] Any operation of erase should follow these steps:
+ 151:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     (#) Call the @ref HAL_FLASH_Unlock() function to enable the flash control register and 
+ 152:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         program memory access.
+ 153:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     (#) Call the desired function to erase page.
+ 154:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     (#) Call the @ref HAL_FLASH_Lock() to disable the flash program memory access 
+ 155:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****        (recommended to protect the FLASH memory against possible unwanted operation).
+ 156:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 157:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** @endverbatim
+ 158:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @{
+ 159:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 160:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 161:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 162:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+ 163:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief  Perform a mass erase or erase the specified FLASH memory pages
+ 164:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @note   To correctly run this function, the @ref HAL_FLASH_Unlock() function
+ 165:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         must be called before.
+ 166:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         Call the @ref HAL_FLASH_Lock() to disable the flash memory access 
+ 167:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         (recommended to protect the FLASH memory against possible unwanted operation)
+ 168:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @param[in]  pEraseInit pointer to an FLASH_EraseInitTypeDef structure that
+ 169:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         contains the configuration information for the erasing.
+ 170:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *
+ 171:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @param[out]  PageError pointer to variable  that
+ 172:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         contains the configuration information on faulty page in case of error
+ 173:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         (0xFFFFFFFF means that all the pages have been correctly erased)
+ 174:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *
+ 175:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @retval HAL_StatusTypeDef HAL Status
+ 176:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 177:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** HAL_StatusTypeDef HAL_FLASHEx_Erase(FLASH_EraseInitTypeDef *pEraseInit, uint32_t *PageError)
+ 178:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** {
+ 179:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_ERROR;
+ 180:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint32_t address = 0U;
+ 181:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 182:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Process Locked */
+ 183:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   __HAL_LOCK(&pFlash);
+ 184:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 185:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Check the parameters */
+ 186:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   assert_param(IS_FLASH_TYPEERASE(pEraseInit->TypeErase));
+ 187:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 188:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   if (pEraseInit->TypeErase == FLASH_TYPEERASE_MASSERASE)
+ 189:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 190:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_BANK2_END)
+ 191:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     if (pEraseInit->Banks == FLASH_BANK_BOTH)
+ 192:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 193:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Mass Erase requested for Bank1 and Bank2 */
+ 194:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Wait for last operation to be completed */
+ 195:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       if ((FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE) == HAL_OK) && \
+ 196:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           (FLASH_WaitForLastOperationBank2((uint32_t)FLASH_TIMEOUT_VALUE) == HAL_OK))
+ 197:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 198:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /*Mass erase to be done*/
+ 199:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         FLASH_MassErase(FLASH_BANK_BOTH);
+ 200:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 201:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /* Wait for last operation to be completed */
+ 202:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         if ((FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE) == HAL_OK) && \
+ 203:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****             (FLASH_WaitForLastOperationBank2((uint32_t)FLASH_TIMEOUT_VALUE) == HAL_OK))
+ 204:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         {
+ 205:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           status = HAL_OK;
+ARM GAS  /tmp/ccp4iYNx.s 			page 5
+
+
+ 206:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         }
+ 207:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 208:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /* If the erase operation is completed, disable the MER Bit */
+ 209:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         CLEAR_BIT(FLASH->CR, FLASH_CR_MER);
+ 210:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         CLEAR_BIT(FLASH->CR2, FLASH_CR2_MER);
+ 211:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 212:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 213:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     else if (pEraseInit->Banks == FLASH_BANK_2)
+ 214:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 215:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Mass Erase requested for Bank2 */
+ 216:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Wait for last operation to be completed */
+ 217:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       if (FLASH_WaitForLastOperationBank2((uint32_t)FLASH_TIMEOUT_VALUE) == HAL_OK)
+ 218:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 219:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /*Mass erase to be done*/
+ 220:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         FLASH_MassErase(FLASH_BANK_2);
+ 221:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 222:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /* Wait for last operation to be completed */
+ 223:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         status = FLASH_WaitForLastOperationBank2((uint32_t)FLASH_TIMEOUT_VALUE);
+ 224:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 225:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /* If the erase operation is completed, disable the MER Bit */
+ 226:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         CLEAR_BIT(FLASH->CR2, FLASH_CR2_MER);
+ 227:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 228:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 229:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     else 
+ 230:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_BANK2_END */
+ 231:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 232:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Mass Erase requested for Bank1 */
+ 233:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Wait for last operation to be completed */
+ 234:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       if (FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE) == HAL_OK)
+ 235:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 236:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /*Mass erase to be done*/
+ 237:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         FLASH_MassErase(FLASH_BANK_1);
+ 238:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 239:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /* Wait for last operation to be completed */
+ 240:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ 241:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 242:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /* If the erase operation is completed, disable the MER Bit */
+ 243:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         CLEAR_BIT(FLASH->CR, FLASH_CR_MER);
+ 244:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 245:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 246:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 247:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   else
+ 248:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 249:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Page Erase is requested */
+ 250:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Check the parameters */
+ 251:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     assert_param(IS_FLASH_PROGRAM_ADDRESS(pEraseInit->PageAddress));
+ 252:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     assert_param(IS_FLASH_NB_PAGES(pEraseInit->PageAddress, pEraseInit->NbPages));
+ 253:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     
+ 254:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_BANK2_END)
+ 255:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Page Erase requested on address located on bank2 */
+ 256:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     if(pEraseInit->PageAddress > FLASH_BANK1_END)
+ 257:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {   
+ 258:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Wait for last operation to be completed */
+ 259:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       if (FLASH_WaitForLastOperationBank2((uint32_t)FLASH_TIMEOUT_VALUE) == HAL_OK)
+ 260:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 261:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /*Initialization of PageError variable*/
+ 262:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         *PageError = 0xFFFFFFFFU;
+ARM GAS  /tmp/ccp4iYNx.s 			page 6
+
+
+ 263:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 264:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /* Erase by page by page to be done*/
+ 265:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         for(address = pEraseInit->PageAddress;
+ 266:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****             address < (pEraseInit->PageAddress + (pEraseInit->NbPages)*FLASH_PAGE_SIZE);
+ 267:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****             address += FLASH_PAGE_SIZE)
+ 268:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         {
+ 269:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           FLASH_PageErase(address);
+ 270:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           
+ 271:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           /* Wait for last operation to be completed */
+ 272:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           status = FLASH_WaitForLastOperationBank2((uint32_t)FLASH_TIMEOUT_VALUE);
+ 273:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           
+ 274:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           /* If the erase operation is completed, disable the PER Bit */
+ 275:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           CLEAR_BIT(FLASH->CR2, FLASH_CR2_PER);
+ 276:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           
+ 277:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           if (status != HAL_OK)
+ 278:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           {
+ 279:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****             /* In case of error, stop erase procedure and return the faulty address */
+ 280:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****             *PageError = address;
+ 281:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****             break;
+ 282:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           }
+ 283:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         }
+ 284:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 285:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 286:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     else
+ 287:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_BANK2_END */
+ 288:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****    {
+ 289:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Page Erase requested on address located on bank1 */
+ 290:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Wait for last operation to be completed */
+ 291:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       if (FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE) == HAL_OK)
+ 292:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 293:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /*Initialization of PageError variable*/
+ 294:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         *PageError = 0xFFFFFFFFU;
+ 295:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 296:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /* Erase page by page to be done*/
+ 297:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         for(address = pEraseInit->PageAddress;
+ 298:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****             address < ((pEraseInit->NbPages * FLASH_PAGE_SIZE) + pEraseInit->PageAddress);
+ 299:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****             address += FLASH_PAGE_SIZE)
+ 300:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         {
+ 301:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           FLASH_PageErase(address);
+ 302:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           
+ 303:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           /* Wait for last operation to be completed */
+ 304:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ 305:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           
+ 306:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           /* If the erase operation is completed, disable the PER Bit */
+ 307:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           CLEAR_BIT(FLASH->CR, FLASH_CR_PER);
+ 308:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           
+ 309:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           if (status != HAL_OK)
+ 310:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           {
+ 311:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****             /* In case of error, stop erase procedure and return the faulty address */
+ 312:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****             *PageError = address;
+ 313:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****             break;
+ 314:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           }
+ 315:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         }
+ 316:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 317:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 318:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 319:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ARM GAS  /tmp/ccp4iYNx.s 			page 7
+
+
+ 320:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Process Unlocked */
+ 321:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   __HAL_UNLOCK(&pFlash);
+ 322:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 323:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   return status;
+ 324:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+ 325:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 326:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+ 327:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief  Perform a mass erase or erase the specified FLASH memory pages with interrupt enabled
+ 328:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @note   To correctly run this function, the @ref HAL_FLASH_Unlock() function
+ 329:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         must be called before.
+ 330:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         Call the @ref HAL_FLASH_Lock() to disable the flash memory access 
+ 331:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         (recommended to protect the FLASH memory against possible unwanted operation)
+ 332:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @param  pEraseInit pointer to an FLASH_EraseInitTypeDef structure that
+ 333:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         contains the configuration information for the erasing.
+ 334:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *
+ 335:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @retval HAL_StatusTypeDef HAL Status
+ 336:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 337:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** HAL_StatusTypeDef HAL_FLASHEx_Erase_IT(FLASH_EraseInitTypeDef *pEraseInit)
+ 338:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** {
+ 339:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 340:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 341:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Process Locked */
+ 342:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   __HAL_LOCK(&pFlash);
+ 343:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 344:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* If procedure already ongoing, reject the next one */
+ 345:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   if (pFlash.ProcedureOnGoing != FLASH_PROC_NONE)
+ 346:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 347:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     return HAL_ERROR;
+ 348:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 349:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 350:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Check the parameters */
+ 351:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   assert_param(IS_FLASH_TYPEERASE(pEraseInit->TypeErase));
+ 352:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 353:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Enable End of FLASH Operation and Error source interrupts */
+ 354:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   __HAL_FLASH_ENABLE_IT(FLASH_IT_EOP | FLASH_IT_ERR);
+ 355:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 356:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_BANK2_END)
+ 357:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Enable End of FLASH Operation and Error source interrupts */
+ 358:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   __HAL_FLASH_ENABLE_IT(FLASH_IT_EOP_BANK2 | FLASH_IT_ERR_BANK2);
+ 359:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 360:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif
+ 361:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   if (pEraseInit->TypeErase == FLASH_TYPEERASE_MASSERASE)
+ 362:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 363:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /*Mass erase to be done*/
+ 364:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     pFlash.ProcedureOnGoing = FLASH_PROC_MASSERASE;
+ 365:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         FLASH_MassErase(pEraseInit->Banks);
+ 366:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 367:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   else
+ 368:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 369:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Erase by page to be done*/
+ 370:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 371:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Check the parameters */
+ 372:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     assert_param(IS_FLASH_PROGRAM_ADDRESS(pEraseInit->PageAddress));
+ 373:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     assert_param(IS_FLASH_NB_PAGES(pEraseInit->PageAddress, pEraseInit->NbPages));
+ 374:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 375:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     pFlash.ProcedureOnGoing = FLASH_PROC_PAGEERASE;
+ 376:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     pFlash.DataRemaining = pEraseInit->NbPages;
+ARM GAS  /tmp/ccp4iYNx.s 			page 8
+
+
+ 377:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     pFlash.Address = pEraseInit->PageAddress;
+ 378:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 379:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /*Erase 1st page and wait for IT*/
+ 380:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     FLASH_PageErase(pEraseInit->PageAddress);
+ 381:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 382:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 383:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   return status;
+ 384:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+ 385:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 386:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+ 387:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @}
+ 388:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 389:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 390:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /** @defgroup FLASHEx_Exported_Functions_Group2 Option Bytes Programming functions
+ 391:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****  *  @brief   Option Bytes Programming functions
+ 392:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *
+ 393:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** @verbatim   
+ 394:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   ==============================================================================
+ 395:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****                 ##### Option Bytes Programming functions ##### 
+ 396:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   ==============================================================================  
+ 397:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     [..]
+ 398:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     This subsection provides a set of functions allowing to control the FLASH 
+ 399:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     option bytes operations.
+ 400:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 401:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** @endverbatim
+ 402:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @{
+ 403:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 404:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 405:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+ 406:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief  Erases the FLASH option bytes.
+ 407:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @note   This functions erases all option bytes except the Read protection (RDP).
+ 408:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         The function @ref HAL_FLASH_Unlock() should be called before to unlock the FLASH interf
+ 409:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         The function @ref HAL_FLASH_OB_Unlock() should be called before to unlock the options b
+ 410:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         The function @ref HAL_FLASH_OB_Launch() should be called after to force the reload of t
+ 411:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         (system reset will occur)
+ 412:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @retval HAL status
+ 413:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 414:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 415:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** HAL_StatusTypeDef HAL_FLASHEx_OBErase(void)
+ 416:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** {
+ 417:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint8_t rdptmp = OB_RDP_LEVEL_0;
+ 418:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_ERROR;
+ 419:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 420:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Get the actual read protection Option Byte value */
+ 421:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   rdptmp = FLASH_OB_GetRDP();
+ 422:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 423:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Wait for last operation to be completed */
+ 424:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ 425:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 426:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   if(status == HAL_OK)
+ 427:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 428:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Clean the error context */
+ 429:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     pFlash.ErrorCode = HAL_FLASH_ERROR_NONE;
+ 430:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 431:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* If the previous operation is completed, proceed to erase the option bytes */
+ 432:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR, FLASH_CR_OPTER);
+ 433:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR, FLASH_CR_STRT);
+ARM GAS  /tmp/ccp4iYNx.s 			page 9
+
+
+ 434:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 435:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Wait for last operation to be completed */
+ 436:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ 437:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 438:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* If the erase operation is completed, disable the OPTER Bit */
+ 439:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     CLEAR_BIT(FLASH->CR, FLASH_CR_OPTER);
+ 440:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 441:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     if(status == HAL_OK)
+ 442:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 443:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Restore the last read protection Option Byte value */
+ 444:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       status = FLASH_OB_RDP_LevelConfig(rdptmp);
+ 445:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 446:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 447:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 448:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Return the erase status */
+ 449:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   return status;
+ 450:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+ 451:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 452:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+ 453:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief  Program option bytes
+ 454:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @note   The function @ref HAL_FLASH_Unlock() should be called before to unlock the FLASH interf
+ 455:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         The function @ref HAL_FLASH_OB_Unlock() should be called before to unlock the options b
+ 456:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         The function @ref HAL_FLASH_OB_Launch() should be called after to force the reload of t
+ 457:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         (system reset will occur)
+ 458:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *
+ 459:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @param  pOBInit pointer to an FLASH_OBInitStruct structure that
+ 460:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         contains the configuration information for the programming.
+ 461:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *
+ 462:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @retval HAL_StatusTypeDef HAL Status
+ 463:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 464:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** HAL_StatusTypeDef HAL_FLASHEx_OBProgram(FLASH_OBProgramInitTypeDef *pOBInit)
+ 465:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** {
+ 466:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_ERROR;
+ 467:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 468:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Process Locked */
+ 469:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   __HAL_LOCK(&pFlash);
+ 470:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 471:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Check the parameters */
+ 472:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   assert_param(IS_OPTIONBYTE(pOBInit->OptionType));
+ 473:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 474:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Write protection configuration */
+ 475:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   if((pOBInit->OptionType & OPTIONBYTE_WRP) == OPTIONBYTE_WRP)
+ 476:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 477:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     assert_param(IS_WRPSTATE(pOBInit->WRPState));
+ 478:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     if (pOBInit->WRPState == OB_WRPSTATE_ENABLE)
+ 479:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 480:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Enable of Write protection on the selected page */
+ 481:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       status = FLASH_OB_EnableWRP(pOBInit->WRPPage);
+ 482:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 483:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     else
+ 484:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 485:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Disable of Write protection on the selected page */
+ 486:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       status = FLASH_OB_DisableWRP(pOBInit->WRPPage);
+ 487:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 488:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     if (status != HAL_OK)
+ 489:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 490:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Process Unlocked */
+ARM GAS  /tmp/ccp4iYNx.s 			page 10
+
+
+ 491:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       __HAL_UNLOCK(&pFlash);
+ 492:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       return status;
+ 493:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 494:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 495:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 496:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Read protection configuration */
+ 497:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   if((pOBInit->OptionType & OPTIONBYTE_RDP) == OPTIONBYTE_RDP)
+ 498:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 499:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     status = FLASH_OB_RDP_LevelConfig(pOBInit->RDPLevel);
+ 500:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     if (status != HAL_OK)
+ 501:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 502:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Process Unlocked */
+ 503:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       __HAL_UNLOCK(&pFlash);
+ 504:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       return status;
+ 505:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 506:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 507:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 508:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* USER configuration */
+ 509:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   if((pOBInit->OptionType & OPTIONBYTE_USER) == OPTIONBYTE_USER)
+ 510:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 511:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     status = FLASH_OB_UserConfig(pOBInit->USERConfig);
+ 512:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     if (status != HAL_OK)
+ 513:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 514:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Process Unlocked */
+ 515:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       __HAL_UNLOCK(&pFlash);
+ 516:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       return status;
+ 517:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 518:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 519:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 520:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* DATA configuration*/
+ 521:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   if((pOBInit->OptionType & OPTIONBYTE_DATA) == OPTIONBYTE_DATA)
+ 522:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 523:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     status = FLASH_OB_ProgramData(pOBInit->DATAAddress, pOBInit->DATAData);
+ 524:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     if (status != HAL_OK)
+ 525:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 526:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Process Unlocked */
+ 527:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       __HAL_UNLOCK(&pFlash);
+ 528:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       return status;
+ 529:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 530:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 531:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 532:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Process Unlocked */
+ 533:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   __HAL_UNLOCK(&pFlash);
+ 534:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 535:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   return status;
+ 536:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+ 537:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 538:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+ 539:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief  Get the Option byte configuration
+ 540:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @param  pOBInit pointer to an FLASH_OBInitStruct structure that
+ 541:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         contains the configuration information for the programming.
+ 542:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *
+ 543:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @retval None
+ 544:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 545:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** void HAL_FLASHEx_OBGetConfig(FLASH_OBProgramInitTypeDef *pOBInit)
+ 546:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** {
+ 547:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   pOBInit->OptionType = OPTIONBYTE_WRP | OPTIONBYTE_RDP | OPTIONBYTE_USER;
+ARM GAS  /tmp/ccp4iYNx.s 			page 11
+
+
+ 548:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 549:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /*Get WRP*/
+ 550:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   pOBInit->WRPPage = FLASH_OB_GetWRP();
+ 551:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 552:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /*Get RDP Level*/
+ 553:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   pOBInit->RDPLevel = FLASH_OB_GetRDP();
+ 554:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 555:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /*Get USER*/
+ 556:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   pOBInit->USERConfig = FLASH_OB_GetUser();
+ 557:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+ 558:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 559:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+ 560:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief  Get the Option byte user data
+ 561:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @param  DATAAdress Address of the option byte DATA
+ 562:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *          This parameter can be one of the following values:
+ 563:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *            @arg @ref OB_DATA_ADDRESS_DATA0
+ 564:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *            @arg @ref OB_DATA_ADDRESS_DATA1
+ 565:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @retval Value programmed in USER data
+ 566:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 567:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** uint32_t HAL_FLASHEx_OBGetUserData(uint32_t DATAAdress)
+ 568:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** {
+ 569:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint32_t value = 0;
+ 570:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 571:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   if (DATAAdress == OB_DATA_ADDRESS_DATA0)
+ 572:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 573:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Get value programmed in OB USER Data0 */
+ 574:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     value = READ_BIT(FLASH->OBR, FLASH_OBR_DATA0) >> FLASH_POSITION_OB_USERDATA0_BIT;
+ 575:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 576:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   else
+ 577:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 578:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Get value programmed in OB USER Data1 */
+ 579:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     value = READ_BIT(FLASH->OBR, FLASH_OBR_DATA1) >> FLASH_POSITION_OB_USERDATA1_BIT;
+ 580:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 581:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 582:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   return value;
+ 583:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+ 584:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 585:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+ 586:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @}
+ 587:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 588:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 589:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+ 590:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @}
+ 591:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 592:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 593:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /** @addtogroup FLASHEx_Private_Functions
+ 594:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****  * @{
+ 595:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****  */
+ 596:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 597:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+ 598:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief  Full erase of FLASH memory Bank 
+ 599:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @param  Banks Banks to be erased
+ 600:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *          This parameter can be one of the following values:
+ 601:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *            @arg @ref FLASH_BANK_1 Bank1 to be erased
+ 602:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   @if STM32F101xG
+ 603:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *            @arg @ref FLASH_BANK_2 Bank2 to be erased
+ 604:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *            @arg @ref FLASH_BANK_BOTH Bank1 and Bank2 to be erased
+ARM GAS  /tmp/ccp4iYNx.s 			page 12
+
+
+ 605:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   @endif
+ 606:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   @if STM32F103xG
+ 607:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *            @arg @ref FLASH_BANK_2 Bank2 to be erased
+ 608:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *            @arg @ref FLASH_BANK_BOTH Bank1 and Bank2 to be erased
+ 609:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   @endif
+ 610:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *
+ 611:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @retval None
+ 612:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 613:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static void FLASH_MassErase(uint32_t Banks)
+ 614:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** {
+  25              		.loc 1 614 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 0
+  28              		@ frame_needed = 0, uses_anonymous_args = 0
+  29              		@ link register save eliminated.
+  30              	.LVL0:
+ 615:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Check the parameters */
+ 616:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   assert_param(IS_FLASH_BANK(Banks));
+ 617:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 618:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Clean the error context */
+ 619:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   pFlash.ErrorCode = HAL_FLASH_ERROR_NONE;
+  31              		.loc 1 619 0
+  32 0000 0022     		movs	r2, #0
+  33 0002 064B     		ldr	r3, .L2
+  34 0004 DA61     		str	r2, [r3, #28]
+ 620:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 621:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_BANK2_END)
+ 622:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   if(Banks == FLASH_BANK_BOTH)
+ 623:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 624:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* bank1 & bank2 will be erased*/
+ 625:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR, FLASH_CR_MER);
+ 626:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR2, FLASH_CR2_MER);
+ 627:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR, FLASH_CR_STRT);
+ 628:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR2, FLASH_CR2_STRT);
+ 629:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 630:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   else if(Banks == FLASH_BANK_2)
+ 631:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 632:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /*Only bank2 will be erased*/
+ 633:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR2, FLASH_CR2_MER);
+ 634:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR2, FLASH_CR2_STRT);
+ 635:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 636:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   else
+ 637:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 638:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_BANK2_END */
+ 639:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if !defined(FLASH_BANK2_END)
+ 640:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Prevent unused argument(s) compilation warning */
+ 641:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   UNUSED(Banks);
+ 642:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_BANK2_END */  
+ 643:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Only bank1 will be erased*/
+ 644:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR, FLASH_CR_MER);
+  35              		.loc 1 644 0
+  36 0006 064B     		ldr	r3, .L2+4
+  37 0008 1A69     		ldr	r2, [r3, #16]
+  38 000a 42F00402 		orr	r2, r2, #4
+  39 000e 1A61     		str	r2, [r3, #16]
+ 645:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR, FLASH_CR_STRT);
+  40              		.loc 1 645 0
+ARM GAS  /tmp/ccp4iYNx.s 			page 13
+
+
+  41 0010 1A69     		ldr	r2, [r3, #16]
+  42 0012 42F04002 		orr	r2, r2, #64
+  43 0016 1A61     		str	r2, [r3, #16]
+  44 0018 7047     		bx	lr
+  45              	.L3:
+  46 001a 00BF     		.align	2
+  47              	.L2:
+  48 001c 00000000 		.word	pFlash
+  49 0020 00200240 		.word	1073881088
+  50              		.cfi_endproc
+  51              	.LFE70:
+  53              		.section	.text.FLASH_OB_GetWRP,"ax",%progbits
+  54              		.align	1
+  55              		.syntax unified
+  56              		.thumb
+  57              		.thumb_func
+  58              		.fpu softvfp
+  60              	FLASH_OB_GetWRP:
+  61              	.LFB76:
+ 646:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_BANK2_END)
+ 647:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 648:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_BANK2_END */
+ 649:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+ 650:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 651:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+ 652:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief  Enable the write protection of the desired pages
+ 653:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @note   An option byte erase is done automatically in this function. 
+ 654:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @note   When the memory read protection level is selected (RDP level = 1), 
+ 655:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         it is not possible to program or erase the flash page i if
+ 656:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         debug features are connected or boot code is executed in RAM, even if nWRPi = 1 
+ 657:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * 
+ 658:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @param  WriteProtectPage specifies the page(s) to be write protected.
+ 659:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         The value of this parameter depend on device used within the same series 
+ 660:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @retval HAL status 
+ 661:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 662:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static HAL_StatusTypeDef FLASH_OB_EnableWRP(uint32_t WriteProtectPage)
+ 663:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** {
+ 664:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 665:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint16_t WRP0_Data = 0xFFFF;
+ 666:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_WRP1_WRP1)
+ 667:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint16_t WRP1_Data = 0xFFFF;
+ 668:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_WRP1_WRP1 */
+ 669:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_WRP2_WRP2)
+ 670:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint16_t WRP2_Data = 0xFFFF;
+ 671:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_WRP2_WRP2 */
+ 672:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_WRP3_WRP3)
+ 673:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint16_t WRP3_Data = 0xFFFF;
+ 674:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_WRP3_WRP3 */
+ 675:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 676:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Check the parameters */
+ 677:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   assert_param(IS_OB_WRP(WriteProtectPage));
+ 678:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     
+ 679:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Get current write protected pages and the new pages to be protected ******/
+ 680:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WriteProtectPage = (uint32_t)(~((~FLASH_OB_GetWRP()) | WriteProtectPage));
+ 681:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 682:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(OB_WRP_PAGES0TO15MASK)
+ 683:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP0_Data = (uint16_t)(WriteProtectPage & OB_WRP_PAGES0TO15MASK);
+ARM GAS  /tmp/ccp4iYNx.s 			page 14
+
+
+ 684:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #elif defined(OB_WRP_PAGES0TO31MASK)
+ 685:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP0_Data = (uint16_t)(WriteProtectPage & OB_WRP_PAGES0TO31MASK);
+ 686:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* OB_WRP_PAGES0TO31MASK */
+ 687:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 688:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(OB_WRP_PAGES16TO31MASK)
+ 689:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP1_Data = (uint16_t)((WriteProtectPage & OB_WRP_PAGES16TO31MASK) >> 8U);
+ 690:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #elif defined(OB_WRP_PAGES32TO63MASK)
+ 691:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP1_Data = (uint16_t)((WriteProtectPage & OB_WRP_PAGES32TO63MASK) >> 8U);
+ 692:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* OB_WRP_PAGES32TO63MASK */
+ 693:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****  
+ 694:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(OB_WRP_PAGES64TO95MASK)
+ 695:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP2_Data = (uint16_t)((WriteProtectPage & OB_WRP_PAGES64TO95MASK) >> 16U);
+ 696:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* OB_WRP_PAGES64TO95MASK */
+ 697:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(OB_WRP_PAGES32TO47MASK)
+ 698:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP2_Data = (uint16_t)((WriteProtectPage & OB_WRP_PAGES32TO47MASK) >> 16U);
+ 699:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* OB_WRP_PAGES32TO47MASK */
+ 700:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 701:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(OB_WRP_PAGES96TO127MASK)
+ 702:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP3_Data = (uint16_t)((WriteProtectPage & OB_WRP_PAGES96TO127MASK) >> 24U); 
+ 703:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #elif defined(OB_WRP_PAGES48TO255MASK)
+ 704:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP3_Data = (uint16_t)((WriteProtectPage & OB_WRP_PAGES48TO255MASK) >> 24U); 
+ 705:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #elif defined(OB_WRP_PAGES48TO511MASK)
+ 706:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP3_Data = (uint16_t)((WriteProtectPage & OB_WRP_PAGES48TO511MASK) >> 24U); 
+ 707:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #elif defined(OB_WRP_PAGES48TO127MASK)
+ 708:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP3_Data = (uint16_t)((WriteProtectPage & OB_WRP_PAGES48TO127MASK) >> 24U); 
+ 709:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* OB_WRP_PAGES96TO127MASK */
+ 710:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 711:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Wait for last operation to be completed */
+ 712:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ 713:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 714:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   if(status == HAL_OK)
+ 715:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   { 
+ 716:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Clean the error context */
+ 717:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     pFlash.ErrorCode = HAL_FLASH_ERROR_NONE;
+ 718:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 719:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* To be able to write again option byte, need to perform a option byte erase */
+ 720:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     status = HAL_FLASHEx_OBErase();
+ 721:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     if (status == HAL_OK)  
+ 722:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 723:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Enable write protection */
+ 724:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       SET_BIT(FLASH->CR, FLASH_CR_OPTPG);
+ 725:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 726:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_WRP0_WRP0)
+ 727:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       if(WRP0_Data != 0xFFU)
+ 728:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 729:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         OB->WRP0 &= WRP0_Data;
+ 730:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 731:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /* Wait for last operation to be completed */
+ 732:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ 733:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 734:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_WRP0_WRP0 */
+ 735:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 736:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_WRP1_WRP1)
+ 737:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       if((status == HAL_OK) && (WRP1_Data != 0xFFU))
+ 738:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 739:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         OB->WRP1 &= WRP1_Data;
+ 740:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ARM GAS  /tmp/ccp4iYNx.s 			page 15
+
+
+ 741:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /* Wait for last operation to be completed */
+ 742:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ 743:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 744:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_WRP1_WRP1 */
+ 745:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 746:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_WRP2_WRP2)
+ 747:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       if((status == HAL_OK) && (WRP2_Data != 0xFFU))
+ 748:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 749:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         OB->WRP2 &= WRP2_Data;
+ 750:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 751:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /* Wait for last operation to be completed */
+ 752:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ 753:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 754:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_WRP2_WRP2 */
+ 755:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 756:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_WRP3_WRP3)
+ 757:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       if((status == HAL_OK) && (WRP3_Data != 0xFFU))
+ 758:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 759:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         OB->WRP3 &= WRP3_Data;
+ 760:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 761:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /* Wait for last operation to be completed */
+ 762:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ 763:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 764:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_WRP3_WRP3 */
+ 765:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 766:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* if the program operation is completed, disable the OPTPG Bit */
+ 767:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       CLEAR_BIT(FLASH->CR, FLASH_CR_OPTPG);
+ 768:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 769:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 770:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 771:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   return status;
+ 772:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+ 773:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 774:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+ 775:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief  Disable the write protection of the desired pages
+ 776:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @note   An option byte erase is done automatically in this function. 
+ 777:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @note   When the memory read protection level is selected (RDP level = 1), 
+ 778:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         it is not possible to program or erase the flash page i if   
+ 779:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         debug features are connected or boot code is executed in RAM, even if nWRPi = 1 
+ 780:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * 
+ 781:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @param  WriteProtectPage specifies the page(s) to be write unprotected.
+ 782:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         The value of this parameter depend on device used within the same series 
+ 783:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @retval HAL status 
+ 784:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 785:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static HAL_StatusTypeDef FLASH_OB_DisableWRP(uint32_t WriteProtectPage)
+ 786:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** {
+ 787:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 788:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint16_t WRP0_Data = 0xFFFF;
+ 789:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_WRP1_WRP1)
+ 790:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint16_t WRP1_Data = 0xFFFF;
+ 791:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_WRP1_WRP1 */
+ 792:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_WRP2_WRP2)
+ 793:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint16_t WRP2_Data = 0xFFFF;
+ 794:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_WRP2_WRP2 */
+ 795:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_WRP3_WRP3)
+ 796:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint16_t WRP3_Data = 0xFFFF;
+ 797:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_WRP3_WRP3 */
+ARM GAS  /tmp/ccp4iYNx.s 			page 16
+
+
+ 798:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 799:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Check the parameters */
+ 800:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   assert_param(IS_OB_WRP(WriteProtectPage));
+ 801:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 802:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Get current write protected pages and the new pages to be unprotected ******/
+ 803:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WriteProtectPage = (FLASH_OB_GetWRP() | WriteProtectPage);
+ 804:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 805:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(OB_WRP_PAGES0TO15MASK)
+ 806:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP0_Data = (uint16_t)(WriteProtectPage & OB_WRP_PAGES0TO15MASK);
+ 807:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #elif defined(OB_WRP_PAGES0TO31MASK)
+ 808:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP0_Data = (uint16_t)(WriteProtectPage & OB_WRP_PAGES0TO31MASK);
+ 809:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* OB_WRP_PAGES0TO31MASK */
+ 810:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 811:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(OB_WRP_PAGES16TO31MASK)
+ 812:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP1_Data = (uint16_t)((WriteProtectPage & OB_WRP_PAGES16TO31MASK) >> 8U);
+ 813:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #elif defined(OB_WRP_PAGES32TO63MASK)
+ 814:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP1_Data = (uint16_t)((WriteProtectPage & OB_WRP_PAGES32TO63MASK) >> 8U);
+ 815:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* OB_WRP_PAGES32TO63MASK */
+ 816:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****  
+ 817:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(OB_WRP_PAGES64TO95MASK)
+ 818:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP2_Data = (uint16_t)((WriteProtectPage & OB_WRP_PAGES64TO95MASK) >> 16U);
+ 819:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* OB_WRP_PAGES64TO95MASK */
+ 820:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(OB_WRP_PAGES32TO47MASK)
+ 821:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP2_Data = (uint16_t)((WriteProtectPage & OB_WRP_PAGES32TO47MASK) >> 16U);
+ 822:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* OB_WRP_PAGES32TO47MASK */
+ 823:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 824:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(OB_WRP_PAGES96TO127MASK)
+ 825:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP3_Data = (uint16_t)((WriteProtectPage & OB_WRP_PAGES96TO127MASK) >> 24U); 
+ 826:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #elif defined(OB_WRP_PAGES48TO255MASK)
+ 827:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP3_Data = (uint16_t)((WriteProtectPage & OB_WRP_PAGES48TO255MASK) >> 24U); 
+ 828:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #elif defined(OB_WRP_PAGES48TO511MASK)
+ 829:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP3_Data = (uint16_t)((WriteProtectPage & OB_WRP_PAGES48TO511MASK) >> 24U); 
+ 830:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #elif defined(OB_WRP_PAGES48TO127MASK)
+ 831:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   WRP3_Data = (uint16_t)((WriteProtectPage & OB_WRP_PAGES48TO127MASK) >> 24U); 
+ 832:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* OB_WRP_PAGES96TO127MASK */
+ 833:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 834:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     
+ 835:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Wait for last operation to be completed */
+ 836:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ 837:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 838:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   if(status == HAL_OK)
+ 839:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   { 
+ 840:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Clean the error context */
+ 841:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     pFlash.ErrorCode = HAL_FLASH_ERROR_NONE;
+ 842:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 843:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* To be able to write again option byte, need to perform a option byte erase */
+ 844:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     status = HAL_FLASHEx_OBErase();
+ 845:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     if (status == HAL_OK)  
+ 846:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 847:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       SET_BIT(FLASH->CR, FLASH_CR_OPTPG);
+ 848:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 849:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_WRP0_WRP0)
+ 850:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       if(WRP0_Data != 0xFFU)
+ 851:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 852:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         OB->WRP0 |= WRP0_Data;
+ 853:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 854:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /* Wait for last operation to be completed */
+ARM GAS  /tmp/ccp4iYNx.s 			page 17
+
+
+ 855:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ 856:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 857:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_WRP0_WRP0 */
+ 858:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 859:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_WRP1_WRP1)
+ 860:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       if((status == HAL_OK) && (WRP1_Data != 0xFFU))
+ 861:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 862:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         OB->WRP1 |= WRP1_Data;
+ 863:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 864:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /* Wait for last operation to be completed */
+ 865:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ 866:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 867:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_WRP1_WRP1 */
+ 868:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 869:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_WRP2_WRP2)
+ 870:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       if((status == HAL_OK) && (WRP2_Data != 0xFFU))
+ 871:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 872:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         OB->WRP2 |= WRP2_Data;
+ 873:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 874:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /* Wait for last operation to be completed */
+ 875:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ 876:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 877:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_WRP2_WRP2 */
+ 878:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 879:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_WRP3_WRP3)
+ 880:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       if((status == HAL_OK) && (WRP3_Data != 0xFFU))
+ 881:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 882:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         OB->WRP3 |= WRP3_Data;
+ 883:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 884:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         /* Wait for last operation to be completed */
+ 885:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ 886:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 887:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_WRP3_WRP3 */
+ 888:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 889:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* if the program operation is completed, disable the OPTPG Bit */
+ 890:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       CLEAR_BIT(FLASH->CR, FLASH_CR_OPTPG);
+ 891:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 892:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 893:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   return status;
+ 894:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+ 895:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 896:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+ 897:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief  Set the read protection level.
+ 898:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @param  ReadProtectLevel specifies the read protection level.
+ 899:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         This parameter can be one of the following values:
+ 900:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *            @arg @ref OB_RDP_LEVEL_0 No protection
+ 901:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *            @arg @ref OB_RDP_LEVEL_1 Read protection of the memory
+ 902:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @retval HAL status
+ 903:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 904:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static HAL_StatusTypeDef FLASH_OB_RDP_LevelConfig(uint8_t ReadProtectLevel)
+ 905:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** {
+ 906:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 907:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 908:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Check the parameters */
+ 909:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   assert_param(IS_OB_RDP_LEVEL(ReadProtectLevel));
+ 910:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 911:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Wait for last operation to be completed */
+ARM GAS  /tmp/ccp4iYNx.s 			page 18
+
+
+ 912:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ 913:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 914:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   if(status == HAL_OK)
+ 915:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   { 
+ 916:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Clean the error context */
+ 917:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     pFlash.ErrorCode = HAL_FLASH_ERROR_NONE;
+ 918:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     
+ 919:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* If the previous operation is completed, proceed to erase the option bytes */
+ 920:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR, FLASH_CR_OPTER);
+ 921:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR, FLASH_CR_STRT);
+ 922:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 923:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Wait for last operation to be completed */
+ 924:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ 925:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 926:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* If the erase operation is completed, disable the OPTER Bit */
+ 927:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     CLEAR_BIT(FLASH->CR, FLASH_CR_OPTER);
+ 928:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 929:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     if(status == HAL_OK)
+ 930:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 931:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Enable the Option Bytes Programming operation */
+ 932:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       SET_BIT(FLASH->CR, FLASH_CR_OPTPG);
+ 933:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       
+ 934:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       WRITE_REG(OB->RDP, ReadProtectLevel);
+ 935:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       
+ 936:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* Wait for last operation to be completed */
+ 937:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE); 
+ 938:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       
+ 939:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       /* if the program operation is completed, disable the OPTPG Bit */
+ 940:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       CLEAR_BIT(FLASH->CR, FLASH_CR_OPTPG);
+ 941:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 942:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 943:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 944:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   return status;
+ 945:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+ 946:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 947:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+ 948:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief  Program the FLASH User Option Byte.    
+ 949:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @note   Programming of the OB should be performed only after an erase (otherwise PGERR occurs)
+ 950:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @param  UserConfig The FLASH User Option Bytes values FLASH_OBR_IWDG_SW(Bit2), 
+ 951:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         FLASH_OBR_nRST_STOP(Bit3),FLASH_OBR_nRST_STDBY(Bit4).
+ 952:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         And BFBF2(Bit5) for STM32F101xG and STM32F103xG . 
+ 953:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @retval HAL status
+ 954:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+ 955:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static HAL_StatusTypeDef FLASH_OB_UserConfig(uint8_t UserConfig)
+ 956:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** {
+ 957:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 958:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 959:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Check the parameters */
+ 960:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   assert_param(IS_OB_IWDG_SOURCE((UserConfig&OB_IWDG_SW)));
+ 961:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   assert_param(IS_OB_STOP_SOURCE((UserConfig&OB_STOP_NO_RST)));
+ 962:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   assert_param(IS_OB_STDBY_SOURCE((UserConfig&OB_STDBY_NO_RST)));
+ 963:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_BANK2_END)
+ 964:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   assert_param(IS_OB_BOOT1((UserConfig&OB_BOOT1_SET)));
+ 965:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_BANK2_END */
+ 966:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 967:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Wait for last operation to be completed */
+ 968:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ARM GAS  /tmp/ccp4iYNx.s 			page 19
+
+
+ 969:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 970:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   if(status == HAL_OK)
+ 971:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {     
+ 972:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Clean the error context */
+ 973:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     pFlash.ErrorCode = HAL_FLASH_ERROR_NONE;
+ 974:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 975:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Enable the Option Bytes Programming operation */
+ 976:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR, FLASH_CR_OPTPG); 
+ 977:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****  
+ 978:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_BANK2_END)
+ 979:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     OB->USER = (UserConfig | 0xF0U);
+ 980:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #else
+ 981:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     OB->USER = (UserConfig | 0x88U);
+ 982:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_BANK2_END */
+ 983:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 984:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Wait for last operation to be completed */
+ 985:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+ 986:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 987:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* if the program operation is completed, disable the OPTPG Bit */
+ 988:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     CLEAR_BIT(FLASH->CR, FLASH_CR_OPTPG);
+ 989:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 990:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 991:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   return status; 
+ 992:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+ 993:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 994:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+ 995:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief  Programs a half word at a specified Option Byte Data address.
+ 996:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @note   The function @ref HAL_FLASH_Unlock() should be called before to unlock the FLASH interf
+ 997:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         The function @ref HAL_FLASH_OB_Unlock() should be called before to unlock the options b
+ 998:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         The function @ref HAL_FLASH_OB_Launch() should be called after to force the reload of t
+ 999:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         (system reset will occur)
+1000:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         Programming of the OB should be performed only after an erase (otherwise PGERR occurs)
+1001:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @param  Address specifies the address to be programmed.
+1002:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         This parameter can be 0x1FFFF804 or 0x1FFFF806. 
+1003:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @param  Data specifies the data to be programmed.
+1004:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @retval HAL status
+1005:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+1006:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static HAL_StatusTypeDef FLASH_OB_ProgramData(uint32_t Address, uint8_t Data)
+1007:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** {
+1008:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_ERROR;
+1009:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+1010:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Check the parameters */
+1011:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   assert_param(IS_OB_DATA_ADDRESS(Address));
+1012:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+1013:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Wait for last operation to be completed */
+1014:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+1015:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+1016:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   if(status == HAL_OK)
+1017:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+1018:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Clean the error context */
+1019:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     pFlash.ErrorCode = HAL_FLASH_ERROR_NONE;
+1020:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+1021:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Enables the Option Bytes Programming operation */
+1022:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR, FLASH_CR_OPTPG); 
+1023:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     *(__IO uint16_t*)Address = Data;
+1024:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     
+1025:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Wait for last operation to be completed */
+ARM GAS  /tmp/ccp4iYNx.s 			page 20
+
+
+1026:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     status = FLASH_WaitForLastOperation((uint32_t)FLASH_TIMEOUT_VALUE);
+1027:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     
+1028:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* If the program operation is completed, disable the OPTPG Bit */
+1029:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     CLEAR_BIT(FLASH->CR, FLASH_CR_OPTPG);
+1030:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+1031:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Return the Option Byte Data Program Status */
+1032:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   return status;
+1033:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+1034:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+1035:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+1036:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief  Return the FLASH Write Protection Option Bytes value.
+1037:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @retval The FLASH Write Protection Option Bytes value
+1038:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+1039:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static uint32_t FLASH_OB_GetWRP(void)
+1040:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** {
+  62              		.loc 1 1040 0
+  63              		.cfi_startproc
+  64              		@ args = 0, pretend = 0, frame = 0
+  65              		@ frame_needed = 0, uses_anonymous_args = 0
+  66              		@ link register save eliminated.
+1041:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Return the FLASH write protection Register value */
+1042:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   return (uint32_t)(READ_REG(FLASH->WRPR));
+  67              		.loc 1 1042 0
+  68 0000 014B     		ldr	r3, .L5
+  69 0002 186A     		ldr	r0, [r3, #32]
+1043:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+  70              		.loc 1 1043 0
+  71 0004 7047     		bx	lr
+  72              	.L6:
+  73 0006 00BF     		.align	2
+  74              	.L5:
+  75 0008 00200240 		.word	1073881088
+  76              		.cfi_endproc
+  77              	.LFE76:
+  79              		.section	.text.FLASH_OB_GetRDP,"ax",%progbits
+  80              		.align	1
+  81              		.syntax unified
+  82              		.thumb
+  83              		.thumb_func
+  84              		.fpu softvfp
+  86              	FLASH_OB_GetRDP:
+  87              	.LFB77:
+1044:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+1045:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+1046:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief  Returns the FLASH Read Protection level.
+1047:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @retval FLASH RDP level
+1048:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         This parameter can be one of the following values:
+1049:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *            @arg @ref OB_RDP_LEVEL_0 No protection
+1050:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *            @arg @ref OB_RDP_LEVEL_1 Read protection of the memory
+1051:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+1052:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static uint32_t FLASH_OB_GetRDP(void)
+1053:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** {
+  88              		.loc 1 1053 0
+  89              		.cfi_startproc
+  90              		@ args = 0, pretend = 0, frame = 0
+  91              		@ frame_needed = 0, uses_anonymous_args = 0
+  92              		@ link register save eliminated.
+ARM GAS  /tmp/ccp4iYNx.s 			page 21
+
+
+  93              	.LVL1:
+1054:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint32_t readstatus = OB_RDP_LEVEL_0;
+1055:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint32_t tmp_reg = 0U;
+1056:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+1057:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Read RDP level bits */
+1058:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   tmp_reg = READ_BIT(FLASH->OBR, FLASH_OBR_RDPRT);
+  94              		.loc 1 1058 0
+  95 0000 044B     		ldr	r3, .L11
+  96 0002 DB69     		ldr	r3, [r3, #28]
+  97              	.LVL2:
+1059:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+1060:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   if (tmp_reg == FLASH_OBR_RDPRT)
+  98              		.loc 1 1060 0
+  99 0004 13F0020F 		tst	r3, #2
+ 100 0008 01D1     		bne	.L10
+1061:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+1062:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     readstatus = OB_RDP_LEVEL_1;
+1063:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+1064:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   else 
+1065:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+1066:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     readstatus = OB_RDP_LEVEL_0;
+ 101              		.loc 1 1066 0
+ 102 000a A520     		movs	r0, #165
+1067:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+1068:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+1069:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   return readstatus;
+1070:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+ 103              		.loc 1 1070 0
+ 104 000c 7047     		bx	lr
+ 105              	.L10:
+1062:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 106              		.loc 1 1062 0
+ 107 000e 0020     		movs	r0, #0
+ 108 0010 7047     		bx	lr
+ 109              	.L12:
+ 110 0012 00BF     		.align	2
+ 111              	.L11:
+ 112 0014 00200240 		.word	1073881088
+ 113              		.cfi_endproc
+ 114              	.LFE77:
+ 116              		.section	.text.FLASH_OB_GetUser,"ax",%progbits
+ 117              		.align	1
+ 118              		.syntax unified
+ 119              		.thumb
+ 120              		.thumb_func
+ 121              		.fpu softvfp
+ 123              	FLASH_OB_GetUser:
+ 124              	.LFB78:
+1071:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+1072:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+1073:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief  Return the FLASH User Option Byte value.
+1074:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @retval The FLASH User Option Bytes values: FLASH_OBR_IWDG_SW(Bit2), 
+1075:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         FLASH_OBR_nRST_STOP(Bit3),FLASH_OBR_nRST_STDBY(Bit4).
+1076:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         And FLASH_OBR_BFB2(Bit5) for STM32F101xG and STM32F103xG . 
+1077:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+1078:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** static uint8_t FLASH_OB_GetUser(void)
+1079:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** {
+ARM GAS  /tmp/ccp4iYNx.s 			page 22
+
+
+ 125              		.loc 1 1079 0
+ 126              		.cfi_startproc
+ 127              		@ args = 0, pretend = 0, frame = 0
+ 128              		@ frame_needed = 0, uses_anonymous_args = 0
+ 129              		@ link register save eliminated.
+1080:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Return the User Option Byte */
+1081:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   return (uint8_t)((READ_REG(FLASH->OBR) & FLASH_OBR_USER) >> FLASH_POSITION_IWDGSW_BIT);
+ 130              		.loc 1 1081 0
+ 131 0000 024B     		ldr	r3, .L14
+ 132 0002 D869     		ldr	r0, [r3, #28]
+1082:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+ 133              		.loc 1 1082 0
+ 134 0004 C0F38200 		ubfx	r0, r0, #2, #3
+ 135 0008 7047     		bx	lr
+ 136              	.L15:
+ 137 000a 00BF     		.align	2
+ 138              	.L14:
+ 139 000c 00200240 		.word	1073881088
+ 140              		.cfi_endproc
+ 141              	.LFE78:
+ 143              		.section	.text.FLASH_OB_RDP_LevelConfig,"ax",%progbits
+ 144              		.align	1
+ 145              		.syntax unified
+ 146              		.thumb
+ 147              		.thumb_func
+ 148              		.fpu softvfp
+ 150              	FLASH_OB_RDP_LevelConfig:
+ 151              	.LFB73:
+ 905:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 152              		.loc 1 905 0
+ 153              		.cfi_startproc
+ 154              		@ args = 0, pretend = 0, frame = 0
+ 155              		@ frame_needed = 0, uses_anonymous_args = 0
+ 156              	.LVL3:
+ 157 0000 38B5     		push	{r3, r4, r5, lr}
+ 158              	.LCFI0:
+ 159              		.cfi_def_cfa_offset 16
+ 160              		.cfi_offset 3, -16
+ 161              		.cfi_offset 4, -12
+ 162              		.cfi_offset 5, -8
+ 163              		.cfi_offset 14, -4
+ 164 0002 0546     		mov	r5, r0
+ 165              	.LVL4:
+ 912:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 166              		.loc 1 912 0
+ 167 0004 4CF25030 		movw	r0, #50000
+ 168              	.LVL5:
+ 169 0008 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 170              	.LVL6:
+ 914:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   { 
+ 171              		.loc 1 914 0
+ 172 000c 0346     		mov	r3, r0
+ 173 000e 08B1     		cbz	r0, .L19
+ 174              	.LVL7:
+ 175              	.L17:
+ 945:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 176              		.loc 1 945 0
+ARM GAS  /tmp/ccp4iYNx.s 			page 23
+
+
+ 177 0010 1846     		mov	r0, r3
+ 178 0012 38BD     		pop	{r3, r4, r5, pc}
+ 179              	.LVL8:
+ 180              	.L19:
+ 917:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     
+ 181              		.loc 1 917 0
+ 182 0014 0022     		movs	r2, #0
+ 183 0016 134B     		ldr	r3, .L20
+ 184 0018 DA61     		str	r2, [r3, #28]
+ 920:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR, FLASH_CR_STRT);
+ 185              		.loc 1 920 0
+ 186 001a 134C     		ldr	r4, .L20+4
+ 187 001c 2369     		ldr	r3, [r4, #16]
+ 188 001e 43F02003 		orr	r3, r3, #32
+ 189 0022 2361     		str	r3, [r4, #16]
+ 921:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 190              		.loc 1 921 0
+ 191 0024 2369     		ldr	r3, [r4, #16]
+ 192 0026 43F04003 		orr	r3, r3, #64
+ 193 002a 2361     		str	r3, [r4, #16]
+ 924:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 194              		.loc 1 924 0
+ 195 002c 4CF25030 		movw	r0, #50000
+ 196              	.LVL9:
+ 197 0030 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 198              	.LVL10:
+ 927:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 199              		.loc 1 927 0
+ 200 0034 2369     		ldr	r3, [r4, #16]
+ 201 0036 23F02003 		bic	r3, r3, #32
+ 202 003a 2361     		str	r3, [r4, #16]
+ 929:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 203              		.loc 1 929 0
+ 204 003c 0346     		mov	r3, r0
+ 205 003e 0028     		cmp	r0, #0
+ 206 0040 E6D1     		bne	.L17
+ 932:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       
+ 207              		.loc 1 932 0
+ 208 0042 2369     		ldr	r3, [r4, #16]
+ 209 0044 43F01003 		orr	r3, r3, #16
+ 210 0048 2361     		str	r3, [r4, #16]
+ 934:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       
+ 211              		.loc 1 934 0
+ 212 004a ADB2     		uxth	r5, r5
+ 213 004c 074B     		ldr	r3, .L20+8
+ 214 004e 1D80     		strh	r5, [r3]	@ movhi
+ 937:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       
+ 215              		.loc 1 937 0
+ 216 0050 4CF25030 		movw	r0, #50000
+ 217              	.LVL11:
+ 218 0054 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 219              	.LVL12:
+ 220 0058 0346     		mov	r3, r0
+ 221              	.LVL13:
+ 940:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 222              		.loc 1 940 0
+ 223 005a 2269     		ldr	r2, [r4, #16]
+ARM GAS  /tmp/ccp4iYNx.s 			page 24
+
+
+ 224 005c 22F01002 		bic	r2, r2, #16
+ 225 0060 2261     		str	r2, [r4, #16]
+ 226 0062 D5E7     		b	.L17
+ 227              	.L21:
+ 228              		.align	2
+ 229              	.L20:
+ 230 0064 00000000 		.word	pFlash
+ 231 0068 00200240 		.word	1073881088
+ 232 006c 00F8FF1F 		.word	536868864
+ 233              		.cfi_endproc
+ 234              	.LFE73:
+ 236              		.section	.text.FLASH_OB_UserConfig,"ax",%progbits
+ 237              		.align	1
+ 238              		.syntax unified
+ 239              		.thumb
+ 240              		.thumb_func
+ 241              		.fpu softvfp
+ 243              	FLASH_OB_UserConfig:
+ 244              	.LFB74:
+ 956:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 245              		.loc 1 956 0
+ 246              		.cfi_startproc
+ 247              		@ args = 0, pretend = 0, frame = 0
+ 248              		@ frame_needed = 0, uses_anonymous_args = 0
+ 249              	.LVL14:
+ 250 0000 38B5     		push	{r3, r4, r5, lr}
+ 251              	.LCFI1:
+ 252              		.cfi_def_cfa_offset 16
+ 253              		.cfi_offset 3, -16
+ 254              		.cfi_offset 4, -12
+ 255              		.cfi_offset 5, -8
+ 256              		.cfi_offset 14, -4
+ 257 0002 0446     		mov	r4, r0
+ 258              	.LVL15:
+ 968:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 259              		.loc 1 968 0
+ 260 0004 4CF25030 		movw	r0, #50000
+ 261              	.LVL16:
+ 262 0008 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 263              	.LVL17:
+ 970:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {     
+ 264              		.loc 1 970 0
+ 265 000c 0346     		mov	r3, r0
+ 266 000e 08B1     		cbz	r0, .L25
+ 267              	.LVL18:
+ 268              	.L23:
+ 992:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 269              		.loc 1 992 0
+ 270 0010 1846     		mov	r0, r3
+ 271 0012 38BD     		pop	{r3, r4, r5, pc}
+ 272              	.LVL19:
+ 273              	.L25:
+ 973:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 274              		.loc 1 973 0
+ 275 0014 0022     		movs	r2, #0
+ 276 0016 0A4B     		ldr	r3, .L26
+ 277 0018 DA61     		str	r2, [r3, #28]
+ARM GAS  /tmp/ccp4iYNx.s 			page 25
+
+
+ 976:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****  
+ 278              		.loc 1 976 0
+ 279 001a 0A4D     		ldr	r5, .L26+4
+ 280 001c 2B69     		ldr	r3, [r5, #16]
+ 281 001e 43F01003 		orr	r3, r3, #16
+ 282 0022 2B61     		str	r3, [r5, #16]
+ 981:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_BANK2_END */
+ 283              		.loc 1 981 0
+ 284 0024 44F08804 		orr	r4, r4, #136
+ 285 0028 074B     		ldr	r3, .L26+8
+ 286 002a 5C80     		strh	r4, [r3, #2]	@ movhi
+ 985:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 287              		.loc 1 985 0
+ 288 002c 4CF25030 		movw	r0, #50000
+ 289              	.LVL20:
+ 290 0030 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 291              	.LVL21:
+ 292 0034 0346     		mov	r3, r0
+ 293              	.LVL22:
+ 988:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 294              		.loc 1 988 0
+ 295 0036 2A69     		ldr	r2, [r5, #16]
+ 296 0038 22F01002 		bic	r2, r2, #16
+ 297 003c 2A61     		str	r2, [r5, #16]
+ 298 003e E7E7     		b	.L23
+ 299              	.L27:
+ 300              		.align	2
+ 301              	.L26:
+ 302 0040 00000000 		.word	pFlash
+ 303 0044 00200240 		.word	1073881088
+ 304 0048 00F8FF1F 		.word	536868864
+ 305              		.cfi_endproc
+ 306              	.LFE74:
+ 308              		.section	.text.FLASH_OB_ProgramData,"ax",%progbits
+ 309              		.align	1
+ 310              		.syntax unified
+ 311              		.thumb
+ 312              		.thumb_func
+ 313              		.fpu softvfp
+ 315              	FLASH_OB_ProgramData:
+ 316              	.LFB75:
+1007:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_ERROR;
+ 317              		.loc 1 1007 0
+ 318              		.cfi_startproc
+ 319              		@ args = 0, pretend = 0, frame = 0
+ 320              		@ frame_needed = 0, uses_anonymous_args = 0
+ 321              	.LVL23:
+ 322 0000 70B5     		push	{r4, r5, r6, lr}
+ 323              	.LCFI2:
+ 324              		.cfi_def_cfa_offset 16
+ 325              		.cfi_offset 4, -16
+ 326              		.cfi_offset 5, -12
+ 327              		.cfi_offset 6, -8
+ 328              		.cfi_offset 14, -4
+ 329 0002 0646     		mov	r6, r0
+ 330 0004 0C46     		mov	r4, r1
+ 331              	.LVL24:
+ARM GAS  /tmp/ccp4iYNx.s 			page 26
+
+
+1014:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 332              		.loc 1 1014 0
+ 333 0006 4CF25030 		movw	r0, #50000
+ 334              	.LVL25:
+ 335 000a FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 336              	.LVL26:
+1016:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 337              		.loc 1 1016 0
+ 338 000e 0346     		mov	r3, r0
+ 339 0010 08B1     		cbz	r0, .L31
+ 340              	.LVL27:
+ 341              	.L29:
+1033:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 342              		.loc 1 1033 0
+ 343 0012 1846     		mov	r0, r3
+ 344 0014 70BD     		pop	{r4, r5, r6, pc}
+ 345              	.LVL28:
+ 346              	.L31:
+1019:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 347              		.loc 1 1019 0
+ 348 0016 0022     		movs	r2, #0
+ 349 0018 094B     		ldr	r3, .L32
+ 350 001a DA61     		str	r2, [r3, #28]
+1022:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     *(__IO uint16_t*)Address = Data;
+ 351              		.loc 1 1022 0
+ 352 001c 094D     		ldr	r5, .L32+4
+ 353 001e 2B69     		ldr	r3, [r5, #16]
+ 354 0020 43F01003 		orr	r3, r3, #16
+ 355 0024 2B61     		str	r3, [r5, #16]
+1023:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     
+ 356              		.loc 1 1023 0
+ 357 0026 A4B2     		uxth	r4, r4
+ 358 0028 3480     		strh	r4, [r6]	@ movhi
+1026:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     
+ 359              		.loc 1 1026 0
+ 360 002a 4CF25030 		movw	r0, #50000
+ 361              	.LVL29:
+ 362 002e FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 363              	.LVL30:
+ 364 0032 0346     		mov	r3, r0
+ 365              	.LVL31:
+1029:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 366              		.loc 1 1029 0
+ 367 0034 2A69     		ldr	r2, [r5, #16]
+ 368 0036 22F01002 		bic	r2, r2, #16
+ 369 003a 2A61     		str	r2, [r5, #16]
+ 370 003c E9E7     		b	.L29
+ 371              	.L33:
+ 372 003e 00BF     		.align	2
+ 373              	.L32:
+ 374 0040 00000000 		.word	pFlash
+ 375 0044 00200240 		.word	1073881088
+ 376              		.cfi_endproc
+ 377              	.LFE75:
+ 379              		.section	.text.HAL_FLASHEx_OBErase,"ax",%progbits
+ 380              		.align	1
+ 381              		.global	HAL_FLASHEx_OBErase
+ARM GAS  /tmp/ccp4iYNx.s 			page 27
+
+
+ 382              		.syntax unified
+ 383              		.thumb
+ 384              		.thumb_func
+ 385              		.fpu softvfp
+ 387              	HAL_FLASHEx_OBErase:
+ 388              	.LFB66:
+ 416:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint8_t rdptmp = OB_RDP_LEVEL_0;
+ 389              		.loc 1 416 0
+ 390              		.cfi_startproc
+ 391              		@ args = 0, pretend = 0, frame = 0
+ 392              		@ frame_needed = 0, uses_anonymous_args = 0
+ 393 0000 38B5     		push	{r3, r4, r5, lr}
+ 394              	.LCFI3:
+ 395              		.cfi_def_cfa_offset 16
+ 396              		.cfi_offset 3, -16
+ 397              		.cfi_offset 4, -12
+ 398              		.cfi_offset 5, -8
+ 399              		.cfi_offset 14, -4
+ 400              	.LVL32:
+ 421:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 401              		.loc 1 421 0
+ 402 0002 FFF7FEFF 		bl	FLASH_OB_GetRDP
+ 403              	.LVL33:
+ 404 0006 C5B2     		uxtb	r5, r0
+ 405              	.LVL34:
+ 424:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 406              		.loc 1 424 0
+ 407 0008 4CF25030 		movw	r0, #50000
+ 408 000c FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 409              	.LVL35:
+ 426:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 410              		.loc 1 426 0
+ 411 0010 0346     		mov	r3, r0
+ 412 0012 08B1     		cbz	r0, .L37
+ 413              	.LVL36:
+ 414              	.L35:
+ 450:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 415              		.loc 1 450 0
+ 416 0014 1846     		mov	r0, r3
+ 417 0016 38BD     		pop	{r3, r4, r5, pc}
+ 418              	.LVL37:
+ 419              	.L37:
+ 429:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 420              		.loc 1 429 0
+ 421 0018 0022     		movs	r2, #0
+ 422 001a 0D4B     		ldr	r3, .L38
+ 423 001c DA61     		str	r2, [r3, #28]
+ 432:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR, FLASH_CR_STRT);
+ 424              		.loc 1 432 0
+ 425 001e 0D4C     		ldr	r4, .L38+4
+ 426 0020 2369     		ldr	r3, [r4, #16]
+ 427 0022 43F02003 		orr	r3, r3, #32
+ 428 0026 2361     		str	r3, [r4, #16]
+ 433:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 429              		.loc 1 433 0
+ 430 0028 2369     		ldr	r3, [r4, #16]
+ 431 002a 43F04003 		orr	r3, r3, #64
+ARM GAS  /tmp/ccp4iYNx.s 			page 28
+
+
+ 432 002e 2361     		str	r3, [r4, #16]
+ 436:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 433              		.loc 1 436 0
+ 434 0030 4CF25030 		movw	r0, #50000
+ 435              	.LVL38:
+ 436 0034 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 437              	.LVL39:
+ 439:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 438              		.loc 1 439 0
+ 439 0038 2369     		ldr	r3, [r4, #16]
+ 440 003a 23F02003 		bic	r3, r3, #32
+ 441 003e 2361     		str	r3, [r4, #16]
+ 441:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 442              		.loc 1 441 0
+ 443 0040 0346     		mov	r3, r0
+ 444 0042 0028     		cmp	r0, #0
+ 445 0044 E6D1     		bne	.L35
+ 444:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 446              		.loc 1 444 0
+ 447 0046 2846     		mov	r0, r5
+ 448              	.LVL40:
+ 449 0048 FFF7FEFF 		bl	FLASH_OB_RDP_LevelConfig
+ 450              	.LVL41:
+ 451 004c 0346     		mov	r3, r0
+ 452              	.LVL42:
+ 453 004e E1E7     		b	.L35
+ 454              	.L39:
+ 455              		.align	2
+ 456              	.L38:
+ 457 0050 00000000 		.word	pFlash
+ 458 0054 00200240 		.word	1073881088
+ 459              		.cfi_endproc
+ 460              	.LFE66:
+ 462              		.section	.text.FLASH_OB_EnableWRP,"ax",%progbits
+ 463              		.align	1
+ 464              		.syntax unified
+ 465              		.thumb
+ 466              		.thumb_func
+ 467              		.fpu softvfp
+ 469              	FLASH_OB_EnableWRP:
+ 470              	.LFB71:
+ 663:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 471              		.loc 1 663 0
+ 472              		.cfi_startproc
+ 473              		@ args = 0, pretend = 0, frame = 0
+ 474              		@ frame_needed = 0, uses_anonymous_args = 0
+ 475              	.LVL43:
+ 476 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 477              	.LCFI4:
+ 478              		.cfi_def_cfa_offset 24
+ 479              		.cfi_offset 3, -24
+ 480              		.cfi_offset 4, -20
+ 481              		.cfi_offset 5, -16
+ 482              		.cfi_offset 6, -12
+ 483              		.cfi_offset 7, -8
+ 484              		.cfi_offset 14, -4
+ 485 0002 0446     		mov	r4, r0
+ARM GAS  /tmp/ccp4iYNx.s 			page 29
+
+
+ 486              	.LVL44:
+ 680:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   
+ 487              		.loc 1 680 0
+ 488 0004 FFF7FEFF 		bl	FLASH_OB_GetWRP
+ 489              	.LVL45:
+ 490 0008 20EA0404 		bic	r4, r0, r4
+ 491              	.LVL46:
+ 689:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #elif defined(OB_WRP_PAGES32TO63MASK)
+ 492              		.loc 1 689 0
+ 493 000c C4F30727 		ubfx	r7, r4, #8, #8
+ 494              	.LVL47:
+ 698:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* OB_WRP_PAGES32TO47MASK */
+ 495              		.loc 1 698 0
+ 496 0010 C4F30746 		ubfx	r6, r4, #16, #8
+ 497              	.LVL48:
+ 712:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 498              		.loc 1 712 0
+ 499 0014 4CF25030 		movw	r0, #50000
+ 500 0018 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 501              	.LVL49:
+ 714:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   { 
+ 502              		.loc 1 714 0
+ 503 001c 0346     		mov	r3, r0
+ 504 001e 08B1     		cbz	r0, .L47
+ 505              	.LVL50:
+ 506              	.L41:
+ 772:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 507              		.loc 1 772 0
+ 508 0020 1846     		mov	r0, r3
+ 509 0022 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 510              	.LVL51:
+ 511              	.L47:
+ 512 0024 E5B2     		uxtb	r5, r4
+ 513 0026 240E     		lsrs	r4, r4, #24
+ 514              	.LVL52:
+ 717:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 515              		.loc 1 717 0
+ 516 0028 0022     		movs	r2, #0
+ 517 002a 204B     		ldr	r3, .L48
+ 518 002c DA61     		str	r2, [r3, #28]
+ 720:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     if (status == HAL_OK)  
+ 519              		.loc 1 720 0
+ 520 002e FFF7FEFF 		bl	HAL_FLASHEx_OBErase
+ 521              	.LVL53:
+ 721:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 522              		.loc 1 721 0
+ 523 0032 0346     		mov	r3, r0
+ 524 0034 0028     		cmp	r0, #0
+ 525 0036 F3D1     		bne	.L41
+ 724:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 526              		.loc 1 724 0
+ 527 0038 1D49     		ldr	r1, .L48+4
+ 528 003a 0A69     		ldr	r2, [r1, #16]
+ 529 003c 42F01002 		orr	r2, r2, #16
+ 530 0040 0A61     		str	r2, [r1, #16]
+ 727:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 531              		.loc 1 727 0
+ARM GAS  /tmp/ccp4iYNx.s 			page 30
+
+
+ 532 0042 FF2D     		cmp	r5, #255
+ 533 0044 08D0     		beq	.L42
+ 729:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 534              		.loc 1 729 0
+ 535 0046 1B4B     		ldr	r3, .L48+8
+ 536 0048 1A89     		ldrh	r2, [r3, #8]
+ 537 004a 1540     		ands	r5, r5, r2
+ 538              	.LVL54:
+ 539 004c 1D81     		strh	r5, [r3, #8]	@ movhi
+ 732:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 540              		.loc 1 732 0
+ 541 004e 4CF25030 		movw	r0, #50000
+ 542              	.LVL55:
+ 543 0052 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 544              	.LVL56:
+ 545 0056 0346     		mov	r3, r0
+ 546              	.LVL57:
+ 547              	.L42:
+ 737:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 548              		.loc 1 737 0
+ 549 0058 53B9     		cbnz	r3, .L43
+ 737:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 550              		.loc 1 737 0 is_stmt 0 discriminator 1
+ 551 005a FF2F     		cmp	r7, #255
+ 552 005c 08D0     		beq	.L43
+ 739:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 553              		.loc 1 739 0 is_stmt 1
+ 554 005e 154B     		ldr	r3, .L48+8
+ 555              	.LVL58:
+ 556 0060 5A89     		ldrh	r2, [r3, #10]
+ 557 0062 1740     		ands	r7, r7, r2
+ 558              	.LVL59:
+ 559 0064 5F81     		strh	r7, [r3, #10]	@ movhi
+ 742:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 560              		.loc 1 742 0
+ 561 0066 4CF25030 		movw	r0, #50000
+ 562 006a FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 563              	.LVL60:
+ 564 006e 0346     		mov	r3, r0
+ 565              	.LVL61:
+ 566              	.L43:
+ 747:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 567              		.loc 1 747 0
+ 568 0070 53B9     		cbnz	r3, .L44
+ 747:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 569              		.loc 1 747 0 is_stmt 0 discriminator 1
+ 570 0072 FF2E     		cmp	r6, #255
+ 571 0074 08D0     		beq	.L44
+ 749:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 572              		.loc 1 749 0 is_stmt 1
+ 573 0076 0F4B     		ldr	r3, .L48+8
+ 574              	.LVL62:
+ 575 0078 9A89     		ldrh	r2, [r3, #12]
+ 576 007a 1640     		ands	r6, r6, r2
+ 577              	.LVL63:
+ 578 007c 9E81     		strh	r6, [r3, #12]	@ movhi
+ 752:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ARM GAS  /tmp/ccp4iYNx.s 			page 31
+
+
+ 579              		.loc 1 752 0
+ 580 007e 4CF25030 		movw	r0, #50000
+ 581 0082 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 582              	.LVL64:
+ 583 0086 0346     		mov	r3, r0
+ 584              	.LVL65:
+ 585              	.L44:
+ 757:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 586              		.loc 1 757 0
+ 587 0088 53B9     		cbnz	r3, .L45
+ 757:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 588              		.loc 1 757 0 is_stmt 0 discriminator 1
+ 589 008a FF2C     		cmp	r4, #255
+ 590 008c 08D0     		beq	.L45
+ 759:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 591              		.loc 1 759 0 is_stmt 1
+ 592 008e 094B     		ldr	r3, .L48+8
+ 593              	.LVL66:
+ 594 0090 D889     		ldrh	r0, [r3, #14]
+ 595 0092 2040     		ands	r0, r0, r4
+ 596 0094 D881     		strh	r0, [r3, #14]	@ movhi
+ 762:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 597              		.loc 1 762 0
+ 598 0096 4CF25030 		movw	r0, #50000
+ 599 009a FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 600              	.LVL67:
+ 601 009e 0346     		mov	r3, r0
+ 602              	.LVL68:
+ 603              	.L45:
+ 767:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 604              		.loc 1 767 0
+ 605 00a0 0349     		ldr	r1, .L48+4
+ 606 00a2 0A69     		ldr	r2, [r1, #16]
+ 607 00a4 22F01002 		bic	r2, r2, #16
+ 608 00a8 0A61     		str	r2, [r1, #16]
+ 609 00aa B9E7     		b	.L41
+ 610              	.L49:
+ 611              		.align	2
+ 612              	.L48:
+ 613 00ac 00000000 		.word	pFlash
+ 614 00b0 00200240 		.word	1073881088
+ 615 00b4 00F8FF1F 		.word	536868864
+ 616              		.cfi_endproc
+ 617              	.LFE71:
+ 619              		.section	.text.FLASH_OB_DisableWRP,"ax",%progbits
+ 620              		.align	1
+ 621              		.syntax unified
+ 622              		.thumb
+ 623              		.thumb_func
+ 624              		.fpu softvfp
+ 626              	FLASH_OB_DisableWRP:
+ 627              	.LFB72:
+ 786:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 628              		.loc 1 786 0
+ 629              		.cfi_startproc
+ 630              		@ args = 0, pretend = 0, frame = 0
+ 631              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccp4iYNx.s 			page 32
+
+
+ 632              	.LVL69:
+ 633 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 634              	.LCFI5:
+ 635              		.cfi_def_cfa_offset 24
+ 636              		.cfi_offset 3, -24
+ 637              		.cfi_offset 4, -20
+ 638              		.cfi_offset 5, -16
+ 639              		.cfi_offset 6, -12
+ 640              		.cfi_offset 7, -8
+ 641              		.cfi_offset 14, -4
+ 642 0002 0446     		mov	r4, r0
+ 643              	.LVL70:
+ 803:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 644              		.loc 1 803 0
+ 645 0004 FFF7FEFF 		bl	FLASH_OB_GetWRP
+ 646              	.LVL71:
+ 647 0008 0443     		orrs	r4, r4, r0
+ 648              	.LVL72:
+ 812:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #elif defined(OB_WRP_PAGES32TO63MASK)
+ 649              		.loc 1 812 0
+ 650 000a C4F30727 		ubfx	r7, r4, #8, #8
+ 651              	.LVL73:
+ 821:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* OB_WRP_PAGES32TO47MASK */
+ 652              		.loc 1 821 0
+ 653 000e C4F30746 		ubfx	r6, r4, #16, #8
+ 654              	.LVL74:
+ 836:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 655              		.loc 1 836 0
+ 656 0012 4CF25030 		movw	r0, #50000
+ 657 0016 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 658              	.LVL75:
+ 838:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   { 
+ 659              		.loc 1 838 0
+ 660 001a 0346     		mov	r3, r0
+ 661 001c 08B1     		cbz	r0, .L57
+ 662              	.LVL76:
+ 663              	.L51:
+ 894:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 664              		.loc 1 894 0
+ 665 001e 1846     		mov	r0, r3
+ 666 0020 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 667              	.LVL77:
+ 668              	.L57:
+ 669 0022 E5B2     		uxtb	r5, r4
+ 670 0024 240E     		lsrs	r4, r4, #24
+ 671              	.LVL78:
+ 841:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 672              		.loc 1 841 0
+ 673 0026 0022     		movs	r2, #0
+ 674 0028 224B     		ldr	r3, .L58
+ 675 002a DA61     		str	r2, [r3, #28]
+ 844:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     if (status == HAL_OK)  
+ 676              		.loc 1 844 0
+ 677 002c FFF7FEFF 		bl	HAL_FLASHEx_OBErase
+ 678              	.LVL79:
+ 845:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 679              		.loc 1 845 0
+ARM GAS  /tmp/ccp4iYNx.s 			page 33
+
+
+ 680 0030 0346     		mov	r3, r0
+ 681 0032 0028     		cmp	r0, #0
+ 682 0034 F3D1     		bne	.L51
+ 847:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 683              		.loc 1 847 0
+ 684 0036 2049     		ldr	r1, .L58+4
+ 685 0038 0A69     		ldr	r2, [r1, #16]
+ 686 003a 42F01002 		orr	r2, r2, #16
+ 687 003e 0A61     		str	r2, [r1, #16]
+ 850:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 688              		.loc 1 850 0
+ 689 0040 FF2D     		cmp	r5, #255
+ 690 0042 09D0     		beq	.L52
+ 852:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 691              		.loc 1 852 0
+ 692 0044 1D4A     		ldr	r2, .L58+8
+ 693 0046 1389     		ldrh	r3, [r2, #8]
+ 694 0048 9BB2     		uxth	r3, r3
+ 695 004a 1D43     		orrs	r5, r5, r3
+ 696              	.LVL80:
+ 697 004c 1581     		strh	r5, [r2, #8]	@ movhi
+ 855:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 698              		.loc 1 855 0
+ 699 004e 4CF25030 		movw	r0, #50000
+ 700              	.LVL81:
+ 701 0052 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 702              	.LVL82:
+ 703 0056 0346     		mov	r3, r0
+ 704              	.LVL83:
+ 705              	.L52:
+ 860:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 706              		.loc 1 860 0
+ 707 0058 5BB9     		cbnz	r3, .L53
+ 860:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 708              		.loc 1 860 0 is_stmt 0 discriminator 1
+ 709 005a FF2F     		cmp	r7, #255
+ 710 005c 09D0     		beq	.L53
+ 862:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 711              		.loc 1 862 0 is_stmt 1
+ 712 005e 174A     		ldr	r2, .L58+8
+ 713 0060 5389     		ldrh	r3, [r2, #10]
+ 714              	.LVL84:
+ 715 0062 9BB2     		uxth	r3, r3
+ 716 0064 1F43     		orrs	r7, r7, r3
+ 717              	.LVL85:
+ 718 0066 5781     		strh	r7, [r2, #10]	@ movhi
+ 865:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 719              		.loc 1 865 0
+ 720 0068 4CF25030 		movw	r0, #50000
+ 721 006c FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 722              	.LVL86:
+ 723 0070 0346     		mov	r3, r0
+ 724              	.LVL87:
+ 725              	.L53:
+ 870:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 726              		.loc 1 870 0
+ 727 0072 5BB9     		cbnz	r3, .L54
+ARM GAS  /tmp/ccp4iYNx.s 			page 34
+
+
+ 870:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 728              		.loc 1 870 0 is_stmt 0 discriminator 1
+ 729 0074 FF2E     		cmp	r6, #255
+ 730 0076 09D0     		beq	.L54
+ 872:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 731              		.loc 1 872 0 is_stmt 1
+ 732 0078 104A     		ldr	r2, .L58+8
+ 733 007a 9389     		ldrh	r3, [r2, #12]
+ 734              	.LVL88:
+ 735 007c 9BB2     		uxth	r3, r3
+ 736 007e 1E43     		orrs	r6, r6, r3
+ 737              	.LVL89:
+ 738 0080 9681     		strh	r6, [r2, #12]	@ movhi
+ 875:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 739              		.loc 1 875 0
+ 740 0082 4CF25030 		movw	r0, #50000
+ 741 0086 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 742              	.LVL90:
+ 743 008a 0346     		mov	r3, r0
+ 744              	.LVL91:
+ 745              	.L54:
+ 880:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 746              		.loc 1 880 0
+ 747 008c 5BB9     		cbnz	r3, .L55
+ 880:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 748              		.loc 1 880 0 is_stmt 0 discriminator 1
+ 749 008e FF2C     		cmp	r4, #255
+ 750 0090 09D0     		beq	.L55
+ 882:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 751              		.loc 1 882 0 is_stmt 1
+ 752 0092 0A4B     		ldr	r3, .L58+8
+ 753              	.LVL92:
+ 754 0094 D889     		ldrh	r0, [r3, #14]
+ 755 0096 80B2     		uxth	r0, r0
+ 756 0098 2043     		orrs	r0, r0, r4
+ 757 009a D881     		strh	r0, [r3, #14]	@ movhi
+ 885:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 758              		.loc 1 885 0
+ 759 009c 4CF25030 		movw	r0, #50000
+ 760 00a0 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 761              	.LVL93:
+ 762 00a4 0346     		mov	r3, r0
+ 763              	.LVL94:
+ 764              	.L55:
+ 890:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 765              		.loc 1 890 0
+ 766 00a6 0449     		ldr	r1, .L58+4
+ 767 00a8 0A69     		ldr	r2, [r1, #16]
+ 768 00aa 22F01002 		bic	r2, r2, #16
+ 769 00ae 0A61     		str	r2, [r1, #16]
+ 770 00b0 B5E7     		b	.L51
+ 771              	.L59:
+ 772 00b2 00BF     		.align	2
+ 773              	.L58:
+ 774 00b4 00000000 		.word	pFlash
+ 775 00b8 00200240 		.word	1073881088
+ 776 00bc 00F8FF1F 		.word	536868864
+ARM GAS  /tmp/ccp4iYNx.s 			page 35
+
+
+ 777              		.cfi_endproc
+ 778              	.LFE72:
+ 780              		.section	.text.HAL_FLASHEx_OBProgram,"ax",%progbits
+ 781              		.align	1
+ 782              		.global	HAL_FLASHEx_OBProgram
+ 783              		.syntax unified
+ 784              		.thumb
+ 785              		.thumb_func
+ 786              		.fpu softvfp
+ 788              	HAL_FLASHEx_OBProgram:
+ 789              	.LFB67:
+ 465:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_ERROR;
+ 790              		.loc 1 465 0
+ 791              		.cfi_startproc
+ 792              		@ args = 0, pretend = 0, frame = 0
+ 793              		@ frame_needed = 0, uses_anonymous_args = 0
+ 794              	.LVL95:
+ 469:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 795              		.loc 1 469 0
+ 796 0000 284B     		ldr	r3, .L78
+ 797 0002 1B7E     		ldrb	r3, [r3, #24]	@ zero_extendqisi2
+ 798 0004 012B     		cmp	r3, #1
+ 799 0006 4AD0     		beq	.L68
+ 465:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_ERROR;
+ 800              		.loc 1 465 0 discriminator 2
+ 801 0008 10B5     		push	{r4, lr}
+ 802              	.LCFI6:
+ 803              		.cfi_def_cfa_offset 8
+ 804              		.cfi_offset 4, -8
+ 805              		.cfi_offset 14, -4
+ 806 000a 0446     		mov	r4, r0
+ 469:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 807              		.loc 1 469 0 discriminator 2
+ 808 000c 0122     		movs	r2, #1
+ 809 000e 254B     		ldr	r3, .L78
+ 810 0010 1A76     		strb	r2, [r3, #24]
+ 475:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 811              		.loc 1 475 0 discriminator 2
+ 812 0012 0368     		ldr	r3, [r0]
+ 813 0014 13F0010F 		tst	r3, #1
+ 814 0018 10D0     		beq	.L69
+ 478:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 815              		.loc 1 478 0
+ 816 001a 4368     		ldr	r3, [r0, #4]
+ 817 001c 9342     		cmp	r3, r2
+ 818 001e 08D0     		beq	.L74
+ 486:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 819              		.loc 1 486 0
+ 820 0020 8068     		ldr	r0, [r0, #8]
+ 821              	.LVL96:
+ 822 0022 FFF7FEFF 		bl	FLASH_OB_DisableWRP
+ 823              	.LVL97:
+ 824 0026 0346     		mov	r3, r0
+ 825              	.LVL98:
+ 826              	.L64:
+ 488:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 827              		.loc 1 488 0
+ARM GAS  /tmp/ccp4iYNx.s 			page 36
+
+
+ 828 0028 4BB1     		cbz	r3, .L62
+ 491:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       return status;
+ 829              		.loc 1 491 0
+ 830 002a 0021     		movs	r1, #0
+ 831 002c 1D4A     		ldr	r2, .L78
+ 832 002e 1176     		strb	r1, [r2, #24]
+ 492:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 833              		.loc 1 492 0
+ 834 0030 14E0     		b	.L61
+ 835              	.LVL99:
+ 836              	.L74:
+ 481:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 837              		.loc 1 481 0
+ 838 0032 8068     		ldr	r0, [r0, #8]
+ 839              	.LVL100:
+ 840 0034 FFF7FEFF 		bl	FLASH_OB_EnableWRP
+ 841              	.LVL101:
+ 842 0038 0346     		mov	r3, r0
+ 843              	.LVL102:
+ 844 003a F5E7     		b	.L64
+ 845              	.LVL103:
+ 846              	.L69:
+ 466:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 847              		.loc 1 466 0
+ 848 003c 0123     		movs	r3, #1
+ 849              	.LVL104:
+ 850              	.L62:
+ 497:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 851              		.loc 1 497 0
+ 852 003e 2268     		ldr	r2, [r4]
+ 853 0040 12F0020F 		tst	r2, #2
+ 854 0044 0CD1     		bne	.L75
+ 855              	.LVL105:
+ 856              	.L65:
+ 509:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 857              		.loc 1 509 0
+ 858 0046 2268     		ldr	r2, [r4]
+ 859 0048 12F0040F 		tst	r2, #4
+ 860 004c 12D1     		bne	.L76
+ 861              	.LVL106:
+ 862              	.L66:
+ 521:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 863              		.loc 1 521 0
+ 864 004e 2268     		ldr	r2, [r4]
+ 865 0050 12F0080F 		tst	r2, #8
+ 866 0054 18D1     		bne	.L77
+ 867              	.LVL107:
+ 868              	.L67:
+ 533:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 869              		.loc 1 533 0
+ 870 0056 0021     		movs	r1, #0
+ 871 0058 124A     		ldr	r2, .L78
+ 872 005a 1176     		strb	r1, [r2, #24]
+ 873              	.LVL108:
+ 874              	.L61:
+ 536:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 875              		.loc 1 536 0
+ARM GAS  /tmp/ccp4iYNx.s 			page 37
+
+
+ 876 005c 1846     		mov	r0, r3
+ 877 005e 10BD     		pop	{r4, pc}
+ 878              	.LVL109:
+ 879              	.L75:
+ 499:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     if (status != HAL_OK)
+ 880              		.loc 1 499 0
+ 881 0060 207C     		ldrb	r0, [r4, #16]	@ zero_extendqisi2
+ 882 0062 FFF7FEFF 		bl	FLASH_OB_RDP_LevelConfig
+ 883              	.LVL110:
+ 500:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 884              		.loc 1 500 0
+ 885 0066 0346     		mov	r3, r0
+ 886 0068 0028     		cmp	r0, #0
+ 887 006a ECD0     		beq	.L65
+ 503:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       return status;
+ 888              		.loc 1 503 0
+ 889 006c 0021     		movs	r1, #0
+ 890 006e 0D4A     		ldr	r2, .L78
+ 891 0070 1176     		strb	r1, [r2, #24]
+ 504:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 892              		.loc 1 504 0
+ 893 0072 F3E7     		b	.L61
+ 894              	.LVL111:
+ 895              	.L76:
+ 511:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     if (status != HAL_OK)
+ 896              		.loc 1 511 0
+ 897 0074 607C     		ldrb	r0, [r4, #17]	@ zero_extendqisi2
+ 898 0076 FFF7FEFF 		bl	FLASH_OB_UserConfig
+ 899              	.LVL112:
+ 512:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 900              		.loc 1 512 0
+ 901 007a 0346     		mov	r3, r0
+ 902 007c 0028     		cmp	r0, #0
+ 903 007e E6D0     		beq	.L66
+ 515:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       return status;
+ 904              		.loc 1 515 0
+ 905 0080 0021     		movs	r1, #0
+ 906 0082 084A     		ldr	r2, .L78
+ 907 0084 1176     		strb	r1, [r2, #24]
+ 516:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 908              		.loc 1 516 0
+ 909 0086 E9E7     		b	.L61
+ 910              	.LVL113:
+ 911              	.L77:
+ 523:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     if (status != HAL_OK)
+ 912              		.loc 1 523 0
+ 913 0088 217E     		ldrb	r1, [r4, #24]	@ zero_extendqisi2
+ 914 008a 6069     		ldr	r0, [r4, #20]
+ 915 008c FFF7FEFF 		bl	FLASH_OB_ProgramData
+ 916              	.LVL114:
+ 524:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     {
+ 917              		.loc 1 524 0
+ 918 0090 0346     		mov	r3, r0
+ 919 0092 0028     		cmp	r0, #0
+ 920 0094 DFD0     		beq	.L67
+ 527:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       return status;
+ 921              		.loc 1 527 0
+ARM GAS  /tmp/ccp4iYNx.s 			page 38
+
+
+ 922 0096 0021     		movs	r1, #0
+ 923 0098 024A     		ldr	r2, .L78
+ 924 009a 1176     		strb	r1, [r2, #24]
+ 528:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     }
+ 925              		.loc 1 528 0
+ 926 009c DEE7     		b	.L61
+ 927              	.LVL115:
+ 928              	.L68:
+ 929              	.LCFI7:
+ 930              		.cfi_def_cfa_offset 0
+ 931              		.cfi_restore 4
+ 932              		.cfi_restore 14
+ 469:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 933              		.loc 1 469 0
+ 934 009e 0223     		movs	r3, #2
+ 536:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 935              		.loc 1 536 0
+ 936 00a0 1846     		mov	r0, r3
+ 937              	.LVL116:
+ 938 00a2 7047     		bx	lr
+ 939              	.L79:
+ 940              		.align	2
+ 941              	.L78:
+ 942 00a4 00000000 		.word	pFlash
+ 943              		.cfi_endproc
+ 944              	.LFE67:
+ 946              		.section	.text.HAL_FLASHEx_OBGetConfig,"ax",%progbits
+ 947              		.align	1
+ 948              		.global	HAL_FLASHEx_OBGetConfig
+ 949              		.syntax unified
+ 950              		.thumb
+ 951              		.thumb_func
+ 952              		.fpu softvfp
+ 954              	HAL_FLASHEx_OBGetConfig:
+ 955              	.LFB68:
+ 546:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   pOBInit->OptionType = OPTIONBYTE_WRP | OPTIONBYTE_RDP | OPTIONBYTE_USER;
+ 956              		.loc 1 546 0
+ 957              		.cfi_startproc
+ 958              		@ args = 0, pretend = 0, frame = 0
+ 959              		@ frame_needed = 0, uses_anonymous_args = 0
+ 960              	.LVL117:
+ 961 0000 10B5     		push	{r4, lr}
+ 962              	.LCFI8:
+ 963              		.cfi_def_cfa_offset 8
+ 964              		.cfi_offset 4, -8
+ 965              		.cfi_offset 14, -4
+ 966 0002 0446     		mov	r4, r0
+ 547:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 967              		.loc 1 547 0
+ 968 0004 0723     		movs	r3, #7
+ 969 0006 0360     		str	r3, [r0]
+ 550:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 970              		.loc 1 550 0
+ 971 0008 FFF7FEFF 		bl	FLASH_OB_GetWRP
+ 972              	.LVL118:
+ 973 000c A060     		str	r0, [r4, #8]
+ 553:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ARM GAS  /tmp/ccp4iYNx.s 			page 39
+
+
+ 974              		.loc 1 553 0
+ 975 000e FFF7FEFF 		bl	FLASH_OB_GetRDP
+ 976              	.LVL119:
+ 977 0012 2074     		strb	r0, [r4, #16]
+ 556:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+ 978              		.loc 1 556 0
+ 979 0014 FFF7FEFF 		bl	FLASH_OB_GetUser
+ 980              	.LVL120:
+ 981 0018 6074     		strb	r0, [r4, #17]
+ 982 001a 10BD     		pop	{r4, pc}
+ 983              		.cfi_endproc
+ 984              	.LFE68:
+ 986              		.section	.text.HAL_FLASHEx_OBGetUserData,"ax",%progbits
+ 987              		.align	1
+ 988              		.global	HAL_FLASHEx_OBGetUserData
+ 989              		.syntax unified
+ 990              		.thumb
+ 991              		.thumb_func
+ 992              		.fpu softvfp
+ 994              	HAL_FLASHEx_OBGetUserData:
+ 995              	.LFB69:
+ 568:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint32_t value = 0;
+ 996              		.loc 1 568 0
+ 997              		.cfi_startproc
+ 998              		@ args = 0, pretend = 0, frame = 0
+ 999              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1000              		@ link register save eliminated.
+ 1001              	.LVL121:
+ 571:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 1002              		.loc 1 571 0
+ 1003 0000 064B     		ldr	r3, .L86
+ 1004 0002 9842     		cmp	r0, r3
+ 1005 0004 04D0     		beq	.L85
+ 579:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 1006              		.loc 1 579 0
+ 1007 0006 064B     		ldr	r3, .L86+4
+ 1008 0008 D869     		ldr	r0, [r3, #28]
+ 1009              	.LVL122:
+ 1010 000a C0F38740 		ubfx	r0, r0, #18, #8
+ 1011              	.LVL123:
+ 583:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 1012              		.loc 1 583 0
+ 1013 000e 7047     		bx	lr
+ 1014              	.LVL124:
+ 1015              	.L85:
+ 574:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 1016              		.loc 1 574 0
+ 1017 0010 034B     		ldr	r3, .L86+4
+ 1018 0012 D869     		ldr	r0, [r3, #28]
+ 1019              	.LVL125:
+ 1020 0014 C0F38720 		ubfx	r0, r0, #10, #8
+ 1021              	.LVL126:
+ 1022 0018 7047     		bx	lr
+ 1023              	.L87:
+ 1024 001a 00BF     		.align	2
+ 1025              	.L86:
+ 1026 001c 04F8FF1F 		.word	536868868
+ARM GAS  /tmp/ccp4iYNx.s 			page 40
+
+
+ 1027 0020 00200240 		.word	1073881088
+ 1028              		.cfi_endproc
+ 1029              	.LFE69:
+ 1031              		.section	.text.FLASH_PageErase,"ax",%progbits
+ 1032              		.align	1
+ 1033              		.global	FLASH_PageErase
+ 1034              		.syntax unified
+ 1035              		.thumb
+ 1036              		.thumb_func
+ 1037              		.fpu softvfp
+ 1039              	FLASH_PageErase:
+ 1040              	.LFB79:
+1083:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+1084:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+1085:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @}
+1086:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+1087:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+1088:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+1089:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @}
+1090:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+1091:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+1092:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /** @addtogroup FLASH
+1093:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @{
+1094:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+1095:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+1096:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /** @addtogroup FLASH_Private_Functions
+1097:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****  * @{
+1098:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****  */
+1099:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+1100:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** /**
+1101:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @brief  Erase the specified FLASH memory page
+1102:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @param  PageAddress FLASH page to erase
+1103:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   *         The value of this parameter depend on device used within the same series      
+1104:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * 
+1105:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   * @retval None
+1106:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   */
+1107:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** void FLASH_PageErase(uint32_t PageAddress)
+1108:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** {
+ 1041              		.loc 1 1108 0
+ 1042              		.cfi_startproc
+ 1043              		@ args = 0, pretend = 0, frame = 0
+ 1044              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1045              		@ link register save eliminated.
+ 1046              	.LVL127:
+1109:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   /* Clean the error context */
+1110:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   pFlash.ErrorCode = HAL_FLASH_ERROR_NONE;
+ 1047              		.loc 1 1110 0
+ 1048 0000 0022     		movs	r2, #0
+ 1049 0002 064B     		ldr	r3, .L89
+ 1050 0004 DA61     		str	r2, [r3, #28]
+1111:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+1112:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #if defined(FLASH_BANK2_END)
+1113:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   if(PageAddress > FLASH_BANK1_END)
+1114:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   { 
+1115:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Proceed to erase the page */
+1116:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR2, FLASH_CR2_PER);
+1117:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     WRITE_REG(FLASH->AR2, PageAddress);
+ARM GAS  /tmp/ccp4iYNx.s 			page 41
+
+
+1118:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR2, FLASH_CR2_STRT);
+1119:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+1120:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   else
+1121:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+1122:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** #endif /* FLASH_BANK2_END */
+1123:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     /* Proceed to erase the page */
+1124:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR, FLASH_CR_PER);
+ 1051              		.loc 1 1124 0
+ 1052 0006 064B     		ldr	r3, .L89+4
+ 1053 0008 1A69     		ldr	r2, [r3, #16]
+ 1054 000a 42F00202 		orr	r2, r2, #2
+ 1055 000e 1A61     		str	r2, [r3, #16]
+1125:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     WRITE_REG(FLASH->AR, PageAddress);
+ 1056              		.loc 1 1125 0
+ 1057 0010 5861     		str	r0, [r3, #20]
+1126:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     SET_BIT(FLASH->CR, FLASH_CR_STRT);
+ 1058              		.loc 1 1126 0
+ 1059 0012 1A69     		ldr	r2, [r3, #16]
+ 1060 0014 42F04002 		orr	r2, r2, #64
+ 1061 0018 1A61     		str	r2, [r3, #16]
+ 1062 001a 7047     		bx	lr
+ 1063              	.L90:
+ 1064              		.align	2
+ 1065              	.L89:
+ 1066 001c 00000000 		.word	pFlash
+ 1067 0020 00200240 		.word	1073881088
+ 1068              		.cfi_endproc
+ 1069              	.LFE79:
+ 1071              		.section	.text.HAL_FLASHEx_Erase,"ax",%progbits
+ 1072              		.align	1
+ 1073              		.global	HAL_FLASHEx_Erase
+ 1074              		.syntax unified
+ 1075              		.thumb
+ 1076              		.thumb_func
+ 1077              		.fpu softvfp
+ 1079              	HAL_FLASHEx_Erase:
+ 1080              	.LFB64:
+ 178:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_ERROR;
+ 1081              		.loc 1 178 0
+ 1082              		.cfi_startproc
+ 1083              		@ args = 0, pretend = 0, frame = 0
+ 1084              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1085              	.LVL128:
+ 183:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 1086              		.loc 1 183 0
+ 1087 0000 264B     		ldr	r3, .L108
+ 1088 0002 1B7E     		ldrb	r3, [r3, #24]	@ zero_extendqisi2
+ 1089 0004 012B     		cmp	r3, #1
+ 1090 0006 46D0     		beq	.L98
+ 178:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_ERROR;
+ 1091              		.loc 1 178 0 discriminator 2
+ 1092 0008 70B5     		push	{r4, r5, r6, lr}
+ 1093              	.LCFI9:
+ 1094              		.cfi_def_cfa_offset 16
+ 1095              		.cfi_offset 4, -16
+ 1096              		.cfi_offset 5, -12
+ 1097              		.cfi_offset 6, -8
+ARM GAS  /tmp/ccp4iYNx.s 			page 42
+
+
+ 1098              		.cfi_offset 14, -4
+ 1099 000a 0E46     		mov	r6, r1
+ 1100 000c 0546     		mov	r5, r0
+ 183:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 1101              		.loc 1 183 0 discriminator 2
+ 1102 000e 0122     		movs	r2, #1
+ 1103 0010 224B     		ldr	r3, .L108
+ 1104 0012 1A76     		strb	r2, [r3, #24]
+ 188:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 1105              		.loc 1 188 0 discriminator 2
+ 1106 0014 0368     		ldr	r3, [r0]
+ 1107 0016 022B     		cmp	r3, #2
+ 1108 0018 20D0     		beq	.L105
+ 291:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 1109              		.loc 1 291 0
+ 1110 001a 4CF25030 		movw	r0, #50000
+ 1111              	.LVL129:
+ 1112 001e FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1113              	.LVL130:
+ 1114 0022 90BB     		cbnz	r0, .L100
+ 294:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 1115              		.loc 1 294 0
+ 1116 0024 4FF0FF33 		mov	r3, #-1
+ 1117 0028 3360     		str	r3, [r6]
+ 297:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****             address < ((pEraseInit->NbPages * FLASH_PAGE_SIZE) + pEraseInit->PageAddress);
+ 1118              		.loc 1 297 0
+ 1119 002a AC68     		ldr	r4, [r5, #8]
+ 1120              	.LVL131:
+ 179:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint32_t address = 0U;
+ 1121              		.loc 1 179 0
+ 1122 002c 0121     		movs	r1, #1
+ 1123              	.LVL132:
+ 1124              	.L95:
+ 298:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****             address += FLASH_PAGE_SIZE)
+ 1125              		.loc 1 298 0 discriminator 1
+ 1126 002e EA68     		ldr	r2, [r5, #12]
+ 1127 0030 AB68     		ldr	r3, [r5, #8]
+ 1128 0032 03EBC223 		add	r3, r3, r2, lsl #11
+ 297:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****             address < ((pEraseInit->NbPages * FLASH_PAGE_SIZE) + pEraseInit->PageAddress);
+ 1129              		.loc 1 297 0 discriminator 1
+ 1130 0036 9C42     		cmp	r4, r3
+ 1131 0038 28D2     		bcs	.L94
+ 301:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           
+ 1132              		.loc 1 301 0
+ 1133 003a 2046     		mov	r0, r4
+ 1134 003c FFF7FEFF 		bl	FLASH_PageErase
+ 1135              	.LVL133:
+ 304:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           
+ 1136              		.loc 1 304 0
+ 1137 0040 4CF25030 		movw	r0, #50000
+ 1138 0044 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1139              	.LVL134:
+ 307:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           
+ 1140              		.loc 1 307 0
+ 1141 0048 154A     		ldr	r2, .L108+4
+ 1142 004a 1369     		ldr	r3, [r2, #16]
+ 1143 004c 23F00203 		bic	r3, r3, #2
+ARM GAS  /tmp/ccp4iYNx.s 			page 43
+
+
+ 1144 0050 1361     		str	r3, [r2, #16]
+ 309:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           {
+ 1145              		.loc 1 309 0
+ 1146 0052 0146     		mov	r1, r0
+ 1147 0054 B8B9     		cbnz	r0, .L106
+ 299:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         {
+ 1148              		.loc 1 299 0
+ 1149 0056 04F50064 		add	r4, r4, #2048
+ 1150              	.LVL135:
+ 1151 005a E8E7     		b	.L95
+ 1152              	.LVL136:
+ 1153              	.L105:
+ 234:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       {
+ 1154              		.loc 1 234 0
+ 1155 005c 4CF25030 		movw	r0, #50000
+ 1156              	.LVL137:
+ 1157 0060 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1158              	.LVL138:
+ 1159 0064 08B1     		cbz	r0, .L107
+ 179:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint32_t address = 0U;
+ 1160              		.loc 1 179 0
+ 1161 0066 0121     		movs	r1, #1
+ 1162 0068 10E0     		b	.L94
+ 1163              	.L107:
+ 237:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 1164              		.loc 1 237 0
+ 1165 006a 0120     		movs	r0, #1
+ 1166 006c FFF7FEFF 		bl	FLASH_MassErase
+ 1167              	.LVL139:
+ 240:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         
+ 1168              		.loc 1 240 0
+ 1169 0070 4CF25030 		movw	r0, #50000
+ 1170 0074 FFF7FEFF 		bl	FLASH_WaitForLastOperation
+ 1171              	.LVL140:
+ 1172 0078 0146     		mov	r1, r0
+ 1173              	.LVL141:
+ 243:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****       }
+ 1174              		.loc 1 243 0
+ 1175 007a 094A     		ldr	r2, .L108+4
+ 1176 007c 1369     		ldr	r3, [r2, #16]
+ 1177 007e 23F00403 		bic	r3, r3, #4
+ 1178 0082 1361     		str	r3, [r2, #16]
+ 1179 0084 02E0     		b	.L94
+ 1180              	.LVL142:
+ 1181              	.L106:
+ 312:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****             break;
+ 1182              		.loc 1 312 0
+ 1183 0086 3460     		str	r4, [r6]
+ 313:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****           }
+ 1184              		.loc 1 313 0
+ 1185 0088 00E0     		b	.L94
+ 1186              	.LVL143:
+ 1187              	.L100:
+ 179:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   uint32_t address = 0U;
+ 1188              		.loc 1 179 0
+ 1189 008a 0121     		movs	r1, #1
+ 1190              	.LVL144:
+ARM GAS  /tmp/ccp4iYNx.s 			page 44
+
+
+ 1191              	.L94:
+ 321:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 1192              		.loc 1 321 0
+ 1193 008c 0022     		movs	r2, #0
+ 1194 008e 034B     		ldr	r3, .L108
+ 1195 0090 1A76     		strb	r2, [r3, #24]
+ 324:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 1196              		.loc 1 324 0
+ 1197 0092 0846     		mov	r0, r1
+ 1198 0094 70BD     		pop	{r4, r5, r6, pc}
+ 1199              	.LVL145:
+ 1200              	.L98:
+ 1201              	.LCFI10:
+ 1202              		.cfi_def_cfa_offset 0
+ 1203              		.cfi_restore 4
+ 1204              		.cfi_restore 5
+ 1205              		.cfi_restore 6
+ 1206              		.cfi_restore 14
+ 183:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 1207              		.loc 1 183 0
+ 1208 0096 0221     		movs	r1, #2
+ 1209              	.LVL146:
+ 324:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 1210              		.loc 1 324 0
+ 1211 0098 0846     		mov	r0, r1
+ 1212              	.LVL147:
+ 1213 009a 7047     		bx	lr
+ 1214              	.L109:
+ 1215              		.align	2
+ 1216              	.L108:
+ 1217 009c 00000000 		.word	pFlash
+ 1218 00a0 00200240 		.word	1073881088
+ 1219              		.cfi_endproc
+ 1220              	.LFE64:
+ 1222              		.section	.text.HAL_FLASHEx_Erase_IT,"ax",%progbits
+ 1223              		.align	1
+ 1224              		.global	HAL_FLASHEx_Erase_IT
+ 1225              		.syntax unified
+ 1226              		.thumb
+ 1227              		.thumb_func
+ 1228              		.fpu softvfp
+ 1230              	HAL_FLASHEx_Erase_IT:
+ 1231              	.LFB65:
+ 338:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   HAL_StatusTypeDef status = HAL_OK;
+ 1232              		.loc 1 338 0
+ 1233              		.cfi_startproc
+ 1234              		@ args = 0, pretend = 0, frame = 0
+ 1235              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1236              	.LVL148:
+ 1237 0000 08B5     		push	{r3, lr}
+ 1238              	.LCFI11:
+ 1239              		.cfi_def_cfa_offset 8
+ 1240              		.cfi_offset 3, -8
+ 1241              		.cfi_offset 14, -4
+ 1242              	.LVL149:
+ 342:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 1243              		.loc 1 342 0
+ARM GAS  /tmp/ccp4iYNx.s 			page 45
+
+
+ 1244 0002 144B     		ldr	r3, .L117
+ 1245 0004 1B7E     		ldrb	r3, [r3, #24]	@ zero_extendqisi2
+ 1246 0006 012B     		cmp	r3, #1
+ 1247 0008 20D0     		beq	.L113
+ 342:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 1248              		.loc 1 342 0 is_stmt 0 discriminator 2
+ 1249 000a 124B     		ldr	r3, .L117
+ 1250 000c 0122     		movs	r2, #1
+ 1251 000e 1A76     		strb	r2, [r3, #24]
+ 345:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 1252              		.loc 1 345 0 is_stmt 1 discriminator 2
+ 1253 0010 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1254 0012 EBB9     		cbnz	r3, .L114
+ 354:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 1255              		.loc 1 354 0
+ 1256 0014 104A     		ldr	r2, .L117+4
+ 1257 0016 1369     		ldr	r3, [r2, #16]
+ 1258 0018 43F4A053 		orr	r3, r3, #5120
+ 1259 001c 1361     		str	r3, [r2, #16]
+ 361:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   {
+ 1260              		.loc 1 361 0
+ 1261 001e 0368     		ldr	r3, [r0]
+ 1262 0020 022B     		cmp	r3, #2
+ 1263 0022 0BD0     		beq	.L116
+ 375:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     pFlash.DataRemaining = pEraseInit->NbPages;
+ 1264              		.loc 1 375 0
+ 1265 0024 0B4B     		ldr	r3, .L117
+ 1266 0026 0122     		movs	r2, #1
+ 1267 0028 1A70     		strb	r2, [r3]
+ 376:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****     pFlash.Address = pEraseInit->PageAddress;
+ 1268              		.loc 1 376 0
+ 1269 002a C268     		ldr	r2, [r0, #12]
+ 1270 002c 5A60     		str	r2, [r3, #4]
+ 377:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 1271              		.loc 1 377 0
+ 1272 002e 8268     		ldr	r2, [r0, #8]
+ 1273 0030 9A60     		str	r2, [r3, #8]
+ 380:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 1274              		.loc 1 380 0
+ 1275 0032 8068     		ldr	r0, [r0, #8]
+ 1276              	.LVL150:
+ 1277 0034 FFF7FEFF 		bl	FLASH_PageErase
+ 1278              	.LVL151:
+ 383:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+ 1279              		.loc 1 383 0
+ 1280 0038 0020     		movs	r0, #0
+ 1281 003a 08BD     		pop	{r3, pc}
+ 1282              	.LVL152:
+ 1283              	.L116:
+ 364:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****         FLASH_MassErase(pEraseInit->Banks);
+ 1284              		.loc 1 364 0
+ 1285 003c 0222     		movs	r2, #2
+ 1286 003e 054B     		ldr	r3, .L117
+ 1287 0040 1A70     		strb	r2, [r3]
+ 365:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 1288              		.loc 1 365 0
+ 1289 0042 4068     		ldr	r0, [r0, #4]
+ARM GAS  /tmp/ccp4iYNx.s 			page 46
+
+
+ 1290              	.LVL153:
+ 1291 0044 FFF7FEFF 		bl	FLASH_MassErase
+ 1292              	.LVL154:
+ 383:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** }
+ 1293              		.loc 1 383 0
+ 1294 0048 0020     		movs	r0, #0
+ 1295 004a 08BD     		pop	{r3, pc}
+ 1296              	.LVL155:
+ 1297              	.L113:
+ 342:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 1298              		.loc 1 342 0
+ 1299 004c 0220     		movs	r0, #2
+ 1300              	.LVL156:
+ 1301 004e 08BD     		pop	{r3, pc}
+ 1302              	.LVL157:
+ 1303              	.L114:
+ 347:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c ****   }
+ 1304              		.loc 1 347 0
+ 1305 0050 0120     		movs	r0, #1
+ 1306              	.LVL158:
+ 384:Libraries/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c **** 
+ 1307              		.loc 1 384 0
+ 1308 0052 08BD     		pop	{r3, pc}
+ 1309              	.L118:
+ 1310              		.align	2
+ 1311              	.L117:
+ 1312 0054 00000000 		.word	pFlash
+ 1313 0058 00200240 		.word	1073881088
+ 1314              		.cfi_endproc
+ 1315              	.LFE65:
+ 1317              		.text
+ 1318              	.Letext0:
+ 1319              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 1320              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 1321              		.file 4 "Libraries/CMSIS/Include/core_cm3.h"
+ 1322              		.file 5 "Libraries/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h"
+ 1323              		.file 6 "Libraries/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h"
+ 1324              		.file 7 "/usr/include/newlib/sys/lock.h"
+ 1325              		.file 8 "/usr/include/newlib/sys/_types.h"
+ 1326              		.file 9 "/usr/lib/gcc/arm-none-eabi/6.3.1/include/stddef.h"
+ 1327              		.file 10 "/usr/include/newlib/sys/reent.h"
+ 1328              		.file 11 "Libraries/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 1329              		.file 12 "Libraries/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h"
+ 1330              		.file 13 "Libraries/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h"
+ARM GAS  /tmp/ccp4iYNx.s 			page 47
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f1xx_hal_flash_ex.c
+     /tmp/ccp4iYNx.s:16     .text.FLASH_MassErase:0000000000000000 $t
+     /tmp/ccp4iYNx.s:22     .text.FLASH_MassErase:0000000000000000 FLASH_MassErase
+     /tmp/ccp4iYNx.s:48     .text.FLASH_MassErase:000000000000001c $d
+     /tmp/ccp4iYNx.s:54     .text.FLASH_OB_GetWRP:0000000000000000 $t
+     /tmp/ccp4iYNx.s:60     .text.FLASH_OB_GetWRP:0000000000000000 FLASH_OB_GetWRP
+     /tmp/ccp4iYNx.s:75     .text.FLASH_OB_GetWRP:0000000000000008 $d
+     /tmp/ccp4iYNx.s:80     .text.FLASH_OB_GetRDP:0000000000000000 $t
+     /tmp/ccp4iYNx.s:86     .text.FLASH_OB_GetRDP:0000000000000000 FLASH_OB_GetRDP
+     /tmp/ccp4iYNx.s:112    .text.FLASH_OB_GetRDP:0000000000000014 $d
+     /tmp/ccp4iYNx.s:117    .text.FLASH_OB_GetUser:0000000000000000 $t
+     /tmp/ccp4iYNx.s:123    .text.FLASH_OB_GetUser:0000000000000000 FLASH_OB_GetUser
+     /tmp/ccp4iYNx.s:139    .text.FLASH_OB_GetUser:000000000000000c $d
+     /tmp/ccp4iYNx.s:144    .text.FLASH_OB_RDP_LevelConfig:0000000000000000 $t
+     /tmp/ccp4iYNx.s:150    .text.FLASH_OB_RDP_LevelConfig:0000000000000000 FLASH_OB_RDP_LevelConfig
+     /tmp/ccp4iYNx.s:230    .text.FLASH_OB_RDP_LevelConfig:0000000000000064 $d
+     /tmp/ccp4iYNx.s:237    .text.FLASH_OB_UserConfig:0000000000000000 $t
+     /tmp/ccp4iYNx.s:243    .text.FLASH_OB_UserConfig:0000000000000000 FLASH_OB_UserConfig
+     /tmp/ccp4iYNx.s:302    .text.FLASH_OB_UserConfig:0000000000000040 $d
+     /tmp/ccp4iYNx.s:309    .text.FLASH_OB_ProgramData:0000000000000000 $t
+     /tmp/ccp4iYNx.s:315    .text.FLASH_OB_ProgramData:0000000000000000 FLASH_OB_ProgramData
+     /tmp/ccp4iYNx.s:374    .text.FLASH_OB_ProgramData:0000000000000040 $d
+     /tmp/ccp4iYNx.s:380    .text.HAL_FLASHEx_OBErase:0000000000000000 $t
+     /tmp/ccp4iYNx.s:387    .text.HAL_FLASHEx_OBErase:0000000000000000 HAL_FLASHEx_OBErase
+     /tmp/ccp4iYNx.s:457    .text.HAL_FLASHEx_OBErase:0000000000000050 $d
+     /tmp/ccp4iYNx.s:463    .text.FLASH_OB_EnableWRP:0000000000000000 $t
+     /tmp/ccp4iYNx.s:469    .text.FLASH_OB_EnableWRP:0000000000000000 FLASH_OB_EnableWRP
+     /tmp/ccp4iYNx.s:613    .text.FLASH_OB_EnableWRP:00000000000000ac $d
+     /tmp/ccp4iYNx.s:620    .text.FLASH_OB_DisableWRP:0000000000000000 $t
+     /tmp/ccp4iYNx.s:626    .text.FLASH_OB_DisableWRP:0000000000000000 FLASH_OB_DisableWRP
+     /tmp/ccp4iYNx.s:774    .text.FLASH_OB_DisableWRP:00000000000000b4 $d
+     /tmp/ccp4iYNx.s:781    .text.HAL_FLASHEx_OBProgram:0000000000000000 $t
+     /tmp/ccp4iYNx.s:788    .text.HAL_FLASHEx_OBProgram:0000000000000000 HAL_FLASHEx_OBProgram
+     /tmp/ccp4iYNx.s:942    .text.HAL_FLASHEx_OBProgram:00000000000000a4 $d
+     /tmp/ccp4iYNx.s:947    .text.HAL_FLASHEx_OBGetConfig:0000000000000000 $t
+     /tmp/ccp4iYNx.s:954    .text.HAL_FLASHEx_OBGetConfig:0000000000000000 HAL_FLASHEx_OBGetConfig
+     /tmp/ccp4iYNx.s:987    .text.HAL_FLASHEx_OBGetUserData:0000000000000000 $t
+     /tmp/ccp4iYNx.s:994    .text.HAL_FLASHEx_OBGetUserData:0000000000000000 HAL_FLASHEx_OBGetUserData
+     /tmp/ccp4iYNx.s:1026   .text.HAL_FLASHEx_OBGetUserData:000000000000001c $d
+     /tmp/ccp4iYNx.s:1032   .text.FLASH_PageErase:0000000000000000 $t
+     /tmp/ccp4iYNx.s:1039   .text.FLASH_PageErase:0000000000000000 FLASH_PageErase
+     /tmp/ccp4iYNx.s:1066   .text.FLASH_PageErase:000000000000001c $d
+     /tmp/ccp4iYNx.s:1072   .text.HAL_FLASHEx_Erase:0000000000000000 $t
+     /tmp/ccp4iYNx.s:1079   .text.HAL_FLASHEx_Erase:0000000000000000 HAL_FLASHEx_Erase
+     /tmp/ccp4iYNx.s:1217   .text.HAL_FLASHEx_Erase:000000000000009c $d
+     /tmp/ccp4iYNx.s:1223   .text.HAL_FLASHEx_Erase_IT:0000000000000000 $t
+     /tmp/ccp4iYNx.s:1230   .text.HAL_FLASHEx_Erase_IT:0000000000000000 HAL_FLASHEx_Erase_IT
+     /tmp/ccp4iYNx.s:1312   .text.HAL_FLASHEx_Erase_IT:0000000000000054 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+pFlash
+FLASH_WaitForLastOperation
